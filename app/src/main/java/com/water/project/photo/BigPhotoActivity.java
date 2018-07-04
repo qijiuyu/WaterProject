@@ -16,6 +16,7 @@ import com.water.project.R;
 import com.water.project.application.MyApplication;
 import com.water.project.http.HttpConstant;
 import com.water.project.utils.photo.Bimp;
+import com.water.project.view.TouchImageView;
 
 import java.util.ArrayList;
 
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 public class BigPhotoActivity extends Activity {
     private ArrayList<View> listViews = null;
     private ArrayList<Bitmap> bitList = new ArrayList<>();
-    private ImageView bigImage;
+    private TouchImageView bigImage;
     private int id;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class BigPhotoActivity extends Activity {
         tvHead.setText("选择图片");
         TextView tvRight=(TextView)findViewById(R.id.tv_right);
         tvRight.setText("删除");
-        bigImage = (ImageView) findViewById(R.id.img_big_photo);
+        bigImage = (TouchImageView) findViewById(R.id.img_big_photo);
         findViewById(R.id.lin_back).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 finish();

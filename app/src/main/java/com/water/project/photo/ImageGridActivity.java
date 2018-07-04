@@ -190,7 +190,7 @@ public class ImageGridActivity extends BaseActivity {
 						 }
 					}
 					if(k==-1){
-						if(Bimp.selectBitmap.size()>=9){
+						if(Bimp.selectBitmap.size()>=5){
 							showToastView("图片最多选择9个！");
 							return;
 						}

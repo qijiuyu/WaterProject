@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.TextView;
 
 import com.water.project.R;
 import com.water.project.adapter.GridImageAdapter;
@@ -19,10 +20,11 @@ import com.water.project.view.MyGridView;
 import java.io.File;
 
 /**
+ * 资料上传
  * Created by Administrator on 2018/7/4 0004.
  */
 
-public class UploadActivity extends BaseActivity {
+public class UploadActivity extends BaseActivity implements View.OnClickListener{
 
     private MyGridView gridView;
     private GridImageAdapter adapter = null;
@@ -36,7 +38,10 @@ public class UploadActivity extends BaseActivity {
 
 
     private void initView(){
+        TextView textView=(TextView)findViewById(R.id.tv_head);
+        textView.setText("资料上传");
         gridView=(MyGridView)findViewById(R.id.mg_aiu);
+        findViewById(R.id.lin_back).setOnClickListener(this);
         //清空图片集合
         if (Bimp.selectBitmap.size() != 0) {
             Bimp.selectBitmap.clear();
@@ -47,8 +52,8 @@ public class UploadActivity extends BaseActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 if (arg2 == Bimp.selectBitmap.size()) {
-                    if (Bimp.selectBitmap.size() >5) {
-                        showToastView("图片最多选择9个！");
+                    if (Bimp.selectBitmap.size() >=5) {
+                        showToastView("图片最多选择5个！");
                     } else {
                         PicturesUtil.selectPhoto(UploadActivity.this,1);
                     }
@@ -93,5 +98,17 @@ public class UploadActivity extends BaseActivity {
                 break;
 
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.lin_back:
+                 finish();
+                 break;
+            default:
+                break;
+        }
+
     }
 }

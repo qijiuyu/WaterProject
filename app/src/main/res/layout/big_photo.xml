@@ -1,16 +1,18 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    >
+    android:background="@android:color/transparent">
+
     <include layout="@layout/head"/>
 
 
-    <ImageView
+    <com.water.project.view.TouchImageView
         android:id="@+id/img_big_photo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY" />
+        android:layout_below="@id/lin_head"
+        android:layout_centerInParent="true"/>
 
 
-</LinearLayout>
+</RelativeLayout>
