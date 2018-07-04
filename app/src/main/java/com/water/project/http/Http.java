@@ -28,7 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class Http {
-    public static String baseUrl = HttpContent.IP;
+    public static String baseUrl = HttpConstant.IP;
     private static OkHttpClient okHttpClient;
     private static Retrofit retrofit;
 
