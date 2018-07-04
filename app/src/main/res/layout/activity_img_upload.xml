@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lin_head"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/head"></include>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="影像资料上传"
+        android:textColor="@color/color_333333"
+        android:textSize="20sp"
+        android:layout_margin="20dp"/>
+
+    <com.water.project.view.MyGridView
+        android:id="@+id/mg_aiu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:numColumns="3"
+        android:verticalSpacing="5dp">
+
+    </com.water.project.view.MyGridView>
+
+    <com.water.project.view.ClickTextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp"
+        android:text="上传"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:background="@drawable/bg_login"
+        android:textSize="17sp"/>
+
+</LinearLayout>

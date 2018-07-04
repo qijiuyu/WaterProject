@@ -2,6 +2,7 @@ package com.water.project.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 public class BaseActivity extends Activity {
 
     ProgressDialog progressDialog = null;
+    protected Context mContext = this;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
