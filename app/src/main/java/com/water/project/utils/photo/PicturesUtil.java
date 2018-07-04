@@ -11,9 +11,9 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
-import com.youmai.project.R;
-import com.youmai.project.activity.photo.ImageGridActivity;
-import com.youmai.project.utils.Util;
+import com.water.project.R;
+import com.water.project.photo.ImageGridActivity;
+import com.water.project.utils.Util;
 
 import java.io.File;
 

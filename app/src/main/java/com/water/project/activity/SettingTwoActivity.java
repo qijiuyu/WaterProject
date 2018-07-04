@@ -9,18 +9,18 @@ import android.view.WindowManager;
 import com.water.project.R;
 
 /**
- * 设置参数1
+ * 设置参数2
  * Created by Administrator on 2018/7/4 0004.
  */
 
-public class SettingOneActivity extends BaseActivity implements View.OnClickListener{
+public class SettingTwoActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);//隐藏标题
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//设置全屏
-        setContentView(R.layout.activity_setting_one);
+        setContentView(R.layout.activity_setting_two);
         initView();
     }
 
@@ -30,7 +30,6 @@ public class SettingOneActivity extends BaseActivity implements View.OnClickList
      */
     private void initView(){
         findViewById(R.id.tv_aso_save).setOnClickListener(this);
-        findViewById(R.id.lin_back).setOnClickListener(this);
     }
 
     @Override
@@ -38,11 +37,11 @@ public class SettingOneActivity extends BaseActivity implements View.OnClickList
         switch (v.getId()){
             //保存
             case R.id.tv_aso_save:
-                 setClass(SettingTwoActivity.class);
-                 break;
-            case R.id.lin_back:
                  finish();
                  break;
+            case R.id.lin_back:
+                finish();
+                break;
             default:
                 break;
         }

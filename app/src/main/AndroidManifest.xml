@@ -46,8 +46,11 @@
             android:name=".activity.MainActivity"
             android:launchMode="singleTask"/>
 
-        <activity
-            android:name=".activity.SettingOneActivity"/>
+        <activity android:name=".activity.SettingOneActivity"/>
+        <activity android:name=".activity.SettingTwoActivity"/>
+        <activity android:name=".photo.BigPhotoActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".photo.ImageGridActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".photo.NetBigPhotoActivity"  android:screenOrientation="portrait"/>
 
     </application>
 
