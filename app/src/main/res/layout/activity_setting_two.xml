@@ -138,7 +138,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="探头深度"
+                    android:text="探头埋深"
                     android:textSize="17sp"
                     android:textColor="#333333"
                     android:gravity="center"
