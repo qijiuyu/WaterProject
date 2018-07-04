@@ -27,6 +27,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     private void initView(){
         findViewById(R.id.tv_setting).setOnClickListener(this);
+        findViewById(R.id.tv_about).setOnClickListener(this);
     }
 
     @Override
@@ -34,6 +35,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         switch (v.getId()){
             case R.id.tv_setting:
                  setClass(SettingOneActivity.class);
+                 break;
+            case R.id.tv_about:
+                setClass(AboutActivity.class);
                  break;
             default:
                 break;

@@ -48,6 +48,7 @@
 
         <activity android:name=".activity.SettingOneActivity"/>
         <activity android:name=".activity.SettingTwoActivity"/>
+        <activity android:name=".activity.AboutActivity"/>
         <activity android:name=".photo.BigPhotoActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".photo.ImageGridActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".photo.NetBigPhotoActivity"  android:screenOrientation="portrait"/>
