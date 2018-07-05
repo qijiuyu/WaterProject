@@ -45,6 +45,7 @@ public class SearchOldActivity extends BaseActivity implements View.OnClickListe
         ListView listView=(ListView)findViewById(R.id.listView) ;
         findViewById(R.id.tv_search1).setOnClickListener(this);
         findViewById(R.id.tv_search2).setOnClickListener(this);
+        findViewById(R.id.lin_back).setOnClickListener(this);
 
         List<OldData> list=new ArrayList<>();
         OldData oldData1=new OldData("187229871209","2.07","27","28.084","10.189");
@@ -81,6 +82,9 @@ public class SearchOldActivity extends BaseActivity implements View.OnClickListe
                     showToastView("请输入项目名称！");
                 }
                  break;
+            case R.id.lin_back:
+                finish();
+                break;
             default:
                 break;
         }

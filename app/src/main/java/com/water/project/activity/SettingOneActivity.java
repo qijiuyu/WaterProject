@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.water.project.R;
 
@@ -15,6 +16,7 @@ import com.water.project.R;
 
 public class SettingOneActivity extends BaseActivity implements View.OnClickListener{
 
+    private TextView tvJc,tvYq;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +31,10 @@ public class SettingOneActivity extends BaseActivity implements View.OnClickList
      * 初始化控件
      */
     private void initView(){
+        tvJc=(TextView)findViewById(R.id.tv_aso_jc);
+        tvYq=(TextView)findViewById(R.id.tv_aso_yq);
+        tvJc.setOnClickListener(this);
+        tvYq.setOnClickListener(this);
         findViewById(R.id.tv_aso_save).setOnClickListener(this);
         findViewById(R.id.lin_back).setOnClickListener(this);
     }
@@ -36,6 +42,18 @@ public class SettingOneActivity extends BaseActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.tv_aso_jc:
+                tvJc.setTextColor(getResources().getColor(android.R.color.white));
+                tvJc.setBackground(getResources().getDrawable(R.drawable.bg_setting_select));
+                tvYq.setTextColor(getResources().getColor(R.color.color_1fc37f));
+                tvYq.setBackground(getResources().getDrawable(R.drawable.bg_setting));
+                 break;
+            case R.id.tv_aso_yq:
+                tvYq.setTextColor(getResources().getColor(android.R.color.white));
+                tvYq.setBackground(getResources().getDrawable(R.drawable.bg_setting_select));
+                tvJc.setTextColor(getResources().getColor(R.color.color_1fc37f));
+                tvJc.setBackground(getResources().getDrawable(R.drawable.bg_setting));
+                 break;
             //保存
             case R.id.tv_aso_save:
                  setClass(SettingTwoActivity.class);

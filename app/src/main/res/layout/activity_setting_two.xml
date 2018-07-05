@@ -448,6 +448,7 @@
                 android:layout_marginBottom="20dp">
 
                 <TextView
+                    android:id="@+id/tv_ast_jc"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -458,6 +459,7 @@
                     android:background="@drawable/bg_setting_select"/>
 
                 <TextView
+                    android:id="@+id/tv_ast_yq"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
