@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lin_head"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/head"></include>
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="60dp"
+       android:orientation="horizontal">
+
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="match_parent"
+           android:text="项目名称"
+           android:textColor="@color/color_333333"
+           android:textSize="18sp"
+           android:gravity="center"
+           android:layout_marginLeft="20dp"/>
+
+       <EditText
+           android:id="@+id/et_aso_name"
+           android:layout_width="150dp"
+           android:layout_height="match_parent"
+           android:background="@null"
+           android:hint="请输入项目名称"
+           android:textSize="15sp"
+           android:layout_marginLeft="20dp"
+           android:gravity="left|center"/>
+
+       <com.water.project.view.ClickTextView
+           android:id="@+id/tv_search1"
+           android:layout_width="60dp"
+           android:layout_height="30dp"
+           android:layout_gravity="center"
+           android:text="查询"
+           android:textSize="15sp"
+           android:textColor="@android:color/white"
+           android:gravity="center"
+           android:background="@drawable/bg_login"/>
+
+   </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/color_dddddd"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="测站编码"
+            android:textColor="@color/color_333333"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_marginLeft="20dp"/>
+
+        <EditText
+            android:id="@+id/et_aso_code"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:hint="请输入测站编码"
+            android:textSize="15sp"
+            android:layout_marginLeft="20dp"
+            android:gravity="left|center"/>
+
+        <com.water.project.view.ClickTextView
+            android:id="@+id/tv_search2"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:text="查询"
+            android:textSize="15sp"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:background="@drawable/bg_login"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/color_dddddd"/>
+
+    <LinearLayout
+        android:id="@+id/ll_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/ll_top"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="项目编码"
+            android:textColor="@color/color_333333"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="水位埋深(米)"
+            android:textColor="@color/color_333333"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="信号值"
+            android:textColor="@color/color_333333"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="压力值(mho2)"
+            android:textColor="@color/color_333333"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="气压值(mho2)"
+            android:textColor="@color/color_333333"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/color_dddddd"/>
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </ListView>
+
+</LinearLayout>

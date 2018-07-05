@@ -29,6 +29,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         findViewById(R.id.tv_setting).setOnClickListener(this);
         findViewById(R.id.tv_about).setOnClickListener(this);
         findViewById(R.id.tv_search).setOnClickListener(this);
+        findViewById(R.id.tv_searchOld).setOnClickListener(this);
         findViewById(R.id.tv_upload).setOnClickListener(this);
     }
 
@@ -43,6 +44,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                  break;
             case R.id.tv_upload:
                  setClass(UploadActivity.class);
+                 break;
+            case R.id.tv_searchOld:
+                 setClass(SearchOldActivity.class);
                  break;
             case R.id.tv_about:
                 setClass(AboutActivity.class);
