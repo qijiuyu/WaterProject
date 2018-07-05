@@ -10,10 +10,41 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
     }
+
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+
+    }
+
+    signingConfigs {
+        keyConfig {
+            storeFile file("water.water")
+            storePassword "water123"
+            keyAlias "water"
+            keyPassword "water123"
+        }
+    }
+
+
     buildTypes {
+
+        //开发环境
+        debug {
+            //实现自动签名
+            signingConfig signingConfigs.keyConfig
+        }
         release {
             minifyEnabled false
+            signingConfig signingConfigs.keyConfig
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
