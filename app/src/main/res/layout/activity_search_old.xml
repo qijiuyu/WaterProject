@@ -99,7 +99,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
@@ -108,7 +108,7 @@
             android:textSize="15sp" />
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
@@ -117,7 +117,7 @@
             android:textSize="15sp" />
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
@@ -126,7 +126,7 @@
             android:textSize="15sp" />
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
@@ -135,11 +135,11 @@
             android:textSize="15sp" />
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.9"
             android:gravity="center"
-            android:text="气压值(mho2)"
+            android:text="施工图片"
             android:textColor="@color/color_333333"
             android:textSize="15sp" />
 

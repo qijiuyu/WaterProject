@@ -25,6 +25,16 @@
 
     </com.water.project.view.MyGridView>
 
+    <TextView
+        android:id="@+id/tv_aiu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="点击图片即可预览"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_marginTop="20dp"/>
+
     <com.water.project.view.ClickTextView
         android:layout_width="match_parent"
         android:layout_height="40dp"

@@ -51,6 +51,7 @@
         <activity android:name=".activity.SearchDataActivity"/>
         <activity android:name=".activity.UploadActivity"/>
         <activity android:name=".activity.SearchOldActivity"/>
+        <activity android:name=".activity.ShowImgActivity"/>
         <activity android:name=".activity.AboutActivity"/>
         <activity android:name=".photo.BigPhotoActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".photo.ImageGridActivity"  android:screenOrientation="portrait"/>

@@ -27,6 +27,7 @@ import java.io.File;
 public class UploadActivity extends BaseActivity implements View.OnClickListener{
 
     private MyGridView gridView;
+    private TextView tvIs;
     private GridImageAdapter adapter = null;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +41,7 @@ public class UploadActivity extends BaseActivity implements View.OnClickListener
     private void initView(){
         TextView textView=(TextView)findViewById(R.id.tv_head);
         textView.setText("资料上传");
+        tvIs=(TextView)findViewById(R.id.tv_aiu);
         gridView=(MyGridView)findViewById(R.id.mg_aiu);
         findViewById(R.id.lin_back).setOnClickListener(this);
         //清空图片集合
@@ -81,6 +83,8 @@ public class UploadActivity extends BaseActivity implements View.OnClickListener
                         Bimp.imgList.add(takePhoto);
                         adapter=new GridImageAdapter(getApplicationContext(), Bimp.selectBitmap);
                         gridView.setAdapter(adapter);
+                        //判断是否显示提示
+                        isTv();
                     }else{
                         showToastView("拍照失败！");
                     }
@@ -90,9 +94,13 @@ public class UploadActivity extends BaseActivity implements View.OnClickListener
             case PicturesUtil.CODE_GALLERY_REQUEST:
                 adapter=new GridImageAdapter(getApplicationContext(), Bimp.selectBitmap);
                 gridView.setAdapter(adapter);
+                //判断是否显示提示
+                isTv();
                 break;
             case PicturesUtil.CODE_RESULT_REQUEST:
-                adapter.notifyDataSetChanged();
+                 adapter.notifyDataSetChanged();
+                 //判断是否显示提示
+                 isTv();
                  break;
             default:
                 break;
@@ -110,5 +118,17 @@ public class UploadActivity extends BaseActivity implements View.OnClickListener
                 break;
         }
 
+    }
+
+
+    /**
+     * 判断是否显示提示
+     */
+    private void isTv(){
+        if(Bimp.selectBitmap.size()>0){
+            tvIs.setVisibility(View.VISIBLE);
+        }else{
+            tvIs.setVisibility(View.GONE);
+        }
     }
 }

@@ -31,6 +31,8 @@ public class SettingOneActivity extends BaseActivity implements View.OnClickList
      * 初始化控件
      */
     private void initView(){
+        TextView textView=(TextView)findViewById(R.id.tv_head);
+        textView.setText("参数设置");
         tvJc=(TextView)findViewById(R.id.tv_aso_jc);
         tvYq=(TextView)findViewById(R.id.tv_aso_yq);
         tvJc.setOnClickListener(this);

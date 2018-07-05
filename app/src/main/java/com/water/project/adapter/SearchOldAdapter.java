@@ -1,14 +1,18 @@
 package com.water.project.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.water.project.R;
+import com.water.project.activity.ShowImgActivity;
 import com.water.project.bean.OldData;
 
 import java.util.ArrayList;
@@ -49,7 +53,7 @@ public class SearchOldAdapter extends BaseAdapter{
 			holder.tv2=(TextView)view.findViewById(R.id.tv2);
 			holder.tv3=(TextView)view.findViewById(R.id.tv3);
 			holder.tv4=(TextView)view.findViewById(R.id.tv4);
-			holder.tv5=(TextView)view.findViewById(R.id.tv5);
+			holder.imageView=(ImageView) view.findViewById(R.id.img);
 			view.setTag(holder);
 		}else{
 			holder=(ViewHolder)view.getTag();
@@ -58,11 +62,18 @@ public class SearchOldAdapter extends BaseAdapter{
 		holder.tv2.setText(list.get(position).getData2());
 		holder.tv3.setText(list.get(position).getData3());
 		holder.tv4.setText(list.get(position).getData4());
-		holder.tv5.setText(list.get(position).getData5());
+		holder.imageView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent=new Intent(context, ShowImgActivity.class);
+				context.startActivity(intent);
+			}
+		});
 		return view;
 	}
 	
 	private class ViewHolder{
-		private TextView tv1,tv2,tv3,tv4,tv5;
+		private TextView tv1,tv2,tv3,tv4;
+		private ImageView imageView;
 	 }
 }

@@ -31,23 +31,26 @@ public class SettingTwoActivity extends BaseActivity implements View.OnClickList
      * 初始化控件
      */
     private void initView(){
+        TextView textView=(TextView)findViewById(R.id.tv_head);
+        textView.setText("参数设置");
         tvJc=(TextView)findViewById(R.id.tv_ast_jc);
         tvYq=(TextView)findViewById(R.id.tv_ast_yq);
         tvJc.setOnClickListener(this);
         tvYq.setOnClickListener(this);
         findViewById(R.id.tv_aso_save).setOnClickListener(this);
+        findViewById(R.id.lin_back).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.tv_aso_jc:
+            case R.id.tv_ast_jc:
                 tvJc.setTextColor(getResources().getColor(android.R.color.white));
                 tvJc.setBackground(getResources().getDrawable(R.drawable.bg_setting_select));
                 tvYq.setTextColor(getResources().getColor(R.color.color_1fc37f));
                 tvYq.setBackground(getResources().getDrawable(R.drawable.bg_setting));
                 break;
-            case R.id.tv_aso_yq:
+            case R.id.tv_ast_yq:
                 tvYq.setTextColor(getResources().getColor(android.R.color.white));
                 tvYq.setBackground(getResources().getDrawable(R.drawable.bg_setting_select));
                 tvJc.setTextColor(getResources().getColor(R.color.color_1fc37f));
