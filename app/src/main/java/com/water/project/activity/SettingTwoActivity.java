@@ -32,7 +32,7 @@ public class SettingTwoActivity extends BaseActivity implements View.OnClickList
      */
     private void initView(){
         TextView textView=(TextView)findViewById(R.id.tv_head);
-        textView.setText("参数设置");
+        textView.setText("设备参数设置");
         tvJc=(TextView)findViewById(R.id.tv_ast_jc);
         tvYq=(TextView)findViewById(R.id.tv_ast_yq);
         tvJc.setOnClickListener(this);

@@ -39,7 +39,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="测试编码"
+                    android:text="测站编码"
                     android:textSize="17sp"
                     android:textColor="#333333"
                     android:gravity="center"/>
@@ -51,7 +51,7 @@
                     android:background="@null"
                     android:layout_alignParentRight="true"
                     android:gravity="right|center"
-                    android:text="123456789000"
+                    android:text="1102745271"
                     android:textSize="15sp"
                     android:textColor="@color/color_1fc37f"
                     android:inputType="phone"/>
@@ -394,8 +394,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:orientation="horizontal"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp">
 
@@ -403,19 +403,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:layout_marginRight="5dp"
-                    android:text="重置"
-                    android:textSize="17sp"
-                    android:textColor="@android:color/white"
-                    android:gravity="center"
-                    android:background="@drawable/bg_login"/>
-
-                <com.water.project.view.ClickTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="5dp"
-                    android:text="修改"
+                    android:layout_marginRight="20dp"
+                    android:text="参数重置"
                     android:textSize="17sp"
                     android:textColor="@android:color/white"
                     android:gravity="center"
@@ -426,8 +415,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:layout_marginLeft="5dp"
-                    android:text="保存"
+                    android:layout_marginLeft="20dp"
+                    android:text="参数设置"
                     android:textSize="17sp"
                     android:textColor="@android:color/white"
                     android:gravity="center"

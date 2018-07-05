@@ -171,7 +171,7 @@
                     android:layout_alignParentRight="true"
                     android:gravity="right|center"
                     android:inputType="phone"
-                    android:text="10648398978"
+                    android:text="1064839897832"
                     android:textSize="15sp"
                     android:textColor="@color/color_1fc37f"/>
 
@@ -204,11 +204,11 @@
                     android:gravity="center">
 
                     <EditText
-                        android:layout_width="60dp"
+                        android:layout_width="100dp"
                         android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
                         android:gravity="right|center"
-                        android:text="15:30"
+                        android:text="2018-01-01 00:00"
                         android:textSize="15sp"
                         android:textColor="@color/color_1fc37f"/>
 
@@ -225,7 +225,7 @@
                         android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
                         android:gravity="right|center"
-                        android:text="02:30"
+                        android:text="1小时"
                         android:textSize="15sp"
                         android:textColor="@color/color_1fc37f"/>
 
@@ -268,11 +268,11 @@
                     android:gravity="center">
 
                     <EditText
-                        android:layout_width="60dp"
+                        android:layout_width="100dp"
                         android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
                         android:gravity="right|center"
-                        android:text="15:30"
+                        android:text="2018-01-01 00:00"
                         android:textSize="15sp"
                         android:textColor="@color/color_1fc37f"/>
 
@@ -289,7 +289,7 @@
                         android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
                         android:gravity="right|center"
-                        android:text="02:30"
+                        android:text="24小时"
                         android:textSize="15sp"
                         android:textColor="@color/color_1fc37f"/>
 
@@ -318,7 +318,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="IP及端口"
+                    android:text="接收平台IP"
                     android:textSize="17sp"
                     android:textColor="#333333"
                     android:gravity="center"
@@ -332,7 +332,40 @@
                     android:background="@null"
                     android:layout_alignParentRight="true"
                     android:gravity="right|center"
-                    android:text="192.168.5.63,8080"
+                    android:text="202.102.247.187"
+                    android:textSize="15sp"
+                    android:textColor="@color/color_1fc37f"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_dddddd"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="接收平台端口"
+                    android:textSize="17sp"
+                    android:textColor="#333333"
+                    android:gravity="center"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true" />
+
+
+                <EditText
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right|center"
+                    android:text="6000"
                     android:textSize="15sp"
                     android:textColor="@color/color_1fc37f"/>
 
@@ -381,8 +414,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:orientation="horizontal"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp">
 
@@ -390,19 +423,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:layout_marginRight="5dp"
-                    android:text="重置"
-                    android:textSize="17sp"
-                    android:textColor="@android:color/white"
-                    android:gravity="center"
-                    android:background="@drawable/bg_login"/>
-
-                <com.water.project.view.ClickTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="5dp"
-                    android:text="修改"
+                    android:layout_marginRight="20dp"
+                    android:text="参数重置"
                     android:textSize="17sp"
                     android:textColor="@android:color/white"
                     android:gravity="center"
@@ -413,8 +435,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:layout_marginLeft="5dp"
-                    android:text="保存"
+                    android:layout_marginLeft="20dp"
+                    android:text="参数设置"
                     android:textSize="17sp"
                     android:textColor="@android:color/white"
                     android:gravity="center"

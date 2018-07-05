@@ -31,7 +31,7 @@ public class SearchDataActivity extends BaseActivity implements View.OnClickList
      */
     private void initView(){
         TextView textView=(TextView)findViewById(R.id.tv_head);
-        textView.setText("数据查询");
+        textView.setText("实时数据采集");
         findViewById(R.id.lin_back).setOnClickListener(this);
     }
 

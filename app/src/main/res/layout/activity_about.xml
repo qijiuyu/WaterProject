@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
-        android:text="地址：北京市朝阳区大屯路甲21号天包世缘C屋703"
+        android:text="地址：北京市朝阳区大屯路甲21号"
         android:textSize="15sp"
         android:textColor="#000000"/>
 
