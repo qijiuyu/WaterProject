@@ -46,8 +46,7 @@
             android:name=".activity.MainActivity"
             android:launchMode="singleTask"/>
 
-        <activity android:name=".activity.SettingOneActivity"/>
-        <activity android:name=".activity.SettingTwoActivity"/>
+        <activity android:name=".activity.SettingActivity"/>
         <activity android:name=".activity.SearchDataActivity"/>
         <activity android:name=".activity.UploadActivity"/>
         <activity android:name=".activity.SearchOldActivity"/>

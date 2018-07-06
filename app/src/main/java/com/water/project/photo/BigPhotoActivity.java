@@ -39,7 +39,7 @@ public class BigPhotoActivity extends Activity {
         Intent intent = getIntent();
         id = intent.getIntExtra("ID", 0);
         TextView tvHead=(TextView)findViewById(R.id.tv_head);
-        tvHead.setText("选择图片");
+        tvHead.setText("图片预览");
         TextView tvRight=(TextView)findViewById(R.id.tv_right);
         tvRight.setText("删除");
         bigImage = (TouchImageView) findViewById(R.id.img_big_photo);

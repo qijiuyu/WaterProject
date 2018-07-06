@@ -9,14 +9,14 @@
     <include layout="@layout/head"></include>
 
     <com.water.project.view.FontTextView
-        android:layout_width="20dp"
+        android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/lin_head"
-        android:layout_marginTop="190dp"
+        android:layout_marginTop="130dp"
         android:layout_centerHorizontal="true"
         android:text="中科光大初版"
         android:gravity="center"
-        android:textSize="25sp"
+        android:textSize="30sp"
         android:textColor="#D0D0D0"/>
 
     <ScrollView
@@ -28,39 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="30dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="探头线长"
-                    android:textSize="17sp"
-                    android:textColor="#333333"
-                    android:gravity="center"/>
-                
-                
-                <EditText
-                    android:layout_width="200dp"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right|center"
-                    android:text="30米"
-                    android:textSize="15sp"
-                    android:textColor="@color/color_1fc37f"/>
-
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_dddddd"/>
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -70,63 +39,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="传输方式"
-                    android:textSize="17sp"
-                    android:textColor="#333333"
-                    android:gravity="center"/>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center">
-
-                    <CheckBox
-                        style="@style/CustomCheckBoxTheme"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="true"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="短信"
-                        android:textColor="@color/color_1fc37f"
-                        android:textSize="13sp" />
-
-                    <CheckBox
-                        style="@style/CustomCheckBoxTheme"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="GPRS"
-                        android:textColor="@color/color_1fc37f"
-                        android:textSize="13sp" />
-
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_dddddd"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="探头埋深"
+                    android:text="测站编码"
                     android:textSize="17sp"
                     android:textColor="#333333"
                     android:gravity="center"
-                    android:layout_alignBaseline="@+id/editText"
-                    android:layout_alignBottom="@+id/editText"
+                    android:layout_alignParentTop="true"
                     android:layout_alignParentStart="true" />
 
 
@@ -136,172 +53,9 @@
                     android:background="@null"
                     android:layout_alignParentRight="true"
                     android:gravity="right|center"
-                    android:text="20米"
-                    android:textSize="15sp"
-                    android:textColor="@color/color_1fc37f"
-                    android:inputType="phone"
-                    android:id="@+id/editText" />
-
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_dddddd"/>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="SIM卡号"
-                    android:textSize="17sp"
-                    android:textColor="#333333"
-                    android:gravity="center"/>
-
-
-                <EditText
-                    android:layout_width="200dp"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right|center"
-                    android:inputType="phone"
-                    android:text="1064839897832"
+                    android:text="1102745271"
                     android:textSize="15sp"
                     android:textColor="@color/color_1fc37f"/>
-
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_dddddd"/>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="采集时间"
-                    android:textSize="17sp"
-                    android:textColor="#333333"
-                    android:gravity="center"/>
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center">
-
-                    <EditText
-                        android:layout_width="100dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:gravity="right|center"
-                        android:text="2018-01-01 00:00"
-                        android:textSize="15sp"
-                        android:textColor="@color/color_1fc37f"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="起始时间"
-                        android:textSize="13sp"
-                        android:textColor="@color/color_1fc37f"
-                        android:gravity="center"/>
-
-                    <EditText
-                        android:layout_width="60dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:gravity="right|center"
-                        android:text="1小时"
-                        android:textSize="15sp"
-                        android:textColor="@color/color_1fc37f"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="间隙时间"
-                        android:textSize="13sp"
-                        android:textColor="@color/color_1fc37f"
-                        android:gravity="center"/>
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_dddddd"/>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="发送时间"
-                    android:textSize="17sp"
-                    android:textColor="#333333"
-                    android:gravity="center"/>
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center">
-
-                    <EditText
-                        android:layout_width="100dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:gravity="right|center"
-                        android:text="2018-01-01 00:00"
-                        android:textSize="15sp"
-                        android:textColor="@color/color_1fc37f"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="起始时间"
-                        android:textSize="13sp"
-                        android:textColor="@color/color_1fc37f"
-                        android:gravity="center"/>
-
-                    <EditText
-                        android:layout_width="60dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:gravity="right|center"
-                        android:text="24小时"
-                        android:textSize="15sp"
-                        android:textColor="@color/color_1fc37f"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="间隙时间"
-                        android:textSize="13sp"
-                        android:textColor="@color/color_1fc37f"
-                        android:gravity="center"/>
-
-                </LinearLayout>
 
             </RelativeLayout>
 
@@ -385,11 +139,44 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="在职人员"
+                    android:text="SIM卡号"
+                    android:textSize="17sp"
+                    android:textColor="#333333"
+                    android:gravity="center"/>
+
+
+                <EditText
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right|center"
+                    android:inputType="phone"
+                    android:text="1064839897832"
+                    android:textSize="15sp"
+                    android:textColor="@color/color_1fc37f"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_dddddd"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="探头埋深"
                     android:textSize="17sp"
                     android:textColor="#333333"
                     android:gravity="center"
-                    android:layout_alignParentTop="true"
+                    android:layout_alignBaseline="@+id/editText"
+                    android:layout_alignBottom="@+id/editText"
                     android:layout_alignParentStart="true" />
 
 
@@ -399,9 +186,147 @@
                     android:background="@null"
                     android:layout_alignParentRight="true"
                     android:gravity="right|center"
-                    android:text="张三"
+                    android:text="20.00m"
+                    android:textSize="15sp"
+                    android:textColor="@color/color_1fc37f"
+                    android:inputType="phone"
+                    android:id="@+id/editText" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_dddddd"/>
+
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="采集起始时间"
+                    android:textSize="17sp"
+                    android:textColor="#333333"
+                    android:gravity="center"/>
+
+
+                <EditText
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right|center"
+                    android:inputType="phone"
+                    android:text="2018-01-01 00:00"
                     android:textSize="15sp"
                     android:textColor="@color/color_1fc37f"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_dddddd"/>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="采集间隔时间"
+                    android:textSize="17sp"
+                    android:textColor="#333333"
+                    android:gravity="center"
+                    android:id="@+id/textView2" />
+
+
+                <EditText
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:gravity="right|center"
+                    android:inputType="phone"
+                    android:text="1小时"
+                    android:textSize="15sp"
+                    android:textColor="@color/color_1fc37f"
+                    android:layout_alignBaseline="@+id/textView2"
+                    android:layout_alignBottom="@+id/textView2"
+                    android:layout_alignParentEnd="true" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_dddddd"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="发送起始时间"
+                    android:textSize="17sp"
+                    android:textColor="#333333"
+                    android:gravity="center"/>
+
+
+                <EditText
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right|center"
+                    android:inputType="phone"
+                    android:text="2018-01-01 00:00"
+                    android:textSize="15sp"
+                    android:textColor="@color/color_1fc37f"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_dddddd"/>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="发送间隔时间"
+                    android:textSize="17sp"
+                    android:textColor="#333333"
+                    android:gravity="center"/>
+
+
+                <EditText
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:gravity="right|center"
+                    android:inputType="phone"
+                    android:text="24小时"
+                    android:textSize="15sp"
+                    android:textColor="@color/color_1fc37f"
+                    android:layout_alignParentEnd="true" />
 
             </RelativeLayout>
 
@@ -431,7 +356,7 @@
                     android:background="@drawable/bg_login"/>
 
                 <com.water.project.view.ClickTextView
-                    android:id="@+id/tv_aso_save"
+                    android:id="@+id/tv_aso_setting"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -447,13 +372,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
+                android:visibility="gone"
                 android:orientation="horizontal"
                 android:layout_marginRight="30dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginBottom="20dp">
 
                 <TextView
-                    android:id="@+id/tv_ast_jc"
+                    android:id="@+id/tv_aso_jc"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -464,7 +390,7 @@
                     android:background="@drawable/bg_setting_select"/>
 
                 <TextView
-                    android:id="@+id/tv_ast_yq"
+                    android:id="@+id/tv_aso_yq"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"

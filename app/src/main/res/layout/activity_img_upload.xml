@@ -1,50 +1,530 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/lin_head"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <include layout="@layout/head"></include>
 
-    <TextView
-        android:layout_width="match_parent"
+    <com.water.project.view.FontTextView
+        android:layout_width="25dp"
         android:layout_height="wrap_content"
-        android:text="影像资料上传"
-        android:textColor="@color/color_333333"
-        android:textSize="20sp"
-        android:layout_margin="20dp"/>
-
-    <com.water.project.view.MyGridView
-        android:id="@+id/mg_aiu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:numColumns="3"
-        android:verticalSpacing="5dp">
-
-    </com.water.project.view.MyGridView>
-
-    <TextView
-        android:id="@+id/tv_aiu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="点击图片即可预览"
-        android:textSize="14sp"
+        android:layout_below="@id/lin_head"
+        android:layout_marginTop="125dp"
+        android:layout_centerHorizontal="true"
+        android:text="中科光大初版"
         android:gravity="center"
-        android:visibility="gone"
-        android:layout_marginTop="20dp"/>
+        android:textSize="30sp"
+        android:textColor="#D0D0D0"/>
 
-    <com.water.project.view.ClickTextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="30dp"
-        android:text="上传"
-        android:gravity="center"
-        android:textColor="@android:color/white"
-        android:background="@drawable/bg_login"
-        android:textSize="17sp"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/lin_head"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true">
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="测站编码"
+                    android:textSize="17sp"
+                    android:textColor="#333333"
+                    android:gravity="center"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true" />
+
+
+                <EditText
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right|center"
+                    android:text="1102745271"
+                    android:textSize="15sp"
+                    android:textColor="@color/color_1fc37f"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_dddddd"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="测站名称"
+                    android:textSize="17sp"
+                    android:textColor="#333333"
+                    android:gravity="center"
+                    android:layout_alignParentStart="true" />
+
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:gravity="right|center"
+                    android:text="1号观测井"
+                    android:textSize="15sp"
+                    android:textColor="@color/color_1fc37f"
+                    android:inputType="phone"
+                    android:id="@+id/editText"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_dddddd"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="测站地址"
+                    android:textSize="17sp"
+                    android:textColor="#333333"
+                    android:gravity="center"
+                    android:layout_alignParentStart="true" />
+
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:gravity="right|center"
+                    android:text="北京市朝阳区"
+                    android:textSize="15sp"
+                    android:textColor="@color/color_1fc37f"
+                    android:inputType="phone"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_dddddd"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="经度"
+                    android:textSize="17sp"
+                    android:textColor="#333333"
+                    android:gravity="center"
+                    android:layout_alignParentStart="true" />
+
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:gravity="right|center"
+                    android:text="125°32'32''"
+                    android:textSize="15sp"
+                    android:textColor="@color/color_1fc37f"
+                    android:inputType="phone"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_dddddd"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="纬度"
+                    android:textSize="17sp"
+                    android:textColor="#333333"
+                    android:gravity="center"
+                    android:layout_alignParentStart="true" />
+
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:gravity="right|center"
+                    android:text="42°18'25''"
+                    android:textSize="15sp"
+                    android:textColor="@color/color_1fc37f"
+                    android:inputType="phone"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_dddddd"/>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="地面标高"
+                    android:textSize="17sp"
+                    android:textColor="#333333"
+                    android:gravity="center"/>
+
+
+                <EditText
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right|center"
+                    android:text="319.544m"
+                    android:textSize="15sp"
+                    android:textColor="@color/color_1fc37f"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_dddddd"/>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="孔口标高"
+                    android:textSize="17sp"
+                    android:textColor="#333333"
+                    android:gravity="center"/>
+
+
+                <EditText
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right|center"
+                    android:text="319.991m"
+                    android:textSize="15sp"
+                    android:textColor="@color/color_1fc37f"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_dddddd"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="监测井类型"
+                    android:textSize="17sp"
+                    android:textColor="#333333"
+                    android:gravity="center"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center">
+
+                    <CheckBox
+                        android:id="@+id/checkbox_prepare_1"
+                        style="@style/CustomCheckBoxTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:text="新建"
+                        android:textColor="@color/color_1fc37f"
+                        android:textSize="13sp" />
+
+                    <CheckBox
+                        android:id="@+id/checkbox_prepare_2"
+                        style="@style/CustomCheckBoxTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:text="改建"
+                        android:textColor="@color/color_1fc37f"
+                        android:textSize="13sp" />
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_dddddd"/>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="地下水类型"
+                    android:textSize="17sp"
+                    android:textColor="#333333"
+                    android:gravity="center"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center">
+
+                    <CheckBox
+                        style="@style/CustomCheckBoxTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:text="潜水"
+                        android:textColor="@color/color_1fc37f"
+                        android:textSize="13sp" />
+
+                    <CheckBox
+                        style="@style/CustomCheckBoxTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:text="承压水"
+                        android:textColor="@color/color_1fc37f"
+                        android:textSize="13sp" />
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_dddddd"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="实际井深"
+                    android:textSize="17sp"
+                    android:textColor="#333333"
+                    android:gravity="center"/>
+
+
+                <EditText
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right|center"
+                    android:text="100米"
+                    android:textSize="15sp"
+                    android:textColor="@color/color_1fc37f"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_dddddd"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="井管材质"
+                    android:textSize="17sp"
+                    android:textColor="#333333"
+                    android:gravity="center"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center">
+
+                    <CheckBox
+                        style="@style/CustomCheckBoxTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:text="钢管"
+                        android:textColor="@color/color_1fc37f"
+                        android:textSize="13sp" />
+
+                    <CheckBox
+                        style="@style/CustomCheckBoxTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:text="水泥管"
+                        android:textColor="@color/color_1fc37f"
+                        android:textSize="13sp" />
+
+                    <CheckBox
+                        style="@style/CustomCheckBoxTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:text="PVC"
+                        android:textColor="@color/color_1fc37f"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_dddddd"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textSize="17sp"
+                android:textColor="#333333"
+                android:text="影像资料"/>
+
+            <com.water.project.view.MyGridView
+                android:id="@+id/mg_aiu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:numColumns="3"
+                android:verticalSpacing="5dp">
+
+            </com.water.project.view.MyGridView>
+
+            <TextView
+                android:id="@+id/tv_aiu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="点击图片即可预览"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:visibility="gone"
+                android:layout_marginTop="20dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:orientation="horizontal"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp">
+
+                <com.water.project.view.ClickTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginRight="20dp"
+                    android:text="信息重置"
+                    android:textSize="17sp"
+                    android:textColor="@android:color/white"
+                    android:gravity="center"
+                    android:background="@drawable/bg_login"/>
+
+                <com.water.project.view.ClickTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="20dp"
+                    android:text="信息上传"
+                    android:textSize="17sp"
+                    android:textColor="@android:color/white"
+                    android:gravity="center"
+                    android:background="@drawable/bg_login"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

@@ -3,9 +3,12 @@ package com.water.project.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,7 +27,8 @@ import java.util.List;
 
 public class SearchOldActivity extends BaseActivity implements View.OnClickListener{
 
-    private EditText etName,etCode;
+    private TextView tvName,tvCode;
+    private List<String> data_list=new ArrayList<>();
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);//隐藏标题
@@ -39,45 +43,64 @@ public class SearchOldActivity extends BaseActivity implements View.OnClickListe
      */
     private void initView(){
         TextView textView=(TextView)findViewById(R.id.tv_head);
-        textView.setText("历史数据查询");
-        etName=(EditText)findViewById(R.id.et_aso_name);
-        etCode=(EditText)findViewById(R.id.et_aso_code);
-        ListView listView=(ListView)findViewById(R.id.listView) ;
+        textView.setText("监测井资料查询");
+        tvName=(TextView)findViewById(R.id.et_aso_name);
+        tvCode=(TextView)findViewById(R.id.et_aso_code);
+        tvName.setOnClickListener(this);
+        tvCode.setOnClickListener(this);
         findViewById(R.id.tv_search1).setOnClickListener(this);
         findViewById(R.id.tv_search2).setOnClickListener(this);
         findViewById(R.id.lin_back).setOnClickListener(this);
 
-        List<OldData> list=new ArrayList<>();
-        OldData oldData1=new OldData("187229871209","2.07","27","28.084","10.189");
-        OldData oldData2=new OldData("123789822287","2.17","24","24.004","11.123");
-        OldData oldData3=new OldData("109387628987","2.05","26","25.084","10.852");
-        OldData oldData4=new OldData("138498748877","1.57","19","22.901","10.456");
-        OldData oldData5=new OldData("159022772987","2.27","17","25.859","9.789");
-        OldData oldData6=new OldData("102987773309","1.05","22","27.258","9.147");
-        OldData oldData7=new OldData("100222987374","1.56","30","30.963","10.654");
-        OldData oldData8=new OldData("199222887337","2.00","27","30.254","11.123");
-        list.add(oldData1);
-        list.add(oldData8);
-        list.add(oldData2);
-        list.add(oldData3);
-        list.add(oldData4);
-        list.add(oldData5);
-        list.add(oldData6);
-        list.add(oldData7);
-        listView.setAdapter(new SearchOldAdapter(mContext,list));
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.et_aso_name:
+                 View view= LayoutInflater.from(mContext).inflate(R.layout.xiala_listview,null);
+                 bottomPopupWindow(0,0,view,tvName);
+                 ListView listView=(ListView)view.findViewById(R.id.listView);
+                 data_list.clear();
+                 data_list.add("1102745271");
+                 data_list.add("1102745272");
+                 data_list.add("1102745273");
+                 data_list.add("1102745274");
+                 ArrayAdapter arrayAdapter=new ArrayAdapter(this, R.layout.item_text, data_list);
+                 listView.setAdapter(arrayAdapter);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                         mPopuwindow.dismiss();
+                         tvName.setText(data_list.get(position));
+                    }
+                });
+                 break;
+            case R.id.et_aso_code:
+                View view2= LayoutInflater.from(mContext).inflate(R.layout.xiala_listview,null);
+                bottomPopupWindow(0,0,view2,tvCode);
+                ListView listView2=(ListView)view2.findViewById(R.id.listView);
+                data_list.clear();
+                data_list.add("1号观测井");
+                data_list.add("2号观测井");
+                data_list.add("3号观测井");
+                data_list.add("4号观测井");
+                ArrayAdapter arrayAdapter2=new ArrayAdapter(this, R.layout.item_text, data_list);
+                listView2.setAdapter(arrayAdapter2);
+                listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        mPopuwindow.dismiss();
+                        tvCode.setText(data_list.get(position));
+                    }
+                });
+                 break;
             case R.id.tv_search1:
-                 final String name=etName.getText().toString().trim();
+                 final String name=tvName.getText().toString().trim();
                  if(TextUtils.isEmpty(name)){
                      showToastView("请输入项目名称！");
                  }
                  break;
             case R.id.tv_search2:
-                final String code=etCode.getText().toString().trim();
+                final String code=tvCode.getText().toString().trim();
                 if(TextUtils.isEmpty(code)){
                     showToastView("请输入项目名称！");
                 }

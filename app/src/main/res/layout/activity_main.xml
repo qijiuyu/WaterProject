@@ -42,11 +42,21 @@
                 android:layout_marginTop="20dp"
                 android:layout_centerVertical="true"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:text="地下水监测设备信息管理系统"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"
+                android:layout_centerVertical="true"/>
+
             <com.water.project.view.ClickTextView
                 android:id="@+id/tv_setting"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:text="设备参数设置"
@@ -75,7 +85,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
-                android:text="基础数据录入"
+                android:text="监测井信息录入"
                 android:textSize="16sp"
                 android:gravity="center"
                 android:textColor="@android:color/white"
@@ -88,7 +98,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
-                android:text="历史资料查询"
+                android:text="监测井资料查询"
                 android:textSize="16sp"
                 android:gravity="center"
                 android:textColor="@android:color/white"

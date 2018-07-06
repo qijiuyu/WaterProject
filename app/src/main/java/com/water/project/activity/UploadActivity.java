@@ -40,7 +40,7 @@ public class UploadActivity extends BaseActivity implements View.OnClickListener
 
     private void initView(){
         TextView textView=(TextView)findViewById(R.id.tv_head);
-        textView.setText("资料上传");
+        textView.setText("监测井信息录入");
         tvIs=(TextView)findViewById(R.id.tv_aiu);
         gridView=(MyGridView)findViewById(R.id.mg_aiu);
         findViewById(R.id.lin_back).setOnClickListener(this);

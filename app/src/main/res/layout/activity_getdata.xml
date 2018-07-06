@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     android:id="@+id/lin_start"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
@@ -9,9 +9,21 @@
 
     <include layout="@layout/head"></include>
 
+    <com.water.project.view.FontTextView
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lin_head"
+        android:layout_marginTop="150dp"
+        android:layout_centerHorizontal="true"
+        android:text="中科光大初版"
+        android:gravity="center"
+        android:textSize="30sp"
+        android:textColor="#D0D0D0"/>
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/lin_head">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,24 +34,24 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="30dp">
+                android:layout_height="25dp"
+                android:layout_marginTop="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="测试编码"
+                    android:text="北京时间"
                     android:textSize="17sp"
                     android:textColor="#333333"
                     android:gravity="center"/>
-                
-                
+
+
                 <TextView
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:gravity="right|center"
-                    android:text="156987456325"
+                    android:text="2018-07-01 12:05:32"
                     android:textSize="15sp"
                     android:textColor="@color/color_1fc37f"/>
 
@@ -52,13 +64,43 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="25dp"
                 android:layout_marginTop="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="设备时钟"
+                    android:text="测站编码"
+                    android:textSize="17sp"
+                    android:textColor="#333333"
+                    android:gravity="center"/>
+                
+                
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right|center"
+                    android:text="1102745271"
+                    android:textSize="15sp"
+                    android:textColor="@color/color_1fc37f"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_dddddd"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="测站名称"
                     android:textSize="17sp"
                     android:textColor="#333333"
                     android:gravity="center"
@@ -71,13 +113,47 @@
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
                     android:background="@null"
-                    android:layout_alignParentRight="true"
                     android:gravity="right|center"
-                    android:text="18年07月03日19时17分44秒"
+                    android:text="1号观测井"
                     android:textSize="15sp"
                     android:textColor="@color/color_1fc37f"
                     android:inputType="phone"
-                    android:id="@+id/editText" />
+                    android:id="@+id/editText"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_dddddd"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="采集时间"
+                    android:textSize="17sp"
+                    android:textColor="#333333"
+                    android:gravity="center"
+                    android:layout_alignParentStart="true" />
+
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right|center"
+                    android:text="2018-07-01 11:53:25"
+                    android:textSize="15sp"
+                    android:textColor="@color/color_1fc37f"
+                    android:inputType="phone" />
 
             </RelativeLayout>
 
@@ -89,7 +165,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="25dp"
                 android:layout_marginTop="10dp">
 
                 <TextView
@@ -108,7 +184,7 @@
                     android:layout_alignParentRight="true"
                     android:gravity="right|center"
                     android:inputType="phone"
-                    android:text="2.07米"
+                    android:text="2.017m"
                     android:textSize="15sp"
                     android:textColor="@color/color_1fc37f"/>
 
@@ -119,16 +195,49 @@
                 android:layout_height="0.5dp"
                 android:background="@color/color_dddddd"/>
 
-
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="25dp"
                 android:layout_marginTop="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="水温"
+                    android:text="压力值"
+                    android:textSize="17sp"
+                    android:textColor="#333333"
+                    android:gravity="center"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true" />
+
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:gravity="right|center"
+                    android:text="28.084 mH2O"
+                    android:textSize="15sp"
+                    android:textColor="@color/color_1fc37f"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_dddddd"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="气压值"
                     android:textSize="17sp"
                     android:textColor="#333333"
                     android:gravity="center"
@@ -142,7 +251,7 @@
                     android:background="@null"
                     android:layout_alignParentRight="true"
                     android:gravity="right|center"
-                    android:text="13.2°C"
+                    android:text="10.189 mH2O"
                     android:textSize="15sp"
                     android:textColor="@color/color_1fc37f"/>
 
@@ -153,16 +262,15 @@
                 android:layout_height="0.5dp"
                 android:background="@color/color_dddddd"/>
 
-
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="25dp"
                 android:layout_marginTop="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="电量"
+                    android:text="水温值"
                     android:textSize="17sp"
                     android:textColor="#333333"
                     android:gravity="center"
@@ -176,7 +284,75 @@
                     android:background="@null"
                     android:layout_alignParentRight="true"
                     android:gravity="right|center"
-                    android:text="6.4V"
+                    android:text="13.02°C"
+                    android:textSize="15sp"
+                    android:textColor="@color/color_1fc37f"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_dddddd"/>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="气温值"
+                    android:textSize="17sp"
+                    android:textColor="#333333"
+                    android:gravity="center"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true" />
+
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right|center"
+                    android:text="30.05°C"
+                    android:textSize="15sp"
+                    android:textColor="@color/color_1fc37f"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_dddddd"/>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="电量值"
+                    android:textSize="17sp"
+                    android:textColor="#333333"
+                    android:gravity="center"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true" />
+
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right|center"
+                    android:text="6.04V"
                     android:textSize="15sp"
                     android:textColor="@color/color_1fc37f"/>
 
@@ -189,7 +365,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="25dp"
                 android:layout_marginTop="10dp">
 
                 <TextView
@@ -219,170 +395,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/color_dddddd"/>
-            <RelativeLayout
+
+            <com.water.project.view.ClickTextView
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="气温"
-                    android:textSize="17sp"
-                    android:textColor="#333333"
-                    android:gravity="center"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true" />
-
-
-                <TextView
-                    android:layout_width="200dp"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right|center"
-                    android:text="30.5°C"
-                    android:textSize="15sp"
-                    android:textColor="@color/color_1fc37f"/>
-
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_dddddd"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="压力值"
-                    android:textSize="17sp"
-                    android:textColor="#333333"
-                    android:gravity="center"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true" />
-
-
-                <TextView
-                    android:layout_width="200dp"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right|center"
-                    android:text="28.084 mh2o"
-                    android:textSize="15sp"
-                    android:textColor="@color/color_1fc37f"/>
-
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_dddddd"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="气压值"
-                    android:textSize="17sp"
-                    android:textColor="#333333"
-                    android:gravity="center"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true" />
-
-
-                <TextView
-                    android:layout_width="200dp"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right|center"
-                    android:text="10.189 mh2o"
-                    android:textSize="15sp"
-                    android:textColor="@color/color_1fc37f"/>
-
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_dddddd"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="探头埋深"
-                    android:textSize="17sp"
-                    android:textColor="#333333"
-                    android:gravity="center"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true" />
-
-
-                <TextView
-                    android:layout_width="200dp"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right|center"
-                    android:text="20米"
-                    android:textSize="15sp"
-                    android:textColor="@color/color_1fc37f"/>
-
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_dddddd"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="版本号"
-                    android:textSize="17sp"
-                    android:textColor="#333333"
-                    android:gravity="center"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true" />
-
-
-                <TextView
-                    android:layout_width="200dp"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right|center"
-                    android:text="GDBBRZKGD2000-MD"
-                    android:textSize="15sp"
-                    android:textColor="@color/color_1fc37f"/>
-
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_dddddd"/>
+                android:layout_height="35dp"
+                android:layout_margin="20dp"
+                android:text="更新实时数据"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:background="@drawable/bg_login"/>
 
         </LinearLayout>
 
@@ -391,7 +413,7 @@
 
 
 
-</LinearLayout>
+</RelativeLayout>
 
 
 
