@@ -6,17 +6,6 @@
 
     <include layout="@layout/head"></include>
 
-    <com.water.project.view.FontTextView
-        android:layout_width="25dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/lin_head"
-        android:layout_marginTop="125dp"
-        android:layout_centerHorizontal="true"
-        android:text="中科光大初版"
-        android:gravity="center"
-        android:textSize="30sp"
-        android:textColor="#D0D0D0"/>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
