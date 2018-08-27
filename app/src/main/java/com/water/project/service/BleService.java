@@ -34,37 +34,37 @@ public class BleService extends Service {
      * 蓝牙连接成功
      */
     public final static String ACTION_GATT_CONNECTED =
-            "net.edaibu.adminapp.ACTION_GATT_CONNECTED";
+            "net.zkgd.adminapp.ACTION_GATT_CONNECTED";
     /**
      * 断开连接
      */
     public final static String ACTION_GATT_DISCONNECTED =
-            "net.edaibu.adminapp.ACTION_GATT_DISCONNECTED";
+            "net.zkgd.adminapp.ACTION_GATT_DISCONNECTED";
     /**
      * 接收到了数据
      */
     public final static String ACTION_DATA_AVAILABLE =
-            "net.edaibu.adminapp.ACTION_DATA_AVAILABLE";
+            "net.zkgd.adminapp.ACTION_DATA_AVAILABLE";
     /**
      * 发送接到的数据的KEY
      */
     public final static String ACTION_EXTRA_DATA =
-            "net.edaibu.adminapp.EXTRA_DATA";
+            "net.zkgd.adminapp.EXTRA_DATA";
     /**
      * 通道建立成功
      */
     public final static String ACTION_ENABLE_NOTIFICATION_SUCCES =
-            "net.edaibu.adminapp.enablenotificationsucces";
+            "net.zkgd.adminapp.enablenotificationsucces";
     /**
      * 没有发现指定蓝牙
      */
     public final static String ACTION_NO_DISCOVERY_BLE =
-            "net.edaibu.adminapp.ACTION_NO_DISCOVERY_BLE";
+            "net.zkgd.adminapp.ACTION_NO_DISCOVERY_BLE";
     /**
      * 数据交互超时
      */
     public final static String ACTION_INTERACTION_TIMEOUT =
-            "net.edaibu.adminapp.ACTION_INTERACTION_TIMEOUT";
+            "net.zkgd.adminapp.ACTION_INTERACTION_TIMEOUT";
 
     private final IBinder mBinder = new LocalBinder();
     private BluetoothAdapter mBluetoothAdapter;
@@ -80,7 +80,7 @@ public class BleService extends Service {
     //蓝牙名称
     private String bleName;
     //timeOut：发送命令超时         scanTime:扫描蓝牙超时
-    private long timeOut = 1000 * 25, scanTime = 1000 * 15;
+    private long timeOut = 1000 * 10, scanTime = 1000 * 10;
     private TimerUtil timerUtil, startUtil;
     private Handler handler = new Handler();
 
@@ -135,8 +135,14 @@ public class BleService extends Service {
     private Handler mHandler=new Handler();
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
         public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
-//            LogUtils.e("搜索到蓝牙：" + device.getName() + "___" + device.getAddress());
-            if (bleName.equals(device.getName())) {
+            if(null==device){
+                return;
+            }
+            if(null==device.getName()){
+                return;
+            }
+            LogUtils.e("搜索到蓝牙：" + device.getName() + "___" + device.getAddress());
+            if (bleName.contains(device.getName())) {
                 //关闭扫描计时器
                 stopStartTime();
                 //停止扫描
@@ -162,7 +168,7 @@ public class BleService extends Service {
     }
 
     /**
-     * 扫描15秒钟
+     * 扫描10秒钟
      */
     private void startUtil() {
         startUtil = new TimerUtil(scanTime, new TimerUtil.TimerCallBack() {
@@ -192,7 +198,7 @@ public class BleService extends Service {
             connectionState = STATE_DISCONNECTED;
             return false;
         }
-//        LogUtils.e("调connectGatt开始连接");
+        LogUtils.e("调connectGatt开始连接");
         mBluetoothGatt = bleDevice.connectGatt(BleService.this, false, mGattCallback);
         return true;
     }
@@ -266,7 +272,7 @@ public class BleService extends Service {
     /**
      * 传输数据
      */
-    public boolean writeRXCharacteristic(byte[] value, boolean isTimeOut) {
+    public boolean writeRXCharacteristic(String[] msg, boolean isTimeOut) {
         try {
             BluetoothGattService RxService = mBluetoothGatt.getService(RX_SERVICE_UUID);
             if (RxService == null) {
@@ -280,12 +286,10 @@ public class BleService extends Service {
                 Log("传输数据：BluetoothGattCharacteristic==null");
                 return false;
             }
-            RxChar.setValue(value);
-            //开启超时计时器
-            if (isTimeOut) {
-                startTimeOut();
+            for (int i=0;i<msg.length;i++){
+                RxChar.setValue(msg[i].getBytes());
+                return mBluetoothGatt.writeCharacteristic(RxChar);
             }
-            return mBluetoothGatt.writeCharacteristic(RxChar);
         } catch (Exception e) {
             disconnect();
             e.printStackTrace();
