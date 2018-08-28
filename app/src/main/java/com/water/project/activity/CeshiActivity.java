@@ -36,7 +36,7 @@ public class CeshiActivity extends BaseActivity {
 
         findViewById(R.id.btn_con).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mService.connectScan(editText.getText().toString().trim());
+                mService.connectScan("1");
             }
         });
 
@@ -46,22 +46,26 @@ public class CeshiActivity extends BaseActivity {
             public void onClick(View v) {
                 String str="01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789";
                 final int length=str.length();
-                String[] msg=new String[length/20];
+//                String[] msg=new String[length/20];
 
-                int index1=0,index2=20;
-                int i=0;
-                while(index2<=length){
-                    msg[i]=str.substring(index1, index2);
-                    i++;
-                    index1+=20;
-                    index2+=20;
-                }
-                for (int j=0;j<msg.length;j++){
-                     LogUtils.e(msg[j]);
-                     LogUtils.e(System.currentTimeMillis()+"");
-                }
+//                int index1=0,index2=20;
+//                int i=0;
+//                while(index2<=length){
+//                    msg[i]=str.substring(index1, index2);
+//                    i++;
+//                    index1+=20;
+//                    index2+=20;
+//                }
+//                for (int j=0;j<msg.length;j++){
+//                     LogUtils.e(msg[j]);
+//                     LogUtils.e(System.currentTimeMillis()+"");
+//                }
 
-                mService.writeRXCharacteristic(msg,true);
+                String[] msg=new String[1];
+                msg[0]="12323";
+
+               boolean b= mService.writeRXCharacteristic(msg,true);
+               LogUtils.e(b+"+++++++++++++++++++++");
             }
         });
     }
