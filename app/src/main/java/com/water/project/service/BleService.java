@@ -15,10 +15,15 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.text.TextUtils;
 
+import com.water.project.activity.CeshiActivity;
+import com.water.project.utils.ByteStringHexUtil;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.TimerUtil;
 
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 /**
@@ -142,7 +147,9 @@ public class BleService extends Service {
                 return;
             }
             LogUtils.e("搜索到蓝牙：" + device.getName() + "___" + device.getAddress());
-            if ("BLE Device-3D1661".equals(device.getName())) {
+            //BLE Device-3D10C8
+            //BLE Device-3D1661
+            if ("BLE Device-3D10C8".equals(device.getName())) {
                 //关闭扫描计时器
                 stopStartTime();
                 //停止扫描
@@ -189,7 +196,6 @@ public class BleService extends Service {
      * @param address 蓝牙的地址
      */
     public boolean connect(final String address) {
-        LogUtils.e("11111111111111111111111111");
         connectionState = STATE_CONNECTING;
         if (mBluetoothAdapter == null || TextUtils.isEmpty(address)) {
             return false;
@@ -217,27 +223,21 @@ public class BleService extends Service {
                 return;
             }
             BluetoothGattService RxService = mBluetoothGatt.getService(RX_SERVICE_UUID);
-            LogUtils.e("bbbbbbbbbbbbbbbbbb");
             if (RxService == null) {
                 LogUtils.e("初始化通道错误:BluetoothGattService=====null");
                 disconnect();
                 return;
             }
-            LogUtils.e("cccccccccccccccccccc");
             BluetoothGattCharacteristic TxChar = RxService.getCharacteristic(TX_CHAR_UUID);
             if (TxChar == null) {
                 LogUtils.e("初始化通道错误:BluetoothGattCharacteristic=====null");
                 disconnect();
                 return;
             }
-            LogUtils.e("dddddddddddddddddddd");
             mBluetoothGatt.setCharacteristicNotification(TxChar, true);
             BluetoothGattDescriptor descriptor = TxChar.getDescriptor(CCCD);
-            LogUtils.e("eeeeeeeeeeeeeeeee");
             descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-            LogUtils.e("hhhhhhhhhhhhhhhhhhhhhhhh");
             mBluetoothGatt.writeDescriptor(descriptor);
-            LogUtils.e("jjjjjjjjjjjjjjjjjjjj");
             broadcastUpdate(ACTION_ENABLE_NOTIFICATION_SUCCES);
         } catch (Exception e) {
             //建立通道失败，发送没有找到蓝牙广播
@@ -287,16 +287,25 @@ public class BleService extends Service {
                 disconnect();
                 return false;
             }
-            BluetoothGattCharacteristic RxChar = RxService.getCharacteristic(RX_CHAR_UUID);
+            final BluetoothGattCharacteristic RxChar = RxService.getCharacteristic(RX_CHAR_UUID);
             if (RxChar == null) {
                 disconnect();
                 LogUtils.e("传输数据：BluetoothGattCharacteristic==null");
                 return false;
             }
+            final Date curDate = new Date();
             for (int i=0;i<msg.length;i++){
                 RxChar.setValue(msg[i].getBytes());
-                return mBluetoothGatt.writeCharacteristic(RxChar);
+                Thread.sleep(CeshiActivity.time);
+                boolean is=mBluetoothGatt.writeCharacteristic(RxChar);
+                LogUtils.e("is="+is+"___"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS", Locale.CHINA).format(curDate));
+//                mHandler.postDelayed(new Runnable() {
+//                    public void run() {
+//
+//                    }
+//                },10);
             }
+            return true;
         } catch (Exception e) {
             disconnect();
             e.printStackTrace();
@@ -396,6 +405,7 @@ public class BleService extends Service {
         public void onCharacteristicRead(BluetoothGatt gatt,
                                          BluetoothGattCharacteristic characteristic,
                                          int status) {
+            LogUtils.e(characteristic.getUuid().toString()+".....................");
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 byte[] txValue = characteristic.getValue();
                 if (null != txValue && txValue.length > 0) {
@@ -408,6 +418,7 @@ public class BleService extends Service {
         //接收数据
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt,BluetoothGattCharacteristic characteristic) {
+            LogUtils.e(characteristic.getUuid().toString()+"++++++++++++++");
             String str=characteristic.getStringValue(0);
             LogUtils.e(str+"______________");
             broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);

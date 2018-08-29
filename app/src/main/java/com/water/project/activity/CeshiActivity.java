@@ -11,8 +11,10 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.water.project.R;
 import com.water.project.service.BleService;
@@ -23,6 +25,7 @@ public class CeshiActivity extends BaseActivity {
     //蓝牙参数
     public BleService mService = null;
     public BluetoothAdapter mBtAdapter = null;
+    public static int time=0;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +35,9 @@ public class CeshiActivity extends BaseActivity {
         initService();
         registerBoradcastReceiver();
 
-        final EditText editText=(EditText)findViewById(R.id.et_name);
+        final EditText editText=(EditText)findViewById(R.id.et_msg);
+
+        final EditText etTime=(EditText)findViewById(R.id.et_time);
 
         findViewById(R.id.btn_con).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -44,28 +49,34 @@ public class CeshiActivity extends BaseActivity {
         findViewById(R.id.btn_send).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String str="01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789";
+
+                final String strTime=etTime.getText().toString().trim();
+                if(!TextUtils.isEmpty(strTime)){
+                    time=Integer.parseInt(strTime);
+                }else{
+                    time=0;
+                }
+
+
+                String str=editText.getText().toString().trim();
+                if(TextUtils.isEmpty(str)){
+                    showToastView("请输入要发送的内容");
+                    return;
+                }
                 final int length=str.length();
-//                String[] msg=new String[length/20];
+                String[] msg=new String[length/20];
 
-//                int index1=0,index2=20;
-//                int i=0;
-//                while(index2<=length){
-//                    msg[i]=str.substring(index1, index2);
-//                    i++;
-//                    index1+=20;
-//                    index2+=20;
-//                }
-//                for (int j=0;j<msg.length;j++){
-//                     LogUtils.e(msg[j]);
-//                     LogUtils.e(System.currentTimeMillis()+"");
-//                }
-
-                String[] msg=new String[1];
-                msg[0]="12323";
+                int index1=0,index2=20;
+                int i=0;
+                while(index2<=length){
+                    msg[i]=str.substring(index1, index2);
+                    i++;
+                    index1+=20;
+                    index2+=20;
+                }
+                LogUtils.e(msg[0]+"++++++++++"+msg[1]);
 
                boolean b= mService.writeRXCharacteristic(msg,true);
-               LogUtils.e(b+"+++++++++++++++++++++");
             }
         });
     }
@@ -114,6 +125,7 @@ public class CeshiActivity extends BaseActivity {
                      break;
                 case BleService.ACTION_ENABLE_NOTIFICATION_SUCCES://初始化通信通道成功，发送imei号验证
                      LogUtils.e("蓝牙初始化通信通道成功");
+                    showToastView("可以发送数据了");
                     break;
                     default:
                         break;
@@ -121,4 +133,11 @@ public class CeshiActivity extends BaseActivity {
 
         }
     };
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mService.disconnect();
+    }
 }
