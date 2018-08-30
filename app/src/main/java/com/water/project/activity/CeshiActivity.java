@@ -41,7 +41,7 @@ public class CeshiActivity extends BaseActivity {
 
         findViewById(R.id.btn_con).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mService.connectScan("1");
+//                mService.connectScan("1");
             }
         });
 
@@ -74,8 +74,6 @@ public class CeshiActivity extends BaseActivity {
                     index1+=20;
                     index2+=20;
                 }
-                LogUtils.e(msg[0]+"++++++++++"+msg[1]);
-
                boolean b= mService.writeRXCharacteristic(msg,true);
             }
         });

@@ -11,29 +11,31 @@ import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.text.TextUtils;
-
 import com.water.project.activity.CeshiActivity;
-import com.water.project.utils.ByteStringHexUtil;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.TimerUtil;
-
+import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 import java.util.UUID;
 
 /**
  * 蓝牙Service
  */
-public class BleService extends Service {
+public class BleService extends Service implements Serializable{
     public static final UUID CCCD = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
     public static final UUID RX_SERVICE_UUID = UUID.fromString("0000ff12-0000-1000-8000-00805f9b34fb");
     public static final UUID RX_CHAR_UUID = UUID.fromString("0000ff01-0000-1000-8000-00805f9b34fb");
     public static final UUID TX_CHAR_UUID = UUID.fromString("0000ff02-0000-1000-8000-00805f9b34fb");
+
+
+    /**
+     * 蓝牙扫描成功
+     */
+    public final static String ACTION_SCAN_SUCCESS = "net.zkgd.adminapp.ACTION_SCAN_SUCCESS";
 
     /**
      * 蓝牙连接成功
@@ -70,6 +72,8 @@ public class BleService extends Service {
      */
     public final static String ACTION_INTERACTION_TIMEOUT =
             "net.zkgd.adminapp.ACTION_INTERACTION_TIMEOUT";
+
+    private Intent intent=new Intent();
 
     private final IBinder mBinder = new LocalBinder();
     private BluetoothAdapter mBluetoothAdapter;
@@ -117,23 +121,18 @@ public class BleService extends Service {
     }
 
     /**
-     * 扫描并且连接
-     *
-     * @param bleName 蓝牙名
+     * 扫描蓝牙设备
      */
-    public void connectScan(String bleName) {
-        if (mBluetoothAdapter == null || TextUtils.isEmpty(bleName)) {
+    public void scanDevice() {
+        if (mBluetoothAdapter == null) {
             return;
         }
-        this.bleName = bleName;
-        stopStartTime();
         //先关闭扫描
         mBluetoothAdapter.stopLeScan(mLeScanCallback);
         LogUtils.e("开始扫描蓝牙");
         mBluetoothAdapter.startLeScan(mLeScanCallback);
         //开始扫描蓝牙
         startUtil();
-        return;
     }
 
 
@@ -147,20 +146,10 @@ public class BleService extends Service {
                 return;
             }
             LogUtils.e("搜索到蓝牙：" + device.getName() + "___" + device.getAddress());
-            //BLE Device-3D10C8
-            //BLE Device-3D1661
-            if ("BLE Device-3D10C8".equals(device.getName())) {
-                //关闭扫描计时器
-                stopStartTime();
-                //停止扫描
-                stopScan(mLeScanCallback);
-                mHandler.post(new Runnable() {
-                    public void run() {
-                        //连接
-                        connect(device.getAddress());
-                    }
-                });
-            }
+            intent.setAction(ACTION_SCAN_SUCCESS);
+            intent.putExtra("bleName",device.getName());
+            intent.putExtra("bleMac",device.getAddress());
+            sendBroadcast(intent);
         }
     };
 
@@ -183,7 +172,7 @@ public class BleService extends Service {
                 //停止扫描
                 stopScan(mLeScanCallback);
                 //关闭扫描计时器
-                stopStartTime();
+                startUtil.stop();
                 broadcastUpdate(ACTION_NO_DISCOVERY_BLE);
             }
         });
@@ -293,17 +282,14 @@ public class BleService extends Service {
                 LogUtils.e("传输数据：BluetoothGattCharacteristic==null");
                 return false;
             }
-            final Date curDate = new Date();
             for (int i=0;i<msg.length;i++){
                 RxChar.setValue(msg[i].getBytes());
                 Thread.sleep(CeshiActivity.time);
-                boolean is=mBluetoothGatt.writeCharacteristic(RxChar);
-                LogUtils.e("is="+is+"___"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS", Locale.CHINA).format(curDate));
-//                mHandler.postDelayed(new Runnable() {
-//                    public void run() {
-//
-//                    }
-//                },10);
+                mHandler.postDelayed(new Runnable() {
+                    public void run() {
+                        boolean is=mBluetoothGatt.writeCharacteristic(RxChar);
+                    }
+                },5);
             }
             return true;
         } catch (Exception e) {
@@ -331,8 +317,7 @@ public class BleService extends Service {
     /**
      * 发送广播（携带接受到的值）
      **/
-    private void broadcastUpdate(final String action,
-                                 final BluetoothGattCharacteristic characteristic) {
+    private void broadcastUpdate(final String action, final BluetoothGattCharacteristic characteristic) {
         final Intent intent = new Intent(action);
         if (TX_CHAR_UUID.equals(characteristic.getUuid())) {
             intent.putExtra(ACTION_EXTRA_DATA, characteristic.getValue());
@@ -402,17 +387,7 @@ public class BleService extends Service {
 
         //接收数据
         @Override
-        public void onCharacteristicRead(BluetoothGatt gatt,
-                                         BluetoothGattCharacteristic characteristic,
-                                         int status) {
-            LogUtils.e(characteristic.getUuid().toString()+".....................");
-            if (status == BluetoothGatt.GATT_SUCCESS) {
-                byte[] txValue = characteristic.getValue();
-                if (null != txValue && txValue.length > 0) {
-                    stopTimeOut();
-                    broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
-                }
-            }
+        public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
         }
 
         //接收数据
@@ -450,14 +425,6 @@ public class BleService extends Service {
         }
     }
 
-    /**
-     * 扫描超时计时器
-     */
-    private void stopStartTime() {
-        if (null != startUtil) {
-            startUtil.stop();
-        }
-    }
 
     public BluetoothGatt getBluetoothGatt() {
         return mBluetoothGatt;
