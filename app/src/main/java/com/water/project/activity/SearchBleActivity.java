@@ -32,6 +32,8 @@ public class SearchBleActivity extends BaseActivity {
     private BleItemAdapter bleItemAdapter;
     //存储扫描到的蓝牙名称
     private List<Ble> bleList=new ArrayList<>();
+    //蓝牙的mac地址
+    private String bleMac;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StatusBarUtils.transparencyBar(this);
@@ -76,9 +78,11 @@ public class SearchBleActivity extends BaseActivity {
         IntentFilter myIntentFilter = new IntentFilter();
         myIntentFilter.addAction(BleService.ACTION_SCAN_SUCCESS);//扫描到蓝牙设备了
         myIntentFilter.addAction(BleService.ACTION_GATT_DISCONNECTED);//蓝牙断开连接
+        myIntentFilter.addAction(BleService.ACTION_ENABLE_NOTIFICATION_SUCCES);//蓝牙初始化通道成功
         registerReceiver(mBroadcastReceiver, myIntentFilter);
     }
 
+    private boolean isConnect = true;
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             if(null==intent){
@@ -105,6 +109,21 @@ public class SearchBleActivity extends BaseActivity {
                      break;
                 //蓝牙断开连接
                 case BleService.ACTION_GATT_DISCONNECTED:
+                     final int status=intent.getIntExtra("status",0);
+                     if(status!=0){
+                         if (isConnect) {
+                             isConnect=false;
+                             LogUtils.e("重新连接一次蓝牙!");
+                             MainActivity.bleService.connect(SearchBleActivity.this.bleMac);
+                         }else{
+                             isConnect=true;
+                         }
+                     }
+                     clearTask();
+                     showToastView("蓝牙连接断开！");
+                     break;
+                //初始化通道成功
+                case BleService.ACTION_ENABLE_NOTIFICATION_SUCCES:
                      break;
                 default:
                      break;
@@ -123,6 +142,7 @@ public class SearchBleActivity extends BaseActivity {
             if(TextUtils.isEmpty(bleMac)){
                 return;
             }
+            SearchBleActivity.this.bleMac=bleMac;
             showProgress("蓝牙连接中...");
             boolean isCon=MainActivity.bleService.connect(bleMac);
         }

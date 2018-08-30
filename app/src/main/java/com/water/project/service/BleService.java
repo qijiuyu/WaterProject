@@ -230,7 +230,7 @@ public class BleService extends Service implements Serializable{
             broadcastUpdate(ACTION_ENABLE_NOTIFICATION_SUCCES);
         } catch (Exception e) {
             //建立通道失败，发送没有找到蓝牙广播
-            broadcastUpdate(ACTION_NO_DISCOVERY_BLE);
+            broadcastUpdate(ACTION_GATT_DISCONNECTED);
         }
     }
 
@@ -363,7 +363,7 @@ public class BleService extends Service implements Serializable{
                         }
                         mBluetoothGatt.discoverServices();
                     }
-                }, 1000);
+                }, 700);
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                 LogUtils.e("蓝牙连接断开");
                 refreshDeviceCache();
@@ -379,9 +379,6 @@ public class BleService extends Service implements Serializable{
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 //发现服务，建立通道
                 enableTXNotification();
-            } else {
-                broadcastUpdate(ACTION_GATT_DISCONNECTED);
-                LogUtils.e("onServicesDiscovered 返回状态:" + status);
             }
         }
 
