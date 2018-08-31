@@ -265,21 +265,19 @@ public class BleService extends Service implements Serializable{
                 LogUtils.e("传输数据：BluetoothGattCharacteristic==null");
                 return false;
             }
+            //循环发送数据
             for (int i=0;i<list.size();i++){
                    RxChar.setValue(list.get(i).getBytes());
-                   Thread.sleep(CeshiActivity.time);
-                   mHandler.postDelayed(new Runnable() {
-                       public void run() {
-                           //开启超时计时器
-                           if(isTimeOut){
-                               startTimeOut();
-                           }
-                           boolean b=mBluetoothGatt.writeCharacteristic(RxChar);
-                           if(!b){
-                               isSuccess=false;
-                           }
-                       }
-                   },5);
+                   //开启超时计时器
+                  if(isTimeOut){
+                    startTimeOut();
+                  }
+                  boolean b=mBluetoothGatt.writeCharacteristic(RxChar);
+                  if(!b){
+                    isSuccess=false;
+                  }
+                  //延时5毫秒
+                  new Thread().sleep(5);
             }
             return isSuccess;
         } catch (Exception e) {

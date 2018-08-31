@@ -40,6 +40,11 @@ public class SendBleDataManager {
         if (mService == null || mService.getConnectionState() == BleService.STATE_DISCONNECTED) {
             return;
         }
+        try {
+            new Thread().sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         fixedThreadPool_ble.execute(new Runnable() {
             public void run() {
                 //将字符串进行20字节的截取
