@@ -15,6 +15,8 @@ import android.support.annotation.Nullable;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.Toast;
+
 import com.water.project.R;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
@@ -22,6 +24,11 @@ import com.water.project.utils.StatusBarUtils;
 import com.water.project.utils.SystemBarTintManager;
 import com.water.project.utils.ble.SendBleDataManager;
 import com.water.project.view.DialogView;
+import com.water.project.view.time.SlideDateTimeListener;
+import com.water.project.view.time.SlideDateTimePicker;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MainActivity extends BaseActivity {
 
@@ -33,6 +40,7 @@ public class MainActivity extends BaseActivity {
     private DialogView dialogView;
     //蓝牙连接成功的广播
     public final static String ACTION_BLE_CONNECTION_SUCCESS= "net.zkgd.adminapp.ACTION_BLE_CONNECTION_SUCCESS";
+    private SimpleDateFormat mFormatter = new SimpleDateFormat("MMMM dd yyyy hh:mm aa");
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -48,7 +56,37 @@ public class MainActivity extends BaseActivity {
         isSupportBle();//判断设备是否支持蓝牙4.0
         initService();//注册蓝牙服务
         register();//注册广播
+
+        new SlideDateTimePicker.Builder(getSupportFragmentManager())
+                .setListener(listener)
+                .setInitialDate(new Date())
+                //.setMinDate(minDate)
+                //.setMaxDate(maxDate)
+                //.setIs24HourTime(true)
+                //.setTheme(SlideDateTimePicker.HOLO_DARK)
+                //.setIndicatorColor(Color.parseColor("#990000"))
+                .build()
+                .show();
     }
+
+
+    private SlideDateTimeListener listener = new SlideDateTimeListener() {
+
+        @Override
+        public void onDateTimeSet(Date date)
+        {
+            Toast.makeText(MainActivity.this,
+                    mFormatter.format(date), Toast.LENGTH_SHORT).show();
+        }
+
+        // Optional cancel listener
+        @Override
+        public void onDateTimeCancel()
+        {
+            Toast.makeText(MainActivity.this,
+                    "Canceled", Toast.LENGTH_SHORT).show();
+        }
+    };
 
 
     /**
