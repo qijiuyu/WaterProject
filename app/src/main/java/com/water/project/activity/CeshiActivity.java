@@ -20,6 +20,9 @@ import com.water.project.R;
 import com.water.project.service.BleService;
 import com.water.project.utils.LogUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CeshiActivity extends BaseActivity {
 
     //蓝牙参数
@@ -32,51 +35,111 @@ public class CeshiActivity extends BaseActivity {
 
         setContentView(R.layout.activity_aaa);
 
-        initService();
-        registerBoradcastReceiver();
+//        initService();
+//        registerBoradcastReceiver();
+//
+//        final EditText editText=(EditText)findViewById(R.id.et_msg);
+//
+//        final EditText etTime=(EditText)findViewById(R.id.et_time);
+//
+//        findViewById(R.id.btn_con).setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+////                mService.connectScan("1");
+//            }
+//        });
+//
+//
+//        findViewById(R.id.btn_send).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                final String strTime=etTime.getText().toString().trim();
+//                if(!TextUtils.isEmpty(strTime)){
+//                    time=Integer.parseInt(strTime);
+//                }else{
+//                    time=0;
+//                }
+//
+//
+//                String str=editText.getText().toString().trim();
+//                if(TextUtils.isEmpty(str)){
+//                    showToastView("请输入要发送的内容");
+//                    return;
+//                }
+//                final int length=str.length();
+//                String[] msg=new String[length/20];
+//
+//                int index1=0,index2=20;
+//                int i=0;
+//                while(index2<=length){
+//                    msg[i]=str.substring(index1, index2);
+//                    i++;
+//                    index1+=20;
+//                    index2+=20;
+//                }
+//               boolean b= mService.writeRXCharacteristic(msg,true);
+//            }
+//        });
 
-        final EditText editText=(EditText)findViewById(R.id.et_msg);
 
-        final EditText etTime=(EditText)findViewById(R.id.et_time);
-
-        findViewById(R.id.btn_con).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-//                mService.connectScan("1");
-            }
-        });
-
-
-        findViewById(R.id.btn_send).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                final String strTime=etTime.getText().toString().trim();
-                if(!TextUtils.isEmpty(strTime)){
-                    time=Integer.parseInt(strTime);
-                }else{
-                    time=0;
-                }
+        String str="012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789abcdeabcdeabcdeabc";
+        List<String> list=getStrList(str, 20);
+        LogUtils.e(list.size()+"++++++++++");
+        for (int i=0;i<list.size();i++){
+            LogUtils.e(list.get(i)+"_______________");
+        }
+    }
 
 
-                String str=editText.getText().toString().trim();
-                if(TextUtils.isEmpty(str)){
-                    showToastView("请输入要发送的内容");
-                    return;
-                }
-                final int length=str.length();
-                String[] msg=new String[length/20];
+    public static List<String> getStrList(String inputString, int length) {
+        int size = inputString.length() / length;
+        if (inputString.length() % length != 0) {
+            size += 1;
+        }
+        return getStrList(inputString, length, size);
+    }
 
-                int index1=0,index2=20;
-                int i=0;
-                while(index2<=length){
-                    msg[i]=str.substring(index1, index2);
-                    i++;
-                    index1+=20;
-                    index2+=20;
-                }
-               boolean b= mService.writeRXCharacteristic(msg,true);
-            }
-        });
+
+    /**
+     * 把原始字符串分割成指定长度的字符串列表
+     *
+     * @param inputString
+     *            原始字符串
+     * @param length
+     *            指定长度
+     * @param size
+     *            指定列表大小
+     * @return
+     */
+    public static List<String> getStrList(String inputString, int length,int size) {
+        List<String> list = new ArrayList<String>();
+        for (int index = 0; index < size; index++) {
+            String childStr = substring(inputString, index * length, (index + 1) * length);
+            list.add(childStr);
+        }
+        return list;
+    }
+
+
+    /**
+     * 分割字符串，如果开始位置大于字符串长度，返回空
+     *
+     * @param str
+     *            原始字符串
+     * @param f
+     *            开始位置
+     * @param t
+     *            结束位置
+     * @return
+     */
+    public static String substring(String str, int f, int t) {
+        if (f > str.length())
+            return null;
+        if (t > str.length()) {
+            return str.substring(f, str.length());
+        } else {
+            return str.substring(f, t);
+        }
     }
 
     /**
@@ -131,6 +194,12 @@ public class CeshiActivity extends BaseActivity {
 
         }
     };
+
+
+
+
+
+
 
 
     @Override

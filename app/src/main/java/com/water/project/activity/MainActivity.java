@@ -19,6 +19,7 @@ import com.water.project.utils.BleUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.StatusBarUtils;
 import com.water.project.utils.SystemBarTintManager;
+import com.water.project.utils.ble.SendBleDataManager;
 import com.water.project.view.DialogView;
 
 public class MainActivity extends BaseActivity {
@@ -69,6 +70,7 @@ public class MainActivity extends BaseActivity {
         public void onServiceConnected(ComponentName className, IBinder rawBinder) {
             bleService = ((BleService.LocalBinder) rawBinder).getService();
             mBtAdapter = bleService.createBluetoothAdapter();
+            SendBleDataManager.getInstance().init(bleService);
             //判断蓝牙是否打开
             BleUtils.isEnabled(MainActivity.this,mBtAdapter);
         }

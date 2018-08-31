@@ -11,7 +11,6 @@ import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
 import android.content.Intent;
 import android.os.Binder;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.text.TextUtils;
@@ -20,6 +19,7 @@ import com.water.project.utils.LogUtils;
 import com.water.project.utils.TimerUtil;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -40,38 +40,35 @@ public class BleService extends Service implements Serializable{
     /**
      * 蓝牙连接成功
      */
-    public final static String ACTION_GATT_CONNECTED =
-            "net.zkgd.adminapp.ACTION_GATT_CONNECTED";
+    public final static String ACTION_GATT_CONNECTED = "net.zkgd.adminapp.ACTION_GATT_CONNECTED";
     /**
      * 断开连接
      */
-    public final static String ACTION_GATT_DISCONNECTED =
-            "net.zkgd.adminapp.ACTION_GATT_DISCONNECTED";
+    public final static String ACTION_GATT_DISCONNECTED = "net.zkgd.adminapp.ACTION_GATT_DISCONNECTED";
     /**
      * 接收到了数据
      */
-    public final static String ACTION_DATA_AVAILABLE =
-            "net.zkgd.adminapp.ACTION_DATA_AVAILABLE";
+    public final static String ACTION_DATA_AVAILABLE = "net.zkgd.adminapp.ACTION_DATA_AVAILABLE";
     /**
      * 发送接到的数据的KEY
      */
-    public final static String ACTION_EXTRA_DATA =
-            "net.zkgd.adminapp.EXTRA_DATA";
+    public final static String ACTION_EXTRA_DATA = "net.zkgd.adminapp.EXTRA_DATA";
     /**
      * 通道建立成功
      */
-    public final static String ACTION_ENABLE_NOTIFICATION_SUCCES =
-            "net.zkgd.adminapp.enablenotificationsucces";
+    public final static String ACTION_ENABLE_NOTIFICATION_SUCCES = "net.zkgd.adminapp.enablenotificationsucces";
     /**
      * 没有发现指定蓝牙
      */
-    public final static String ACTION_NO_DISCOVERY_BLE =
-            "net.zkgd.adminapp.ACTION_NO_DISCOVERY_BLE";
+    public final static String ACTION_NO_DISCOVERY_BLE = "net.zkgd.adminapp.ACTION_NO_DISCOVERY_BLE";
     /**
      * 数据交互超时
      */
-    public final static String ACTION_INTERACTION_TIMEOUT =
-            "net.zkgd.adminapp.ACTION_INTERACTION_TIMEOUT";
+    public final static String ACTION_INTERACTION_TIMEOUT = "net.zkgd.adminapp.ACTION_INTERACTION_TIMEOUT";
+
+    //发送数据失败
+    public final static String ACTION_SEND_DATA_FAIL = "net.zkgd.adminapp.ACTION_SEND_DATA_FAIL";
+
 
     private Intent intent=new Intent();
 
@@ -86,10 +83,8 @@ public class BleService extends Service implements Serializable{
     public static final int STATE_CONNECTING = 1;
     //连接成功
     public static final int STATE_CONNECTED = 2;
-    //蓝牙名称
-    private String bleName;
     //timeOut：发送命令超时         scanTime:扫描蓝牙超时
-    private long timeOut = 1000 * 10, scanTime = 1000 * 10;
+    private long timeOut = 1000 * 5, scanTime = 1000 * 10;
     private TimerUtil timerUtil, startUtil;
     private Handler handler = new Handler();
 
@@ -181,7 +176,6 @@ public class BleService extends Service implements Serializable{
 
     /**
      * 连接指定蓝牙
-     *
      * @param address 蓝牙的地址
      */
     public boolean connect(final String address) {
@@ -229,7 +223,6 @@ public class BleService extends Service implements Serializable{
             mBluetoothGatt.writeDescriptor(descriptor);
             broadcastUpdate(ACTION_ENABLE_NOTIFICATION_SUCCES);
         } catch (Exception e) {
-            //建立通道失败，发送没有找到蓝牙广播
             broadcastUpdate(ACTION_GATT_DISCONNECTED);
         }
     }
@@ -254,21 +247,11 @@ public class BleService extends Service implements Serializable{
     }
 
     /**
-     * 读取数据
-     */
-    public void readCharacteristic(BluetoothGattCharacteristic characteristic) {
-        if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-            LogUtils.e("读取数据:mBluetoothAdapter===null");
-            return;
-        }
-        mBluetoothGatt.readCharacteristic(characteristic);
-    }
-
-
-    /**
      * 传输数据
      */
-    public boolean writeRXCharacteristic(String[] msg, boolean isTimeOut) {
+    boolean isSuccess;
+    public boolean writeRXCharacteristic(List<String> list, final boolean isTimeOut) {
+        isSuccess=true;
         try {
             BluetoothGattService RxService = mBluetoothGatt.getService(RX_SERVICE_UUID);
             if (RxService == null) {
@@ -282,16 +265,23 @@ public class BleService extends Service implements Serializable{
                 LogUtils.e("传输数据：BluetoothGattCharacteristic==null");
                 return false;
             }
-            for (int i=0;i<msg.length;i++){
-                RxChar.setValue(msg[i].getBytes());
-                Thread.sleep(CeshiActivity.time);
-                mHandler.postDelayed(new Runnable() {
-                    public void run() {
-                        boolean is=mBluetoothGatt.writeCharacteristic(RxChar);
-                    }
-                },5);
+            for (int i=0;i<list.size();i++){
+                   RxChar.setValue(list.get(i).getBytes());
+                   Thread.sleep(CeshiActivity.time);
+                   mHandler.postDelayed(new Runnable() {
+                       public void run() {
+                           //开启超时计时器
+                           if(isTimeOut){
+                               startTimeOut();
+                           }
+                           boolean b=mBluetoothGatt.writeCharacteristic(RxChar);
+                           if(!b){
+                               isSuccess=false;
+                           }
+                       }
+                   },5);
             }
-            return true;
+            return isSuccess;
         } catch (Exception e) {
             disconnect();
             e.printStackTrace();
@@ -390,6 +380,12 @@ public class BleService extends Service implements Serializable{
         //接收数据
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt,BluetoothGattCharacteristic characteristic) {
+            if(null==characteristic){
+                return;
+            }
+            if (!TX_CHAR_UUID.equals(characteristic.getUuid())) {
+                return;
+            }
             LogUtils.e(characteristic.getUuid().toString()+"++++++++++++++");
             String str=characteristic.getStringValue(0);
             LogUtils.e(str+"______________");
@@ -402,7 +398,6 @@ public class BleService extends Service implements Serializable{
      * 开始计时超时时间
      **/
     private synchronized void startTimeOut() {
-        LogUtils.e("开启计时了");
         stopTimeOut();
         timerUtil = new TimerUtil(timeOut, new TimerUtil.TimerCallBack() {
             public void onFulfill() {
