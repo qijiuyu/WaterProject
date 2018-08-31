@@ -1,22 +1,23 @@
 package com.water.project.activity;
 
 import android.bluetooth.BluetoothAdapter;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
-
 import com.water.project.R;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
-import com.water.project.utils.LogUtils;
 import com.water.project.utils.StatusBarUtils;
 import com.water.project.utils.SystemBarTintManager;
 import com.water.project.utils.ble.SendBleDataManager;
@@ -24,10 +25,14 @@ import com.water.project.view.DialogView;
 
 public class MainActivity extends BaseActivity {
 
+    // 按两次退出
+    protected long exitTime = 0;
     //蓝牙参数
     public static BleService bleService = null;
     public BluetoothAdapter mBtAdapter = null;
     private DialogView dialogView;
+    //蓝牙连接成功的广播
+    public final static String ACTION_BLE_CONNECTION_SUCCESS= "net.zkgd.adminapp.ACTION_BLE_CONNECTION_SUCCESS";
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -40,9 +45,9 @@ public class MainActivity extends BaseActivity {
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
-        //判断设备是否支持蓝牙4.0
-        isSupportBle();
-        initService();
+        isSupportBle();//判断设备是否支持蓝牙4.0
+        initService();//注册蓝牙服务
+        register();//注册广播
     }
 
 
@@ -81,6 +86,33 @@ public class MainActivity extends BaseActivity {
 
 
     /**
+     * 注册广播
+     */
+    private void register() {
+        IntentFilter myIntentFilter = new IntentFilter();
+        myIntentFilter.addAction(ACTION_BLE_CONNECTION_SUCCESS);//扫描到蓝牙设备了
+        registerReceiver(mBroadcastReceiver, myIntentFilter);
+    }
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            if(null==intent){
+                return;
+            }
+            switch (intent.getAction()){
+                //蓝牙连接成功
+                case ACTION_BLE_CONNECTION_SUCCESS:
+                    break;
+                default:
+                    break;
+            }
+
+        }
+    };
+
+
+
+    /**
      * 判断设备是否支持蓝牙4.0
      */
     private void isSupportBle(){
@@ -95,10 +127,20 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //关闭服务
-        unbindService(mServiceConnection);
+
+    // 按两次退出
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                showToastView("再按一次退出程序！");
+                exitTime = System.currentTimeMillis();
+            } else {
+                unbindService(mServiceConnection);
+                unregisterReceiver(mBroadcastReceiver);
+                finish();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

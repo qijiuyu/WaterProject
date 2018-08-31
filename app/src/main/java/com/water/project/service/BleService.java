@@ -126,7 +126,7 @@ public class BleService extends Service implements Serializable{
         mBluetoothAdapter.stopLeScan(mLeScanCallback);
         LogUtils.e("开始扫描蓝牙");
         mBluetoothAdapter.startLeScan(mLeScanCallback);
-        //开始扫描蓝牙
+        //开启扫描蓝牙计时器
         startUtil();
     }
 

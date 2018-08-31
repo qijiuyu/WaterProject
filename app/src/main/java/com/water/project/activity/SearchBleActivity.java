@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.widget.ListView;
+import android.widget.TextView;
+
 import com.water.project.R;
 import com.water.project.adapter.BleItemAdapter;
 import com.water.project.bean.Ble;
@@ -54,6 +56,8 @@ public class SearchBleActivity extends BaseActivity {
      * 初始化控件
      */
     private void initView(){
+        TextView tvHead=(TextView)findViewById(R.id.tv_head);
+        tvHead.setText("查找蓝牙");
         listView=(ListView)findViewById(R.id.list_asb);
         rippleBackground=(RippleBackground)findViewById(R.id.content);
         rippleBackground.startRippleAnimation();
@@ -124,6 +128,10 @@ public class SearchBleActivity extends BaseActivity {
                      break;
                 //初始化通道成功
                 case BleService.ACTION_ENABLE_NOTIFICATION_SUCCES:
+                     clearTask();
+                     showToastView("蓝牙连接成功！");
+                     sendBroadcast(new Intent(MainActivity.ACTION_BLE_CONNECTION_SUCCESS));
+                     SearchBleActivity.this.finish();
                      break;
                 default:
                      break;
