@@ -6,19 +6,24 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.water.project.R;
 import com.water.project.adapter.BleItemAdapter;
+import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
 import com.water.project.bean.BleConCallBack;
 import com.water.project.service.BleService;
 import com.water.project.utils.LogUtils;
+import com.water.project.utils.SPUtil;
 import com.water.project.utils.StatusBarUtils;
 import com.water.project.utils.SystemBarTintManager;
+import com.water.project.view.DialogView;
 import com.water.project.view.RippleBackground;
 
 import java.util.ArrayList;
@@ -34,8 +39,8 @@ public class SearchBleActivity extends BaseActivity {
     private BleItemAdapter bleItemAdapter;
     //存储扫描到的蓝牙名称
     private List<Ble> bleList=new ArrayList<>();
-    //蓝牙的mac地址
-    private String bleMac;
+    private DialogView dialogView;
+    private Handler mHandler=new Handler();
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StatusBarUtils.transparencyBar(this);
@@ -71,7 +76,7 @@ public class SearchBleActivity extends BaseActivity {
         if(null==MainActivity.bleService){
             return;
         }
-        MainActivity.bleService.scanDevice();
+        MainActivity.bleService.scanDevice(null);
     }
 
 
@@ -87,6 +92,7 @@ public class SearchBleActivity extends BaseActivity {
     }
 
     private boolean isConnect = true;
+    private Ble ble;
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             if(null==intent){
@@ -97,7 +103,7 @@ public class SearchBleActivity extends BaseActivity {
                 case BleService.ACTION_SCAN_SUCCESS:
                     final String bleName=intent.getStringExtra("bleName");
                     final String bleMac=intent.getStringExtra("bleMac");
-                    Ble ble=new Ble(bleName,bleMac);
+                    ble=new Ble(bleName,bleMac);
                     if(bleName.contains("ZX-PARK")){
                         bleList.add(0,ble);
                     }else{
@@ -115,12 +121,25 @@ public class SearchBleActivity extends BaseActivity {
                 case BleService.ACTION_GATT_DISCONNECTED:
                      final int status=intent.getIntExtra("status",0);
                      if(status!=0){
+                         ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
                          if (isConnect) {
                              isConnect=false;
                              LogUtils.e("重新连接一次蓝牙!");
-                             MainActivity.bleService.connect(SearchBleActivity.this.bleMac);
+                             mHandler.postDelayed(new Runnable() {
+                                 public void run() {
+                                     MainActivity.bleService.connect(SearchBleActivity.this.ble.getBleMac());
+                                 }
+                             },100);
                          }else{
                              isConnect=true;
+                             dialogView = new DialogView(mContext, "蓝牙连接断开，请靠近设备进行连接!","重新连接", "取消", new View.OnClickListener() {
+                                 public void onClick(View v) {
+                                     dialogView.dismiss();
+                                     showProgress("蓝牙连接中...");
+                                     MainActivity.bleService.connect(SearchBleActivity.this.ble.getBleMac());
+                                 }
+                             }, null);
+                             dialogView.show();
                          }
                      }
                      clearTask();
@@ -130,7 +149,6 @@ public class SearchBleActivity extends BaseActivity {
                 case BleService.ACTION_ENABLE_NOTIFICATION_SUCCES:
                      clearTask();
                      showToastView("蓝牙连接成功！");
-                     sendBroadcast(new Intent(MainActivity.ACTION_BLE_CONNECTION_SUCCESS));
                      SearchBleActivity.this.finish();
                      break;
                 default:
@@ -144,15 +162,15 @@ public class SearchBleActivity extends BaseActivity {
     private BleConCallBack bleConCallBack=new BleConCallBack() {
         /**
          * 连接蓝牙
-         * @param bleMac
+         * @param ble
          */
-        public void connetion(String bleMac) {
-            if(TextUtils.isEmpty(bleMac)){
+        public void connetion(Ble ble) {
+            if(null==ble){
                 return;
             }
-            SearchBleActivity.this.bleMac=bleMac;
+            MyApplication.spUtil.addObject(SPUtil.BLE_DEVICE,ble);
             showProgress("蓝牙连接中...");
-            boolean isCon=MainActivity.bleService.connect(bleMac);
+            boolean isCon=MainActivity.bleService.connect(ble.getBleMac());
         }
     };
 

@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/head"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="15dp">
+
+            <TextView
+                android:id="@+id/tv_as_code"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="统一编码"
+                android:textColor="@android:color/black"
+                android:textSize="15sp"/>
+            
+            <EditText
+                android:id="@+id/et_as_code"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:hint="请输入统一编码"
+                android:textColor="@color/color_1fc37f"
+                android:textSize="15sp"
+                android:layout_alignParentRight="true"
+                android:gravity="right|center"
+                android:background="@null"/>
+
+            <View
+                android:id="@+id/view_as1"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_888888"
+                android:layout_below="@id/et_as_code"/>
+
+            <TextView
+                android:id="@+id/tv_as_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/view_as1"
+                android:gravity="center"
+                android:text="SIM卡号"
+                android:textColor="@android:color/black"
+                android:textSize="15sp"/>
+
+            <EditText
+                android:id="@+id/et_as_phone"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/view_as1"
+                android:hint="请输入SIM卡号"
+                android:textColor="@color/color_1fc37f"
+                android:textSize="15sp"
+                android:layout_alignParentRight="true"
+                android:gravity="right|center"
+                android:background="@null"/>
+
+            <View
+                android:id="@+id/view_as2"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_888888"
+                android:layout_below="@id/et_as_phone"/>
+            
+            <LinearLayout
+                android:id="@+id/lin_as1"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/view_as2">
+                
+                <com.water.project.view.ClickTextView
+                    android:id="@+id/tv_setting_one"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:text="设置"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    android:gravity="center"
+                    android:background="@color/color_1fc37f"
+                    android:layout_marginRight="20dp"/>
+
+                <com.water.project.view.ClickTextView
+                    android:id="@+id/tv_get_one"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:text="读取"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    android:gravity="center"
+                    android:background="@color/color_1fc37f"
+                    android:layout_marginLeft="20dp"/>
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tv_as_tantou"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="30dp"
+                android:layout_below="@id/lin_as1"
+                android:gravity="center"
+                android:text="探头埋深"
+                android:textColor="@android:color/black"
+                android:textSize="15sp"/>
+
+            <EditText
+                android:id="@+id/et_as_tantou"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="30dp"
+                android:layout_below="@id/lin_as1"
+                android:hint="请输入探头埋深"
+                android:textColor="@color/color_1fc37f"
+                android:textSize="15sp"
+                android:layout_alignParentRight="true"
+                android:gravity="right|center"
+                android:background="@null"/>
+
+            <View
+                android:id="@+id/view_as3"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_888888"
+                android:layout_below="@id/et_as_tantou"/>
+
+            <LinearLayout
+                android:id="@+id/lin_as2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/view_as3">
+
+                <com.water.project.view.ClickTextView
+                    android:id="@+id/tv_setting_two"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:text="设置"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    android:gravity="center"
+                    android:background="@color/color_1fc37f"
+                    android:layout_marginRight="20dp"/>
+
+                <com.water.project.view.ClickTextView
+                    android:id="@+id/tv_get_two"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:text="读取"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    android:gravity="center"
+                    android:background="@color/color_1fc37f"
+                    android:layout_marginLeft="20dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_as_cstime"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="30dp"
+                android:layout_below="@id/lin_as2"
+                android:gravity="center"
+                android:text="采集起始时间"
+                android:textColor="@android:color/black"
+                android:textSize="15sp"/>
+
+            <EditText
+                android:id="@+id/et_as_cstime"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="30dp"
+                android:layout_below="@id/lin_as2"
+                android:hint="请输入采集起始时间"
+                android:textColor="@color/color_1fc37f"
+                android:textSize="15sp"
+                android:layout_alignParentRight="true"
+                android:gravity="right|center"
+                android:background="@null"/>
+
+            <View
+                android:id="@+id/view_as4"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_888888"
+                android:layout_below="@id/et_as_cstime"/>
+
+            <TextView
+                android:id="@+id/tv_as_cetime"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/view_as4"
+                android:gravity="center"
+                android:text="采集间隔时间"
+                android:textColor="@android:color/black"
+                android:textSize="15sp"/>
+
+            <EditText
+                android:id="@+id/et_as_cetime"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/view_as4"
+                android:hint="请输入采集间隔时间"
+                android:textColor="@color/color_1fc37f"
+                android:textSize="15sp"
+                android:layout_alignParentRight="true"
+                android:gravity="right|center"
+                android:background="@null"/>
+
+            <View
+                android:id="@+id/view_as5"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_888888"
+                android:layout_below="@id/et_as_cetime"/>
+
+            <LinearLayout
+                android:id="@+id/lin_as3"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/view_as5">
+
+                <com.water.project.view.ClickTextView
+                    android:id="@+id/tv_setting_three"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:text="设置"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    android:gravity="center"
+                    android:background="@color/color_1fc37f"
+                    android:layout_marginRight="20dp"/>
+
+                <com.water.project.view.ClickTextView
+                    android:id="@+id/tv_get_three"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:text="读取"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    android:gravity="center"
+                    android:background="@color/color_1fc37f"
+                    android:layout_marginLeft="20dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_as_fstime"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="30dp"
+                android:layout_below="@id/lin_as3"
+                android:gravity="center"
+                android:text="发送起始时间"
+                android:textColor="@android:color/black"
+                android:textSize="15sp"/>
+
+            <EditText
+                android:id="@+id/et_as_fstime"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="30dp"
+                android:layout_below="@id/lin_as3"
+                android:hint="请输入发送起始时间"
+                android:textColor="@color/color_1fc37f"
+                android:textSize="15sp"
+                android:layout_alignParentRight="true"
+                android:gravity="right|center"
+                android:background="@null"/>
+
+            <View
+                android:id="@+id/view_as6"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_888888"
+                android:layout_below="@id/et_as_fstime"/>
+
+            <TextView
+                android:id="@+id/tv_as_fetime"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/view_as6"
+                android:gravity="center"
+                android:text="发送起始时间"
+                android:textColor="@android:color/black"
+                android:textSize="15sp"/>
+
+            <EditText
+                android:id="@+id/et_as_fetime"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/view_as6"
+                android:hint="请输入发送间隔时间"
+                android:textColor="@color/color_1fc37f"
+                android:textSize="15sp"
+                android:layout_alignParentRight="true"
+                android:gravity="right|center"
+                android:background="@null"/>
+
+            <View
+                android:id="@+id/view_as7"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_888888"
+                android:layout_below="@id/et_as_fetime"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/view_as7">
+
+                <com.water.project.view.ClickTextView
+                    android:id="@+id/tv_setting_four"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:text="设置"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    android:gravity="center"
+                    android:background="@color/color_1fc37f"
+                    android:layout_marginRight="20dp"/>
+
+                <com.water.project.view.ClickTextView
+                    android:id="@+id/tv_get_four"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:text="读取"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    android:gravity="center"
+                    android:background="@color/color_1fc37f"
+                    android:layout_marginLeft="20dp"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</LinearLayout>

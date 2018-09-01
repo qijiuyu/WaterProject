@@ -4,12 +4,21 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.text.TextUtils;
+
+import com.water.project.application.MyApplication;
+
 public class SPUtil {
 
     private SharedPreferences shar;
     private Editor editor;
 
     public final static String USERMESSAGE = "waterMessage";
+
+    //蓝牙对象
+    public final static String BLE_DEVICE="ble_device";
+    //发送的蓝牙指令编号
+    public final static String SEND_BLE_CODE="send_ble_code";
 
     private static SPUtil sharUtil = null;
 
@@ -55,6 +64,20 @@ public class SPUtil {
     public void addLong(String key, long value) {
         editor.putLong(key, value);
         editor.commit();
+    }
+
+    public void addObject(String key,Object object){
+        editor.putString(key, MyApplication.gson.toJson(object));
+        editor.commit();
+    }
+
+
+    public Object getObject(String key,Class myClass){
+        final String value=shar.getString(key,null);
+        if(!TextUtils.isEmpty(value)){
+            return MyApplication.gson.fromJson(value,myClass);
+        }
+        return null;
     }
 
     public void removeMessage(String delKey) {

@@ -35,13 +35,15 @@
 
 
         <activity
-            android:name=".activity.MainActivity" android:launchMode="singleTask">
+            android:name=".activity.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+        <activity android:name=".activity.MainActivity"  android:launchMode="singleTask"/>
+        <activity android:name=".activity.SettingActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.AboutActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.SearchBleActivity" android:screenOrientation="portrait"/>
         <activity android:name=".photo.BigPhotoActivity"  android:screenOrientation="portrait"/>

@@ -8,11 +8,100 @@
     android:background="@android:color/white">
 
     <TextView
-        android:id="@+id/tv_am"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:text="查询蓝牙"
+        android:layout_height="50dp"
+        android:text="首页"
+        android:textSize="17sp"
+        android:textColor="@android:color/white"
         android:gravity="center"
         android:background="@color/color_1fc37f"/>
+
+    <com.youth.banner.Banner
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="180dp" />
+
+    <TextView
+        android:id="@+id/tv_am_scan"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:text="连接设备终端"
+        android:textSize="15sp"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:background="@color/color_1fc37f"
+        android:layout_margin="15dp"/>
+
+    <LinearLayout
+        android:id="@+id/lin_am1"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/tv_am_setting"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:text="参数设置"
+            android:textSize="15sp"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:background="@color/color_1fc37f"
+            android:layout_marginRight="10dp"/>
+
+        <TextView
+            android:id="@+id/tv_am_net"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:text="网络连接设置"
+            android:textSize="15sp"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:background="@color/color_1fc37f"
+          android:layout_marginLeft="10dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lin_am2"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/tv_am_data"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:text="实时数据"
+            android:textSize="15sp"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:background="@color/color_1fc37f"
+            android:layout_marginRight="10dp"/>
+
+        <TextView
+            android:id="@+id/tv_am_yan"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:text="数据校测"
+            android:textSize="15sp"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:background="@color/color_1fc37f"
+            android:layout_marginLeft="10dp"/>
+
+    </LinearLayout>
 
 </LinearLayout>

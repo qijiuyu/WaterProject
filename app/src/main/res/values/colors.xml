@@ -9,6 +9,7 @@
     <color name="color_777777">#777777</color>
     <color name="color_efefef">#efefef</color>
     <color name="rippelColor">#0099CC</color>
+    <color name="color_888888">#888888</color>
     <item name="gray_holo_dark" type="color">#ff464646</item>
     <item name="gray_holo_light" type="color">#ffd0d0d0</item>
 </resources>

@@ -15,7 +15,10 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.text.TextUtils;
 import com.water.project.activity.CeshiActivity;
+import com.water.project.application.MyApplication;
+import com.water.project.bean.Ble;
 import com.water.project.utils.LogUtils;
+import com.water.project.utils.SPUtil;
 import com.water.project.utils.TimerUtil;
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -27,9 +30,9 @@ import java.util.UUID;
  */
 public class BleService extends Service implements Serializable{
     public static final UUID CCCD = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
-    public static final UUID RX_SERVICE_UUID = UUID.fromString("0000ff12-0000-1000-8000-00805f9b34fb");
-    public static final UUID RX_CHAR_UUID = UUID.fromString("0000ff01-0000-1000-8000-00805f9b34fb");
-    public static final UUID TX_CHAR_UUID = UUID.fromString("0000ff02-0000-1000-8000-00805f9b34fb");
+    public static final UUID RX_SERVICE_UUID = UUID.fromString("0000B350-D6D8-C7EC-BDF0-EAB1BFC6BCBC");
+    public static final UUID RX_CHAR_UUID = UUID.fromString("0000B352-D6D8-C7EC-BDF0-EAB1BFC6BCBC");
+    public static final UUID TX_CHAR_UUID = UUID.fromString("0000B351-D6D8-C7EC-BDF0-EAB1BFC6BCBC");
 
 
     /**
@@ -87,6 +90,9 @@ public class BleService extends Service implements Serializable{
     private long timeOut = 1000 * 5, scanTime = 1000 * 10;
     private TimerUtil timerUtil, startUtil;
     private Handler handler = new Handler();
+    //蓝牙名称
+    private String bleName;
+    private StringBuffer sb;
 
     public class LocalBinder extends Binder {
         public BleService getService() {
@@ -118,10 +124,11 @@ public class BleService extends Service implements Serializable{
     /**
      * 扫描蓝牙设备
      */
-    public void scanDevice() {
+    public void scanDevice(String bleName) {
         if (mBluetoothAdapter == null) {
             return;
         }
+        this.bleName=bleName;
         //先关闭扫描
         mBluetoothAdapter.stopLeScan(mLeScanCallback);
         LogUtils.e("开始扫描蓝牙");
@@ -131,7 +138,6 @@ public class BleService extends Service implements Serializable{
     }
 
 
-    private Handler mHandler=new Handler();
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
         public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
             if(null==device){
@@ -141,10 +147,29 @@ public class BleService extends Service implements Serializable{
                 return;
             }
             LogUtils.e("搜索到蓝牙：" + device.getName() + "___" + device.getAddress());
-            intent.setAction(ACTION_SCAN_SUCCESS);
-            intent.putExtra("bleName",device.getName());
-            intent.putExtra("bleMac",device.getAddress());
-            sendBroadcast(intent);
+            if(TextUtils.isEmpty(bleName)){
+                intent.setAction(ACTION_SCAN_SUCCESS);
+                intent.putExtra("bleName",device.getName());
+                intent.putExtra("bleMac",device.getAddress());
+                sendBroadcast(intent);
+            }else{
+                final Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
+                if(null!=ble){
+                    if(ble.getBleName().equals(device.getName())){
+                        //停止扫描
+                        stopScan(mLeScanCallback);
+                        //关闭扫描计时器
+                        startUtil.stop();
+                        //连接蓝牙
+                        handler.post(new Runnable() {
+                            public void run() {
+                                connect(device.getAddress());
+                            }
+                        });
+                    }
+                }
+            }
+
         }
     };
 
@@ -251,6 +276,7 @@ public class BleService extends Service implements Serializable{
      */
     boolean isSuccess;
     public boolean writeRXCharacteristic(List<String> list, final boolean isTimeOut) {
+        sb=new StringBuffer();
         isSuccess=true;
         try {
             BluetoothGattService RxService = mBluetoothGatt.getService(RX_SERVICE_UUID);
@@ -305,11 +331,9 @@ public class BleService extends Service implements Serializable{
     /**
      * 发送广播（携带接受到的值）
      **/
-    private void broadcastUpdate(final String action, final BluetoothGattCharacteristic characteristic) {
+    private void broadcastUpdate(final String action, final String value) {
         final Intent intent = new Intent(action);
-        if (TX_CHAR_UUID.equals(characteristic.getUuid())) {
-            intent.putExtra(ACTION_EXTRA_DATA, characteristic.getValue());
-        }
+        intent.putExtra(ACTION_EXTRA_DATA, value);
         getApplication().sendBroadcast(intent);
     }
 
@@ -384,10 +408,24 @@ public class BleService extends Service implements Serializable{
             if (!TX_CHAR_UUID.equals(characteristic.getUuid())) {
                 return;
             }
-            LogUtils.e(characteristic.getUuid().toString()+"++++++++++++++");
-            String str=characteristic.getStringValue(0);
-            LogUtils.e(str+"______________");
-            broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
+            final String data=characteristic.getStringValue(0);
+            if(TextUtils.isEmpty(data)){
+                return;
+            }
+            LogUtils.e("接收到的数据是="+data);
+            if(data.contains("GD")){
+                sb.append(data);
+                if(data.contains("OK")){
+                    //关闭超时计时器
+                    stopTimeOut();
+                    broadcastUpdate(ACTION_DATA_AVAILABLE, sb.toString());
+                    return;
+                }
+            }else{
+                if(sb.length()>0){
+                    sb.append(data);
+                }
+            }
         }
     };
 
