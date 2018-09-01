@@ -7,7 +7,7 @@
 
 
     <LinearLayout
-        android:layout_width="250dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@android:color/white">
@@ -15,13 +15,12 @@
         <TextView android:id="@+id/tv_dialog_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="参数设置成功，设备与接收平台正在建立连接，请等待回应..."
+            android:text="温馨提示"
             android:textSize="15.5sp"
+            android:textStyle="bold"
             android:textColor="@android:color/black"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:gravity="center"/>
 
         <TextView android:id="@+id/tv_dialog_content"
@@ -29,7 +28,6 @@
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
             android:textSize="15.5sp"
-            android:text="连接状态：已建立连接"
             android:paddingRight="20dp"
             android:paddingLeft="20dp"
             android:layout_gravity="center"
@@ -39,15 +37,38 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginTop="10dp"
-            android:background="@color/color_dddddd"/>
+            android:background="#D4D4D4"/>
 
-        <com.water.project.view.ClickTextView android:id="@+id/tv_confirm"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:text="确定"
-            android:textSize="15sp"
-            android:textColor="@color/color_333333"
-            android:gravity="center"/>
+            android:orientation="horizontal">
+
+            <TextView android:id="@+id/tv_cancle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="取消"
+                android:textSize="15sp"
+                android:textColor="@color/color_1fc37f"
+                android:gravity="center"/>
+
+            <View android:id="@+id/view"
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:background="#D4D4D4"/>
+
+            <TextView android:id="@+id/tv_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="确定"
+                android:textSize="15sp"
+                android:textColor="@color/color_1fc37f"
+                android:gravity="center"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 
 

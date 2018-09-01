@@ -35,26 +35,22 @@
 
 
         <activity
-            android:name=".activity.WelcomeActivity">
+            android:name=".activity.MainActivity" android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".activity.MainActivity"
-            android:launchMode="singleTask"/>
-
-        <activity android:name=".activity.SettingActivity"/>
-        <activity android:name=".activity.SearchDataActivity"/>
-        <activity android:name=".activity.UploadActivity"/>
-        <activity android:name=".activity.SearchOldActivity"/>
-        <activity android:name=".activity.ShowImgActivity"/>
-        <activity android:name=".activity.AboutActivity"/>
+        <activity android:name=".activity.AboutActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SearchBleActivity" android:screenOrientation="portrait"/>
         <activity android:name=".photo.BigPhotoActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".photo.ImageGridActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".photo.NetBigPhotoActivity"  android:screenOrientation="portrait"/>
+
+        <service
+            android:name=".service.BleService"
+            android:enabled="true" />
 
     </application>
 

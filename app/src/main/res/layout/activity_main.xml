@@ -1,131 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:id="@+id/lin_start"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:background="@android:color/white">
 
     <TextView
+        android:id="@+id/tv_am"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/color_1fc37f"
-        android:text="首页"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        android:gravity="center"/>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@mipmap/logo"
-                android:layout_marginTop="30dp"
-                android:layout_gravity="center_horizontal"/>
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:text="北京中科光大自动化技术有限公司"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="19sp"
-                android:textStyle="bold"
-                android:layout_marginTop="20dp"
-                android:layout_centerVertical="true"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:text="地下水监测设备信息管理系统"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginTop="20dp"
-                android:layout_centerVertical="true"/>
-
-            <com.water.project.view.ClickTextView
-                android:id="@+id/tv_setting"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:text="设备参数设置"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:background="@drawable/bg_login"/>
-
-            <com.water.project.view.ClickTextView
-                android:id="@+id/tv_search"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:text="实时数据采集"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:background="@drawable/bg_login"/>
-
-            <com.water.project.view.ClickTextView
-                android:id="@+id/tv_upload"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:text="监测井信息录入"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:background="@drawable/bg_login"/>
-
-            <com.water.project.view.ClickTextView
-                android:id="@+id/tv_searchOld"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:text="监测井资料查询"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:background="@drawable/bg_login"/>
-
-            <com.water.project.view.ClickTextView
-                android:id="@+id/tv_about"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:text="关于我们"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:background="@drawable/bg_login"/>
-
-        </LinearLayout>
-
-    </ScrollView>
-
-
-
+        android:layout_height="35dp"
+        android:text="查询蓝牙"
+        android:gravity="center"
+        android:background="@color/color_1fc37f"/>
 
 </LinearLayout>
-
-
-
-

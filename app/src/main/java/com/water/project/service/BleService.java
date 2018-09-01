@@ -14,57 +14,63 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.text.TextUtils;
-
+import com.water.project.activity.CeshiActivity;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.TimerUtil;
-
+import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.UUID;
 
 /**
  * 蓝牙Service
  */
-public class BleService extends Service {
+public class BleService extends Service implements Serializable{
     public static final UUID CCCD = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
-    public static final UUID RX_SERVICE_UUID = UUID.fromString("0000fff0-0000-1000-8000-00805f9b34fb");
-    public static final UUID RX_CHAR_UUID = UUID.fromString("0000fff1-0000-1000-8000-00805f9b34fb");
-    public static final UUID TX_CHAR_UUID = UUID.fromString("0000fff4-0000-1000-8000-00805f9b34fb");
+    public static final UUID RX_SERVICE_UUID = UUID.fromString("0000ff12-0000-1000-8000-00805f9b34fb");
+    public static final UUID RX_CHAR_UUID = UUID.fromString("0000ff01-0000-1000-8000-00805f9b34fb");
+    public static final UUID TX_CHAR_UUID = UUID.fromString("0000ff02-0000-1000-8000-00805f9b34fb");
+
+
+    /**
+     * 蓝牙扫描成功
+     */
+    public final static String ACTION_SCAN_SUCCESS = "net.zkgd.adminapp.ACTION_SCAN_SUCCESS";
 
     /**
      * 蓝牙连接成功
      */
-    public final static String ACTION_GATT_CONNECTED =
-            "net.edaibu.adminapp.ACTION_GATT_CONNECTED";
+    public final static String ACTION_GATT_CONNECTED = "net.zkgd.adminapp.ACTION_GATT_CONNECTED";
     /**
      * 断开连接
      */
-    public final static String ACTION_GATT_DISCONNECTED =
-            "net.edaibu.adminapp.ACTION_GATT_DISCONNECTED";
+    public final static String ACTION_GATT_DISCONNECTED = "net.zkgd.adminapp.ACTION_GATT_DISCONNECTED";
     /**
      * 接收到了数据
      */
-    public final static String ACTION_DATA_AVAILABLE =
-            "net.edaibu.adminapp.ACTION_DATA_AVAILABLE";
+    public final static String ACTION_DATA_AVAILABLE = "net.zkgd.adminapp.ACTION_DATA_AVAILABLE";
     /**
      * 发送接到的数据的KEY
      */
-    public final static String ACTION_EXTRA_DATA =
-            "net.edaibu.adminapp.EXTRA_DATA";
+    public final static String ACTION_EXTRA_DATA = "net.zkgd.adminapp.EXTRA_DATA";
     /**
      * 通道建立成功
      */
-    public final static String ACTION_ENABLE_NOTIFICATION_SUCCES =
-            "net.edaibu.adminapp.enablenotificationsucces";
+    public final static String ACTION_ENABLE_NOTIFICATION_SUCCES = "net.zkgd.adminapp.enablenotificationsucces";
     /**
      * 没有发现指定蓝牙
      */
-    public final static String ACTION_NO_DISCOVERY_BLE =
-            "net.edaibu.adminapp.ACTION_NO_DISCOVERY_BLE";
+    public final static String ACTION_NO_DISCOVERY_BLE = "net.zkgd.adminapp.ACTION_NO_DISCOVERY_BLE";
     /**
      * 数据交互超时
      */
-    public final static String ACTION_INTERACTION_TIMEOUT =
-            "net.edaibu.adminapp.ACTION_INTERACTION_TIMEOUT";
+    public final static String ACTION_INTERACTION_TIMEOUT = "net.zkgd.adminapp.ACTION_INTERACTION_TIMEOUT";
+
+    //发送数据失败
+    public final static String ACTION_SEND_DATA_FAIL = "net.zkgd.adminapp.ACTION_SEND_DATA_FAIL";
+
+
+    private Intent intent=new Intent();
 
     private final IBinder mBinder = new LocalBinder();
     private BluetoothAdapter mBluetoothAdapter;
@@ -77,10 +83,8 @@ public class BleService extends Service {
     public static final int STATE_CONNECTING = 1;
     //连接成功
     public static final int STATE_CONNECTED = 2;
-    //蓝牙名称
-    private String bleName;
     //timeOut：发送命令超时         scanTime:扫描蓝牙超时
-    private long timeOut = 1000 * 25, scanTime = 1000 * 15;
+    private long timeOut = 1000 * 5, scanTime = 1000 * 10;
     private TimerUtil timerUtil, startUtil;
     private Handler handler = new Handler();
 
@@ -112,42 +116,35 @@ public class BleService extends Service {
     }
 
     /**
-     * 扫描并且连接
-     *
-     * @param bleName 蓝牙名
+     * 扫描蓝牙设备
      */
-    public void connectScan(String bleName) {
-        if (mBluetoothAdapter == null || TextUtils.isEmpty(bleName)) {
+    public void scanDevice() {
+        if (mBluetoothAdapter == null) {
             return;
         }
-        this.bleName = bleName;
-        stopStartTime();
         //先关闭扫描
         mBluetoothAdapter.stopLeScan(mLeScanCallback);
-        Log("开始扫描蓝牙");
+        LogUtils.e("开始扫描蓝牙");
         mBluetoothAdapter.startLeScan(mLeScanCallback);
-        //开始扫描蓝牙
+        //开启扫描蓝牙计时器
         startUtil();
-        return;
     }
 
 
     private Handler mHandler=new Handler();
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
         public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
-//            LogUtils.e("搜索到蓝牙：" + device.getName() + "___" + device.getAddress());
-            if (bleName.equals(device.getName())) {
-                //关闭扫描计时器
-                stopStartTime();
-                //停止扫描
-                stopScan(mLeScanCallback);
-                mHandler.post(new Runnable() {
-                    public void run() {
-                        //连接
-                        connect(device.getAddress());
-                    }
-                });
+            if(null==device){
+                return;
             }
+            if(null==device.getName()){
+                return;
+            }
+            LogUtils.e("搜索到蓝牙：" + device.getName() + "___" + device.getAddress());
+            intent.setAction(ACTION_SCAN_SUCCESS);
+            intent.putExtra("bleName",device.getName());
+            intent.putExtra("bleMac",device.getAddress());
+            sendBroadcast(intent);
         }
     };
 
@@ -162,7 +159,7 @@ public class BleService extends Service {
     }
 
     /**
-     * 扫描15秒钟
+     * 扫描10秒钟
      */
     private void startUtil() {
         startUtil = new TimerUtil(scanTime, new TimerUtil.TimerCallBack() {
@@ -170,7 +167,7 @@ public class BleService extends Service {
                 //停止扫描
                 stopScan(mLeScanCallback);
                 //关闭扫描计时器
-                stopStartTime();
+                startUtil.stop();
                 broadcastUpdate(ACTION_NO_DISCOVERY_BLE);
             }
         });
@@ -179,7 +176,6 @@ public class BleService extends Service {
 
     /**
      * 连接指定蓝牙
-     *
      * @param address 蓝牙的地址
      */
     public boolean connect(final String address) {
@@ -192,7 +188,7 @@ public class BleService extends Service {
             connectionState = STATE_DISCONNECTED;
             return false;
         }
-//        LogUtils.e("调connectGatt开始连接");
+        LogUtils.e("调connectGatt开始连接");
         mBluetoothGatt = bleDevice.connectGatt(BleService.this, false, mGattCallback);
         return true;
     }
@@ -205,19 +201,19 @@ public class BleService extends Service {
     public void enableTXNotification() {
         try {
             if (mBluetoothGatt == null) {
-                Log("初始化通道错误:mBluetoothGatt=====null");
+                LogUtils.e("初始化通道错误:mBluetoothGatt=====null");
                 disconnect();
                 return;
             }
             BluetoothGattService RxService = mBluetoothGatt.getService(RX_SERVICE_UUID);
             if (RxService == null) {
-                Log("初始化通道错误:BluetoothGattService=====null");
+                LogUtils.e("初始化通道错误:BluetoothGattService=====null");
                 disconnect();
                 return;
             }
             BluetoothGattCharacteristic TxChar = RxService.getCharacteristic(TX_CHAR_UUID);
             if (TxChar == null) {
-                Log("初始化通道错误:BluetoothGattCharacteristic=====null");
+                LogUtils.e("初始化通道错误:BluetoothGattCharacteristic=====null");
                 disconnect();
                 return;
             }
@@ -227,8 +223,7 @@ public class BleService extends Service {
             mBluetoothGatt.writeDescriptor(descriptor);
             broadcastUpdate(ACTION_ENABLE_NOTIFICATION_SUCCES);
         } catch (Exception e) {
-            //建立通道失败，发送没有找到蓝牙广播
-            broadcastUpdate(ACTION_NO_DISCOVERY_BLE);
+            broadcastUpdate(ACTION_GATT_DISCONNECTED);
         }
     }
 
@@ -252,40 +247,39 @@ public class BleService extends Service {
     }
 
     /**
-     * 读取数据
-     */
-    public void readCharacteristic(BluetoothGattCharacteristic characteristic) {
-        if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-            Log("读取数据:mBluetoothAdapter===null");
-            return;
-        }
-        mBluetoothGatt.readCharacteristic(characteristic);
-    }
-
-
-    /**
      * 传输数据
      */
-    public boolean writeRXCharacteristic(byte[] value, boolean isTimeOut) {
+    boolean isSuccess;
+    public boolean writeRXCharacteristic(List<String> list, final boolean isTimeOut) {
+        isSuccess=true;
         try {
             BluetoothGattService RxService = mBluetoothGatt.getService(RX_SERVICE_UUID);
             if (RxService == null) {
-                Log("传输数据：BluetoothGattService==null");
+                LogUtils.e("传输数据：BluetoothGattService==null");
                 disconnect();
                 return false;
             }
-            BluetoothGattCharacteristic RxChar = RxService.getCharacteristic(RX_CHAR_UUID);
+            final BluetoothGattCharacteristic RxChar = RxService.getCharacteristic(RX_CHAR_UUID);
             if (RxChar == null) {
                 disconnect();
-                Log("传输数据：BluetoothGattCharacteristic==null");
+                LogUtils.e("传输数据：BluetoothGattCharacteristic==null");
                 return false;
             }
-            RxChar.setValue(value);
-            //开启超时计时器
-            if (isTimeOut) {
-                startTimeOut();
+            //循环发送数据
+            for (int i=0;i<list.size();i++){
+                   RxChar.setValue(list.get(i).getBytes());
+                   //开启超时计时器
+                  if(isTimeOut){
+                    startTimeOut();
+                  }
+                  boolean b=mBluetoothGatt.writeCharacteristic(RxChar);
+                  if(!b){
+                    isSuccess=false;
+                  }
+                  //延时5毫秒
+                  new Thread().sleep(5);
             }
-            return mBluetoothGatt.writeCharacteristic(RxChar);
+            return isSuccess;
         } catch (Exception e) {
             disconnect();
             e.printStackTrace();
@@ -311,20 +305,12 @@ public class BleService extends Service {
     /**
      * 发送广播（携带接受到的值）
      **/
-    private void broadcastUpdate(final String action,
-                                 final BluetoothGattCharacteristic characteristic) {
+    private void broadcastUpdate(final String action, final BluetoothGattCharacteristic characteristic) {
         final Intent intent = new Intent(action);
         if (TX_CHAR_UUID.equals(characteristic.getUuid())) {
             intent.putExtra(ACTION_EXTRA_DATA, characteristic.getValue());
         }
         getApplication().sendBroadcast(intent);
-    }
-
-    /**
-     * Log工具
-     */
-    private void Log(String msg) {
-        LogUtils.e(msg);
     }
 
 
@@ -342,7 +328,7 @@ public class BleService extends Service {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                Log("清楚蓝牙连接缓存异常：" + e.getMessage());
+                LogUtils.e("清楚蓝牙连接缓存异常：" + e.getMessage());
             }
         }
         return false;
@@ -355,7 +341,7 @@ public class BleService extends Service {
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             LogUtils.e("status="+status+"___________");
             if (newState == BluetoothProfile.STATE_CONNECTED) {
-                Log("蓝牙连接成功");
+                LogUtils.e("蓝牙连接成功");
                 connectionState = STATE_CONNECTED;
                 //去发现服务
                 handler.postDelayed(new Runnable() {
@@ -365,9 +351,9 @@ public class BleService extends Service {
                         }
                         mBluetoothGatt.discoverServices();
                     }
-                }, 1000);
+                }, 700);
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-                Log("蓝牙连接断开");
+                LogUtils.e("蓝牙连接断开");
                 refreshDeviceCache();
                 connectionState = STATE_DISCONNECTED;
                 close();
@@ -381,33 +367,26 @@ public class BleService extends Service {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 //发现服务，建立通道
                 enableTXNotification();
-            } else {
-                broadcastUpdate(ACTION_GATT_DISCONNECTED);
-                Log("onServicesDiscovered 返回状态:" + status);
             }
         }
 
         //接收数据
         @Override
-        public void onCharacteristicRead(BluetoothGatt gatt,
-                                         BluetoothGattCharacteristic characteristic,
-                                         int status) {
-            if (status == BluetoothGatt.GATT_SUCCESS) {
-                byte[] txValue = characteristic.getValue();
-                if (null != txValue && txValue.length > 0) {
-                    stopTimeOut();
-                    broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
-                }
-            }
+        public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
         }
 
         //接收数据
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt,BluetoothGattCharacteristic characteristic) {
-            byte[] txValue = characteristic.getValue();
-            if(txValue==null){
+            if(null==characteristic){
                 return;
             }
+            if (!TX_CHAR_UUID.equals(characteristic.getUuid())) {
+                return;
+            }
+            LogUtils.e(characteristic.getUuid().toString()+"++++++++++++++");
+            String str=characteristic.getStringValue(0);
+            LogUtils.e(str+"______________");
             broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
         }
     };
@@ -417,11 +396,10 @@ public class BleService extends Service {
      * 开始计时超时时间
      **/
     private synchronized void startTimeOut() {
-        Log("开启计时了");
         stopTimeOut();
         timerUtil = new TimerUtil(timeOut, new TimerUtil.TimerCallBack() {
             public void onFulfill() {
-                Log("发送超时广播");
+                LogUtils.e("发送超时广播");
                 broadcastUpdate(ACTION_INTERACTION_TIMEOUT);
             }
         });
@@ -437,14 +415,6 @@ public class BleService extends Service {
         }
     }
 
-    /**
-     * 扫描超时计时器
-     */
-    private void stopStartTime() {
-        if (null != startUtil) {
-            startUtil.stop();
-        }
-    }
 
     public BluetoothGatt getBluetoothGatt() {
         return mBluetoothGatt;
