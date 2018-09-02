@@ -79,6 +79,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         findViewById(R.id.tv_am_scan).setOnClickListener(this);
         findViewById(R.id.tv_am_setting).setOnClickListener(this);
         findViewById(R.id.tv_am_data).setOnClickListener(this);
+        findViewById(R.id.tv_am_yan).setOnClickListener(this);
     }
 
 
@@ -140,6 +141,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             case R.id.tv_am_data:
                  setClass(GetDataActivity.class);
                  break;
+            //数据校验
+            case R.id.tv_am_yan:
+                 setClass(CheckActivity.class);
+                 break;
         }
     }
 
@@ -178,6 +183,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 showToastView("再按一次退出程序！");
                 exitTime = System.currentTimeMillis();
             } else {
+                bleService.disconnect();
                 unbindService(mServiceConnection);
                 unregisterReceiver(mBroadcastReceiver);
                 finish();
@@ -187,6 +193,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         return super.onKeyDown(keyCode, event);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        bleService.disconnect();
+    }
 }
 
 
