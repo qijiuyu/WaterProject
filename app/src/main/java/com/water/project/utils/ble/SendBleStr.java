@@ -30,6 +30,10 @@ public class SendBleStr {
     //设置发送频率
     public static String SET_FA_SONG_PIN_LU;
 
+
+    //查询实时数据
+    public static String SEND_REAL_TIME_DATA="GDCURRENT";
+
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
         StringBuffer stringBuffer=new StringBuffer();
@@ -113,6 +117,10 @@ public class SendBleStr {
             //设置探头埋深
             case BleContant.SET_TANTOU:
                  SendBleDataManager.getInstance().sendData(SET_TANTOU,type);
+                 break;
+            //查询实时数据
+            case BleContant.SEND_REAL_TIME_DATA:
+                 SendBleDataManager.getInstance().sendData(SEND_REAL_TIME_DATA,type);
                  break;
 
         }

@@ -86,6 +86,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         findViewById(R.id.tv_get_two).setOnClickListener(this);
         findViewById(R.id.tv_get_three).setOnClickListener(this);
         findViewById(R.id.tv_get_four).setOnClickListener(this);
+        findViewById(R.id.lin_back).setOnClickListener(this);
     }
 
 
@@ -119,6 +120,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
             //选择采集时间
             case R.id.et_as_cstime:
+                 TimeUtils.type=0;
                  new SlideDateTimePicker.Builder(getSupportFragmentManager())
                 .setListener(listener)
                 .setInitialDate(new Date())
@@ -140,6 +142,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
             //选择发送起始时间
             case R.id.et_as_fstime:
+                 TimeUtils.type=1;
                   new SlideDateTimePicker.Builder(getSupportFragmentManager())
                         .setListener(listener)
                         .setInitialDate(new Date())
@@ -175,6 +178,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case R.id.tv_get_four:
                 sendData(BleContant.SEND_FA_SONG_PIN_LU,2);
                 break;
+            case R.id.lin_back:
+                 finish();
+                 break;
             default:
                 break;
         }

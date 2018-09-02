@@ -78,6 +78,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         titleList.add("全场2折起");
         findViewById(R.id.tv_am_scan).setOnClickListener(this);
         findViewById(R.id.tv_am_setting).setOnClickListener(this);
+        findViewById(R.id.tv_am_data).setOnClickListener(this);
     }
 
 
@@ -134,6 +135,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             //参数设置
             case R.id.tv_am_setting:
                  setClass(SettingActivity.class);
+                 break;
+            //实时数据
+            case R.id.tv_am_data:
+                 setClass(GetDataActivity.class);
                  break;
         }
     }

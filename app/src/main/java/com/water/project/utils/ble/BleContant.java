@@ -31,4 +31,7 @@ public class BleContant {
 
     //设置发送频率
     public static final int SET_FA_SONG=1007;
+
+    //查询实时数据
+    public static final int SEND_REAL_TIME_DATA=1008;
 }

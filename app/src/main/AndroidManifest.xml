@@ -44,6 +44,7 @@
 
         <activity android:name=".activity.MainActivity"  android:launchMode="singleTask"/>
         <activity android:name=".activity.SettingActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.GetDataActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.AboutActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.SearchBleActivity" android:screenOrientation="portrait"/>
         <activity android:name=".photo.BigPhotoActivity"  android:screenOrientation="portrait"/>
