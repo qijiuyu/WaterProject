@@ -80,6 +80,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         findViewById(R.id.tv_am_setting).setOnClickListener(this);
         findViewById(R.id.tv_am_data).setOnClickListener(this);
         findViewById(R.id.tv_am_yan).setOnClickListener(this);
+        findViewById(R.id.tv_about).setOnClickListener(this);
     }
 
 
@@ -144,6 +145,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             //数据校验
             case R.id.tv_am_yan:
                  setClass(CheckActivity.class);
+                 break;
+            //关于我们
+            case R.id.tv_about:
+                 setClass(AboutActivity.class);
                  break;
         }
     }
