@@ -15,6 +15,7 @@ import android.widget.NumberPicker.OnValueChangeListener;
 import android.widget.TimePicker;
 
 import com.water.project.R;
+import com.water.project.utils.LogUtils;
 
 /**
  * The fragment for the second page in the ViewPager that holds

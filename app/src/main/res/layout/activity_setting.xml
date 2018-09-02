@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <include layout="@layout/head"/>
@@ -29,6 +30,7 @@
                 android:layout_width="200dp"
                 android:layout_height="40dp"
                 android:hint="请输入统一编码"
+                android:digits="0123456789"
                 android:textColor="@color/color_1fc37f"
                 android:textSize="15sp"
                 android:layout_alignParentRight="true"
@@ -57,14 +59,15 @@
                 android:id="@+id/et_as_phone"
                 android:layout_width="200dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/view_as1"
+                android:digits="0123456789"
                 android:hint="请输入SIM卡号"
                 android:textColor="@color/color_1fc37f"
                 android:textSize="15sp"
-                android:layout_alignParentRight="true"
                 android:gravity="right|center"
-                android:background="@null"/>
+                android:background="@null"
+                android:layout_alignBaseline="@+id/tv_as_phone"
+                android:layout_alignBottom="@+id/tv_as_phone"
+                android:layout_alignParentEnd="true" />
 
             <View
                 android:id="@+id/view_as2"
@@ -124,12 +127,26 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="30dp"
                 android:layout_below="@id/lin_as1"
+                android:digits="0123456789."
+                android:maxLength="8"
                 android:hint="请输入探头埋深"
                 android:textColor="@color/color_1fc37f"
                 android:textSize="15sp"
                 android:layout_alignParentRight="true"
                 android:gravity="right|center"
-                android:background="@null"/>
+                android:background="@null"
+                android:layout_marginRight="20dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="m"
+                android:textSize="15sp"
+                android:textColor="@android:color/black"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="30dp"
+                android:layout_below="@id/lin_as1"
+                android:gravity="center"/>
 
             <View
                 android:id="@+id/view_as3"
@@ -182,18 +199,16 @@
                 android:textColor="@android:color/black"
                 android:textSize="15sp"/>
 
-            <EditText
+            <TextView
                 android:id="@+id/et_as_cstime"
                 android:layout_width="200dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="30dp"
                 android:layout_below="@id/lin_as2"
-                android:hint="请输入采集起始时间"
                 android:textColor="@color/color_1fc37f"
                 android:textSize="15sp"
                 android:layout_alignParentRight="true"
-                android:gravity="right|center"
-                android:background="@null"/>
+                android:gravity="right|center"/>
 
             <View
                 android:id="@+id/view_as4"
@@ -218,13 +233,26 @@
                 android:layout_width="200dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
+                android:digits="0123456789"
                 android:layout_below="@id/view_as4"
                 android:hint="请输入采集间隔时间"
                 android:textColor="@color/color_1fc37f"
                 android:textSize="15sp"
                 android:layout_alignParentRight="true"
                 android:gravity="right|center"
-                android:background="@null"/>
+                android:background="@null"
+                android:layout_marginRight="30dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/view_as4"
+                android:text="小时"
+                android:textColor="@android:color/black"
+                android:textSize="15sp"
+                android:layout_alignParentRight="true"
+                android:gravity="center"/>
 
             <View
                 android:id="@+id/view_as5"
@@ -277,7 +305,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="15sp"/>
 
-            <EditText
+            <TextView
                 android:id="@+id/et_as_fstime"
                 android:layout_width="200dp"
                 android:layout_height="40dp"
@@ -288,7 +316,18 @@
                 android:textSize="15sp"
                 android:layout_alignParentRight="true"
                 android:gravity="right|center"
-                android:background="@null"/>
+                android:layout_marginRight="20dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="30dp"
+                android:layout_below="@id/lin_as3"
+                android:text="点"
+                android:textColor="@android:color/black"
+                android:textSize="15sp"
+                android:layout_alignParentRight="true"
+                android:gravity="center"/>
 
             <View
                 android:id="@+id/view_as6"
@@ -319,7 +358,19 @@
                 android:textSize="15sp"
                 android:layout_alignParentRight="true"
                 android:gravity="right|center"
-                android:background="@null"/>
+                android:background="@null"
+                android:layout_marginRight="30dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/view_as6"
+                android:text="小时"
+                android:textColor="@android:color/black"
+                android:textSize="15sp"
+                android:layout_alignParentRight="true"
+                android:gravity="center"/>
 
             <View
                 android:id="@+id/view_as7"

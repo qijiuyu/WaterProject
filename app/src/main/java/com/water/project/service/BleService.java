@@ -52,6 +52,7 @@ public class BleService extends Service implements Serializable{
      * 接收到了数据
      */
     public final static String ACTION_DATA_AVAILABLE = "net.zkgd.adminapp.ACTION_DATA_AVAILABLE";
+    public final static String ACTION_DATA_AVAILABLE2 = "net.zkgd.adminapp.ACTION_DATA_AVAILABLE2";
     /**
      * 发送接到的数据的KEY
      */
@@ -87,12 +88,15 @@ public class BleService extends Service implements Serializable{
     //连接成功
     public static final int STATE_CONNECTED = 2;
     //timeOut：发送命令超时         scanTime:扫描蓝牙超时
-    private long timeOut = 1000 * 5, scanTime = 1000 * 10;
+    private long timeOut = 1000 * 8, scanTime = 1000 * 10;
     private TimerUtil timerUtil, startUtil;
     private Handler handler = new Handler();
     //蓝牙名称
     private String bleName;
+    //接收回执的数据，进行拼接
     private StringBuffer sb;
+    //根据类型发送不同的回执广播
+    private int type;
 
     public class LocalBinder extends Binder {
         public BleService getService() {
@@ -275,7 +279,7 @@ public class BleService extends Service implements Serializable{
      * 传输数据
      */
     boolean isSuccess;
-    public boolean writeRXCharacteristic(List<String> list, final boolean isTimeOut) {
+    public boolean writeRXCharacteristic(List<String> list, final int type) {
         sb=new StringBuffer();
         isSuccess=true;
         try {
@@ -295,9 +299,8 @@ public class BleService extends Service implements Serializable{
             for (int i=0;i<list.size();i++){
                    RxChar.setValue(list.get(i).getBytes());
                    //开启超时计时器
-                  if(isTimeOut){
-                    startTimeOut();
-                  }
+                   startTimeOut();
+                  //下发命令
                   boolean b=mBluetoothGatt.writeCharacteristic(RxChar);
                   if(!b){
                     isSuccess=false;
@@ -418,7 +421,11 @@ public class BleService extends Service implements Serializable{
                 if(data.contains("OK")){
                     //关闭超时计时器
                     stopTimeOut();
-                    broadcastUpdate(ACTION_DATA_AVAILABLE, sb.toString());
+                    if(type==1){
+                        broadcastUpdate(ACTION_DATA_AVAILABLE, sb.toString());
+                    }else{
+                        broadcastUpdate(ACTION_DATA_AVAILABLE2, sb.toString());
+                    }
                     return;
                 }
             }else{

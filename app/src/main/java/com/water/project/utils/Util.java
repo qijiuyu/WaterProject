@@ -181,7 +181,7 @@ public class Util extends ClassLoader {
      * @return
      */
     public static String setDouble(double d){
-        final DecimalFormat df = new DecimalFormat("0.00");
+        final DecimalFormat df = new DecimalFormat("0.000");
         return df.format(d);
     }
 
@@ -330,5 +330,20 @@ public class Util extends ClassLoader {
         Pattern   p   =   Pattern.compile(regEx);
         Matcher   m   =   p.matcher(str);
         return   m.matches();
+    }
+
+    /**
+     * 小数点后面必须保留三位小数
+     * @param msg
+     * @return
+     */
+    public static boolean getCharIndex(String msg){
+        final int length=msg.length();
+        final int strChar=msg.indexOf(".");
+        if(length-strChar==4){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

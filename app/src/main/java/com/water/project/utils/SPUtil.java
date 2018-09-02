@@ -17,8 +17,6 @@ public class SPUtil {
 
     //蓝牙对象
     public final static String BLE_DEVICE="ble_device";
-    //发送的蓝牙指令编号
-    public final static String SEND_BLE_CODE="send_ble_code";
 
     private static SPUtil sharUtil = null;
 

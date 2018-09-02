@@ -34,9 +34,8 @@ public class SendBleDataManager {
     /**
      *
      * @param data  发送的蓝牙命令
-     * @param timeOut  是否开启超时 计时器
      */
-    public void sendData(final String data,final boolean timeOut) {
+    public void sendData(final String data,final int type) {
         if (mService == null || mService.getConnectionState() == BleService.STATE_DISCONNECTED) {
             return;
         }
@@ -50,9 +49,9 @@ public class SendBleDataManager {
                 //将字符串进行20字节的截取
                 final List<String> sendList=getSendData(data,20);
                 //下发蓝牙命令
-                boolean b = mService.writeRXCharacteristic(sendList,timeOut);
+                boolean b = mService.writeRXCharacteristic(sendList,type);
                 if (!b) {
-                    b = mService.writeRXCharacteristic(sendList,timeOut);
+                    b = mService.writeRXCharacteristic(sendList,type);
                     if (!b) {
                         LogUtils.e("发送数据第二次失败");
                         mService.stopTimeOut();
