@@ -45,7 +45,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     private int SEND_STATUS;
     private int SEND_TYPE;
     //设置统一编码和SIM的数据
-    private String SET_CODE_SIM;
+    private String CODE_SIM_DATA;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -90,6 +90,28 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     }
 
 
+    /**
+     * 发送蓝牙命令
+     * @param status
+     */
+    private void sendData(int status,int type){
+        SEND_STATUS=status;
+        SEND_TYPE=type;
+        showProgress("发送数据中...");
+        //如果蓝牙连接断开，就扫描重连
+        if(MainActivity.bleService.connectionState==MainActivity.bleService.STATE_DISCONNECTED){
+            //扫描并重连蓝牙
+            final Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
+            if(null!=ble){
+                showProgress("扫描并连接蓝牙设备...");
+                MainActivity.bleService.scanDevice(ble.getBleName());
+            }
+            return;
+        }
+        SendBleStr.sendBleData(status,type);
+    }
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -102,7 +124,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                   }else if(TextUtils.isEmpty(sim)){
                       showToastView("请输入SIM卡号！");
                   }else{
-                      SendBleStr.sendSetCodeSim(code,sim,SET_CODE_SIM);
+                      SendBleStr.sendSetCodeSim(code,sim,CODE_SIM_DATA);
                       sendData(BleContant.SET_CODE_PHONE,2);
                   }
                  break;
@@ -188,28 +210,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
 
     /**
-     * 发送蓝牙命令
-     * @param status
-     */
-    private void sendData(int status,int type){
-        SEND_STATUS=status;
-        SEND_TYPE=type;
-        showProgress("发送数据中...");
-        //如果蓝牙连接断开，就扫描重连
-        if(MainActivity.bleService.connectionState==MainActivity.bleService.STATE_DISCONNECTED){
-            //扫描并重连蓝牙
-            final Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
-            if(null!=ble){
-                showProgress("扫描并连接蓝牙设备...");
-                MainActivity.bleService.scanDevice(ble.getBleName());
-            }
-            return;
-        }
-        SendBleStr.sendBleData(status,type);
-    }
-
-
-    /**
      * 解析并显示回执的数据
      * @param data
      */
@@ -218,7 +218,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         switch (SEND_STATUS){
             //显示统一编码，SIM卡号
             case BleContant.SEND_GET_CODE_PHONE:
-                 SET_CODE_SIM=data;
+                 CODE_SIM_DATA=data;
                  strings=data.split(";");
                  etCode.setText(strings[1]);
                  etPhone.setText(strings[6]);
@@ -231,13 +231,13 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             //显示采集频率
             case BleContant.SEND_CAI_JI_PIN_LU:
                  strings=data.split(",");
-                 etCStime.setText(strings[0].replace("GDREADW",""));
+                 etCStime.setText(strings[0].replace("GDREADR",""));
                  etCEtime.setText((Integer.parseInt(strings[1])/60)+"");
                  break;
             //显示发送频率
             case BleContant.SEND_FA_SONG_PIN_LU:
                   strings=data.split(",");
-                  etFStime.setText(strings[0].replace("GDSENDW",""));
+                  etFStime.setText(strings[0].replace("GDSENDR",""));
                   etFEtime.setText(strings[1]);
                   break;
             default:
@@ -296,9 +296,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                             dialogView = new DialogView(mContext, "蓝牙连接断开，请靠近设备进行连接!","重新连接", "取消", new View.OnClickListener() {
                                 public void onClick(View v) {
                                     dialogView.dismiss();
-                                    SEND_STATUS=BleContant.NOT_SEND_DATA;
                                     showProgress("蓝牙连接中...");
-                                    MainActivity.bleService.connect(SettingActivity.this.ble.getBleMac());
+                                    mHandler.postDelayed(new Runnable() {
+                                        public void run() {
+                                            MainActivity.bleService.connect(SettingActivity.this.ble.getBleMac());
+                                        }
+                                    },100);
                                 }
                             }, null);
                             dialogView.show();
@@ -332,7 +335,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                             sendData(BleContant.SEND_FA_SONG_PIN_LU,1);
                             break;
                         case BleContant.SEND_FA_SONG_PIN_LU:
-                            clearTask();
+                             clearTask();
+                             SEND_STATUS=BleContant.NOT_SEND_DATA;
                             break;
                         default:
                             clearTask();
@@ -347,13 +351,14 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                          //解析并显示回执的数据
                          showData(data2);
                      }else{
-                         dialogView = new DialogView(mContext, "参数设置成功！", "好的","", new View.OnClickListener() {
+                         dialogView = new DialogView(mContext, "参数设置成功！", "好的",null, new View.OnClickListener() {
                              public void onClick(View v) {
                                  dialogView.dismiss();
                              }
                          }, null);
                          dialogView.show();
                      }
+                     SEND_STATUS=BleContant.NOT_SEND_DATA;
                      break;
                 case BleService.ACTION_INTERACTION_TIMEOUT:
                     clearTask();

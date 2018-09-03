@@ -147,7 +147,7 @@ public class BleService extends Service implements Serializable{
             if(null==device){
                 return;
             }
-            if(null==device.getName()){
+            if(TextUtils.isEmpty(device.getName())){
                 return;
             }
             LogUtils.e("搜索到蓝牙：" + device.getName() + "___" + device.getAddress());

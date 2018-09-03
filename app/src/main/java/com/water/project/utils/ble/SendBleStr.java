@@ -46,7 +46,7 @@ public class SendBleStr {
         strings[1]=code;
         strings[6]=sim;
         for (int i=0;i<strings.length;i++){
-            stringBuffer.append(strings[i]);
+            stringBuffer.append(strings[i]+";");
         }
         SET_CODE_PHONE=stringBuffer.toString();
     }

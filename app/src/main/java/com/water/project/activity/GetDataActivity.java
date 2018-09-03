@@ -147,7 +147,11 @@ public class GetDataActivity extends BaseActivity {
                                 public void onClick(View v) {
                                     dialogView.dismiss();
                                     showProgress("蓝牙连接中...");
-                                    MainActivity.bleService.connect(GetDataActivity.this.ble.getBleMac());
+                                    mHandler.postDelayed(new Runnable() {
+                                        public void run() {
+                                            MainActivity.bleService.connect(GetDataActivity.this.ble.getBleMac());
+                                        }
+                                    },100);
                                 }
                             }, null);
                             dialogView.show();

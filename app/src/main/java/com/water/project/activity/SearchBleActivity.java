@@ -8,11 +8,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.water.project.R;
 import com.water.project.adapter.BleItemAdapter;
 import com.water.project.application.MyApplication;
@@ -25,7 +23,6 @@ import com.water.project.utils.StatusBarUtils;
 import com.water.project.utils.SystemBarTintManager;
 import com.water.project.view.DialogView;
 import com.water.project.view.RippleBackground;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -190,7 +190,11 @@ public class CheckActivity extends BaseActivity {
                                 public void onClick(View v) {
                                     dialogView.dismiss();
                                     showProgress("蓝牙连接中...");
-                                    MainActivity.bleService.connect(CheckActivity.this.ble.getBleMac());
+                                    mHandler.postDelayed(new Runnable() {
+                                        public void run() {
+                                            MainActivity.bleService.connect(CheckActivity.this.ble.getBleMac());
+                                        }
+                                    },100);
                                 }
                             }, null);
                             dialogView.show();
@@ -201,7 +205,11 @@ public class CheckActivity extends BaseActivity {
                     break;
                 //初始化通道成功
                 case BleService.ACTION_ENABLE_NOTIFICATION_SUCCES:
-                    sendData(SEND_STATUS);
+                    if(SEND_STATUS==BleContant.NOT_SEND_DATA){
+                        showToastView("蓝牙连接成功！");
+                    }else{
+                        sendData(SEND_STATUS);
+                    }
                     break;
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
@@ -209,6 +217,7 @@ public class CheckActivity extends BaseActivity {
                      if(SEND_STATUS==BleContant.SEND_REAL_TIME_DATA){
                          //解析并显示回执的数据
                          showData(data);
+                         SEND_STATUS=BleContant.NOT_SEND_DATA;
                      }else{
                          sendData(BleContant.SEND_REAL_TIME_DATA);
                      }

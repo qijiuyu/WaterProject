@@ -15,7 +15,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
-
 import com.water.project.R;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
@@ -26,7 +25,6 @@ import com.water.project.utils.photo.GlideImageLoader;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +41,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     private List<Integer> imgList=new ArrayList<>();
     //设置图片标题:自动对应
     private List<String> titleList=new ArrayList<>();
-    private SimpleDateFormat mFormatter = new SimpleDateFormat("MMMM dd yyyy hh:mm aa");
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -159,7 +156,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
      */
     private void register() {
         IntentFilter myIntentFilter = new IntentFilter();
-        myIntentFilter.addAction(BleService.ACTION_ENABLE_NOTIFICATION_SUCCES);//扫描到蓝牙设备了
+        myIntentFilter.addAction(BleService.ACTION_ENABLE_NOTIFICATION_SUCCES);//蓝牙初始化通道成功
         registerReceiver(mBroadcastReceiver, myIntentFilter);
     }
 
@@ -204,36 +201,3 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         bleService.disconnect();
     }
 }
-
-
-
-
-
-//        new SlideDateTimePicker.Builder(getSupportFragmentManager())
-//                .setListener(listener)
-//                .setInitialDate(new Date())
-//                //.setMinDate(minDate)
-//                //.setMaxDate(maxDate)
-//                //.setIs24HourTime(true)
-//                //.setTheme(SlideDateTimePicker.HOLO_DARK)
-//                //.setIndicatorColor(Color.parseColor("#990000"))
-//                .build()
-//                .show();
-
-//    private SlideDateTimeListener listener = new SlideDateTimeListener() {
-//
-//        @Override
-//        public void onDateTimeSet(Date date)
-//        {
-//            Toast.makeText(MainActivity.this,
-//                    mFormatter.format(date), Toast.LENGTH_SHORT).show();
-//        }
-//
-//        // Optional cancel listener
-//        @Override
-//        public void onDateTimeCancel()
-//        {
-//            Toast.makeText(MainActivity.this,
-//                    "Canceled", Toast.LENGTH_SHORT).show();
-//        }
-//    };
