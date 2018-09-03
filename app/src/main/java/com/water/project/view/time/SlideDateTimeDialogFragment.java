@@ -368,10 +368,8 @@ public class SlideDateTimeDialogFragment extends DialogFragment implements DateF
         }
 
         @Override
-        public Fragment getItem(int position)
-        {
-            switch (position)
-            {
+        public Fragment getItem(int position) {
+            switch (position) {
             case 0:
                 DateFragment dateFragment = DateFragment.newInstance(
                     mTheme,
@@ -384,11 +382,11 @@ public class SlideDateTimeDialogFragment extends DialogFragment implements DateF
                 return dateFragment;
             case 1:
                 TimeFragment timeFragment = TimeFragment.newInstance(
-                    mTheme,
-                    mCalendar.get(Calendar.HOUR_OF_DAY),
-                    mCalendar.get(Calendar.MINUTE),
-                    mIsClientSpecified24HourTime,
-                    mIs24HourTime);
+                        mTheme,
+                        mCalendar.get(Calendar.HOUR_OF_DAY),
+                        mCalendar.get(Calendar.MINUTE),
+                        mIsClientSpecified24HourTime,
+                        mIs24HourTime);
                 timeFragment.setTargetFragment(SlideDateTimeDialogFragment.this, 200);
                 return timeFragment;
             default:
@@ -397,8 +395,7 @@ public class SlideDateTimeDialogFragment extends DialogFragment implements DateF
         }
 
         @Override
-        public int getCount()
-        {
+        public int getCount() {
             return 2;
         }
     }

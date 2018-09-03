@@ -3,7 +3,7 @@ package com.water.project.bean;
 public interface BleConCallBack {
     /**
      * 连接蓝牙
-     * @param bleMac
+     * @param ble
      */
-    public void connetion(String bleMac);
+    public void connetion(Ble ble);
 }

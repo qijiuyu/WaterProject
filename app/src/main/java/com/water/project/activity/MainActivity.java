@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -15,7 +14,7 @@ import android.support.annotation.Nullable;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 
 import com.water.project.R;
 import com.water.project.service.BleService;
@@ -23,23 +22,27 @@ import com.water.project.utils.BleUtils;
 import com.water.project.utils.StatusBarUtils;
 import com.water.project.utils.SystemBarTintManager;
 import com.water.project.utils.ble.SendBleDataManager;
-import com.water.project.view.DialogView;
-import com.water.project.view.time.SlideDateTimeListener;
-import com.water.project.view.time.SlideDateTimePicker;
-
+import com.water.project.utils.photo.GlideImageLoader;
+import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements View.OnClickListener{
 
+    private LinearLayout linearLayout1,linearLayout2;
     // 按两次退出
     protected long exitTime = 0;
     //蓝牙参数
     public static BleService bleService = null;
     public BluetoothAdapter mBtAdapter = null;
-    private DialogView dialogView;
-    //蓝牙连接成功的广播
-    public final static String ACTION_BLE_CONNECTION_SUCCESS= "net.zkgd.adminapp.ACTION_BLE_CONNECTION_SUCCESS";
+    private Banner banner;
+    //设置图片资源:url或本地资源
+    private List<Integer> imgList=new ArrayList<>();
+    //设置图片标题:自动对应
+    private List<String> titleList=new ArrayList<>();
     private SimpleDateFormat mFormatter = new SimpleDateFormat("MMMM dd yyyy hh:mm aa");
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,51 +56,53 @@ public class MainActivity extends BaseActivity {
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
-        isSupportBle();//判断设备是否支持蓝牙4.0
+        startBanner();//加载轮播图片
         initService();//注册蓝牙服务
         register();//注册广播
 
-        new SlideDateTimePicker.Builder(getSupportFragmentManager())
-                .setListener(listener)
-                .setInitialDate(new Date())
-                //.setMinDate(minDate)
-                //.setMaxDate(maxDate)
-                //.setIs24HourTime(true)
-                //.setTheme(SlideDateTimePicker.HOLO_DARK)
-                //.setIndicatorColor(Color.parseColor("#990000"))
-                .build()
-                .show();
     }
-
-
-    private SlideDateTimeListener listener = new SlideDateTimeListener() {
-
-        @Override
-        public void onDateTimeSet(Date date)
-        {
-            Toast.makeText(MainActivity.this,
-                    mFormatter.format(date), Toast.LENGTH_SHORT).show();
-        }
-
-        // Optional cancel listener
-        @Override
-        public void onDateTimeCancel()
-        {
-            Toast.makeText(MainActivity.this,
-                    "Canceled", Toast.LENGTH_SHORT).show();
-        }
-    };
 
 
     /**
      * 初始化控件
      */
     private void initView(){
-        findViewById(R.id.tv_am).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-               setClass(SearchBleActivity.class);
-            }
-        });
+        banner = (Banner) findViewById(R.id.banner);
+        linearLayout1=(LinearLayout)findViewById(R.id.lin_am1);
+        linearLayout2=(LinearLayout)findViewById(R.id.lin_am2);
+        imgList.add(R.mipmap.one);
+        imgList.add(R.mipmap.two);
+        imgList.add(R.mipmap.three);
+        titleList.add("十大星级品牌联盟，全场2折起");
+        titleList.add("嗨购5折不要停");
+        titleList.add("全场2折起");
+        findViewById(R.id.tv_am_scan).setOnClickListener(this);
+        findViewById(R.id.tv_am_setting).setOnClickListener(this);
+        findViewById(R.id.tv_am_data).setOnClickListener(this);
+        findViewById(R.id.tv_am_yan).setOnClickListener(this);
+        findViewById(R.id.tv_about).setOnClickListener(this);
+    }
+
+
+    private void startBanner(){
+        //设置banner样式
+        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE);
+        //设置图片加载器
+        banner.setImageLoader(new GlideImageLoader());
+        //设置图片集合
+        banner.setImages(imgList);
+        //设置banner动画效果
+        banner.setBannerAnimation(Transformer.DepthPage);
+        //设置标题集合（当banner样式有显示title时）
+        banner.setBannerTitles(titleList);
+        //设置自动轮播，默认为true
+        banner.isAutoPlay(true);
+        //设置轮播时间
+        banner.setDelayTime(1500);
+        //设置指示器位置（当banner模式中有指示器时）
+        banner.setIndicatorGravity(BannerConfig.CENTER);
+        //banner设置方法全部调用完毕时最后调用
+        banner.start();
     }
 
 
@@ -122,13 +127,39 @@ public class MainActivity extends BaseActivity {
         }
     };
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            //扫描链接蓝牙
+            case R.id.tv_am_scan:
+                 setClass(SearchBleActivity.class);
+                break;
+            //参数设置
+            case R.id.tv_am_setting:
+                 setClass(SettingActivity.class);
+                 break;
+            //实时数据
+            case R.id.tv_am_data:
+                 setClass(GetDataActivity.class);
+                 break;
+            //数据校验
+            case R.id.tv_am_yan:
+                 setClass(CheckActivity.class);
+                 break;
+            //关于我们
+            case R.id.tv_about:
+                 setClass(AboutActivity.class);
+                 break;
+        }
+    }
+
 
     /**
      * 注册广播
      */
     private void register() {
         IntentFilter myIntentFilter = new IntentFilter();
-        myIntentFilter.addAction(ACTION_BLE_CONNECTION_SUCCESS);//扫描到蓝牙设备了
+        myIntentFilter.addAction(BleService.ACTION_ENABLE_NOTIFICATION_SUCCES);//扫描到蓝牙设备了
         registerReceiver(mBroadcastReceiver, myIntentFilter);
     }
 
@@ -138,8 +169,10 @@ public class MainActivity extends BaseActivity {
                 return;
             }
             switch (intent.getAction()){
-                //蓝牙连接成功
-                case ACTION_BLE_CONNECTION_SUCCESS:
+                //蓝牙初始化通道成功
+                case BleService.ACTION_ENABLE_NOTIFICATION_SUCCES:
+                     linearLayout1.setVisibility(View.VISIBLE);
+                     linearLayout2.setVisibility(View.VISIBLE);
                     break;
                 default:
                     break;
@@ -148,24 +181,6 @@ public class MainActivity extends BaseActivity {
         }
     };
 
-
-
-    /**
-     * 判断设备是否支持蓝牙4.0
-     */
-    private void isSupportBle(){
-        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-            dialogView = new DialogView(mContext, "该设备不支持ble蓝牙!","知道了", null, new View.OnClickListener() {
-                public void onClick(View v) {
-                    dialogView.dismiss();
-                    finish();
-                }
-            }, null);
-            dialogView.show();
-        }
-    }
-
-
     // 按两次退出
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
@@ -173,6 +188,7 @@ public class MainActivity extends BaseActivity {
                 showToastView("再按一次退出程序！");
                 exitTime = System.currentTimeMillis();
             } else {
+                bleService.disconnect();
                 unbindService(mServiceConnection);
                 unregisterReceiver(mBroadcastReceiver);
                 finish();
@@ -181,4 +197,43 @@ public class MainActivity extends BaseActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        bleService.disconnect();
+    }
 }
+
+
+
+
+
+//        new SlideDateTimePicker.Builder(getSupportFragmentManager())
+//                .setListener(listener)
+//                .setInitialDate(new Date())
+//                //.setMinDate(minDate)
+//                //.setMaxDate(maxDate)
+//                //.setIs24HourTime(true)
+//                //.setTheme(SlideDateTimePicker.HOLO_DARK)
+//                //.setIndicatorColor(Color.parseColor("#990000"))
+//                .build()
+//                .show();
+
+//    private SlideDateTimeListener listener = new SlideDateTimeListener() {
+//
+//        @Override
+//        public void onDateTimeSet(Date date)
+//        {
+//            Toast.makeText(MainActivity.this,
+//                    mFormatter.format(date), Toast.LENGTH_SHORT).show();
+//        }
+//
+//        // Optional cancel listener
+//        @Override
+//        public void onDateTimeCancel()
+//        {
+//            Toast.makeText(MainActivity.this,
+//                    "Canceled", Toast.LENGTH_SHORT).show();
+//        }
+//    };

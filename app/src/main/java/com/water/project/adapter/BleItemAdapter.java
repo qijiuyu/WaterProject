@@ -51,7 +51,7 @@ public class BleItemAdapter extends BaseAdapter {
 		final String bleName=list.get(position).getBleName();
 		if(!TextUtils.isEmpty(bleName)){
 			holder.tvBleName.setText(bleName);
-			holder.tvConnect.setTag(list.get(position).getBleMac());
+			holder.tvConnect.setTag(list.get(position));
 			if(bleName.contains("ZX-PARK")){
 				holder.tvConnect.setVisibility(View.VISIBLE);
 			}else{
@@ -63,7 +63,7 @@ public class BleItemAdapter extends BaseAdapter {
 						return;
 					}
 					//连接蓝牙
-					bleConCallBack.connetion(v.getTag().toString());
+					bleConCallBack.connetion((Ble) v.getTag());
 				}
 			});
 		}
