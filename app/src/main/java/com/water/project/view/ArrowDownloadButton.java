@@ -1,4 +1,4 @@
-package com.youmai.project.view;
+package com.water.project.view;
 
 import android.content.Context;
 import android.graphics.Canvas;

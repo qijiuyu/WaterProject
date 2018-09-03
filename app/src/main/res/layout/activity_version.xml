@@ -3,6 +3,7 @@
     android:id="@+id/lin_head"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <include layout="@layout/head"></include>
@@ -14,74 +15,37 @@
         android:layout_marginTop="30dp"
         android:layout_gravity="center_horizontal"/>
 
+
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_version"
         android:layout_width="match_parent"
-        android:text="北京中科光大自动化技术有限公司"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="19sp"
-        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
         android:layout_marginTop="20dp"
-        android:layout_centerVertical="true"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_marginLeft="30dp"
-        android:text="公司：北京中科光大自动化技术有限公司"
-        android:textSize="15sp"
-        android:textColor="#000000"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="30dp"
-        android:text="地址：北京市朝阳区大屯路甲21号"
-        android:textSize="15sp"
-        android:textColor="#000000"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="30dp"
-        android:text="电话：010-64837725"
-        android:textSize="15sp"
-        android:textColor="#000000"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="30dp"
-        android:text="网址：http://www.zkgd.com.cn"
-        android:textSize="15sp"
-        android:textColor="#000000"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="30dp"
-        android:text="邮箱：support@zkgd.com.cn"
-        android:textSize="15sp"
-        android:textColor="#000000"/>
+        android:gravity="center"/>
 
     <com.water.project.view.ClickTextView
         android:id="@+id/tv_btn"
-        android:layout_width="100dp"
+        android:layout_width="150dp"
         android:layout_height="35dp"
         android:layout_gravity="center"
-        android:text="版本"
+        android:text="版本更新"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         android:gravity="center"
         android:background="@color/color_1fc37f"
         android:layout_marginTop="30dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"/>
+        android:layout_centerHorizontal="true"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:text="版权所有   侵权必究"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="50dp"
+        android:gravity="center"/>
 
 </LinearLayout>

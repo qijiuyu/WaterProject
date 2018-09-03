@@ -51,6 +51,7 @@
         <activity android:name=".photo.BigPhotoActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".photo.ImageGridActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".photo.NetBigPhotoActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".activity.VersionActivity"  android:screenOrientation="portrait"/>
 
         <service
             android:name=".service.BleService"

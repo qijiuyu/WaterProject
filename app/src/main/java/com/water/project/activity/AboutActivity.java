@@ -38,7 +38,7 @@ public class AboutActivity extends BaseActivity {
         textView.setText("关于我们");
         findViewById(R.id.tv_btn).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
+                setClass(VersionActivity.class);
             }
         });
 
