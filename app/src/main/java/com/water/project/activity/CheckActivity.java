@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
@@ -34,7 +35,7 @@ import com.water.project.view.DialogView;
  */
 
 public class CheckActivity extends BaseActivity {
-    private TextView tvTime,tvYaLi,tvQiYa,tvTanTou,tvShuiWei,tvWuCha;
+    private TextView tvTime,tvYaLi,tvQiYa,tvTanTou,tvShuiWei,tvWuCha,tvDes;
     private EditText etCheck;
     private DialogView dialogView;
     private Handler mHandler=new Handler();
@@ -69,9 +70,11 @@ public class CheckActivity extends BaseActivity {
         tvShuiWei=(TextView)findViewById(R.id.tv_ac_shuiwei);
         etCheck=(EditText)findViewById(R.id.et_ac_check);
         tvWuCha=(TextView)findViewById(R.id.tv_ac_wucha);
+        tvDes=(TextView)findViewById(R.id.tv_check_des);
+        //数据校验
         findViewById(R.id.tv_btn).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                sendData(BleContant.SEND_REAL_TIME_DATA);
+                sendData(BleContant.SET_DATA_CHECK);
             }
         });
         findViewById(R.id.lin_back).setOnClickListener(new View.OnClickListener() {
@@ -90,8 +93,29 @@ public class CheckActivity extends BaseActivity {
             public void afterTextChanged(Editable s) {
                 final String strShui=tvShuiWei.getText().toString().trim().replace("m","");
                 final double shuiWei=Double.parseDouble(strShui);
+
+                if(TextUtils.isEmpty(s.toString())){
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            tvWuCha.setText("");
+                        }
+                    });
+                    return;
+                }
                 final double check=Double.parseDouble(s.toString());
-                tvWuCha.setText(Util.sub(shuiWei,check)+"");
+                //显示误差
+                final String wuCha=Util.sub(shuiWei,check)+"";
+                tvWuCha.setText(wuCha);
+
+                double d=Double.parseDouble(wuCha.replace("-",""));
+                if(d<0.02){
+                    tvDes.setText("误差小于2CM，无需进行调整");
+                }else if(d>0.1){
+                    tvDes.setText("不建议点击修正误差，请先检查原因");
+                }else{
+                    tvDes.setText("");
+                    tvDes.setText(null);
+                }
             }
         });
     }
@@ -181,9 +205,13 @@ public class CheckActivity extends BaseActivity {
                     break;
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
-                    final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
-                    //解析并显示回执的数据
-                    showData(data);
+                     final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
+                     if(SEND_STATUS==BleContant.SEND_REAL_TIME_DATA){
+                         //解析并显示回执的数据
+                         showData(data);
+                     }else{
+                         sendData(BleContant.SEND_REAL_TIME_DATA);
+                     }
                     break;
                 case BleService.ACTION_INTERACTION_TIMEOUT:
                     clearTask();

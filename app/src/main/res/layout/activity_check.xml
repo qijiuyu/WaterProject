@@ -214,7 +214,19 @@
             android:layout_alignParentRight="true"
             android:gravity="right|center"
             android:layout_marginTop="10dp"
-            android:layout_below="@id/view_ac6"/>
+            android:layout_below="@id/view_ac6"
+            android:layout_marginRight="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="m"
+            android:textSize="15sp"
+            android:textColor="@android:color/black"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/view_ac6"
+            android:gravity="center"/>
 
         <View
             android:id="@+id/view_ac7"
@@ -222,6 +234,16 @@
             android:layout_height="0.5dp"
             android:background="@color/color_888888"
             android:layout_below="@id/tv_ac_wucha"/>
+
+        <TextView
+            android:id="@+id/tv_check_des"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#DD4C40"
+            android:textSize="14sp"
+            android:layout_below="@id/view_ac7"
+            android:layout_marginTop="10dp"
+            android:gravity="center"/>
 
         <com.water.project.view.ClickTextView
             android:id="@+id/tv_btn"
@@ -233,7 +255,7 @@
             android:gravity="center"
             android:layout_below="@id/view_ac7"
             android:background="@color/color_1fc37f"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="40dp"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"/>
 

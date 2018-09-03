@@ -226,7 +226,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             //显示探头埋深
             case BleContant.SEND_GET_TANTOU:
                   final String strTanTou=data.replace("GDLINER","");
-                  etTanTou.setText(Util.setDouble(Double.parseDouble(strTanTou)));
+                  etTanTou.setText(Util.setDouble(Double.parseDouble(strTanTou),3));
                  break;
             //显示采集频率
             case BleContant.SEND_CAI_JI_PIN_LU:

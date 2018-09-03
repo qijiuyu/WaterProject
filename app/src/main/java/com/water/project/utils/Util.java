@@ -177,22 +177,20 @@ public class Util extends ClassLoader {
 
 
     /**
-     * 保留两位小数的double数据
+     * 保留小数的double数据
      * @param d
      * @return
      */
-    public static String setDouble(double d){
-        final DecimalFormat df = new DecimalFormat("0.000");
-        return df.format(d);
-    }
-
-    /**
-     * 保留1位小数的double数据
-     * @param d
-     * @return
-     */
-    public static String setDoubleDotOne(double d){
-        final DecimalFormat df = new DecimalFormat("0.0");
+    public static String setDouble(double d,int type){
+        DecimalFormat df=null;
+        switch (type){
+            case 3:
+                 df = new DecimalFormat("0.000");
+                 break;
+            case 4:
+                df = new DecimalFormat("0.0000");
+                 break;
+        }
         return df.format(d);
     }
 
@@ -322,23 +320,6 @@ public class Util extends ClassLoader {
         view.setLayoutParams(layoutParams);
     }
 
-
-    private static final int MIN_CLICK_DELAY_TIME = 500;
-    private static long lastClickTime;
-
-    /**
-     *  两次点击按钮之间的点击间隔不能少于700毫秒
-     * @return
-     */
-    public static boolean isFastClick() {
-        boolean flag = false;
-        long curClickTime = System.currentTimeMillis();
-        if ((curClickTime - lastClickTime) >= MIN_CLICK_DELAY_TIME) {
-            flag = true;
-        }
-        lastClickTime = curClickTime;
-        return flag;
-    }
 
     /**
      * 只允许字母、数字和汉字

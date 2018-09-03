@@ -1,5 +1,7 @@
 package com.water.project.utils.ble;
 
+import com.water.project.utils.Util;
+
 /**
  * Created by Administrator on 2018/9/1.
  */
@@ -33,6 +35,9 @@ public class SendBleStr {
 
     //查询实时数据
     public static String SEND_REAL_TIME_DATA="GDCURRENT";
+
+    //设置误差数据
+    public static String SET_DATA_CHECK;
 
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
@@ -89,7 +94,27 @@ public class SendBleStr {
         stringBuffer.append(startTime+",");
         stringBuffer.append(hour);
         SET_FA_SONG_PIN_LU=stringBuffer.toString();
+    }
 
+
+    /**
+     * 设置误差数据
+     * @param data
+     */
+    public static void setCheck(String data){
+        StringBuffer stringBuffer=new StringBuffer("GD&>#PYW001T");
+        final double CMdata=Integer.parseInt(data.replace("-",""));
+        if(data.contains("-")){
+            stringBuffer.append("-");
+        }else{
+            stringBuffer.append("+");
+        }
+        data= Util.setDouble(CMdata,4);
+        final int length=9-(data.length());
+        for (int i=0;i<length;i++){
+             stringBuffer.append("0");
+        }
+        SET_DATA_CHECK=stringBuffer.toString();
     }
 
     public static void sendBleData(int status,int type){

@@ -34,4 +34,7 @@ public class BleContant {
 
     //查询实时数据
     public static final int SEND_REAL_TIME_DATA=1008;
+
+    //设置误差数据
+    public static final int SET_DATA_CHECK=1009;
 }
