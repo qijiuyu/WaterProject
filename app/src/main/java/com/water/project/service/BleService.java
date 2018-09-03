@@ -422,9 +422,9 @@ public class BleService extends Service implements Serializable{
                     //关闭超时计时器
                     stopTimeOut();
                     if(type==1){
-                        broadcastUpdate(ACTION_DATA_AVAILABLE, sb.toString());
+                        broadcastUpdate(ACTION_DATA_AVAILABLE, sb.toString().replace(">OK",""));
                     }else{
-                        broadcastUpdate(ACTION_DATA_AVAILABLE2, sb.toString());
+                        broadcastUpdate(ACTION_DATA_AVAILABLE2, sb.toString().replace(">OK",""));
                     }
                     return;
                 }

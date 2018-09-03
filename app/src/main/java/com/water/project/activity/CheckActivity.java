@@ -95,11 +95,8 @@ public class CheckActivity extends BaseActivity {
                 final double shuiWei=Double.parseDouble(strShui);
 
                 if(TextUtils.isEmpty(s.toString())){
-                    runOnUiThread(new Runnable() {
-                        public void run() {
-                            tvWuCha.setText("");
-                        }
-                    });
+                    LogUtils.e("11111");
+                    tvWuCha.setText("");
                     return;
                 }
                 final double check=Double.parseDouble(s.toString());
