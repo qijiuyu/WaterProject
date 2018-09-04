@@ -78,6 +78,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         findViewById(R.id.tv_am_data).setOnClickListener(this);
         findViewById(R.id.tv_am_yan).setOnClickListener(this);
         findViewById(R.id.tv_about).setOnClickListener(this);
+        findViewById(R.id.tv_am_net).setOnClickListener(this);
     }
 
 
@@ -135,6 +136,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             case R.id.tv_am_setting:
                  setClass(SettingActivity.class);
                  break;
+            //网络shezhi
+            case R.id.tv_am_net:
+                 setClass(NetSettingActivity.class);
+                 break;
             //实时数据
             case R.id.tv_am_data:
                  setClass(GetDataActivity.class);
@@ -147,6 +152,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             case R.id.tv_about:
                  setClass(AboutActivity.class);
                  break;
+            default:
+                break;
         }
     }
 

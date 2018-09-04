@@ -48,6 +48,7 @@
         <activity android:name=".activity.CheckActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.AboutActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.SearchBleActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.NetSettingActivity" android:screenOrientation="portrait"/>
         <activity android:name=".photo.BigPhotoActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".photo.ImageGridActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".photo.NetBigPhotoActivity"  android:screenOrientation="portrait"/>

@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lin_head"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/head"></include>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="主站地址:"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:layout_gravity="center"/>
+        
+        <EditText
+            android:id="@+id/tv_address1"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:textColor="@color/color_1fc37f"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_setting"
+            android:layout_marginLeft="5dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="APN:"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="30dp"/>
+
+        <EditText
+            android:id="@+id/et_apn"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:textColor="@color/color_1fc37f"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_setting"
+            android:layout_marginLeft="5dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="IP地址:"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:id="@+id/et_ip1"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:hint="请输入IP"
+            android:textSize="15sp"
+            android:textColor="@color/color_1fc37f"
+            android:background="@null"
+            android:layout_marginLeft="5dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="端口号:"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:id="@+id/et_port1"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:hint="端口号"
+            android:textSize="15sp"
+            android:textColor="@color/color_1fc37f"
+            android:background="@null"
+            android:layout_marginLeft="5dp"/>
+        
+        <ImageView
+            android:id="@+id/img_an1"
+            android:layout_width="60dp"
+            android:layout_height="25dp"
+            android:src="@mipmap/open_icon"
+            android:tag="1"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"/>
+
+        </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/color_888888"/>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="45dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="主站地址:"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:id="@+id/tv_address2"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:textColor="@color/color_1fc37f"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_setting"
+            android:layout_marginLeft="5dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="IP地址:"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:id="@+id/et_ip2"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:hint="请输入IP"
+            android:textSize="15sp"
+            android:textColor="@color/color_1fc37f"
+            android:background="@null"
+            android:layout_marginLeft="5dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="端口号:"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:id="@+id/et_port2"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:hint="端口号"
+            android:textSize="15sp"
+            android:textColor="@color/color_1fc37f"
+            android:background="@null"
+            android:layout_marginLeft="5dp"/>
+
+        <ImageView
+            android:id="@+id/img_an2"
+            android:layout_width="60dp"
+            android:layout_height="25dp"
+            android:tag="0"
+            android:src="@mipmap/close_icon"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/color_888888"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="45dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="主站地址:"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:id="@+id/tv_address3"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:textColor="@color/color_1fc37f"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_setting"
+            android:layout_marginLeft="5dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="IP地址:"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:id="@+id/et_ip3"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:hint="请输入IP"
+            android:textSize="15sp"
+            android:textColor="@color/color_1fc37f"
+            android:background="@null"
+            android:layout_marginLeft="5dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="端口号:"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:id="@+id/et_port3"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:hint="端口号"
+            android:textSize="15sp"
+            android:textColor="@color/color_1fc37f"
+            android:background="@null"
+            android:layout_marginLeft="5dp"/>
+
+        <ImageView
+            android:id="@+id/img_an3"
+            android:layout_width="60dp"
+            android:layout_height="25dp"
+            android:tag="0"
+            android:src="@mipmap/close_icon"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/color_888888"/>
+
+    <LinearLayout
+        android:id="@+id/lin_as1"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp">
+
+        <com.water.project.view.ClickTextView
+            android:id="@+id/tv_save"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="保存"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:background="@color/color_1fc37f"
+            android:layout_marginRight="20dp"/>
+
+        <com.water.project.view.ClickTextView
+            android:id="@+id/tv_red"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="读取"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:background="@color/color_1fc37f"
+            android:layout_marginLeft="20dp"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
