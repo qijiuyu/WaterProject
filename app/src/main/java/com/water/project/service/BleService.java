@@ -418,19 +418,26 @@ public class BleService extends Service implements Serializable{
             LogUtils.e("接收到的数据是="+data);
             if(data.contains("GD")){
                 sb.append(data);
+            }else if(sb.length()>0){
+                sb.append(data);
                 if(data.contains("OK")){
                     //关闭超时计时器
                     stopTimeOut();
                     if(type==1){
-                        broadcastUpdate(ACTION_DATA_AVAILABLE, sb.toString().replace(">OK",""));
+                        broadcastUpdate(ACTION_DATA_AVAILABLE, sb.toString().replace("OK",""));
                     }else{
-                        broadcastUpdate(ACTION_DATA_AVAILABLE2, sb.toString().replace(">OK",""));
+                        broadcastUpdate(ACTION_DATA_AVAILABLE2, sb.toString().replace("OK",""));
                     }
-                    return;
-                }
-            }else{
-                if(sb.length()>0){
-                    sb.append(data);
+                }else if(sb.toString().contains("GDCURRENT")){
+                    if(data.contains(";")){
+                        //关闭超时计时器
+                        stopTimeOut();
+                        if(type==1){
+                            broadcastUpdate(ACTION_DATA_AVAILABLE, sb.toString());
+                        }else{
+                            broadcastUpdate(ACTION_DATA_AVAILABLE2, sb.toString());
+                        }
+                    }
                 }
             }
         }
