@@ -304,6 +304,7 @@ public class BleService extends Service implements Serializable{
                   boolean b=mBluetoothGatt.writeCharacteristic(RxChar);
                   if(!b){
                     isSuccess=false;
+                    break;
                   }
                   //延时5毫秒
                   new Thread().sleep(5);
