@@ -29,6 +29,7 @@
             android:id="@+id/et_address1"
             android:layout_width="80dp"
             android:layout_height="30dp"
+            android:maxLength="2"
             android:textColor="@color/color_1fc37f"
             android:textSize="15sp"
             android:gravity="center"
@@ -136,7 +137,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="主站地址:"
-            android:textColor="@android:color/black"
+            android:textColor="@color/color_AEAEAE"
             android:textSize="15sp"
             android:layout_gravity="center"/>
 
@@ -144,6 +145,8 @@
             android:id="@+id/et_address2"
             android:layout_width="80dp"
             android:layout_height="30dp"
+            android:focusable="false"
+            android:maxLength="2"
             android:textColor="@color/color_1fc37f"
             android:textSize="15sp"
             android:gravity="center"
@@ -165,7 +168,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="IP地址:"
-            android:textColor="@android:color/black"
+            android:textColor="@color/color_AEAEAE"
             android:textSize="15sp"
             android:layout_gravity="center"/>
 
@@ -173,6 +176,7 @@
             android:id="@+id/et_ip2"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
+            android:focusable="false"
             android:layout_gravity="center"
             android:gravity="center"
             android:hint="请输入IP"
@@ -186,13 +190,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="端口号:"
-            android:textColor="@android:color/black"
+            android:textColor="@color/color_AEAEAE"
             android:textSize="15sp"
             android:layout_gravity="center"/>
 
         <EditText
             android:id="@+id/et_port2"
             android:layout_width="70dp"
+            android:focusable="false"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
@@ -230,7 +235,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="主站地址:"
-            android:textColor="@android:color/black"
+            android:textColor="@color/color_AEAEAE"
             android:textSize="15sp"
             android:layout_gravity="center"/>
 
@@ -238,6 +243,8 @@
             android:id="@+id/et_address3"
             android:layout_width="80dp"
             android:layout_height="30dp"
+            android:focusable="false"
+            android:maxLength="2"
             android:textColor="@color/color_1fc37f"
             android:textSize="15sp"
             android:gravity="center"
@@ -259,7 +266,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="IP地址:"
-            android:textColor="@android:color/black"
+            android:textColor="@color/color_AEAEAE"
             android:textSize="15sp"
             android:layout_gravity="center"/>
 
@@ -267,6 +274,7 @@
             android:id="@+id/et_ip3"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
+            android:focusable="false"
             android:layout_gravity="center"
             android:gravity="center"
             android:hint="请输入IP"
@@ -280,7 +288,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="端口号:"
-            android:textColor="@android:color/black"
+            android:textColor="@color/color_AEAEAE"
             android:textSize="15sp"
             android:layout_gravity="center"/>
 
@@ -288,6 +296,7 @@
             android:id="@+id/et_port3"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
+            android:focusable="false"
             android:layout_gravity="center"
             android:gravity="center"
             android:hint="端口号"

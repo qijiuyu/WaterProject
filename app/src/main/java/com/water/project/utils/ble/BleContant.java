@@ -37,4 +37,7 @@ public class BleContant {
 
     //设置误差数据
     public static final int SET_DATA_CHECK=1009;
+
+    //设置三个ip
+    public static final int SET_IP_PORT=1010;
 }

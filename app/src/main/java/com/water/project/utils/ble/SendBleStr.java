@@ -39,6 +39,9 @@ public class SendBleStr {
     //设置误差数据
     public static String SET_DATA_CHECK;
 
+    //设置三个ip
+    public static String SET_IP_PORT;
+
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
         StringBuffer stringBuffer=new StringBuffer();
@@ -115,6 +118,37 @@ public class SendBleStr {
              stringBuffer.append("0");
         }
         SET_DATA_CHECK=stringBuffer.toString();
+    }
+
+
+    /**
+     * 设置三个ip
+     * @param address1
+     * @param address2
+     * @param address3
+     * @param ip1
+     * @param ip2
+     * @param ip3
+     * @param port1
+     * @param port2
+     * @param port3
+     * @param apn
+     */
+    public static void setIpPort(String data,String address1, String address2,String address3,String ip1,String ip2,String ip3,String port1,String port2,String port3,String apn){
+        String[] strings=data.split(";");
+        StringBuffer stringBuffer=new StringBuffer();
+        strings[0]=("GDS"+address1+address2+address3);
+
+        strings[2]=(ip1+","+port1);
+        strings[3]=(ip2+","+port2);
+        strings[4]=(ip3+","+port3);
+
+        strings[5]=apn;
+
+        for (int i=0;i<strings.length;i++){
+            stringBuffer.append(strings[i]+";");
+        }
+        SET_IP_PORT=stringBuffer.toString();
     }
 
     public static void sendBleData(int status,int type){

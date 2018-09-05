@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -38,6 +39,8 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
     private Handler mHandler=new Handler();
     //下发命令的编号
     private int SEND_STATUS;
+    //读取的数据
+    private String strData;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -86,6 +89,8 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
         img1.setOnClickListener(this);
         img2.setOnClickListener(this);
         img3.setOnClickListener(this);
+        findViewById(R.id.tv_save).setOnClickListener(this);
+        findViewById(R.id.tv_red).setOnClickListener(this);
         findViewById(R.id.lin_back).setOnClickListener(this);
     }
 
@@ -206,6 +211,7 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
      * 解析并显示数据
      */
     private  void showData(String msg){
+        strData=msg;
         String[] strings=msg.split(";");
         if(null==strings || strings.length==0){
             return;
@@ -240,6 +246,65 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            //保存
+            case R.id.tv_save:
+                 final String address1=etAddress1.getText().toString().trim();
+                 final String address2=etAddress2.getText().toString().trim();
+                 final String address3=etAddress3.getText().toString().trim();
+                 final String ip1=etIp1.getText().toString().trim();
+                 final String ip2=etIp2.getText().toString().trim();
+                 final String ip3=etIp3.getText().toString().trim();
+                 final String port1=etPort1.getText().toString().trim();
+                 final String port2=etPort2.getText().toString().trim();
+                 final String port3=etPort3.getText().toString().trim();
+                 final String apn=etApn.getText().toString().trim();
+                 if(TextUtils.isEmpty(address1)){
+                     showToastView("青输入连接1的主站地址！");
+                     return;
+                 }
+                if(TextUtils.isEmpty(address2)){
+                    showToastView("青输入连接2的主站地址！");
+                    return;
+                }
+                if(TextUtils.isEmpty(address3)){
+                    showToastView("青输入连接3的主站地址！");
+                    return;
+                }
+                if(TextUtils.isEmpty(ip1)){
+                    showToastView("青输入第一个IP地址！");
+                    return;
+                }
+                if(TextUtils.isEmpty(ip2)){
+                    showToastView("青输入第二个IP地址！");
+                    return;
+                }
+                if(TextUtils.isEmpty(ip3)){
+                    showToastView("青输入第三个IP地址！");
+                    return;
+                }
+                if(TextUtils.isEmpty(port1)){
+                    showToastView("青输入第一个端口号！");
+                    return;
+                }
+                if(TextUtils.isEmpty(port2)){
+                    showToastView("青输入第二个端口号！");
+                    return;
+                }
+                if(TextUtils.isEmpty(port3)){
+                    showToastView("青输入第三个端口号！");
+                    return;
+                }
+                if(TextUtils.isEmpty(apn)){
+                    showToastView("青输入APN！");
+                    return;
+                }
+                 SendBleStr.setIpPort(strData,address1,address2,address3,ip1,ip2,ip3,port1,port2,port3,apn);
+                 sendData(BleContant.SET_IP_PORT);
+                 break;
+            //读取
+            case R.id.tv_red:
+                 sendData(BleContant.SEND_GET_CODE_PHONE);
+                 break;
             case R.id.img_an1:
                  if(null==v.getTag()){
                      return;
@@ -325,7 +390,7 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
         if(type==0){
             textView.setTextColor(getResources().getColor(R.color.color_AEAEAE));
         }else{
-            textView.setTextColor(getResources().getColor(R.color.color_1fc37f));
+            textView.setTextColor(getResources().getColor(android.R.color.black));
         }
     }
 
