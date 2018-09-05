@@ -144,10 +144,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case R.id.et_as_cstime:
                  TimeUtils.type=0;
                  new SlideDateTimePicker.Builder(getSupportFragmentManager())
-                .setListener(listener)
-                .setInitialDate(new Date())
-                .build()
-                .show();
+                        .setListener(listener)
+                        .setInitialDate(new Date())
+                        .build()
+                        .show();
                  break;
             //设置采集频率
             case R.id.tv_setting_three:
@@ -158,8 +158,14 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                  }else if(TextUtils.isEmpty(hour)){
                      showToastView("请输入采集间隔时间！");
                  }else{
-                     SendBleStr.sendCaiJi(date,hour);
-                     sendData(BleContant.SET_CAI_JI_PIN_LU,2);
+                     dialogView = new DialogView(mContext, "当采集时间和采集间隔时间更改后原数据将丢失!","确定", "取消", new View.OnClickListener() {
+                         public void onClick(View v) {
+                             dialogView.dismiss();
+                             SendBleStr.sendCaiJi(date,hour);
+                             sendData(BleContant.SET_CAI_JI_PIN_LU,2);
+                         }
+                     }, null);
+                     dialogView.show();
                  }
                 break;
             //选择发送起始时间

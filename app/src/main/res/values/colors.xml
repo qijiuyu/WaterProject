@@ -13,4 +13,6 @@
     <color name="color_AEAEAE">#AEAEAE</color>
     <item name="gray_holo_dark" type="color">#ff464646</item>
     <item name="gray_holo_light" type="color">#ffd0d0d0</item>
+    <!-- 半透明 -->
+    <color name="half_transparent">#b0000000</color>
 </resources>
