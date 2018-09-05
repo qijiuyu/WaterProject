@@ -27,10 +27,13 @@ import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
 
+import java.util.List;
+
 public class NetSettingActivity extends BaseActivity implements View.OnClickListener{
 
     private ImageView img1,img2,img3;
     private EditText etAddress1,etAddress2,etAddress3,etApn,etIp1,etIp2,etIp3,etPort1,etPort2,etPort3;
+    private TextView tvAddress1,tvAddress2,tvAddress3,tvIp1,tvIp2,tvIp3,tvPort1,tvPort2,tvPort3;
     private DialogView dialogView;
     private Handler mHandler=new Handler();
     //下发命令的编号
@@ -47,19 +50,23 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
-        sendData(BleContant.SEND_GET_CODE_PHONE);
+        register();
+//        sendData(BleContant.SEND_GET_CODE_PHONE);
     }
 
 
+    /**
+     * 初始化
+     */
     private void initView(){
         TextView textView=(TextView)findViewById(R.id.tv_head);
         textView.setText("网络连接设置");
         img1=(ImageView)findViewById(R.id.img_an1);
         img2=(ImageView)findViewById(R.id.img_an2);
         img3=(ImageView)findViewById(R.id.img_an3);
-        etAddress1=(EditText)findViewById(R.id.tv_address1);
-        etAddress2=(EditText)findViewById(R.id.tv_address2);
-        etAddress3=(EditText)findViewById(R.id.tv_address3);
+        etAddress1=(EditText)findViewById(R.id.et_address1);
+        etAddress2=(EditText)findViewById(R.id.et_address2);
+        etAddress3=(EditText)findViewById(R.id.et_address3);
         etApn=(EditText)findViewById(R.id.et_apn);
         etIp1=(EditText)findViewById(R.id.et_ip1);
         etIp2=(EditText)findViewById(R.id.et_ip2);
@@ -67,11 +74,19 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
         etPort1=(EditText)findViewById(R.id.et_port1);
         etPort2=(EditText)findViewById(R.id.et_port2);
         etPort3=(EditText)findViewById(R.id.et_port3);
+        tvAddress1=(TextView)findViewById(R.id.tv_address1);
+        tvAddress2=(TextView)findViewById(R.id.tv_address2);
+        tvAddress3=(TextView)findViewById(R.id.tv_address3);
+        tvIp1=(TextView)findViewById(R.id.tv_ip1);
+        tvIp2=(TextView)findViewById(R.id.tv_ip2);
+        tvIp3=(TextView)findViewById(R.id.tv_ip3);
+        tvPort1=(TextView)findViewById(R.id.tv_port1);
+        tvPort2=(TextView)findViewById(R.id.tv_port2);
+        tvPort3=(TextView)findViewById(R.id.tv_port3);
         img1.setOnClickListener(this);
         img2.setOnClickListener(this);
         img3.setOnClickListener(this);
         findViewById(R.id.lin_back).setOnClickListener(this);
-
     }
 
 
@@ -91,7 +106,7 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
             }
             return;
         }
-        SendBleStr.sendBleData(BleContant.SEND_REAL_TIME_DATA,1);
+        SendBleStr.sendBleData(status,1);
     }
 
 
@@ -159,12 +174,22 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
                     break;
                 //初始化通道成功
                 case BleService.ACTION_ENABLE_NOTIFICATION_SUCCES:
-                    sendData(SEND_STATUS);
+                    if(SEND_STATUS==BleContant.NOT_SEND_DATA){
+                        showToastView("蓝牙连接成功！");
+                    }else{
+                        sendData(SEND_STATUS);
+                    }
                     break;
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
                     final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
-                    //解析并显示回执的数据
+                    if(SEND_STATUS==BleContant.SEND_GET_CODE_PHONE){
+                        //解析并显示回执的数据
+                        showData(data);
+                    }else{
+                        showToastView("设置成功！");
+                    }
+                    SEND_STATUS=BleContant.NOT_SEND_DATA;
                     break;
                 case BleService.ACTION_INTERACTION_TIMEOUT:
                     clearTask();
@@ -176,6 +201,42 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
         }
     };
 
+
+    /**
+     * 解析并显示数据
+     */
+    private  void showData(String msg){
+        String[] strings=msg.split(";");
+        if(null==strings || strings.length==0){
+            return;
+        }
+        final String strAddress=strings[0];
+        etAddress1.setText(strAddress.substring(3,5));
+        etAddress2.setText(strAddress.substring(5,7));
+        etAddress3.setText(strAddress.substring(7,9));
+
+        //展示ip及端口号
+        String strIp;
+        String[] ips;
+        strIp=strings[2];
+        ips=strIp.split(",");
+        etIp1.setText(ips[0]);
+        etPort1.setText(ips[1]);
+
+        strIp=strings[3];
+        ips=strIp.split(",");
+        etIp1.setText(ips[0]);
+        etPort1.setText(ips[1]);
+
+        strIp=strings[4];
+        ips=strIp.split(",");
+        etIp1.setText(ips[0]);
+        etPort1.setText(ips[1]);
+
+        //显示APN
+        etApn.setText(strings[5]);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -186,9 +247,21 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
                  if(v.getTag().toString().equals("1")){
                      v.setTag(0);
                      img1.setImageDrawable(getResources().getDrawable(R.mipmap.close_icon));
+                     setColor(tvAddress1,0);
+                     setColor(tvIp1,0);
+                     setColor(tvPort1,0);
+                     setColor2(etAddress1,0);
+                     setColor2(etIp1,0);
+                     setColor2(etPort1,0);
                  }else{
                      v.setTag(1);
                      img1.setImageDrawable(getResources().getDrawable(R.mipmap.open_icon));
+                     setColor(tvAddress1,1);
+                     setColor(tvIp1,1);
+                     setColor(tvPort1,1);
+                     setColor2(etAddress1,1);
+                     setColor2(etIp1,1);
+                     setColor2(etPort1,1);
                  }
                  break;
             case R.id.img_an2:
@@ -198,9 +271,21 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
                 if(v.getTag().toString().equals("1")){
                     v.setTag(0);
                     img2.setImageDrawable(getResources().getDrawable(R.mipmap.close_icon));
+                    setColor(tvAddress2,0);
+                    setColor(tvIp2,0);
+                    setColor(tvPort2,0);
+                    setColor2(etAddress2,0);
+                    setColor2(etIp2,0);
+                    setColor2(etPort2,0);
                 }else{
                     v.setTag(1);
                     img2.setImageDrawable(getResources().getDrawable(R.mipmap.open_icon));
+                    setColor(tvAddress2,1);
+                    setColor(tvIp2,1);
+                    setColor(tvPort2,1);
+                    setColor2(etAddress2,1);
+                    setColor2(etIp2,1);
+                    setColor2(etPort2,1);
                 }
                 break;
             case R.id.img_an3:
@@ -210,9 +295,21 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
                 if(v.getTag().toString().equals("1")){
                     v.setTag(0);
                     img3.setImageDrawable(getResources().getDrawable(R.mipmap.close_icon));
+                    setColor(tvAddress3,0);
+                    setColor(tvIp3,0);
+                    setColor(tvPort3,0);
+                    setColor2(etAddress3,0);
+                    setColor2(etIp3,0);
+                    setColor2(etPort3,0);
                 }else{
                     v.setTag(1);
                     img3.setImageDrawable(getResources().getDrawable(R.mipmap.open_icon));
+                    setColor(tvAddress3,1);
+                    setColor(tvIp3,1);
+                    setColor(tvPort3,1);
+                    setColor2(etAddress3,1);
+                    setColor2(etIp3,1);
+                    setColor2(etPort3,1);
                 }
                 break;
             case R.id.lin_back:
@@ -220,6 +317,31 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
                  break;
             default:
                 break;
+        }
+    }
+
+
+    private void setColor(TextView textView,int type){
+        if(type==0){
+            textView.setTextColor(getResources().getColor(R.color.color_AEAEAE));
+        }else{
+            textView.setTextColor(getResources().getColor(R.color.color_1fc37f));
+        }
+    }
+
+
+    private void setColor2(EditText editText,int type){
+        if(type==0){
+            editText.setTextColor(getResources().getColor(R.color.color_AEAEAE));
+            editText.setCursorVisible(false);
+            editText.setFocusable(false);
+            editText.setFocusableInTouchMode(false);
+        }else{
+            editText.setTextColor(getResources().getColor(R.color.color_1fc37f));
+            editText.setFocusable(true);
+            editText.setCursorVisible(true);
+            editText.setFocusableInTouchMode(true);
+            editText.requestFocus();
         }
     }
 }
