@@ -96,6 +96,8 @@ public class CheckActivity extends BaseActivity {
 
                 if(TextUtils.isEmpty(s.toString())){
                     tvWuCha.setText("");
+                    tvDes.setText("");
+                    return;
                 }
                 final double check=Double.parseDouble(s.toString());
                 //显示误差
