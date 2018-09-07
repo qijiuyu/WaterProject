@@ -108,11 +108,10 @@
         android:id="@+id/tv_about"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:autoLink="all"
         android:text="关于我们"
         android:textSize="15sp"
         android:textColor="@color/color_1fc37f"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="40dp"
         android:layout_gravity="center"/>
 
 </LinearLayout>

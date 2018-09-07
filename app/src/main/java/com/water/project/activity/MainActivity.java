@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -15,6 +16,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import com.water.project.R;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
@@ -67,17 +70,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         banner = (Banner) findViewById(R.id.banner);
         linearLayout1=(LinearLayout)findViewById(R.id.lin_am1);
         linearLayout2=(LinearLayout)findViewById(R.id.lin_am2);
+        TextView tvAbout=(TextView)findViewById(R.id.tv_about);
         imgList.add(R.mipmap.one);
         imgList.add(R.mipmap.two);
         imgList.add(R.mipmap.three);
         titleList.add("十大星级品牌联盟，全场2折起");
         titleList.add("嗨购5折不要停");
         titleList.add("全场2折起");
+        tvAbout.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
+        tvAbout.setOnClickListener(this);
         findViewById(R.id.tv_am_scan).setOnClickListener(this);
         findViewById(R.id.tv_am_setting).setOnClickListener(this);
         findViewById(R.id.tv_am_data).setOnClickListener(this);
         findViewById(R.id.tv_am_yan).setOnClickListener(this);
-        findViewById(R.id.tv_about).setOnClickListener(this);
         findViewById(R.id.tv_am_net).setOnClickListener(this);
     }
 
