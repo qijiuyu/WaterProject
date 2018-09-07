@@ -95,9 +95,7 @@ public class CheckActivity extends BaseActivity {
                 final double shuiWei=Double.parseDouble(strShui);
 
                 if(TextUtils.isEmpty(s.toString())){
-                    LogUtils.e("11111");
                     tvWuCha.setText("");
-                    return;
                 }
                 final double check=Double.parseDouble(s.toString());
                 //显示误差
@@ -111,7 +109,6 @@ public class CheckActivity extends BaseActivity {
                     tvDes.setText("不建议点击修正误差，请先检查原因");
                 }else{
                     tvDes.setText("");
-                    tvDes.setText(null);
                 }
             }
         });

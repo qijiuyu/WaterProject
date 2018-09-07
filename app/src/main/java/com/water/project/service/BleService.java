@@ -281,6 +281,7 @@ public class BleService extends Service implements Serializable{
     boolean isSuccess;
     public boolean writeRXCharacteristic(List<String> list, final int type) {
         sb=new StringBuffer();
+        this.type=type;
         isSuccess=true;
         try {
             BluetoothGattService RxService = mBluetoothGatt.getService(RX_SERVICE_UUID);
@@ -297,6 +298,7 @@ public class BleService extends Service implements Serializable{
             }
             //循环发送数据
             for (int i=0;i<list.size();i++){
+                  LogUtils.e("发送的命令是："+list.get(i));
                    RxChar.setValue(list.get(i).getBytes());
                    //开启超时计时器
                    startTimeOut();
@@ -425,8 +427,10 @@ public class BleService extends Service implements Serializable{
                     //关闭超时计时器
                     stopTimeOut();
                     if(type==1){
+                        LogUtils.e("回执的完整数据是："+sb.toString());
                         broadcastUpdate(ACTION_DATA_AVAILABLE, sb.toString().replace("OK",""));
                     }else{
+                        LogUtils.e("回执的完整数据是："+sb.toString());
                         broadcastUpdate(ACTION_DATA_AVAILABLE2, sb.toString().replace("OK",""));
                     }
                 }else if(sb.toString().contains("GDCURRENT")){
@@ -434,8 +438,10 @@ public class BleService extends Service implements Serializable{
                         //关闭超时计时器
                         stopTimeOut();
                         if(type==1){
+                            LogUtils.e("回执的完整数据是："+sb.toString());
                             broadcastUpdate(ACTION_DATA_AVAILABLE, sb.toString());
                         }else{
+                            LogUtils.e("回执的完整数据是："+sb.toString());
                             broadcastUpdate(ACTION_DATA_AVAILABLE2, sb.toString());
                         }
                     }
