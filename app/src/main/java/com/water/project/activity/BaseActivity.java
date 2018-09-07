@@ -1,6 +1,5 @@
 package com.water.project.activity;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -13,14 +12,20 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.water.project.R;
+import com.water.project.utils.LogUtils;
+import com.water.project.view.CycleWheelView;
+
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/7/2 0002.
@@ -95,20 +100,20 @@ public class BaseActivity extends FragmentActivity {
         progressDialog.setCancelable(false);
         progressDialog.show();
     }
-
-
-    protected void bottomPopupWindow(int x, int y, View view,View parent) {
-        mPopuwindow = new PopupWindow(view,
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        ColorDrawable cd = new ColorDrawable(Color.argb(0, 0, 0, 0));
-        mPopuwindow.setBackgroundDrawable(cd);
-        mPopuwindow.setOutsideTouchable(true);
-        mPopuwindow.setFocusable(true);
-        mPopuwindow.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);
-        mPopuwindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        mPopuwindow.showAsDropDown(parent,x,y,Gravity.BOTTOM);
-    }
+//
+//
+//    protected void bottomPopupWindow(int x, int y, View view) {
+//        mPopuwindow = new PopupWindow(view,
+//                ViewGroup.LayoutParams.MATCH_PARENT,
+//                ViewGroup.LayoutParams.WRAP_CONTENT);
+//        ColorDrawable cd = new ColorDrawable(Color.argb(0, 0, 0, 0));
+//        mPopuwindow.setBackgroundDrawable(cd);
+//        mPopuwindow.setOutsideTouchable(true);
+//        mPopuwindow.setFocusable(true);
+//        mPopuwindow.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);
+//        mPopuwindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+//        mPopuwindow.showAsDropDown(getWindow().getDecorView(),x,y,Gravity.BOTTOM);
+//    }
 
 
     /**
@@ -131,6 +136,59 @@ public class BaseActivity extends FragmentActivity {
         if (baseDialog != null) {
             baseDialog.dismiss();
         }
+    }
+
+
+    /**
+     * 滚动选择器
+     * @param list
+     * @param tv
+     */
+    private String message;
+    protected void wheel(List<String> list, final TextView tv,final int type){
+        View view= LayoutInflater.from(this).inflate(R.layout.wheel,null);
+        TextView tvTitle=(TextView)view.findViewById(R.id.tv_wh_title);
+        if(type==1){
+            tvTitle.setText("请选择几小时");
+        }else{
+            tvTitle.setText("请选择几点");
+        }
+        CycleWheelView cycleWheelView=(CycleWheelView)view.findViewById(R.id.cycleWheelView);
+        cycleWheelView.setLabels(list);
+        try {
+            cycleWheelView.setWheelSize(5);
+        } catch (CycleWheelView.CycleWheelViewException e) {
+            e.printStackTrace();
+        }
+        cycleWheelView.setCycleEnable(false);
+        cycleWheelView.setSelection(0);
+        cycleWheelView.setAlphaGradual(0.5f);
+        cycleWheelView.setDivider(Color.parseColor("#abcdef"),1);
+        cycleWheelView.setSolid(Color.WHITE,Color.WHITE);
+        cycleWheelView.setLabelColor(Color.GRAY);
+        cycleWheelView.setLabelSelectColor(Color.BLACK);
+        cycleWheelView.setOnWheelItemSelectedListener(new CycleWheelView.WheelItemSelectedListener() {
+            public void onItemSelected(int position, String label) {
+                message=label;
+            }
+        });
+        view.findViewById(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                closeDialog();
+                tv.setText(message);
+                if(type==1){
+                    message=message.replace("小时","");
+                }else{
+                    message=message.replace("点","");
+                }
+                if(message.length()==1){
+                    tv.setText("0"+message);
+                }else{
+                    tv.setText(message);
+                }
+            }
+        });
+       dialogPop(view,true);
     }
 
 

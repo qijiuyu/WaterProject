@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
@@ -14,12 +15,28 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by lyn on 2017/5/20.
  */
 
 public class FileUtils {
+
+    /**
+     * 获取sd卡路径
+     */
+    public static String getSdcardPath() {
+        String path = Environment.getExternalStorageDirectory() + File.separator + "waterProject" + File.separator;
+        File file = new File(path);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        return path;
+    }
+
+
     public static void mkdirsPath(String path) {
         File file = new File(path);
         if (file == null) {

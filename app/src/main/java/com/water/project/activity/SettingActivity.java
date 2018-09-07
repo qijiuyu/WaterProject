@@ -29,7 +29,9 @@ import com.water.project.view.time.SlideDateTimeListener;
 import com.water.project.view.time.SlideDateTimePicker;
 import com.water.project.view.time.TimeUtils;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 参数设置
@@ -37,8 +39,8 @@ import java.util.Date;
  */
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener{
-    private EditText etCode,etPhone,etTanTou,etCEtime,etFEtime;
-    private TextView etCStime,etFStime;
+    private EditText etCode,etPhone,etTanTou;
+    private TextView etCStime,etFStime,etCEtime,etFEtime;
     private DialogView dialogView;
     private Handler mHandler=new Handler();
     //下发命令的编号
@@ -73,11 +75,13 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         etPhone=(EditText)findViewById(R.id.et_as_phone);
         etTanTou=(EditText)findViewById(R.id.et_as_tantou);
         etCStime=(TextView) findViewById(R.id.et_as_cstime);
-        etCEtime=(EditText)findViewById(R.id.et_as_cetime);
+        etCEtime=(TextView)findViewById(R.id.tv_as_cetime);
         etFStime=(TextView)findViewById(R.id.et_as_fstime);
-        etFEtime=(EditText)findViewById(R.id.et_as_fetime);
+        etFEtime=(TextView)findViewById(R.id.et_as_fetime);
         etCStime.setOnClickListener(this);
         etFStime.setOnClickListener(this);
+        etCEtime.setOnClickListener(this);
+        etFEtime.setOnClickListener(this);
         findViewById(R.id.tv_setting_one).setOnClickListener(this);
         findViewById(R.id.tv_setting_two).setOnClickListener(this);
         findViewById(R.id.tv_setting_three).setOnClickListener(this);
@@ -149,6 +153,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                         .build()
                         .show();
                  break;
+            //选择采集间隔时间
+            case R.id.tv_as_cetime:
+                 wheel(Util.getHourList(),etCEtime,1);
+                 break;
             //设置采集频率
             case R.id.tv_setting_three:
                  final String date=etCStime.getText().toString().trim();
@@ -170,13 +178,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
             //选择发送起始时间
             case R.id.et_as_fstime:
-                 TimeUtils.type=1;
-                  new SlideDateTimePicker.Builder(getSupportFragmentManager())
-                        .setListener(listener)
-                        .setInitialDate(new Date())
-                        .build()
-                        .show();
+                  wheel(Util.getDateList(),etFStime,2);
                   break;
+            //选择发送间隔小时
+            case R.id.et_as_fetime:
+                 wheel(Util.getHourList(),etFEtime,1);
+                 break;
             //设置发送频率
             case R.id.tv_setting_four:
                  final String startTime=etFStime.getText().toString().trim();

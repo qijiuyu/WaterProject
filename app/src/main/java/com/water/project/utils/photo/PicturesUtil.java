@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.water.project.R;
 import com.water.project.photo.ImageGridActivity;
+import com.water.project.utils.FileUtils;
 import com.water.project.utils.Util;
 
 import java.io.File;
@@ -26,11 +27,8 @@ public class PicturesUtil {
     /* 请求识别码 */
     public static final int CODE_GALLERY_REQUEST = 0xa0;
     public static final int CODE_CAMERA_REQUEST = 0xa1;
-    public static final int CODE_RESULT_REQUEST = 0xa2;
-    public static final String pai = Util.getSdcardPath() + "pictures.jpg";
-    public static final String newPath = Util.getSdcardPath() + "new_photo.jpg";
-    public static final String newPath2 = Util.getSdcardPath() + "new_photo2.jpg";
-    public static final String crop = Util.getSdcardPath() + "crop.jpg";
+    public static final String pai = FileUtils.getSdcardPath() + "pictures.jpg";
+    public static final String crop = FileUtils.getSdcardPath() + "crop.jpg";
 
     public static void selectPhoto(final Activity context, final int type) {
         File file=new File(crop);
@@ -53,13 +51,8 @@ public class PicturesUtil {
                     dialog.dismiss();
                 }
                 Intent intentFromCapture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                // 判断存储卡是否可用，存储照片文件
-                if (Util.hasSdcard()) {
-                    intentFromCapture.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(pai)));
-                    context.startActivityForResult(intentFromCapture, CODE_CAMERA_REQUEST);
-                } else {
-                    Toast.makeText(context,"没有SDCard!",Toast.LENGTH_LONG).show();
-                }
+                intentFromCapture.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(pai)));
+                context.startActivityForResult(intentFromCapture, CODE_CAMERA_REQUEST);
             }
         });
         //本地相册选择

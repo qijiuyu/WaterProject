@@ -218,7 +218,6 @@
                 android:layout_below="@id/et_as_cstime"/>
 
             <TextView
-                android:id="@+id/tv_as_cetime"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
@@ -228,8 +227,8 @@
                 android:textColor="@android:color/black"
                 android:textSize="15sp"/>
 
-            <EditText
-                android:id="@+id/et_as_cetime"
+            <TextView
+                android:id="@+id/tv_as_cetime"
                 android:layout_width="200dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
@@ -260,7 +259,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/color_888888"
-                android:layout_below="@id/et_as_cetime"/>
+                android:layout_below="@id/tv_as_cetime"/>
 
             <LinearLayout
                 android:id="@+id/lin_as3"
@@ -348,7 +347,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="15sp"/>
 
-            <EditText
+            <TextView
                 android:id="@+id/et_as_fetime"
                 android:layout_width="200dp"
                 android:layout_height="40dp"
