@@ -190,6 +190,7 @@ public class BaseActivity extends FragmentActivity {
                 }
             }
         });
+        cycleWheelView.setSelection(5);
        dialogPop(view,true);
     }
 
