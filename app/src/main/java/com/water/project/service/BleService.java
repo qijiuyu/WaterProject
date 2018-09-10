@@ -301,7 +301,7 @@ public class BleService extends Service implements Serializable{
             for (int i=0;i<list.size();i++){
                 stringBuffer.append(list.get(i).getBytes());
             }
-            LogUtils.e("发送的命令是："+stringBuffer.toString());
+            LogUtils.e("发送的命令是："+stringBuffer.toString().getBytes());
             //循环发送数据
             for (int i=0;i<list.size();i++){
                    RxChar.setValue(list.get(i).getBytes());
