@@ -194,11 +194,11 @@ public class SendBleStr {
                  break;
             //查询实时数据
             case BleContant.SEND_REAL_TIME_DATA:
-                 SendBleDataManager.getInstance().sendData(SET_IP_PORT,type);
+                 SendBleDataManager.getInstance().sendData(SEND_REAL_TIME_DATA,type);
                  break;
             //设置网络数据
             case BleContant.SET_IP_PORT:
-                 SendBleDataManager.getInstance().sendData(SEND_REAL_TIME_DATA,type);
+                 SendBleDataManager.getInstance().sendData(SET_IP_PORT,type);
                  break;
                  default:
                      break;
