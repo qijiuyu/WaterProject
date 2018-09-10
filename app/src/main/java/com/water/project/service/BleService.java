@@ -418,20 +418,34 @@ public class BleService extends Service implements Serializable{
             if(TextUtils.isEmpty(data)){
                 return;
             }
-            LogUtils.e("接收到的数据是="+data);
+            LogUtils.e("接收到的数据是："+data);
             if(data.contains("GD")){
-                sb.append(data);
-            }else if(sb.length()>0){
                 sb.append(data);
                 if(data.contains("OK")){
                     //关闭超时计时器
                     stopTimeOut();
                     if(type==1){
                         LogUtils.e("回执的完整数据是："+sb.toString());
-                        broadcastUpdate(ACTION_DATA_AVAILABLE, sb.toString().replace("OK",""));
+                        broadcastUpdate(ACTION_DATA_AVAILABLE, sb.toString().replace(">OK",""));
                     }else{
                         LogUtils.e("回执的完整数据是："+sb.toString());
-                        broadcastUpdate(ACTION_DATA_AVAILABLE2, sb.toString().replace("OK",""));
+                        broadcastUpdate(ACTION_DATA_AVAILABLE2, sb.toString().replace(">OK",""));
+                    }
+                }
+                return;
+            }
+
+            if(sb.length()>0){
+                sb.append(data);
+                if(data.contains("OK")){
+                    //关闭超时计时器
+                    stopTimeOut();
+                    if(type==1){
+                        LogUtils.e("回执的完整数据是："+sb.toString());
+                        broadcastUpdate(ACTION_DATA_AVAILABLE, sb.toString().replace(">OK",""));
+                    }else{
+                        LogUtils.e("回执的完整数据是："+sb.toString());
+                        broadcastUpdate(ACTION_DATA_AVAILABLE2, sb.toString().replace(">OK",""));
                     }
                 }else if(sb.toString().contains("GDCURRENT")){
                     if(data.contains(";")){

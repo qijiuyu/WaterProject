@@ -17,6 +17,7 @@ import com.water.project.R;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
 import com.water.project.service.BleService;
+import com.water.project.utils.BleUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.StatusBarUtils;
@@ -61,7 +62,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
         register();//注册广播
-//        sendData(BleContant.SEND_GET_CODE_PHONE,1); //发送蓝牙命令
+        sendData(BleContant.SEND_GET_CODE_PHONE,1); //发送蓝牙命令
     }
 
 
@@ -99,6 +100,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
      * @param status
      */
     private void sendData(int status,int type){
+        //判断蓝牙是否打开
+        if(!BleUtils.isEnabled(SettingActivity.this,MainActivity.mBtAdapter)){
+            return;
+        }
         SEND_STATUS=status;
         SEND_TYPE=type;
         showProgress("发送数据中...");

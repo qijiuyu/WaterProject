@@ -52,7 +52,7 @@ public class BleItemAdapter extends BaseAdapter {
 		if(!TextUtils.isEmpty(bleName)){
 			holder.tvBleName.setText(bleName);
 			holder.tvConnect.setTag(list.get(position));
-			if(bleName.contains("ZX-PARK")){
+			if(bleName.contains("ZKGD")){
 				holder.tvConnect.setVisibility(View.VISIBLE);
 			}else{
 				holder.tvConnect.setVisibility(View.GONE);

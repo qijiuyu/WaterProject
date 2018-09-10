@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,7 +25,9 @@ import com.water.project.utils.SystemBarTintManager;
 import com.water.project.view.DialogView;
 import com.water.project.view.RippleBackground;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 搜寻蓝牙
@@ -36,6 +39,7 @@ public class SearchBleActivity extends BaseActivity {
     private BleItemAdapter bleItemAdapter;
     //存储扫描到的蓝牙名称
     private List<Ble> bleList=new ArrayList<>();
+    private Map<String ,String> bleMap=new HashMap<>();
     private DialogView dialogView;
     private Handler mHandler=new Handler();
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -106,8 +110,12 @@ public class SearchBleActivity extends BaseActivity {
                 case BleService.ACTION_SCAN_SUCCESS:
                     final String bleName=intent.getStringExtra("bleName");
                     final String bleMac=intent.getStringExtra("bleMac");
+                    if(!TextUtils.isEmpty(bleMap.get(bleName))){
+                        return;
+                    }
+                    bleMap.put(bleName,bleName);
                     ble=new Ble(bleName,bleMac);
-                    if(bleName.contains("ZX-PARK")){
+                    if(bleName.contains("ZKGD")){
                         bleList.add(0,ble);
                     }else{
                         bleList.add(ble);

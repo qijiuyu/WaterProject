@@ -16,6 +16,7 @@ import com.water.project.R;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
 import com.water.project.service.BleService;
+import com.water.project.utils.BleUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.StatusBarUtils;
@@ -83,6 +84,10 @@ public class GetDataActivity extends BaseActivity {
      * 发送蓝牙命令
      */
     private void sendData(){
+        //判断蓝牙是否打开
+        if(!BleUtils.isEnabled(GetDataActivity.this,MainActivity.mBtAdapter)){
+            return;
+        }
         showProgress("数据查询中...");
         //如果蓝牙连接断开，就扫描重连
         if(MainActivity.bleService.connectionState==MainActivity.bleService.STATE_DISCONNECTED){
@@ -166,6 +171,7 @@ public class GetDataActivity extends BaseActivity {
                     break;
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
+                     clearTask();
                      final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
                      //解析并显示回执的数据
                      showData(data);
@@ -183,6 +189,7 @@ public class GetDataActivity extends BaseActivity {
     /**
      * 展示数据
      */
+    //GDCURRENT>180910163350L0011.01T027.0B100V06.57CSQ00R+27.7E0000P0010.258B10.263C0011.000;
     private void showData(String msg){
         //显示采集时间
         msg=msg.replace("GDCURRENT>","");

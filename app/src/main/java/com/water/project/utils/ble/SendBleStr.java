@@ -177,10 +177,20 @@ public class SendBleStr {
             case BleContant.SET_TANTOU:
                  SendBleDataManager.getInstance().sendData(SET_TANTOU,type);
                  break;
+            //设置采集频率
+            case BleContant.SET_CAI_JI_PIN_LU:
+                 SendBleDataManager.getInstance().sendData(SET_CAI_JI_PIN_LU,type);
+                 break;
+             //设置发送频率
+            case BleContant.SET_FA_SONG:
+                 SendBleDataManager.getInstance().sendData(SET_FA_SONG_PIN_LU,type);
+                 break;
             //查询实时数据
             case BleContant.SEND_REAL_TIME_DATA:
                  SendBleDataManager.getInstance().sendData(SEND_REAL_TIME_DATA,type);
                  break;
+                 default:
+                     break;
 
         }
     }

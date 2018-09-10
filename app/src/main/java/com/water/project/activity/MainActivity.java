@@ -38,7 +38,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     protected long exitTime = 0;
     //蓝牙参数
     public static BleService bleService = null;
-    public BluetoothAdapter mBtAdapter = null;
+    public static BluetoothAdapter mBtAdapter = null;
     private Banner banner;
     //设置图片资源:url或本地资源
     private List<Integer> imgList=new ArrayList<>();
