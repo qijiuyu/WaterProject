@@ -55,7 +55,7 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
         register();
-//        sendData(BleContant.SEND_GET_CODE_PHONE);
+        sendData(BleContant.SEND_GET_CODE_PHONE);
     }
 
 
@@ -192,6 +192,7 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
                     break;
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
+                     clearTask();
                     final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
                     if(SEND_STATUS==BleContant.SEND_GET_CODE_PHONE){
                         //解析并显示回执的数据
@@ -236,13 +237,13 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
 
         strIp=strings[3];
         ips=strIp.split(",");
-        etIp1.setText(ips[0]);
-        etPort1.setText(ips[1]);
+        etIp2.setText(ips[0]);
+        etPort2.setText(ips[1]);
 
         strIp=strings[4];
         ips=strIp.split(",");
-        etIp1.setText(ips[0]);
-        etPort1.setText(ips[1]);
+        etIp3.setText(ips[0]);
+        etPort3.setText(ips[1]);
 
         //显示APN
         etApn.setText(strings[5]);
@@ -413,5 +414,12 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
             editText.setFocusableInTouchMode(true);
             editText.requestFocus();
         }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mBroadcastReceiver);
     }
 }

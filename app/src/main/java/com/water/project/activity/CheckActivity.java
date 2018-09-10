@@ -55,7 +55,7 @@ public class CheckActivity extends BaseActivity {
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
         register();//注册广播
-//        sendData(BleContant.SEND_REAL_TIME_DATA);
+        sendData(BleContant.SEND_REAL_TIME_DATA);
     }
 
     /**
@@ -75,7 +75,13 @@ public class CheckActivity extends BaseActivity {
         //数据校验
         findViewById(R.id.tv_btn).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                sendData(BleContant.SET_DATA_CHECK);
+                final String data=tvWuCha.getText().toString().trim();
+                if(TextUtils.isEmpty(data)){
+                    showToastView("没有误差数据！");
+                }else{
+                    SendBleStr.setCheck(data);
+                    sendData(BleContant.SET_DATA_CHECK);
+                }
             }
         });
         findViewById(R.id.lin_back).setOnClickListener(new View.OnClickListener() {
@@ -218,6 +224,7 @@ public class CheckActivity extends BaseActivity {
                      if(SEND_STATUS==BleContant.SEND_REAL_TIME_DATA){
                          //解析并显示回执的数据
                          showData(data);
+                         clearTask();
                          SEND_STATUS=BleContant.NOT_SEND_DATA;
                      }else{
                          sendData(BleContant.SEND_REAL_TIME_DATA);

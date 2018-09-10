@@ -296,9 +296,14 @@ public class BleService extends Service implements Serializable{
                 LogUtils.e("传输数据：BluetoothGattCharacteristic==null");
                 return false;
             }
+
+            StringBuffer stringBuffer=new StringBuffer();
+            for (int i=0;i<list.size();i++){
+                stringBuffer.append(list.get(i).getBytes());
+            }
+            LogUtils.e("发送的命令是："+stringBuffer.toString());
             //循环发送数据
             for (int i=0;i<list.size();i++){
-                  LogUtils.e("发送的命令是："+list.get(i));
                    RxChar.setValue(list.get(i).getBytes());
                    //开启超时计时器
                    startTimeOut();

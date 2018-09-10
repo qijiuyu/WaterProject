@@ -1,5 +1,6 @@
 package com.water.project.utils.ble;
 
+import com.water.project.utils.LogUtils;
 import com.water.project.utils.Util;
 
 /**
@@ -106,17 +107,19 @@ public class SendBleStr {
      */
     public static void setCheck(String data){
         StringBuffer stringBuffer=new StringBuffer("GD&>#PYW001T");
-        final double CMdata=Integer.parseInt(data.replace("-",""));
+        final double CMdata=Double.parseDouble(data.replace("-",""));
         if(data.contains("-")){
             stringBuffer.append("-");
         }else{
             stringBuffer.append("+");
         }
         data= Util.setDouble(CMdata,4);
+        LogUtils.e("data="+data);
         final int length=9-(data.length());
         for (int i=0;i<length;i++){
              stringBuffer.append("0");
         }
+        stringBuffer.append(data);
         SET_DATA_CHECK=stringBuffer.toString();
     }
 
@@ -185,8 +188,16 @@ public class SendBleStr {
             case BleContant.SET_FA_SONG:
                  SendBleDataManager.getInstance().sendData(SET_FA_SONG_PIN_LU,type);
                  break;
+            //设置误差数据
+            case BleContant.SET_DATA_CHECK:
+                 SendBleDataManager.getInstance().sendData(SET_DATA_CHECK,type);
+                 break;
             //查询实时数据
             case BleContant.SEND_REAL_TIME_DATA:
+                 SendBleDataManager.getInstance().sendData(SET_IP_PORT,type);
+                 break;
+            //设置网络数据
+            case BleContant.SET_IP_PORT:
                  SendBleDataManager.getInstance().sendData(SEND_REAL_TIME_DATA,type);
                  break;
                  default:
