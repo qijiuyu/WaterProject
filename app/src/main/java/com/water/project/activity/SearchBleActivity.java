@@ -63,6 +63,12 @@ public class SearchBleActivity extends BaseActivity {
         listView=(ListView)findViewById(R.id.list_asb);
         rippleBackground=(RippleBackground)findViewById(R.id.content);
         rippleBackground.startRippleAnimation();
+        findViewById(R.id.lin_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SearchBleActivity.this.finish();
+            }
+        });
     }
 
 

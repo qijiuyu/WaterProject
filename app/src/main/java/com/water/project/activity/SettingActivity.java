@@ -385,14 +385,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
 
     private SimpleDateFormat mFormatter = new SimpleDateFormat("yyyyMMddHH");
-    private SimpleDateFormat mFormatter2 = new SimpleDateFormat("HH");
     private SlideDateTimeListener listener = new SlideDateTimeListener() {
         public void onDateTimeSet(Date date) {
-            if(TimeUtils.type==0){
-                etCStime.setText(mFormatter.format(date));
-            }else{
-                etFStime.setText(mFormatter2.format(date));
-            }
+            etCStime.setText(mFormatter.format(date));
         }
         public void onDateTimeCancel() {
         }
