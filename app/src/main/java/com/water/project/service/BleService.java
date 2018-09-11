@@ -211,6 +211,8 @@ public class BleService extends Service implements Serializable{
      * @param address 蓝牙的地址
      */
     public boolean connect(final String address) {
+        //停止扫描
+        stopScan(mLeScanCallback);
         connectionState = STATE_CONNECTING;
         if (mBluetoothAdapter == null || TextUtils.isEmpty(address)) {
             return false;

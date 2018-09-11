@@ -11,13 +11,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <ImageView
+            android:id="@+id/img1"
+            android:layout_width="30dp"
+            android:layout_height="80dp"
+            android:src="@mipmap/phone"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"/>
+
         <com.water.project.view.RippleBackground
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:id="@+id/content"
             app:rb_color="#0099CC"
             app:rb_radius="9dp"
@@ -26,20 +34,52 @@
             app:rb_scale="6">
 
             <ImageView
-                android:layout_width="34dp"
-                android:layout_height="34dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_centerInParent="true"
                 android:id="@+id/centerImage"
                 android:src="@mipmap/bluetooth_icon"/>
 
         </com.water.project.view.RippleBackground>
 
+        <ImageView
+            android:id="@+id/img2"
+            android:layout_width="30dp"
+            android:layout_height="80dp"
+            android:src="@mipmap/phone"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="一一一一>"
+            android:textColor="#000000"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/img1"
+            android:layout_marginLeft="5dp"
+            android:layout_toLeftOf="@id/content"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="一一一一>"
+            android:textColor="#000000"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/content"
+            android:layout_marginLeft="5dp"
+            android:layout_toLeftOf="@id/img2"/>
+
     </RelativeLayout>
 
     <ListView
         android:id="@+id/list_asb"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="15dp">
     </ListView>
 
 </LinearLayout>

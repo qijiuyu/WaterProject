@@ -227,6 +227,24 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
         etAddress2.setText(strAddress.substring(5,7));
         etAddress3.setText(strAddress.substring(7,9));
 
+        if(etAddress1.getText().toString().trim().equals("00")){
+            close1(img1);
+        }else{
+            open1(img1);
+        }
+
+        if(etAddress2.getText().toString().trim().equals("00")){
+            close2(img2);
+        }else{
+            open2(img2);
+        }
+
+        if(etAddress3.getText().toString().trim().equals("00")){
+            close3(img3);
+        }else{
+            open3(img3);
+        }
+
         //展示ip及端口号
         String strIp;
         String[] ips;
@@ -316,23 +334,9 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
                      return;
                  }
                  if(v.getTag().toString().equals("1")){
-                     v.setTag(0);
-                     img1.setImageDrawable(getResources().getDrawable(R.mipmap.close_icon));
-                     setColor(tvAddress1,0);
-                     setColor(tvIp1,0);
-                     setColor(tvPort1,0);
-                     setColor2(etAddress1,0);
-                     setColor2(etIp1,0);
-                     setColor2(etPort1,0);
+                     close1(v);
                  }else{
-                     v.setTag(1);
-                     img1.setImageDrawable(getResources().getDrawable(R.mipmap.open_icon));
-                     setColor(tvAddress1,1);
-                     setColor(tvIp1,1);
-                     setColor(tvPort1,1);
-                     setColor2(etAddress1,1);
-                     setColor2(etIp1,1);
-                     setColor2(etPort1,1);
+                     open1(v);
                  }
                  break;
             case R.id.img_an2:
@@ -340,23 +344,9 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
                     return;
                 }
                 if(v.getTag().toString().equals("1")){
-                    v.setTag(0);
-                    img2.setImageDrawable(getResources().getDrawable(R.mipmap.close_icon));
-                    setColor(tvAddress2,0);
-                    setColor(tvIp2,0);
-                    setColor(tvPort2,0);
-                    setColor2(etAddress2,0);
-                    setColor2(etIp2,0);
-                    setColor2(etPort2,0);
+                    close2(v);
                 }else{
-                    v.setTag(1);
-                    img2.setImageDrawable(getResources().getDrawable(R.mipmap.open_icon));
-                    setColor(tvAddress2,1);
-                    setColor(tvIp2,1);
-                    setColor(tvPort2,1);
-                    setColor2(etAddress2,1);
-                    setColor2(etIp2,1);
-                    setColor2(etPort2,1);
+                   open2(v);
                 }
                 break;
             case R.id.img_an3:
@@ -364,23 +354,9 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
                     return;
                 }
                 if(v.getTag().toString().equals("1")){
-                    v.setTag(0);
-                    img3.setImageDrawable(getResources().getDrawable(R.mipmap.close_icon));
-                    setColor(tvAddress3,0);
-                    setColor(tvIp3,0);
-                    setColor(tvPort3,0);
-                    setColor2(etAddress3,0);
-                    setColor2(etIp3,0);
-                    setColor2(etPort3,0);
+                    close3(v);
                 }else{
-                    v.setTag(1);
-                    img3.setImageDrawable(getResources().getDrawable(R.mipmap.open_icon));
-                    setColor(tvAddress3,1);
-                    setColor(tvIp3,1);
-                    setColor(tvPort3,1);
-                    setColor2(etAddress3,1);
-                    setColor2(etIp3,1);
-                    setColor2(etPort3,1);
+                   open3(v);
                 }
                 break;
             case R.id.lin_back:
@@ -391,6 +367,92 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
         }
     }
 
+
+    private void close1(View v){
+        v.setTag(0);
+        img1.setImageDrawable(getResources().getDrawable(R.mipmap.close_icon));
+        setColor(tvAddress1,0);
+        setColor(tvIp1,0);
+        setColor(tvPort1,0);
+        setColor2(etAddress1,0);
+        setColor2(etIp1,0);
+        setColor2(etPort1,0);
+        etAddress1.setText("00");
+    }
+
+
+    private void close2(View v){
+        v.setTag(0);
+        img2.setImageDrawable(getResources().getDrawable(R.mipmap.close_icon));
+        setColor(tvAddress2,0);
+        setColor(tvIp2,0);
+        setColor(tvPort2,0);
+        setColor2(etAddress2,0);
+        setColor2(etIp2,0);
+        setColor2(etPort2,0);
+        etAddress2.setText("00");
+    }
+
+
+    private void close3(View v){
+        v.setTag(0);
+        img3.setImageDrawable(getResources().getDrawable(R.mipmap.close_icon));
+        setColor(tvAddress3,0);
+        setColor(tvIp3,0);
+        setColor(tvPort3,0);
+        setColor2(etAddress3,0);
+        setColor2(etIp3,0);
+        setColor2(etPort3,0);
+        etAddress3.setText("00");
+    }
+
+
+    private void open1(View v){
+        v.setTag(1);
+        img1.setImageDrawable(getResources().getDrawable(R.mipmap.open_icon));
+        setColor(tvAddress1,1);
+        setColor(tvIp1,1);
+        setColor(tvPort1,1);
+        setColor2(etAddress1,1);
+        setColor2(etIp1,1);
+        setColor2(etPort1,1);
+        if(!etAddress1.getText().toString().trim().equals("00")){
+            return;
+        }
+        etAddress1.setText("16");
+    }
+
+
+    private void open2(View v){
+        v.setTag(1);
+        img2.setImageDrawable(getResources().getDrawable(R.mipmap.open_icon));
+        setColor(tvAddress2,1);
+        setColor(tvIp2,1);
+        setColor(tvPort2,1);
+        setColor2(etAddress2,1);
+        setColor2(etIp2,1);
+        setColor2(etPort2,1);
+        if(!etAddress2.getText().toString().trim().equals("00")){
+            return;
+        }
+        etAddress2.setText("16");
+    }
+
+
+    private void open3(View v){
+        v.setTag(1);
+        img3.setImageDrawable(getResources().getDrawable(R.mipmap.open_icon));
+        setColor(tvAddress3,1);
+        setColor(tvIp3,1);
+        setColor(tvPort3,1);
+        setColor2(etAddress3,1);
+        setColor2(etIp3,1);
+        setColor2(etPort3,1);
+        if(!etAddress3.getText().toString().trim().equals("00")){
+            return;
+        }
+        etAddress3.setText("16");
+    }
 
     private void setColor(TextView textView,int type){
         if(type==0){
