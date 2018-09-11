@@ -277,6 +277,7 @@
 
                 <com.water.project.view.ClickTextView
                     android:id="@+id/tv_setting_three"
+                    android:visibility="gone"
                     android:layout_width="80dp"
                     android:layout_height="match_parent"
                     android:text="设置"

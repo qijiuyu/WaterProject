@@ -197,7 +197,10 @@ public class BleService extends Service implements Serializable{
                 stopScan(mLeScanCallback);
                 //关闭扫描计时器
                 startUtil.stop();
-                broadcastUpdate(ACTION_NO_DISCOVERY_BLE);
+                //发送扫描不到该蓝牙设备的广播
+                if(!TextUtils.isEmpty(bleName)){
+                    broadcastUpdate(ACTION_NO_DISCOVERY_BLE);
+                }
             }
         });
         startUtil.start();
@@ -299,9 +302,9 @@ public class BleService extends Service implements Serializable{
 
             StringBuffer stringBuffer=new StringBuffer();
             for (int i=0;i<list.size();i++){
-                stringBuffer.append(list.get(i).getBytes());
+                stringBuffer.append(list.get(i));
             }
-            LogUtils.e("发送的命令是："+stringBuffer.toString().getBytes());
+            LogUtils.e("发送的命令是："+stringBuffer.toString());
             //循环发送数据
             for (int i=0;i<list.size();i++){
                    RxChar.setValue(list.get(i).getBytes());

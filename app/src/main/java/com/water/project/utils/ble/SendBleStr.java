@@ -107,19 +107,25 @@ public class SendBleStr {
      */
     public static void setCheck(String data){
         StringBuffer stringBuffer=new StringBuffer("GD&>#PYW001T");
-        final double CMdata=Double.parseDouble(data.replace("-",""));
         if(data.contains("-")){
             stringBuffer.append("-");
         }else{
             stringBuffer.append("+");
         }
-        data= Util.setDouble(CMdata,4);
-        LogUtils.e("data="+data);
-        final int length=9-(data.length());
-        for (int i=0;i<length;i++){
-             stringBuffer.append("0");
+        final double CMdata=Double.parseDouble(data.replace("-",""))*100;
+
+        final String m=(CMdata/100)+"";
+        final int index=m.indexOf(".");
+        //判断小数点前面几位
+        for(int i=0;i<4-index;i++){
+            stringBuffer.append("0");
         }
-        stringBuffer.append(data);
+        stringBuffer.append(m);
+
+        //判断小数点后面几位
+        for(int i=0;i<4-(m.length()-index-1);i++){
+            stringBuffer.append("0");
+        }
         SET_DATA_CHECK=stringBuffer.toString();
     }
 

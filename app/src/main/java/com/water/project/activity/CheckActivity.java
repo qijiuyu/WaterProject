@@ -79,6 +79,8 @@ public class CheckActivity extends BaseActivity {
                 if(TextUtils.isEmpty(data)){
                     showToastView("没有误差数据！");
                 }else{
+                    etCheck.setText("");
+                    tvWuCha.setText("");
                     SendBleStr.setCheck(data);
                     sendData(BleContant.SET_DATA_CHECK);
                 }
@@ -111,10 +113,10 @@ public class CheckActivity extends BaseActivity {
                 final String wuCha=Util.sub(shuiWei,check)+"";
                 tvWuCha.setText(wuCha);
 
-                double d=Double.parseDouble(wuCha.replace("-",""));
-                if(d<0.02){
+                double d=Double.parseDouble(wuCha.replace("-",""))*100;
+                if(d<2){
                     tvDes.setText("误差小于2CM，无需进行调整");
-                }else if(d>0.1){
+                }else if(d>10){
                     tvDes.setText("不建议点击修正误差，请先检查原因");
                 }else{
                     tvDes.setText("");
@@ -257,19 +259,19 @@ public class CheckActivity extends BaseActivity {
 
         //显示压力值
         final String YaLi=msg.substring(52,61).replace("P","");
-        tvYaLi.setText(Double.parseDouble(YaLi)+"mH2O");
+        tvYaLi.setText(Util.setDouble(Double.parseDouble(YaLi),3)+"mH2O");
 
         //显示气压值
         final String QiYa=msg.substring(61,68).replace("B","");
-        tvQiYa.setText(Double.parseDouble(QiYa)+"mH2O");
+        tvQiYa.setText(Util.setDouble(Double.parseDouble(QiYa),3)+"mH2O");
 
         //显示探头埋深
         final String TanTou=msg.substring(68,77).replace("C","");
-        tvTanTou.setText(Double.parseDouble(TanTou)+"m");
+        tvTanTou.setText(Util.setDouble(Double.parseDouble(TanTou),3)+"m");
 
         //显示水位埋深
         final String MaiShen=msg.substring(12,20).replace("L","");
-        tvShuiWei.setText(Double.parseDouble(MaiShen)+"m");
+        tvShuiWei.setText(Util.setDouble(Double.parseDouble(MaiShen),2)+"m");
     }
 
     @Override

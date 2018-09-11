@@ -21,6 +21,12 @@ public class Util extends ClassLoader {
     public static String setDouble(double d,int type){
         DecimalFormat df=null;
         switch (type){
+            case 1:
+                df = new DecimalFormat("0.0");
+                break;
+            case 2:
+                df = new DecimalFormat("0.00");
+                break;
             case 3:
                  df = new DecimalFormat("0.000");
                  break;
@@ -85,6 +91,7 @@ public class Util extends ClassLoader {
             return false;
         }
     }
+
 
     /**
      * double 相加

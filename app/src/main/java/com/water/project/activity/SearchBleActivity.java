@@ -64,9 +64,20 @@ public class SearchBleActivity extends BaseActivity {
     private void initView(){
         TextView tvHead=(TextView)findViewById(R.id.tv_head);
         tvHead.setText("查找蓝牙");
+        TextView tvRight=(TextView)findViewById(R.id.tv_right);
+        tvRight.setText("重新扫描");
         listView=(ListView)findViewById(R.id.list_asb);
         rippleBackground=(RippleBackground)findViewById(R.id.content);
         rippleBackground.startRippleAnimation();
+        tvRight.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                bleList.clear();
+                if(null!=bleItemAdapter){
+                    bleItemAdapter.notifyDataSetChanged();
+                }
+                scanBle();
+            }
+        });
         findViewById(R.id.lin_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

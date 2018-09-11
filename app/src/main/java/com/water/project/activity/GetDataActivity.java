@@ -21,6 +21,7 @@ import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.StatusBarUtils;
 import com.water.project.utils.SystemBarTintManager;
+import com.water.project.utils.Util;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
@@ -189,7 +190,7 @@ public class GetDataActivity extends BaseActivity {
     /**
      * 展示数据
      */
-    //GDCURRENT>180910163350L0011.01T027.0B100V06.57CSQ00R+27.7E0000P0010.258B10.263C0011.000;
+    //GDCURRENT>180911100535L0011.00T027.1B100V06.53CSQ00R+26.9E0000P0010.388B10.265C0011.111;
     private void showData(String msg){
         //显示采集时间
         msg=msg.replace("GDCURRENT>","");
@@ -204,15 +205,15 @@ public class GetDataActivity extends BaseActivity {
 
         //显示水位埋深
         final String MaiShen=msg.substring(12,20).replace("L","");
-        tvMaiShen.setText(Double.parseDouble(MaiShen)+"m");
+        tvMaiShen.setText(Util.setDouble(Double.parseDouble(MaiShen),2)+"m");
 
         //显示压力值
         final String YaLi=msg.substring(52,61).replace("P","");
-        tvYaLi.setText(Double.parseDouble(YaLi)+"mH2O");
+        tvYaLi.setText(Util.setDouble(Double.parseDouble(YaLi),3)+"mH2O");
 
         //显示气压值
         final String QiYa=msg.substring(61,68).replace("B","");
-        tvQiYa.setText(Double.parseDouble(QiYa)+"mH2O");
+        tvQiYa.setText(Util.setDouble(Double.parseDouble(QiYa),3)+"mH2O");
 
         //显示水温值
         final String ShuiWen=msg.substring(20,26).replace("T","");
@@ -224,7 +225,7 @@ public class GetDataActivity extends BaseActivity {
 
         //显示电压值
         final String DianYa=msg.substring(30,36).replace("V","");
-        tvDianYa.setText(Double.parseDouble(DianYa)+"V");
+        tvDianYa.setText(Util.setDouble(Double.parseDouble(DianYa),1)+"V");
 
         //现实信号值
         final String XinHao=msg.substring(36,41).replace("CSQ","");
