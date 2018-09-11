@@ -130,6 +130,7 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
         myIntentFilter.addAction(BleService.ACTION_ENABLE_NOTIFICATION_SUCCES);//蓝牙初始化通道成功
         myIntentFilter.addAction(BleService.ACTION_DATA_AVAILABLE);//接收到了回执的数据
         myIntentFilter.addAction(BleService.ACTION_INTERACTION_TIMEOUT);//发送命令超时
+        myIntentFilter.addAction(BleService.ACTION_SEND_DATA_FAIL);//发送数据失败
         registerReceiver(mBroadcastReceiver, myIntentFilter);
     }
 
@@ -205,6 +206,10 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
                 case BleService.ACTION_INTERACTION_TIMEOUT:
                     clearTask();
                     showToastView("接收数据超时！");
+                    break;
+                case BleService.ACTION_SEND_DATA_FAIL:
+                    clearTask();
+                    showToastView("下发命令失败！");
                     break;
                 default:
                     break;

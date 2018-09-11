@@ -114,6 +114,7 @@ public class GetDataActivity extends BaseActivity {
         myIntentFilter.addAction(BleService.ACTION_ENABLE_NOTIFICATION_SUCCES);//蓝牙初始化通道成功
         myIntentFilter.addAction(BleService.ACTION_DATA_AVAILABLE);//接收到了回执的数据
         myIntentFilter.addAction(BleService.ACTION_INTERACTION_TIMEOUT);//发送命令超时
+        myIntentFilter.addAction(BleService.ACTION_SEND_DATA_FAIL);//发送数据失败
         registerReceiver(mBroadcastReceiver, myIntentFilter);
     }
 
@@ -181,6 +182,10 @@ public class GetDataActivity extends BaseActivity {
                     clearTask();
                     showToastView("接收数据超时！");
                     break;
+                case BleService.ACTION_SEND_DATA_FAIL:
+                    clearTask();
+                    showToastView("下发命令失败！");
+                    break;
                 default:
                     break;
             }
@@ -190,7 +195,6 @@ public class GetDataActivity extends BaseActivity {
     /**
      * 展示数据
      */
-    //GDCURRENT>180911100535L0011.00T027.1B100V06.53CSQ00R+26.9E0000P0010.388B10.265C0011.111;
     private void showData(String msg){
         //显示采集时间
         msg=msg.replace("GDCURRENT>","");

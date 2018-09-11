@@ -319,7 +319,7 @@ public class BleService extends Service implements Serializable{
                     break;
                   }
                   //延时5毫秒
-                  new Thread().sleep(5);
+                  new Thread().sleep(8);
             }
             return isSuccess;
         } catch (Exception e) {
