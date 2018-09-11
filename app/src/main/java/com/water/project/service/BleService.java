@@ -432,15 +432,7 @@ public class BleService extends Service implements Serializable{
             if(data.contains("GD")){
                 sb.append(data);
                 if(data.contains("OK")){
-                    //关闭超时计时器
-                    stopTimeOut();
-                    if(type==1){
-                        LogUtils.e("回执的完整数据是："+sb.toString());
-                        broadcastUpdate(ACTION_DATA_AVAILABLE, sb.toString().replace(">OK",""));
-                    }else{
-                        LogUtils.e("回执的完整数据是："+sb.toString());
-                        broadcastUpdate(ACTION_DATA_AVAILABLE2, sb.toString().replace(">OK",""));
-                    }
+                    broadCastData();
                 }
                 return;
             }
@@ -448,31 +440,31 @@ public class BleService extends Service implements Serializable{
             if(sb.length()>0){
                 sb.append(data);
                 if(data.contains("OK")){
-                    //关闭超时计时器
-                    stopTimeOut();
-                    if(type==1){
-                        LogUtils.e("回执的完整数据是："+sb.toString());
-                        broadcastUpdate(ACTION_DATA_AVAILABLE, sb.toString().replace(">OK",""));
-                    }else{
-                        LogUtils.e("回执的完整数据是："+sb.toString());
-                        broadcastUpdate(ACTION_DATA_AVAILABLE2, sb.toString().replace(">OK",""));
-                    }
+                    broadCastData();
                 }else if(sb.toString().contains("GDCURRENT")){
                     if(data.contains(";")){
-                        //关闭超时计时器
-                        stopTimeOut();
-                        if(type==1){
-                            LogUtils.e("回执的完整数据是："+sb.toString());
-                            broadcastUpdate(ACTION_DATA_AVAILABLE, sb.toString());
-                        }else{
-                            LogUtils.e("回执的完整数据是："+sb.toString());
-                            broadcastUpdate(ACTION_DATA_AVAILABLE2, sb.toString());
-                        }
+                        broadCastData();
                     }
                 }
             }
         }
     };
+
+
+    /**
+     * 通过广播抛出数据
+     */
+    private void broadCastData(){
+        //关闭超时计时器
+        stopTimeOut();
+        if(type==1){
+            LogUtils.e("回执的完整数据是："+sb.toString());
+            broadcastUpdate(ACTION_DATA_AVAILABLE, sb.toString().replace(">OK",""));
+        }else{
+            LogUtils.e("回执的完整数据是："+sb.toString());
+            broadcastUpdate(ACTION_DATA_AVAILABLE2, sb.toString().replace(">OK",""));
+        }
+    }
 
 
     /**
