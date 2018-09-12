@@ -73,6 +73,9 @@ public class BleService extends Service implements Serializable{
     //发送数据失败
     public final static String ACTION_SEND_DATA_FAIL = "net.zkgd.adminapp.ACTION_SEND_DATA_FAIL";
 
+    //回执的数据有error
+    public final static String ACTION_GET_DATA_ERROR="net.zkgd.adminapp.ACTION_GET_DATA_ERROR";
+
 
     private Intent intent=new Intent();
 
@@ -433,6 +436,9 @@ public class BleService extends Service implements Serializable{
                 sb.append(data);
                 if(data.contains("OK")){
                     broadCastData();
+                }else if(data.contains("ERROR")){
+                    //广播错误数据
+                    broadCastError();
                 }
                 return;
             }
@@ -445,6 +451,9 @@ public class BleService extends Service implements Serializable{
                     if(data.contains(";")){
                         broadCastData();
                     }
+                }else if(data.contains("ERROR")){
+                    //广播错误数据
+                    broadCastError();
                 }
             }
         }
@@ -464,6 +473,16 @@ public class BleService extends Service implements Serializable{
             LogUtils.e("回执的完整数据是："+sb.toString());
             broadcastUpdate(ACTION_DATA_AVAILABLE2, sb.toString().replace(">OK",""));
         }
+    }
+
+
+    /**
+     * 通过广播抛出数据
+     */
+    private void broadCastError(){
+        //关闭超时计时器
+        stopTimeOut();
+        broadcastUpdate(ACTION_GET_DATA_ERROR);
     }
 
 

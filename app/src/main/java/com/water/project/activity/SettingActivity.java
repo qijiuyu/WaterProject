@@ -277,6 +277,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         myIntentFilter.addAction(BleService.ACTION_DATA_AVAILABLE2);//接收到了回执的数据
         myIntentFilter.addAction(BleService.ACTION_INTERACTION_TIMEOUT);//发送命令超时
         myIntentFilter.addAction(BleService.ACTION_SEND_DATA_FAIL);//发送数据失败
+        myIntentFilter.addAction(BleService.ACTION_GET_DATA_ERROR);//回执error数据
         registerReceiver(mBroadcastReceiver, myIntentFilter);
     }
 
@@ -381,12 +382,27 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                      break;
                 case BleService.ACTION_INTERACTION_TIMEOUT:
                     clearTask();
-                    showToastView("接收数据超时！");
+                    dialogView = new DialogView(mContext, "接收数据超时！", "重试","取消", new View.OnClickListener() {
+                        public void onClick(View v) {
+                            dialogView.dismiss();
+                            sendData(SEND_STATUS,SEND_TYPE);
+                        }
+                    }, null);
+                    dialogView.show();
                     break;
                 case BleService.ACTION_SEND_DATA_FAIL:
                     clearTask();
-                    showToastView("下发命令失败！");
+                    dialogView = new DialogView(mContext, "下发命令失败！", "重试","取消", new View.OnClickListener() {
+                        public void onClick(View v) {
+                            dialogView.dismiss();
+                            sendData(SEND_STATUS,SEND_TYPE);
+                        }
+                    }, null);
+                    dialogView.show();
                      break;
+                case BleService.ACTION_GET_DATA_ERROR:
+                    clearTask();
+                    showToastView("设备回执数据异常！");
                 default:
                     break;
             }
