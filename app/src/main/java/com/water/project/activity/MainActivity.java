@@ -80,10 +80,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         tvAbout.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
         tvAbout.setOnClickListener(this);
         findViewById(R.id.tv_am_scan).setOnClickListener(this);
-        findViewById(R.id.tv_am_setting).setOnClickListener(this);
-        findViewById(R.id.tv_am_data).setOnClickListener(this);
-        findViewById(R.id.tv_am_yan).setOnClickListener(this);
-        findViewById(R.id.tv_am_net).setOnClickListener(this);
+        findViewById(R.id.lin_am_setting).setOnClickListener(this);
+        findViewById(R.id.lin_am_data).setOnClickListener(this);
+        findViewById(R.id.lin_am_yan).setOnClickListener(this);
+        findViewById(R.id.lin_am_net).setOnClickListener(this);
     }
 
 
@@ -138,19 +138,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                  setClass(SearchBleActivity.class);
                 break;
             //参数设置
-            case R.id.tv_am_setting:
+            case R.id.lin_am_setting:
                  setClass(SettingActivity.class);
                  break;
             //网络shezhi
-            case R.id.tv_am_net:
+            case R.id.lin_am_net:
                  setClass(NetSettingActivity.class);
                  break;
             //实时数据
-            case R.id.tv_am_data:
+            case R.id.lin_am_data:
                  setClass(GetDataActivity.class);
                  break;
             //数据校验
-            case R.id.tv_am_yan:
+            case R.id.lin_am_yan:
                  setClass(CheckActivity.class);
                  break;
             //关于我们
