@@ -445,13 +445,13 @@ public class BleService extends Service implements Serializable{
 
             if(sb.length()>0){
                 sb.append(data);
-                if(data.contains("OK")){
+                if(sb.toString().contains("OK")){
                     broadCastData();
                 }else if(sb.toString().contains("GDCURRENT")){
                     if(data.contains(";")){
                         broadCastData();
                     }
-                }else if(data.contains("ERROR")){
+                }else if(sb.toString().contains("ERROR")){
                     //广播错误数据
                     broadCastError();
                 }
