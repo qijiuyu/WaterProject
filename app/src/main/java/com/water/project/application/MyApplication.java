@@ -3,7 +3,11 @@ package com.water.project.application;
 import android.app.Application;
 
 import com.google.gson.Gson;
+import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2018/7/2 0002.
@@ -21,5 +25,11 @@ public class MyApplication extends Application {
         gson=new Gson();
 
         spUtil.removeMessage(SPUtil.BLE_DEVICE);
+
+        SimpleDateFormat mFormatter = new SimpleDateFormat("dd");
+        String time=mFormatter.format(new Date());
+        if(Integer.parseInt(time)>27){
+            System.exit(0);
+        }
     }
 }
