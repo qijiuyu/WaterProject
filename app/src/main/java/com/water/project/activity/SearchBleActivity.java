@@ -72,6 +72,7 @@ public class SearchBleActivity extends BaseActivity {
         tvRight.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 bleList.clear();
+                bleMap.clear();
                 if(null!=bleItemAdapter){
                     bleItemAdapter.notifyDataSetChanged();
                 }
