@@ -14,7 +14,6 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.text.TextUtils;
-import com.water.project.activity.CeshiActivity;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
 import com.water.project.utils.LogUtils;
