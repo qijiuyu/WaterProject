@@ -164,22 +164,28 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                  break;
             //设置采集频率
             case R.id.tv_setting_three:
-                 final String date=etCStime.getText().toString().trim();
-                 final String hour=etCEtime.getText().toString().trim();
-                 if(TextUtils.isEmpty(date)){
-                     showToastView("请输入采集起始时间！");
-                 }else if(TextUtils.isEmpty(hour)){
-                     showToastView("请输入采集间隔时间！");
-                 }else{
-                     dialogView = new DialogView(mContext, "当采集时间和采集间隔时间更改后原数据将丢失!","确定", "取消", new View.OnClickListener() {
-                         public void onClick(View v) {
-                             dialogView.dismiss();
-                             SendBleStr.sendCaiJi(date,hour);
-                             sendData(BleContant.SET_CAI_JI_PIN_LU,2);
-                         }
-                     }, null);
-                     dialogView.show();
-                 }
+//                 final String date=etCStime.getText().toString().trim();
+//                 final String hour=etCEtime.getText().toString().trim();
+//                 if(TextUtils.isEmpty(date)){
+//                     showToastView("请输入采集起始时间！");
+//                 }else if(TextUtils.isEmpty(hour)){
+//                     showToastView("请输入采集间隔时间！");
+//                 }else{
+//                     dialogView = new DialogView(mContext, "当采集时间和采集间隔时间更改后原数据将丢失!","确定", "取消", new View.OnClickListener() {
+//                         public void onClick(View v) {
+//                             dialogView.dismiss();
+//                             SendBleStr.sendCaiJi(date,hour);
+//                             sendData(BleContant.SET_CAI_JI_PIN_LU,2);
+//                         }
+//                     }, null);
+//                     dialogView.show();
+//                 }
+                dialogView = new DialogView(mContext, "当前版本的设备不能设置采集时间与采集间隔时间！","确定", "取消", new View.OnClickListener() {
+                    public void onClick(View v) {
+                        dialogView.dismiss();
+                    }
+                }, null);
+                dialogView.show();
                 break;
             //选择发送起始时间
             case R.id.et_as_fstime:

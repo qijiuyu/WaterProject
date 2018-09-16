@@ -31,6 +31,7 @@
                 android:layout_height="40dp"
                 android:hint="请输入统一编码"
                 android:digits="0123456789"
+                android:maxLength="15"
                 android:textColor="@color/color_1fc37f"
                 android:textSize="15sp"
                 android:layout_alignParentRight="true"
@@ -60,6 +61,7 @@
                 android:layout_width="200dp"
                 android:layout_height="40dp"
                 android:digits="0123456789"
+                android:maxLength="13"
                 android:hint="请输入SIM卡号"
                 android:textColor="@color/color_1fc37f"
                 android:textSize="15sp"
@@ -272,14 +274,13 @@
 
                 <com.water.project.view.ClickTextView
                     android:id="@+id/tv_setting_three"
-                    android:visibility="gone"
                     android:layout_width="80dp"
                     android:layout_height="match_parent"
                     android:text="设置"
                     android:textColor="@android:color/white"
                     android:textSize="15sp"
                     android:gravity="center"
-                    android:background="@color/color_1fc37f"
+                    android:background="#BCBCBC"
                     android:layout_marginRight="20dp"/>
 
                 <com.water.project.view.ClickTextView

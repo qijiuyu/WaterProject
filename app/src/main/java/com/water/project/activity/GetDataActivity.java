@@ -248,8 +248,8 @@ public class GetDataActivity extends BaseActivity {
         tvDianYa.setText(Util.setDouble(Double.parseDouble(DianYa),1)+"V");
 
         //现实信号值
-        final String XinHao=msg.substring(36,41).replace("CSQ","");
-        tvXinHao.setText(XinHao);
+//        final String XinHao=msg.substring(36,41).replace("CSQ","");
+//        tvXinHao.setText(XinHao);
     }
 
     @Override

@@ -124,6 +124,7 @@ public class Util extends ClassLoader {
      */
     public static List<String> getHourList(){
         List<String> list=new ArrayList<>();
+        list.add("0小时");
         list.add("1小时");
         list.add("2小时");
         list.add("3小时");
@@ -147,7 +148,6 @@ public class Util extends ClassLoader {
         list.add("21小时");
         list.add("22小时");
         list.add("23小时");
-        list.add("24小时");
         return list;
     }
 
