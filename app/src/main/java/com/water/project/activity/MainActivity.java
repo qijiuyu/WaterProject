@@ -10,6 +10,7 @@ import android.content.ServiceConnection;
 import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.view.KeyEvent;
@@ -200,7 +201,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 bleService.disconnect();
                 unbindService(mServiceConnection);
                 unregisterReceiver(mBroadcastReceiver);
-                finish();
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        finish();
+                    }
+                },200);
             }
             return true;
         }
