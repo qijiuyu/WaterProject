@@ -27,7 +27,7 @@
         
         <EditText
             android:id="@+id/et_address1"
-            android:layout_width="80dp"
+            android:layout_width="60dp"
             android:layout_height="30dp"
             android:maxLength="2"
             android:textColor="@color/color_1fc37f"
@@ -149,7 +149,7 @@
 
         <EditText
             android:id="@+id/et_address2"
-            android:layout_width="80dp"
+            android:layout_width="60dp"
             android:layout_height="30dp"
             android:focusable="false"
             android:maxLength="2"
@@ -251,7 +251,7 @@
 
         <EditText
             android:id="@+id/et_address3"
-            android:layout_width="80dp"
+            android:layout_width="60dp"
             android:layout_height="30dp"
             android:focusable="false"
             android:maxLength="2"
