@@ -223,13 +223,6 @@ public class GetDataActivity extends BaseActivity {
         stringBuffer.append(msg.substring(10,12)+"秒");
         tvCJTime.setText(stringBuffer.toString());
 
-        //显示水位埋深
-        String MaiShen=msg.substring(12,20).replace("L","");
-        if(MaiShen.contains("?")){
-            tvMaiShen.setText(MaiShen+"m");
-        }else{
-            tvMaiShen.setText(Util.setDouble(Double.parseDouble(MaiShen),2)+"m");
-        }
         //显示压力值
         final String YaLi=msg.substring(52,61).replace("P","");
         if(YaLi.contains("99999999")){
@@ -238,9 +231,17 @@ public class GetDataActivity extends BaseActivity {
             tvYaLi.setText(Util.setDouble(Double.parseDouble(YaLi),3)+"");
         }
 
+        //显示水位埋深
+        String MaiShen=msg.substring(12,20).replace("L","");
+        if(YaLi.contains("99999999")){
+            tvMaiShen.setText(MaiShen+"m");
+        }else{
+            tvMaiShen.setText(Util.setDouble(Double.parseDouble(MaiShen),2)+"m");
+        }
+
         //显示气压值
         final String QiYa=msg.substring(61,68).replace("B","");
-        if(QiYa.contains("?")){
+        if(YaLi.contains("99999999")){
             tvQiYa.setText(QiYa+"");
         }else{
             tvQiYa.setText(Util.setDouble(Double.parseDouble(QiYa),3)+"");
@@ -248,7 +249,7 @@ public class GetDataActivity extends BaseActivity {
 
         //显示水温值
         final String ShuiWen=msg.substring(20,26).replace("T","");
-        if(ShuiWen.contains("?")){
+        if(YaLi.contains("99999999")){
             tvShuiWen.setText(ShuiWen+"℃");
         }else{
             tvShuiWen.setText(Double.parseDouble(ShuiWen)+"℃");
@@ -256,7 +257,7 @@ public class GetDataActivity extends BaseActivity {
 
         //显示气温值
         final String QiWen=msg.substring(41,47).replace("R","");
-        if(QiWen.contains("?")){
+        if(YaLi.contains("99999999")){
             tvQiWen.setText(QiWen+"℃");
         }else{
             tvQiWen.setText(Double.parseDouble(QiWen)+"℃");
@@ -264,7 +265,7 @@ public class GetDataActivity extends BaseActivity {
 
         //显示电压值
         final String DianYa=msg.substring(30,36).replace("V","");
-        if(DianYa.contains("?")){
+        if(YaLi.contains("99999999")){
             tvDianYa.setText(DianYa+"V");
         }else{
             tvDianYa.setText(Util.setDouble(Double.parseDouble(DianYa),1)+"V");

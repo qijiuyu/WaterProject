@@ -110,6 +110,17 @@ public class CheckActivity extends BaseActivity {
 
             }
             public void afterTextChanged(Editable s) {
+                final String YaLi=tvYaLi.getText().toString().trim();
+                if(YaLi.contains("99999999")){
+                    dialogView = new DialogView(mContext, "传感器故障，无法参与计算校准，请查找原因！", "知道了",null, new View.OnClickListener() {
+                        public void onClick(View v) {
+                            dialogView.dismiss();
+                        }
+                    }, null);
+                    dialogView.show();
+                    return;
+                }
+
                 final String strShui=tvShuiWei.getText().toString().trim().replace("m","");
                 final double shuiWei=Double.parseDouble(strShui);
 
@@ -299,7 +310,7 @@ public class CheckActivity extends BaseActivity {
 
         //显示气压值
         final String QiYa=msg.substring(61,68).replace("B","");
-        if(QiYa.contains("?")){
+        if(YaLi.contains("99999999")){
             tvQiYa.setText(QiYa+"");
         }else{
             tvQiYa.setText(Util.setDouble(Double.parseDouble(QiYa),3)+"");
@@ -307,7 +318,7 @@ public class CheckActivity extends BaseActivity {
 
         //显示探头埋深
         final String TanTou=msg.substring(68,77).replace("C","");
-        if(TanTou.contains("?")){
+        if(YaLi.contains("99999999")){
             tvTanTou.setText(TanTou+"m");
         }else{
             tvTanTou.setText(Util.setDouble(Double.parseDouble(TanTou),3)+"m");
@@ -315,7 +326,7 @@ public class CheckActivity extends BaseActivity {
 
         //显示水位埋深
         final String MaiShen=msg.substring(12,20).replace("L","");
-        if(MaiShen.contains("?")){
+        if(YaLi.contains("99999999")){
             tvShuiWei.setText(MaiShen+"m");
         }else{
             tvShuiWei.setText(Util.setDouble(Double.parseDouble(MaiShen),2)+"m");

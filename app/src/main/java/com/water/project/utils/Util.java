@@ -126,7 +126,6 @@ public class Util extends ClassLoader {
      */
     public static List<String> getHourList(){
         List<String> list=new ArrayList<>();
-        list.add("0小时");
         list.add("1小时");
         list.add("2小时");
         list.add("3小时");
@@ -150,6 +149,7 @@ public class Util extends ClassLoader {
         list.add("21小时");
         list.add("22小时");
         list.add("23小时");
+        list.add("24小时");
         return list;
     }
 
@@ -160,6 +160,7 @@ public class Util extends ClassLoader {
      */
     public static List<String> getDateList(){
         List<String> list=new ArrayList<>();
+        list.add("0点");
         list.add("1点");
         list.add("2点");
         list.add("3点");
@@ -183,7 +184,6 @@ public class Util extends ClassLoader {
         list.add("21点");
         list.add("22点");
         list.add("23点");
-        list.add("24点");
         return list;
     }
 
