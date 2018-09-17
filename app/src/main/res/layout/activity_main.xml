@@ -40,8 +40,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_am_scan"
         android:orientation="horizontal"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="20dp">
 
         <LinearLayout
@@ -108,8 +108,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/lin_am1"
         android:orientation="horizontal"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
 
         <LinearLayout
             android:id="@+id/lin_am_data"
