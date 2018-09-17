@@ -130,8 +130,14 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                   final String sim=etPhone.getText().toString().trim();
                   if(TextUtils.isEmpty(code)){
                       showToastView("请输入统一编码！");
+                  }else if(code.length()<10){
+                      showToastView("统一编码不能小于10位！");
                   }else if(TextUtils.isEmpty(sim)){
                       showToastView("请输入SIM卡号！");
+                  }else if(sim.length()<11){
+                      showToastView("SIM卡号不能小于11位！");
+                  }else if(sim.length()==12){
+                      showToastView("SIM卡号只能是11位或者13位！");
                   }else{
                       SendBleStr.sendSetCodeSim(code,sim,CODE_SIM_DATA);
                       sendData(BleContant.SET_CODE_PHONE,2);
@@ -180,7 +186,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 //                     }, null);
 //                     dialogView.show();
 //                 }
-                dialogView = new DialogView(mContext, "当前版本的设备不能设置采集时间与采集间隔时间！","确定", "取消", new View.OnClickListener() {
+                dialogView = new DialogView(mContext, "当前版本的设备不能设置采集时间与采集间隔时间！","确定", null, new View.OnClickListener() {
                     public void onClick(View v) {
                         dialogView.dismiss();
                     }

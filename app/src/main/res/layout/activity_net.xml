@@ -44,18 +44,20 @@
             android:textColor="@android:color/black"
             android:textSize="15sp"
             android:layout_gravity="center"
-            android:layout_marginLeft="30dp"/>
+            android:layout_marginLeft="15dp"/>
 
         <EditText
             android:id="@+id/et_apn"
-            android:layout_width="80dp"
+            android:layout_width="150dp"
             android:layout_height="30dp"
+            android:maxLength="20"
             android:textColor="@color/color_1fc37f"
             android:textSize="15sp"
             android:gravity="center"
             android:layout_gravity="center"
             android:background="@drawable/bg_setting"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"/>
 
     </LinearLayout>
 
@@ -79,6 +81,8 @@
             android:id="@+id/et_ip1"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:maxLength="18"
             android:layout_gravity="center"
             android:gravity="center"
             android:hint="请输入IP"
@@ -102,6 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:maxLength="6"
+            android:digits="0123456789"
             android:gravity="center"
             android:hint="端口号"
             android:textSize="15sp"
@@ -177,14 +182,16 @@
             android:id="@+id/et_ip2"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:focusable="false"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:background="@null"
+            android:focusable="false"
             android:gravity="center"
             android:hint="请输入IP"
-            android:textSize="15sp"
+            android:maxLength="18"
             android:textColor="@color/color_1fc37f"
-            android:background="@null"
-            android:layout_marginLeft="5dp"/>
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/tv_port2"
@@ -201,6 +208,7 @@
             android:focusable="false"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:digits="0123456789"
             android:maxLength="6"
             android:gravity="center"
             android:hint="端口号"
@@ -276,6 +284,8 @@
             android:id="@+id/et_ip3"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:maxLength="18"
             android:focusable="false"
             android:layout_gravity="center"
             android:gravity="center"
@@ -298,6 +308,7 @@
             android:id="@+id/et_port3"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
+            android:digits="0123456789"
             android:maxLength="6"
             android:focusable="false"
             android:layout_gravity="center"

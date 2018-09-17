@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Administrator
@@ -183,5 +185,28 @@ public class Util extends ClassLoader {
         list.add("23点");
         list.add("24点");
         return list;
+    }
+
+
+    /**
+     * 判断字符串中是否包含字母
+     * @param cardNum
+     * @return
+     */
+    public static boolean judgeContainsStr(String cardNum) {
+        String regex=".*[a-zA-Z]+.*";
+        Matcher m= Pattern.compile(regex).matcher(cardNum);
+        return m.matches();
+    }
+
+
+    /**
+     * 判断字符串是否是数字
+     * @param str
+     * @return
+     */
+    public static boolean isInteger(String str) {
+        Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
+        return pattern.matcher(str).matches();
     }
 }

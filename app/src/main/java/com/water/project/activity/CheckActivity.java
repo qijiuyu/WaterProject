@@ -75,7 +75,17 @@ public class CheckActivity extends BaseActivity {
         //数据校验
         findViewById(R.id.tv_btn).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                final String YaLi=tvYaLi.getText().toString().trim();
                 final String data=tvWuCha.getText().toString().trim();
+                if(YaLi.contains("99999999")){
+                    dialogView = new DialogView(mContext, "传感器故障，无法参与计算校准，请查找原因！", "知道了",null, new View.OnClickListener() {
+                        public void onClick(View v) {
+                            dialogView.dismiss();
+                        }
+                    }, null);
+                    dialogView.show();
+                    return;
+                }
                 if(TextUtils.isEmpty(data)){
                     showToastView("没有误差数据！");
                 }else{
@@ -281,19 +291,35 @@ public class CheckActivity extends BaseActivity {
 
         //显示压力值
         final String YaLi=msg.substring(52,61).replace("P","");
-        tvYaLi.setText(Util.setDouble(Double.parseDouble(YaLi),3)+"mH2O");
+        if(YaLi.contains("99999999")){
+            tvYaLi.setText(YaLi+"");
+        }else{
+            tvYaLi.setText(Util.setDouble(Double.parseDouble(YaLi),3)+"");
+        }
 
         //显示气压值
         final String QiYa=msg.substring(61,68).replace("B","");
-        tvQiYa.setText(Util.setDouble(Double.parseDouble(QiYa),3)+"mH2O");
+        if(QiYa.contains("?")){
+            tvQiYa.setText(QiYa+"");
+        }else{
+            tvQiYa.setText(Util.setDouble(Double.parseDouble(QiYa),3)+"");
+        }
 
         //显示探头埋深
         final String TanTou=msg.substring(68,77).replace("C","");
-        tvTanTou.setText(Util.setDouble(Double.parseDouble(TanTou),3)+"m");
+        if(TanTou.contains("?")){
+            tvTanTou.setText(TanTou+"m");
+        }else{
+            tvTanTou.setText(Util.setDouble(Double.parseDouble(TanTou),3)+"m");
+        }
 
         //显示水位埋深
         final String MaiShen=msg.substring(12,20).replace("L","");
-        tvShuiWei.setText(Util.setDouble(Double.parseDouble(MaiShen),2)+"m");
+        if(MaiShen.contains("?")){
+            tvShuiWei.setText(MaiShen+"m");
+        }else{
+            tvShuiWei.setText(Util.setDouble(Double.parseDouble(MaiShen),2)+"m");
+        }
     }
 
     @Override

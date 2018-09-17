@@ -214,38 +214,61 @@ public class GetDataActivity extends BaseActivity {
     private void showData(String msg){
         //显示采集时间
         msg=msg.replace("GDCURRENT>","");
-        StringBuffer stringBuffer=new StringBuffer("20");
-        stringBuffer.append(msg.substring(0,2));
-        stringBuffer.append(msg.substring(2,4));
-        stringBuffer.append(msg.substring(4,6)+" ");
-        stringBuffer.append(msg.substring(6,8)+":");
-        stringBuffer.append(msg.substring(8,10)+":");
-        stringBuffer.append(msg.substring(10,12));
+        StringBuffer stringBuffer=new StringBuffer();
+        stringBuffer.append(msg.substring(0,2)+"年");
+        stringBuffer.append(msg.substring(2,4)+"月");
+        stringBuffer.append(msg.substring(4,6)+"日 ");
+        stringBuffer.append(msg.substring(6,8)+"点");
+        stringBuffer.append(msg.substring(8,10)+"分");
+        stringBuffer.append(msg.substring(10,12)+"秒");
         tvCJTime.setText(stringBuffer.toString());
 
         //显示水位埋深
-        final String MaiShen=msg.substring(12,20).replace("L","");
-        tvMaiShen.setText(Util.setDouble(Double.parseDouble(MaiShen),2)+"m");
-
+        String MaiShen=msg.substring(12,20).replace("L","");
+        if(MaiShen.contains("?")){
+            tvMaiShen.setText(MaiShen+"m");
+        }else{
+            tvMaiShen.setText(Util.setDouble(Double.parseDouble(MaiShen),2)+"m");
+        }
         //显示压力值
         final String YaLi=msg.substring(52,61).replace("P","");
-        tvYaLi.setText(Util.setDouble(Double.parseDouble(YaLi),3)+"mH2O");
+        if(YaLi.contains("99999999")){
+            tvYaLi.setText(YaLi+"");
+        }else{
+            tvYaLi.setText(Util.setDouble(Double.parseDouble(YaLi),3)+"");
+        }
 
         //显示气压值
         final String QiYa=msg.substring(61,68).replace("B","");
-        tvQiYa.setText(Util.setDouble(Double.parseDouble(QiYa),3)+"mH2O");
+        if(QiYa.contains("?")){
+            tvQiYa.setText(QiYa+"");
+        }else{
+            tvQiYa.setText(Util.setDouble(Double.parseDouble(QiYa),3)+"");
+        }
 
         //显示水温值
         final String ShuiWen=msg.substring(20,26).replace("T","");
-        tvShuiWen.setText(Double.parseDouble(ShuiWen)+"℃");
+        if(ShuiWen.contains("?")){
+            tvShuiWen.setText(ShuiWen+"℃");
+        }else{
+            tvShuiWen.setText(Double.parseDouble(ShuiWen)+"℃");
+        }
 
         //显示气温值
         final String QiWen=msg.substring(41,47).replace("R","");
-        tvQiWen.setText(Double.parseDouble(QiWen)+"℃");
+        if(QiWen.contains("?")){
+            tvQiWen.setText(QiWen+"℃");
+        }else{
+            tvQiWen.setText(Double.parseDouble(QiWen)+"℃");
+        }
 
         //显示电压值
         final String DianYa=msg.substring(30,36).replace("V","");
-        tvDianYa.setText(Util.setDouble(Double.parseDouble(DianYa),1)+"V");
+        if(DianYa.contains("?")){
+            tvDianYa.setText(DianYa+"V");
+        }else{
+            tvDianYa.setText(Util.setDouble(Double.parseDouble(DianYa),1)+"V");
+        }
 
         //现实信号值
 //        final String XinHao=msg.substring(36,41).replace("CSQ","");

@@ -87,7 +87,20 @@
                 android:layout_alignParentRight="true"
                 android:gravity="right|center"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="50dp"
                 android:layout_below="@id/view_ag2"/>
+
+            <LinearLayout
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_below="@id/view_ag2"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:layout_alignParentRight="true">
+
+                <include layout="@layout/unit"/>
+
+            </LinearLayout>
 
             <View
                 android:id="@+id/view_ag3"
@@ -115,7 +128,20 @@
                 android:layout_alignParentRight="true"
                 android:gravity="right|center"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="50dp"
                 android:layout_below="@id/view_ag3"/>
+
+            <LinearLayout
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_below="@id/view_ag3"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:layout_alignParentRight="true">
+
+                <include layout="@layout/unit"/>
+
+            </LinearLayout>
 
             <View
                 android:id="@+id/view_ag4"

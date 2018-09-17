@@ -304,43 +304,81 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
                  final String port3=etPort3.getText().toString().trim();
                  final String apn=etApn.getText().toString().trim();
                  if(TextUtils.isEmpty(address1)){
-                     showToastView("青输入连接1的主站地址！");
+                     showToastView("请输入连接1的主站地址！");
                      return;
                  }
                 if(TextUtils.isEmpty(address2)){
-                    showToastView("青输入连接2的主站地址！");
+                    showToastView("请输入连接2的主站地址！");
                     return;
                 }
                 if(TextUtils.isEmpty(address3)){
-                    showToastView("青输入连接3的主站地址！");
+                    showToastView("请输入连接3的主站地址！");
                     return;
                 }
                 if(TextUtils.isEmpty(ip1)){
-                    showToastView("青输入第一个IP地址！");
+                    showToastView("请输入第一个IP地址！");
                     return;
                 }
+                if(Util.judgeContainsStr(ip1)){
+                     if(Util.isInteger(ip1.substring(0,1))){
+                         dialogView = new DialogView(mContext, "第一个IP地址为域名，域名首字母不能是数字！", "知道了",null, new View.OnClickListener() {
+                             public void onClick(View v) {
+                                 dialogView.dismiss();
+                             }
+                         }, null);
+                         dialogView.show();
+                         return;
+                     }
+                }
+
                 if(TextUtils.isEmpty(ip2)){
-                    showToastView("青输入第二个IP地址！");
+                    showToastView("请输入第二个IP地址！");
                     return;
                 }
+
+                if(Util.judgeContainsStr(ip2)){
+                    if(Util.isInteger(ip2.substring(0,1))){
+                        dialogView = new DialogView(mContext, "第二个IP地址为域名，域名首字母不能是数字！", "知道了",null, new View.OnClickListener() {
+                            public void onClick(View v) {
+                                dialogView.dismiss();
+                            }
+                        }, null);
+                        dialogView.show();
+                        return;
+                    }
+                }
+
                 if(TextUtils.isEmpty(ip3)){
-                    showToastView("青输入第三个IP地址！");
+                    showToastView("请输入第三个IP地址！");
                     return;
                 }
+
+                if(Util.judgeContainsStr(ip3)){
+                    if(Util.isInteger(ip3.substring(0,1))){
+                        dialogView = new DialogView(mContext, "第三个IP地址为域名，域名首字母不能是数字！", "知道了",null, new View.OnClickListener() {
+                            public void onClick(View v) {
+                                dialogView.dismiss();
+                            }
+                        }, null);
+                        dialogView.show();
+                        return;
+                    }
+                }
+
                 if(TextUtils.isEmpty(port1)){
-                    showToastView("青输入第一个端口号！");
+                    showToastView("请输入第一个端口号！");
                     return;
                 }
                 if(TextUtils.isEmpty(port2)){
-                    showToastView("青输入第二个端口号！");
+                    showToastView("请输入第二个端口号！");
                     return;
                 }
                 if(TextUtils.isEmpty(port3)){
-                    showToastView("青输入第三个端口号！");
+                    showToastView("请输入第三个端口号！");
                     return;
                 }
                 if(TextUtils.isEmpty(apn)){
-                    showToastView("青输入APN！");
+                    showToastView("请输入APN！");
                     return;
                 }
                  SendBleStr.setIpPort(strData,address1,address2,address3,ip1,ip2,ip3,port1,port2,port3,apn);
