@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:text="主站地址:"
             android:textColor="@android:color/black"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:layout_gravity="center"/>
         
         <EditText
@@ -31,7 +31,7 @@
             android:layout_height="30dp"
             android:maxLength="2"
             android:textColor="@color/color_1fc37f"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:gravity="center"
             android:layout_gravity="center"
             android:background="@drawable/bg_setting"
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:text="APN:"
             android:textColor="@android:color/black"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"/>
 
@@ -52,7 +52,7 @@
             android:layout_height="30dp"
             android:maxLength="20"
             android:textColor="@color/color_1fc37f"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:gravity="center"
             android:layout_gravity="center"
             android:background="@drawable/bg_setting"
@@ -64,66 +64,66 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tv_ip1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="IP地址:"
             android:textColor="@android:color/black"
-            android:textSize="15sp"
-            android:layout_gravity="center"/>
+            android:textSize="14sp" />
 
         <EditText
             android:id="@+id/et_ip1"
-            android:layout_width="130dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            android:maxLength="18"
             android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:background="@null"
+            android:digits=".0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:gravity="center"
             android:hint="请输入IP"
-            android:textSize="15sp"
+            android:maxLength="18"
             android:textColor="@color/color_1fc37f"
-            android:background="@null"
-            android:layout_marginLeft="5dp"/>
+            android:textSize="14.5sp" />
 
         <TextView
             android:id="@+id/tv_port1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="端口号:"
             android:textColor="@android:color/black"
-            android:textSize="15sp"
-            android:layout_gravity="center"/>
+            android:textSize="14sp" />
 
         <EditText
             android:id="@+id/et_port1"
-            android:layout_width="60dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:maxLength="6"
+            android:layout_marginLeft="5dp"
+            android:background="@null"
             android:digits="0123456789"
             android:gravity="center"
             android:hint="端口号"
-            android:textSize="15sp"
+            android:maxLength="6"
             android:textColor="@color/color_1fc37f"
-            android:background="@null"
-            android:layout_marginLeft="5dp"/>
-        
+            android:textSize="14sp" />
+
         <ImageView
             android:id="@+id/img_an1"
-            android:layout_width="60dp"
+            android:layout_width="50dp"
             android:layout_height="25dp"
-            android:src="@mipmap/open_icon"
-            android:tag="1"
             android:layout_gravity="center"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginLeft="5dp"
+            android:src="@mipmap/open_icon"
+            android:tag="1" />
 
-        </LinearLayout>
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
@@ -144,7 +144,7 @@
             android:layout_height="wrap_content"
             android:text="主站地址:"
             android:textColor="@color/color_AEAEAE"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:layout_gravity="center"/>
 
         <EditText
@@ -154,7 +154,7 @@
             android:focusable="false"
             android:maxLength="2"
             android:textColor="@color/color_1fc37f"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:gravity="center"
             android:layout_gravity="center"
             android:background="@drawable/bg_setting"
@@ -175,14 +175,14 @@
             android:layout_height="wrap_content"
             android:text="IP地址:"
             android:textColor="@color/color_AEAEAE"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:layout_gravity="center"/>
 
         <EditText
             android:id="@+id/et_ip2"
-            android:layout_width="130dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:digits=".0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:layout_gravity="center"
             android:layout_marginLeft="5dp"
             android:background="@null"
@@ -191,7 +191,7 @@
             android:hint="请输入IP"
             android:maxLength="18"
             android:textColor="@color/color_1fc37f"
-            android:textSize="15sp" />
+            android:textSize="14.5sp" />
 
         <TextView
             android:id="@+id/tv_port2"
@@ -199,12 +199,12 @@
             android:layout_height="wrap_content"
             android:text="端口号:"
             android:textColor="@color/color_AEAEAE"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:layout_gravity="center"/>
 
         <EditText
             android:id="@+id/et_port2"
-            android:layout_width="60dp"
+            android:layout_width="50dp"
             android:focusable="false"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -212,14 +212,14 @@
             android:maxLength="6"
             android:gravity="center"
             android:hint="端口号"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:textColor="@color/color_1fc37f"
             android:background="@null"
             android:layout_marginLeft="5dp"/>
 
         <ImageView
             android:id="@+id/img_an2"
-            android:layout_width="60dp"
+            android:layout_width="50dp"
             android:layout_height="25dp"
             android:tag="0"
             android:src="@mipmap/close_icon"
@@ -246,7 +246,7 @@
             android:layout_height="wrap_content"
             android:text="主站地址:"
             android:textColor="@color/color_AEAEAE"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:layout_gravity="center"/>
 
         <EditText
@@ -256,7 +256,7 @@
             android:focusable="false"
             android:maxLength="2"
             android:textColor="@color/color_1fc37f"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:gravity="center"
             android:layout_gravity="center"
             android:background="@drawable/bg_setting"
@@ -277,20 +277,20 @@
             android:layout_height="wrap_content"
             android:text="IP地址:"
             android:textColor="@color/color_AEAEAE"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:layout_gravity="center"/>
 
         <EditText
             android:id="@+id/et_ip3"
-            android:layout_width="130dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:digits=".0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:maxLength="18"
             android:focusable="false"
             android:layout_gravity="center"
             android:gravity="center"
             android:hint="请输入IP"
-            android:textSize="15sp"
+            android:textSize="14.5sp"
             android:textColor="@color/color_1fc37f"
             android:background="@null"
             android:layout_marginLeft="5dp"/>
@@ -301,12 +301,12 @@
             android:layout_height="wrap_content"
             android:text="端口号:"
             android:textColor="@color/color_AEAEAE"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:layout_gravity="center"/>
 
         <EditText
             android:id="@+id/et_port3"
-            android:layout_width="60dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:digits="0123456789"
             android:maxLength="6"
@@ -314,14 +314,14 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:hint="端口号"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:textColor="@color/color_1fc37f"
             android:background="@null"
             android:layout_marginLeft="5dp"/>
 
         <ImageView
             android:id="@+id/img_an3"
-            android:layout_width="60dp"
+            android:layout_width="50dp"
             android:layout_height="25dp"
             android:tag="0"
             android:src="@mipmap/close_icon"
@@ -349,7 +349,7 @@
             android:layout_height="match_parent"
             android:text="修改"
             android:textColor="@android:color/white"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:gravity="center"
             android:background="@color/color_1fc37f"
             android:layout_marginRight="20dp"/>
@@ -360,7 +360,7 @@
             android:layout_height="match_parent"
             android:text="读取"
             android:textColor="@android:color/white"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:gravity="center"
             android:background="@color/color_1fc37f"
             android:layout_marginLeft="20dp"/>

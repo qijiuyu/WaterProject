@@ -30,9 +30,7 @@ import com.water.project.view.time.SlideDateTimeListener;
 import com.water.project.view.time.SlideDateTimePicker;
 import com.water.project.view.time.TimeUtils;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 参数设置
@@ -130,14 +128,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                   final String sim=etPhone.getText().toString().trim();
                   if(TextUtils.isEmpty(code)){
                       showToastView("请输入统一编码！");
-                  }else if(code.length()<10){
-                      showToastView("统一编码不能小于10位！");
+                  }else if(code.length()!=12){
+                      showToastView("检查编码是否正确！");
                   }else if(TextUtils.isEmpty(sim)){
                       showToastView("请输入SIM卡号！");
-                  }else if(sim.length()<11){
-                      showToastView("SIM卡号不能小于11位！");
-                  }else if(sim.length()==12){
-                      showToastView("SIM卡号只能是11位或者13位！");
+                  }else if(sim.length()<11 || sim.length()==12){
+                      showToastView("SIM卡号错误！");
                   }else{
                       SendBleStr.sendSetCodeSim(code,sim,CODE_SIM_DATA);
                       sendData(BleContant.SET_CODE_PHONE,2);
@@ -148,8 +144,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                   final String tantou=etTanTou.getText().toString().trim();
                   if(TextUtils.isEmpty(tantou)){
                       showToastView("请输入探头埋深！");
-                  }else if(!Util.getCharIndex(tantou)){
-                      showToastView("小数点后面必须保留三位小数！");
+                  }else if(tantou.indexOf(".")==-1 && tantou.length()>4){
+                      showToastView("探头埋深最多只能输入4位整数！");
                   }else{
                       SendBleStr.sendSetTanTou(tantou);
                       sendData(BleContant.SET_TANTOU,2);
@@ -170,28 +166,22 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                  break;
             //设置采集频率
             case R.id.tv_setting_three:
-//                 final String date=etCStime.getText().toString().trim();
-//                 final String hour=etCEtime.getText().toString().trim();
-//                 if(TextUtils.isEmpty(date)){
-//                     showToastView("请输入采集起始时间！");
-//                 }else if(TextUtils.isEmpty(hour)){
-//                     showToastView("请输入采集间隔时间！");
-//                 }else{
-//                     dialogView = new DialogView(mContext, "当采集时间和采集间隔时间更改后原数据将丢失!","确定", "取消", new View.OnClickListener() {
-//                         public void onClick(View v) {
-//                             dialogView.dismiss();
-//                             SendBleStr.sendCaiJi(date,hour);
-//                             sendData(BleContant.SET_CAI_JI_PIN_LU,2);
-//                         }
-//                     }, null);
-//                     dialogView.show();
-//                 }
-                dialogView = new DialogView(mContext, "当前版本的设备不能设置采集时间与采集间隔时间！","确定", null, new View.OnClickListener() {
-                    public void onClick(View v) {
-                        dialogView.dismiss();
-                    }
-                }, null);
-                dialogView.show();
+                 final String date=etCStime.getText().toString().trim();
+                 final String hour=etCEtime.getText().toString().trim();
+                 if(TextUtils.isEmpty(date)){
+                     showToastView("请输入采集起始时间！");
+                 }else if(TextUtils.isEmpty(hour)){
+                     showToastView("请输入采集间隔时间！");
+                 }else{
+                     dialogView = new DialogView(mContext, "当采集时间和采集间隔时间更改后原数据将丢失!","确定", "取消", new View.OnClickListener() {
+                         public void onClick(View v) {
+                             dialogView.dismiss();
+                             SendBleStr.sendCaiJi(date.substring(0, date.length()-2).replace("-","").replace(" ","").replace(":",""),hour);
+                             sendData(BleContant.SET_CAI_JI_PIN_LU,2);
+                         }
+                     }, null);
+                     dialogView.show();
+                 }
                 break;
             //选择发送起始时间
             case R.id.et_as_fstime:
@@ -261,7 +251,13 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             //显示采集频率
             case BleContant.SEND_CAI_JI_PIN_LU:
                  strings=data.split(",");
-                 etCStime.setText(strings[0].replace("GDREADR",""));
+                 final String s=strings[0].replace("GDREADR","");
+                 StringBuffer sb=new StringBuffer();
+                 sb.append(s.substring(0, 4)+"-");
+                 sb.append(s.substring(4, 6)+"-");
+                 sb.append(s.substring(6, 8)+" ");
+                 sb.append(s.substring(8, 10)+":00");
+                 etCStime.setText(sb.toString());
                  etCEtime.setText((Integer.parseInt(strings[1])/60)+"");
                  break;
             //显示发送频率
@@ -422,10 +418,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     };
 
 
-    private SimpleDateFormat mFormatter = new SimpleDateFormat("yyyyMMddHH");
+    private SimpleDateFormat mFormatter = new SimpleDateFormat("yyyy-MM-dd HH");
     private SlideDateTimeListener listener = new SlideDateTimeListener() {
         public void onDateTimeSet(Date date) {
-            etCStime.setText(mFormatter.format(date));
+            etCStime.setText(mFormatter.format(date)+":00");
         }
         public void onDateTimeCancel() {
         }

@@ -92,7 +92,7 @@ public class CheckActivity extends BaseActivity {
                     etCheck.setText("");
                     tvWuCha.setText("");
                     SendBleStr.setCheck(data);
-                    sendData(BleContant.SET_DATA_CHECK);
+                    sendData(BleContant.SET_DATA_CHECK_NULL);
                 }
             }
         });
@@ -251,6 +251,8 @@ public class CheckActivity extends BaseActivity {
                          showData(data);
                          clearTask();
                          SEND_STATUS=BleContant.NOT_SEND_DATA;
+                     }else if(SEND_STATUS==BleContant.SET_DATA_CHECK_NULL){
+                         sendData(BleContant.SET_DATA_CHECK);
                      }else{
                          sendData(BleContant.SEND_REAL_TIME_DATA);
                      }
@@ -291,9 +293,9 @@ public class CheckActivity extends BaseActivity {
     private void showData(String msg){
         //显示采集时间
         msg=msg.replace("GDCURRENT>","");
-        StringBuffer stringBuffer=new StringBuffer("20");
-        stringBuffer.append(msg.substring(0,2));
-        stringBuffer.append(msg.substring(2,4));
+        StringBuffer stringBuffer=new StringBuffer();
+        stringBuffer.append(msg.substring(0,2)+"-");
+        stringBuffer.append(msg.substring(2,4)+"-");
         stringBuffer.append(msg.substring(4,6)+" ");
         stringBuffer.append(msg.substring(6,8)+":");
         stringBuffer.append(msg.substring(8,10)+":");

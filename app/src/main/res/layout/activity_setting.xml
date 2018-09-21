@@ -31,7 +31,7 @@
                 android:layout_height="40dp"
                 android:hint="请输入统一编码"
                 android:digits="0123456789"
-                android:maxLength="15"
+                android:maxLength="12"
                 android:textColor="@color/color_1fc37f"
                 android:textSize="15sp"
                 android:layout_alignParentRight="true"
@@ -280,7 +280,7 @@
                     android:textColor="@android:color/white"
                     android:textSize="15sp"
                     android:gravity="center"
-                    android:background="#BCBCBC"
+                    android:background="@color/color_1fc37f"
                     android:layout_marginRight="20dp"/>
 
                 <com.water.project.view.ClickTextView

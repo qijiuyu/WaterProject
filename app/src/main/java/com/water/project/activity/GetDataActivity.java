@@ -215,12 +215,12 @@ public class GetDataActivity extends BaseActivity {
         //显示采集时间
         msg=msg.replace("GDCURRENT>","");
         StringBuffer stringBuffer=new StringBuffer();
-        stringBuffer.append(msg.substring(0,2)+"年");
-        stringBuffer.append(msg.substring(2,4)+"月");
-        stringBuffer.append(msg.substring(4,6)+"日 ");
-        stringBuffer.append(msg.substring(6,8)+"点");
-        stringBuffer.append(msg.substring(8,10)+"分");
-        stringBuffer.append(msg.substring(10,12)+"秒");
+        stringBuffer.append(msg.substring(0,2)+"-");
+        stringBuffer.append(msg.substring(2,4)+"-");
+        stringBuffer.append(msg.substring(4,6)+" ");
+        stringBuffer.append(msg.substring(6,8)+":");
+        stringBuffer.append(msg.substring(8,10)+":");
+        stringBuffer.append(msg.substring(10,12));
         tvCJTime.setText(stringBuffer.toString());
 
         //显示压力值

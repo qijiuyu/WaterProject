@@ -44,9 +44,9 @@
 
         <ImageView
             android:id="@+id/img2"
-            android:layout_width="30dp"
+            android:layout_width="60dp"
             android:layout_height="80dp"
-            android:src="@mipmap/phone"
+            android:src="@mipmap/device"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"/>

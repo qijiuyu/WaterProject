@@ -43,6 +43,9 @@ public class SendBleStr {
     //设置三个ip
     public static String SET_IP_PORT;
 
+    //校测前先清零
+    public static String SET_DATA_CHECK_NULL="GD&>#PYW001T+0000.0000";
+
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
         StringBuffer stringBuffer=new StringBuffer();
@@ -62,11 +65,23 @@ public class SendBleStr {
      */
     public static void sendSetTanTou(String data){
         StringBuffer stringBuffer=new StringBuffer("GDLINEW");
-        final int length=8-(data.length());
-        for (int i=0;i<length;i++){
-            stringBuffer.append("0");
+        int position=data.indexOf(".");
+        if(position==-1) {
+            for (int i=0;i<4-data.length();i++){
+                stringBuffer.append("0");
+            }
+            stringBuffer.append(data+".000");
+        }else{
+            final int hou=data.length() - position - 1;
+            final int qian=data.length()-hou-1;
+            for (int i=0;i<4-qian;i++){
+                stringBuffer.append("0");
+            }
+            stringBuffer.append(data);
+            for (int i=0;i<3-hou;i++){
+                stringBuffer.append("0");
+            }
         }
-        stringBuffer.append(data);
         SET_TANTOU=stringBuffer.toString();
     }
 
@@ -205,6 +220,10 @@ public class SendBleStr {
             //设置网络数据
             case BleContant.SET_IP_PORT:
                  SendBleDataManager.getInstance().sendData(SET_IP_PORT,type);
+                 break;
+            //校测前先清零
+            case BleContant.SET_DATA_CHECK_NULL:
+                 SendBleDataManager.getInstance().sendData(SET_DATA_CHECK_NULL,type);
                  break;
                  default:
                      break;

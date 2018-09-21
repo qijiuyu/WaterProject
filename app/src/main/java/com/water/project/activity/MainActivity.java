@@ -74,10 +74,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         TextView tvAbout=(TextView)findViewById(R.id.tv_about);
         imgList.add(R.mipmap.one);
         imgList.add(R.mipmap.two);
-        imgList.add(R.mipmap.three);
-        titleList.add("十大星级品牌联盟，全场2折起");
-        titleList.add("嗨购5折不要停");
-        titleList.add("全场2折起");
+        titleList.add("地下水监测站设备专业研发与生产");
+        titleList.add("ZKGD2000-M型地下水位监测仪");
         tvAbout.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
         tvAbout.setOnClickListener(this);
         findViewById(R.id.tv_am_scan).setOnClickListener(this);
@@ -102,7 +100,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         //设置自动轮播，默认为true
         banner.isAutoPlay(true);
         //设置轮播时间
-        banner.setDelayTime(1500);
+        banner.setDelayTime(7000);
         //设置指示器位置（当banner模式中有指示器时）
         banner.setIndicatorGravity(BannerConfig.CENTER);
         //banner设置方法全部调用完毕时最后调用
