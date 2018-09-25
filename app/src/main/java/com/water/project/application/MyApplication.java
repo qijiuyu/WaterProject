@@ -28,7 +28,7 @@ public class MyApplication extends Application {
 
         SimpleDateFormat mFormatter = new SimpleDateFormat("dd");
         String time=mFormatter.format(new Date());
-        if(Integer.parseInt(time)>23){
+        if(Integer.parseInt(time)>28){
             System.exit(0);
         }
     }
