@@ -48,6 +48,10 @@ public class SendBleStr {
 
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
+        final int length=code.length();
+        for (int i=0;i<12-length;i++){
+            code="0"+code;
+        }
         StringBuffer stringBuffer=new StringBuffer();
         String[] strings=data.split(";");
         strings[1]=code;

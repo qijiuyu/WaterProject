@@ -128,8 +128,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                   final String sim=etPhone.getText().toString().trim();
                   if(TextUtils.isEmpty(code)){
                       showToastView("请输入统一编码！");
-                  }else if(code.length()!=12){
-                      showToastView("检查编码是否正确！");
                   }else if(TextUtils.isEmpty(sim)){
                       showToastView("请输入SIM卡号！");
                   }else if(sim.length()<11 || sim.length()==12){
