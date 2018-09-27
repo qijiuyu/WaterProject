@@ -72,8 +72,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         linearLayout1=(LinearLayout)findViewById(R.id.lin_am1);
         linearLayout2=(LinearLayout)findViewById(R.id.lin_am2);
         TextView tvAbout=(TextView)findViewById(R.id.tv_about);
-        imgList.add(R.mipmap.one);
-        imgList.add(R.mipmap.two);
+        imgList.add(R.mipmap.banner_one);
+        imgList.add(R.mipmap.banner_two);
         titleList.add("地下水监测站设备专业研发与生产");
         titleList.add("ZKGD2000-M型地下水位监测仪");
         tvAbout.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
@@ -88,7 +88,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     private void startBanner(){
         //设置banner样式
-        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE);
+        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
         //设置图片加载器
         banner.setImageLoader(new GlideImageLoader());
         //设置图片集合

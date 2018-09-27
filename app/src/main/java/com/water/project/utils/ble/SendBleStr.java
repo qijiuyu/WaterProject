@@ -43,8 +43,8 @@ public class SendBleStr {
     //设置三个ip
     public static String SET_IP_PORT;
 
-    //校测前先清零
-    public static String SET_DATA_CHECK_NULL="GD&>#PYW001T+0000.0000";
+    //校测前先读取偏移量
+    public static String SEND_CHECK_ERROR="GD&#PYR001T";
 
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
@@ -225,9 +225,9 @@ public class SendBleStr {
             case BleContant.SET_IP_PORT:
                  SendBleDataManager.getInstance().sendData(SET_IP_PORT,type);
                  break;
-            //校测前先清零
-            case BleContant.SET_DATA_CHECK_NULL:
-                 SendBleDataManager.getInstance().sendData(SET_DATA_CHECK_NULL,type);
+            //校测前先读取偏移量
+            case BleContant.SEND_CHECK_ERROR:
+                 SendBleDataManager.getInstance().sendData(SEND_CHECK_ERROR,type);
                  break;
                  default:
                      break;

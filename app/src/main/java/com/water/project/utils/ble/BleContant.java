@@ -41,6 +41,6 @@ public class BleContant {
     //设置三个ip
     public static final int SET_IP_PORT=1010;
 
-    //校测前先清零
-    public static final int SET_DATA_CHECK_NULL=1011;
+    //校测前先读取偏移量
+    public static final int SEND_CHECK_ERROR=1011;
 }

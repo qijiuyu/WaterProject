@@ -214,7 +214,7 @@ public class GetDataActivity extends BaseActivity {
     private void showData(String msg){
         //显示采集时间
         msg=msg.replace("GDCURRENT>","");
-        StringBuffer stringBuffer=new StringBuffer();
+        StringBuffer stringBuffer=new StringBuffer("20");
         stringBuffer.append(msg.substring(0,2)+"-");
         stringBuffer.append(msg.substring(2,4)+"-");
         stringBuffer.append(msg.substring(4,6)+" ");
