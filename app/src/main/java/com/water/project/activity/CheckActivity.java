@@ -42,6 +42,8 @@ public class CheckActivity extends BaseActivity {
     private Handler mHandler=new Handler();
     //下发命令的编号
     private int SEND_STATUS;
+    //手动输入的误差数据
+    private String wuCha;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -55,7 +57,7 @@ public class CheckActivity extends BaseActivity {
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
         register();//注册广播
-        sendData(BleContant.SEND_REAL_TIME_DATA);
+//        sendData(BleContant.SEND_REAL_TIME_DATA);
     }
 
     /**
@@ -76,7 +78,7 @@ public class CheckActivity extends BaseActivity {
         findViewById(R.id.tv_btn).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 final String YaLi=tvYaLi.getText().toString().trim();
-                final String data=tvWuCha.getText().toString().trim();
+                wuCha=tvWuCha.getText().toString().trim();
                 if(YaLi.contains("99999999")){
                     dialogView = new DialogView(mContext, "传感器故障，无法参与计算校准，请查找原因！", "知道了",null, new View.OnClickListener() {
                         public void onClick(View v) {
@@ -86,13 +88,13 @@ public class CheckActivity extends BaseActivity {
                     dialogView.show();
                     return;
                 }
-                if(TextUtils.isEmpty(data)){
+                if(TextUtils.isEmpty(wuCha)){
                     showToastView("没有误差数据！");
                 }else{
                     etCheck.setText("");
                     tvWuCha.setText("");
-                    SendBleStr.setCheck(data);
-                    sendData(BleContant.SET_DATA_CHECK);
+//                    sendData(BleContant.SEND_CHECK_ERROR);
+                    SendBleStr.setCheck(wuCha,"");
                 }
             }
         });
@@ -252,6 +254,7 @@ public class CheckActivity extends BaseActivity {
                          clearTask();
                          SEND_STATUS=BleContant.NOT_SEND_DATA;
                      }else if(SEND_STATUS==BleContant.SEND_CHECK_ERROR){
+                         SendBleStr.setCheck(wuCha,data);
                          sendData(BleContant.SET_DATA_CHECK);
                      }else{
                          sendData(BleContant.SEND_REAL_TIME_DATA);

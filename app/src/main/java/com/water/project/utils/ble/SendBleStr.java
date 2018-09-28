@@ -122,16 +122,30 @@ public class SendBleStr {
 
     /**
      * 设置误差数据
-     * @param data
+     * @param data:偏移量
      */
-    public static void setCheck(String data){
+    public static void setCheck(String wucha,String data){
+        data="GD&>#PYR001T-0000.0500";
+
+
         StringBuffer stringBuffer=new StringBuffer("GD&>#PYW001T");
-        if(data.contains("-")){
+
+        data=data.replace("GD&>#PYR001T","");
+
+        final double pyl=Double.parseDouble(data);
+        final double wc=Double.parseDouble(wucha);
+
+        LogUtils.e(pyl+"_________________"+wc);
+        final String result=Util.sum(pyl,wc)+"";
+
+        LogUtils.e("result="+result);
+
+        if(result.contains("-")){
             stringBuffer.append("-");
         }else{
             stringBuffer.append("+");
         }
-        final double CMdata=Double.parseDouble(data.replace("-",""))*100;
+        final double CMdata=Double.parseDouble(result.replace("-",""))*100;
 
         final String m=(CMdata/100)+"";
         final int index=m.indexOf(".");
@@ -145,6 +159,7 @@ public class SendBleStr {
         for(int i=0;i<4-(m.length()-index-1);i++){
             stringBuffer.append("0");
         }
+        LogUtils.e(stringBuffer.toString());
         SET_DATA_CHECK=stringBuffer.toString();
     }
 
