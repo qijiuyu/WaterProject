@@ -136,7 +136,7 @@ public class SendBleStr {
         final double wc=Double.parseDouble(wucha);
 
         LogUtils.e(pyl+"_________________"+wc);
-        final String result=Util.sum(pyl,wc)+"";
+        String result=Util.sum(pyl,wc)+"";
 
         LogUtils.e("result="+result);
 
@@ -145,18 +145,16 @@ public class SendBleStr {
         }else{
             stringBuffer.append("+");
         }
-        final double CMdata=Double.parseDouble(result.replace("-",""))*100;
-
-        final String m=(CMdata/100)+"";
-        final int index=m.indexOf(".");
+        result=result.replace("-","");
+        final int index=result.indexOf(".");
         //判断小数点前面几位
         for(int i=0;i<4-index;i++){
             stringBuffer.append("0");
         }
-        stringBuffer.append(m);
+        stringBuffer.append(result);
 
         //判断小数点后面几位
-        for(int i=0;i<4-(m.length()-index-1);i++){
+        for(int i=0;i<4-(result.length()-index-1);i++){
             stringBuffer.append("0");
         }
         LogUtils.e(stringBuffer.toString());
