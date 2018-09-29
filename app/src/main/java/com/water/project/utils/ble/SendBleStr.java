@@ -125,20 +125,13 @@ public class SendBleStr {
      * @param data:偏移量
      */
     public static void setCheck(String wucha,String data){
-        data="GD&>#PYR001T-0000.0500";
-
-
         StringBuffer stringBuffer=new StringBuffer("GD&>#PYW001T");
-
         data=data.replace("GD&>#PYR001T","");
 
         final double pyl=Double.parseDouble(data);
         final double wc=Double.parseDouble(wucha);
 
-        LogUtils.e(pyl+"_________________"+wc);
         String result=Util.sum(pyl,wc)+"";
-
-        LogUtils.e("result="+result);
 
         if(result.contains("-")){
             stringBuffer.append("-");
@@ -157,7 +150,6 @@ public class SendBleStr {
         for(int i=0;i<4-(result.length()-index-1);i++){
             stringBuffer.append("0");
         }
-        LogUtils.e(stringBuffer.toString());
         SET_DATA_CHECK=stringBuffer.toString();
     }
 

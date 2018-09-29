@@ -57,7 +57,7 @@ public class CheckActivity extends BaseActivity {
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
         register();//注册广播
-//        sendData(BleContant.SEND_REAL_TIME_DATA);
+        sendData(BleContant.SEND_REAL_TIME_DATA);
     }
 
     /**
@@ -93,8 +93,7 @@ public class CheckActivity extends BaseActivity {
                 }else{
                     etCheck.setText("");
                     tvWuCha.setText("");
-//                    sendData(BleContant.SEND_CHECK_ERROR);
-                    SendBleStr.setCheck(wuCha,"");
+                    sendData(BleContant.SEND_CHECK_ERROR);
                 }
             }
         });
