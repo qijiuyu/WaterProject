@@ -57,7 +57,7 @@ public class CheckActivity extends BaseActivity {
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
         register();//注册广播
-//        sendData(BleContant.SEND_REAL_TIME_DATA);
+        sendData(BleContant.SEND_REAL_TIME_DATA);
     }
 
     /**

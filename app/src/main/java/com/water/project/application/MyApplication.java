@@ -26,9 +26,11 @@ public class MyApplication extends Application {
 
         spUtil.removeMessage(SPUtil.BLE_DEVICE);
 
+        SimpleDateFormat mFormatter1 = new SimpleDateFormat("MM");
         SimpleDateFormat mFormatter = new SimpleDateFormat("dd");
+        String month=mFormatter1.format(new Date());
         String time=mFormatter.format(new Date());
-        if(Integer.parseInt(time)>28){
+        if(Integer.parseInt(month)==10 && Integer.parseInt(time)>15){
             System.exit(0);
         }
     }
