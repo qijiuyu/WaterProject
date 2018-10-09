@@ -64,8 +64,8 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginTop="20dp"
                 android:src="@mipmap/setting_icon"
                 android:layout_gravity="center"/>
@@ -76,7 +76,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="20dp"
                 android:text="参数设置"
-                android:textSize="13sp"
+                android:textSize="15sp"
                 android:textColor="@android:color/black"
                 android:gravity="center"/>
 
@@ -91,8 +91,8 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginTop="20dp"
                 android:src="@mipmap/net_icon"
                 android:layout_gravity="center"/>
@@ -103,7 +103,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="20dp"
                 android:text="网络连接设置"
-                android:textSize="13sp"
+                android:textSize="15sp"
                 android:textColor="@android:color/black"
                 android:gravity="center"
                 android:layout_marginLeft="10dp"/>
@@ -130,8 +130,8 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginTop="20dp"
                 android:src="@mipmap/data_icon"
                 android:layout_gravity="center"/>
@@ -142,7 +142,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="20dp"
                 android:text="实时数据"
-                android:textSize="13sp"
+                android:textSize="15sp"
                 android:textColor="@android:color/black"
                 android:gravity="center"/>
 
@@ -157,8 +157,8 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginTop="20dp"
                 android:src="@mipmap/check_icon"
                 android:layout_gravity="center"/>
@@ -169,7 +169,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="20dp"
                 android:text="数据校测"
-                android:textSize="13sp"
+                android:textSize="15sp"
                 android:textColor="@android:color/black"
                 android:gravity="center"/>
 

@@ -20,12 +20,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.water.project.R;
+import com.water.project.application.MyApplication;
+import com.water.project.bean.Ble;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
+import com.water.project.utils.SPUtil;
 import com.water.project.utils.StatusBarUtils;
 import com.water.project.utils.SystemBarTintManager;
 import com.water.project.utils.ble.SendBleDataManager;
 import com.water.project.utils.photo.GlideImageLoader;
+import com.water.project.view.DialogView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -151,6 +155,27 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             default:
                 break;
         }
+    }
+
+
+    /**
+     * 判断是否连接了蓝牙
+     */
+    private DialogView dialogView;
+    private boolean isConnect(){
+        if(MainActivity.bleService.connectionState==MainActivity.bleService.STATE_DISCONNECTED){
+            final Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
+            if(null==ble){
+                dialogView = new DialogView(mContext, "请回到首页去扫描并连接蓝牙！", "知道了",null, new View.OnClickListener() {
+                    public void onClick(View v) {
+                        dialogView.dismiss();
+                    }
+                }, null);
+                dialogView.show();
+                return false;
+            }
+        }
+        return true;
     }
 
 
