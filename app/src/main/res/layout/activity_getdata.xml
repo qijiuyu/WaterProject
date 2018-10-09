@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="@android:color/white"
     android:orientation="vertical">
 
    <include layout="@layout/head"/>
@@ -13,271 +14,279 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="15dp">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:text="采集时间"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"/>
-
-            <TextView
-                android:id="@+id/tv_ag_cjTime"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:textColor="@color/color_1fc37f"
-                android:textSize="15sp"
-                android:layout_alignParentRight="true"
-                android:gravity="right|center"/>
-
-            <View
-                android:id="@+id/view_ag1"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_888888"
-                android:layout_below="@id/tv_ag_cjTime"/>
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_kuang"
+                android:layout_margin="10dp"
+                android:padding="15dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:text="水位埋深"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/view_ag1"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="采集时间"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"/>
 
-            <TextView
-                android:id="@+id/tv_ag_maishen"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:textColor="@color/color_1fc37f"
-                android:textSize="15sp"
-                android:layout_alignParentRight="true"
-                android:gravity="right|center"
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/view_ag1"/>
+                <TextView
+                    android:id="@+id/tv_ag_cjTime"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:textColor="@color/color_1fc37f"
+                    android:textSize="15sp"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right|center"/>
 
-            <View
-                android:id="@+id/view_ag2"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_888888"
-                android:layout_below="@id/tv_ag_maishen"/>
+                <View
+                    android:id="@+id/view_ag1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/color_888888"
+                    android:layout_below="@id/tv_ag_cjTime"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:text="压力值"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/view_ag2"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="水位埋深"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/view_ag1"/>
 
-            <TextView
-                android:id="@+id/tv_ag_yali"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:textColor="@color/color_1fc37f"
-                android:textSize="15sp"
-                android:layout_alignParentRight="true"
-                android:gravity="right|center"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="50dp"
-                android:layout_below="@id/view_ag2"/>
+                <TextView
+                    android:id="@+id/tv_ag_maishen"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:textColor="@color/color_1fc37f"
+                    android:textSize="15sp"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right|center"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/view_ag1"/>
 
-            <LinearLayout
-                android:layout_width="50dp"
-                android:layout_height="40dp"
-                android:layout_below="@id/view_ag2"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:layout_alignParentRight="true">
+                <View
+                    android:id="@+id/view_ag2"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/color_888888"
+                    android:layout_below="@id/tv_ag_maishen"/>
 
-                <include layout="@layout/unit"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="压力值"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/view_ag2"/>
 
-            </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_ag_yali"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:textColor="@color/color_1fc37f"
+                    android:textSize="15sp"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right|center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="50dp"
+                    android:layout_below="@id/view_ag2"/>
 
-            <View
-                android:id="@+id/view_ag3"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_888888"
-                android:layout_below="@id/tv_ag_yali"/>
+                <LinearLayout
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/view_ag2"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:layout_alignParentRight="true">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:text="气压值"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/view_ag3"/>
+                    <include layout="@layout/unit"/>
 
-            <TextView
-                android:id="@+id/tv_ag_qiya"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:textColor="@color/color_1fc37f"
-                android:textSize="15sp"
-                android:layout_alignParentRight="true"
-                android:gravity="right|center"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="50dp"
-                android:layout_below="@id/view_ag3"/>
+                </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="50dp"
-                android:layout_height="40dp"
-                android:layout_below="@id/view_ag3"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:layout_alignParentRight="true">
+                <View
+                    android:id="@+id/view_ag3"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/color_888888"
+                    android:layout_below="@id/tv_ag_yali"/>
 
-                <include layout="@layout/unit"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="气压值"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/view_ag3"/>
 
-            </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_ag_qiya"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:textColor="@color/color_1fc37f"
+                    android:textSize="15sp"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right|center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="50dp"
+                    android:layout_below="@id/view_ag3"/>
 
-            <View
-                android:id="@+id/view_ag4"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_888888"
-                android:layout_below="@id/tv_ag_qiya"/>
+                <LinearLayout
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/view_ag3"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:layout_alignParentRight="true">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:text="水温值"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/view_ag4"/>
+                    <include layout="@layout/unit"/>
 
-            <TextView
-                android:id="@+id/tv_ag_shuiwen"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:textColor="@color/color_1fc37f"
-                android:textSize="15sp"
-                android:layout_alignParentRight="true"
-                android:gravity="right|center"
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/view_ag4"/>
+                </LinearLayout>
 
-            <View
-                android:id="@+id/view_ag5"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_888888"
-                android:layout_below="@id/tv_ag_shuiwen"/>
+                <View
+                    android:id="@+id/view_ag4"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/color_888888"
+                    android:layout_below="@id/tv_ag_qiya"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:text="气温值"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/view_ag5"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="水温值"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/view_ag4"/>
 
-            <TextView
-                android:id="@+id/tv_ag_qiwen"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:textColor="@color/color_1fc37f"
-                android:textSize="15sp"
-                android:layout_alignParentRight="true"
-                android:gravity="right|center"
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/view_ag5"/>
+                <TextView
+                    android:id="@+id/tv_ag_shuiwen"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:textColor="@color/color_1fc37f"
+                    android:textSize="15sp"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right|center"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/view_ag4"/>
 
-            <View
-                android:id="@+id/view_ag6"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_888888"
-                android:layout_below="@id/tv_ag_qiwen"/>
+                <View
+                    android:id="@+id/view_ag5"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/color_888888"
+                    android:layout_below="@id/tv_ag_shuiwen"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:text="电压值"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/view_ag6"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="气温值"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/view_ag5"/>
 
-            <TextView
-                android:id="@+id/tv_ag_dianya"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:textColor="@color/color_1fc37f"
-                android:textSize="15sp"
-                android:layout_alignParentRight="true"
-                android:gravity="right|center"
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/view_ag6"/>
+                <TextView
+                    android:id="@+id/tv_ag_qiwen"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:textColor="@color/color_1fc37f"
+                    android:textSize="15sp"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right|center"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/view_ag5"/>
 
-            <View
-                android:id="@+id/view_ag7"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_888888"
-                android:layout_below="@id/tv_ag_dianya"/>
+                <View
+                    android:id="@+id/view_ag6"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/color_888888"
+                    android:layout_below="@id/tv_ag_qiwen"/>
 
-            <TextView
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:text="信号值"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/view_ag7"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="电压值"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/view_ag6"/>
 
-            <TextView
-                android:visibility="gone"
-                android:id="@+id/tv_ag_xinhao"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:textColor="@color/color_1fc37f"
-                android:textSize="15sp"
-                android:layout_alignParentRight="true"
-                android:gravity="right|center"
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/view_ag7"/>
+                <TextView
+                    android:id="@+id/tv_ag_dianya"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:textColor="@color/color_1fc37f"
+                    android:textSize="15sp"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right|center"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/view_ag6"/>
 
-            <View
-                android:visibility="gone"
-                android:id="@+id/view_ag8"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_888888"
-                android:layout_below="@id/tv_ag_xinhao"/>
+                <View
+                    android:id="@+id/view_ag7"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/color_888888"
+                    android:layout_below="@id/tv_ag_dianya"/>
 
-            <com.water.project.view.ClickTextView
-                android:id="@+id/tv_get"
-                android:layout_width="150dp"
-                android:layout_height="40dp"
-                android:text="更新实时数据"
-                android:textColor="@android:color/white"
-                android:textSize="17sp"
-                android:background="@color/color_1fc37f"
-                android:gravity="center"
-                android:layout_below="@id/view_ag8"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="20dp"
-                android:layout_centerHorizontal="true"/>
+                <TextView
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="信号值"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/view_ag7"/>
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/tv_ag_xinhao"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:textColor="@color/color_1fc37f"
+                    android:textSize="15sp"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right|center"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/view_ag7"/>
+
+                <View
+                    android:visibility="gone"
+                    android:id="@+id/view_ag8"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/color_888888"
+                    android:layout_below="@id/tv_ag_xinhao"/>
+
+                <com.water.project.view.ClickTextView
+                    android:id="@+id/tv_get"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:text="更新实时数据"
+                    android:textColor="@android:color/white"
+                    android:textSize="17sp"
+                    android:background="@color/color_1fc37f"
+                    android:gravity="center"
+                    android:layout_below="@id/view_ag8"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_centerHorizontal="true"/>
+
+            </RelativeLayout>
 
         </RelativeLayout>
 

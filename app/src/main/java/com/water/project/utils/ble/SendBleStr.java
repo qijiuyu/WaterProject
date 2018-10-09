@@ -114,7 +114,7 @@ public class SendBleStr {
      */
     public static void setFaSong(String startTime,String hour){
         StringBuffer stringBuffer=new StringBuffer("GDSENDW");
-        stringBuffer.append(startTime+",");
+        stringBuffer.append(startTime.replaceAll(" ","").substring(10,12)+",");
         stringBuffer.append(hour);
         SET_FA_SONG_PIN_LU=stringBuffer.toString();
     }
@@ -182,6 +182,7 @@ public class SendBleStr {
             stringBuffer.append(strings[i]+";");
         }
         SET_IP_PORT=stringBuffer.toString();
+        LogUtils.e(SET_IP_PORT+"+++++++++++");
     }
 
     public static void sendBleData(int status,int type){

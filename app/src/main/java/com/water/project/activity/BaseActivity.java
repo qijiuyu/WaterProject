@@ -27,6 +27,8 @@ import com.water.project.R;
 import com.water.project.utils.LogUtils;
 import com.water.project.view.CycleWheelView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -177,17 +179,15 @@ public class BaseActivity extends FragmentActivity {
         view.findViewById(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 closeDialog();
-                tv.setText(message);
-                if(type==1){
-                    message=message.replace("小时","");
-                }else{
-                    message=message.replace("点","");
-                }
+                message=message.replace("点","").replace("小时","");
                 if(message.length()==1){
-                    tv.setText("0"+message);
-                }else{
-                    tv.setText(message);
+                    message="0"+message;
                 }
+                if(type==2){
+                    SimpleDateFormat mFormatter = new SimpleDateFormat("yyyy-MM-dd");
+                    message=mFormatter.format(new Date())+" "+message+":00";
+                }
+                tv.setText(message);
             }
         });
         cycleWheelView.setSelection(5);

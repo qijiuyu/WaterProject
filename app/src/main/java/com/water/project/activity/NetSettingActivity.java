@@ -194,7 +194,7 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
                     break;
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
-                     clearTask();
+                    clearTask();
                     final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
                     if(SEND_STATUS==BleContant.SEND_GET_CODE_PHONE){
                         //解析并显示回执的数据
@@ -293,20 +293,20 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
         switch (v.getId()){
             //保存
             case R.id.tv_save:
-                 final String address1=etAddress1.getText().toString().trim();
-                 final String address2=etAddress2.getText().toString().trim();
-                 final String address3=etAddress3.getText().toString().trim();
-                 final String ip1=etIp1.getText().toString().trim();
-                 final String ip2=etIp2.getText().toString().trim();
-                 final String ip3=etIp3.getText().toString().trim();
-                 final String port1=etPort1.getText().toString().trim();
-                 final String port2=etPort2.getText().toString().trim();
-                 final String port3=etPort3.getText().toString().trim();
-                 final String apn=etApn.getText().toString().trim();
-                 if(TextUtils.isEmpty(address1)){
-                     showToastView("请输入连接1的主站地址！");
-                     return;
-                 }
+                final String address1=etAddress1.getText().toString().trim();
+                final String address2=etAddress2.getText().toString().trim();
+                final String address3=etAddress3.getText().toString().trim();
+                final String ip1=etIp1.getText().toString().trim();
+                final String ip2=etIp2.getText().toString().trim();
+                final String ip3=etIp3.getText().toString().trim();
+                final String port1=etPort1.getText().toString().trim();
+                final String port2=etPort2.getText().toString().trim();
+                final String port3=etPort3.getText().toString().trim();
+                final String apn=etApn.getText().toString().trim();
+                if(TextUtils.isEmpty(address1)){
+                    showToastView("请输入连接1的主站地址！");
+                    return;
+                }
                 if(TextUtils.isEmpty(address2)){
                     showToastView("请输入连接2的主站地址！");
                     return;
@@ -320,15 +320,15 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
                     return;
                 }
                 if(Util.judgeContainsStr(ip1)){
-                     if(Util.isInteger(ip1.substring(0,1))){
-                         dialogView = new DialogView(mContext, "第一个IP地址为域名，域名首字母不能是数字！", "知道了",null, new View.OnClickListener() {
-                             public void onClick(View v) {
-                                 dialogView.dismiss();
-                             }
-                         }, null);
-                         dialogView.show();
-                         return;
-                     }
+                    if(Util.isInteger(ip1.substring(0,1))){
+                        dialogView = new DialogView(mContext, "第一个IP地址为域名，域名首字母不能是数字！", "知道了",null, new View.OnClickListener() {
+                            public void onClick(View v) {
+                                dialogView.dismiss();
+                            }
+                        }, null);
+                        dialogView.show();
+                        return;
+                    }
                 }
 
                 if(TextUtils.isEmpty(ip2)){
@@ -381,23 +381,23 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
                     showToastView("请输入APN！");
                     return;
                 }
-                 SendBleStr.setIpPort(strData,address1,address2,address3,ip1,ip2,ip3,port1,port2,port3,apn);
-                 sendData(BleContant.SET_IP_PORT);
-                 break;
+                SendBleStr.setIpPort(strData,address1,address2,address3,ip1,ip2,ip3,port1,port2,port3,apn);
+                sendData(BleContant.SET_IP_PORT);
+                break;
             //读取
             case R.id.tv_red:
-                 sendData(BleContant.SEND_GET_CODE_PHONE);
-                 break;
+                sendData(BleContant.SEND_GET_CODE_PHONE);
+                break;
             case R.id.img_an1:
-                 if(null==v.getTag()){
-                     return;
-                 }
-                 if(v.getTag().toString().equals("1")){
-                     close1(v);
-                 }else{
-                     open1(v);
-                 }
-                 break;
+                if(null==v.getTag()){
+                    return;
+                }
+                if(v.getTag().toString().equals("1")){
+                    close1(v);
+                }else{
+                    open1(v);
+                }
+                break;
             case R.id.img_an2:
                 if(null==v.getTag()){
                     return;
@@ -405,7 +405,7 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
                 if(v.getTag().toString().equals("1")){
                     close2(v);
                 }else{
-                   open2(v);
+                    open2(v);
                 }
                 break;
             case R.id.img_an3:
@@ -415,12 +415,12 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
                 if(v.getTag().toString().equals("1")){
                     close3(v);
                 }else{
-                   open3(v);
+                    open3(v);
                 }
                 break;
             case R.id.lin_back:
-                 finish();
-                 break;
+                finish();
+                break;
             default:
                 break;
         }

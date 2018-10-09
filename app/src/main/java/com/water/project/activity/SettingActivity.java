@@ -8,10 +8,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.water.project.R;
 import com.water.project.application.MyApplication;
@@ -40,6 +43,7 @@ import java.util.Date;
 public class SettingActivity extends BaseActivity implements View.OnClickListener{
     private EditText etCode,etPhone,etTanTou;
     private TextView etCStime,etFStime,etCEtime,etFEtime;
+    private ImageView imgClear1,imgClear2,imgClear3;
     private DialogView dialogView;
     private Handler mHandler=new Handler();
     //下发命令的编号
@@ -47,6 +51,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     private int SEND_TYPE;
     //设置统一编码和SIM的数据
     private String CODE_SIM_DATA;
+    private SimpleDateFormat mFormatter1 = new SimpleDateFormat("yyyy-MM-dd");
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -77,10 +82,16 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         etCEtime=(TextView)findViewById(R.id.tv_as_cetime);
         etFStime=(TextView)findViewById(R.id.et_as_fstime);
         etFEtime=(TextView)findViewById(R.id.et_as_fetime);
+        imgClear1=(ImageView)findViewById(R.id.img_clear1);
+        imgClear2=(ImageView)findViewById(R.id.img_clear2);
+        imgClear3=(ImageView)findViewById(R.id.img_clear3);
         etCStime.setOnClickListener(this);
         etFStime.setOnClickListener(this);
         etCEtime.setOnClickListener(this);
         etFEtime.setOnClickListener(this);
+        imgClear1.setOnClickListener(this);
+        imgClear2.setOnClickListener(this);
+        imgClear3.setOnClickListener(this);
         findViewById(R.id.tv_setting_one).setOnClickListener(this);
         findViewById(R.id.tv_setting_two).setOnClickListener(this);
         findViewById(R.id.tv_setting_three).setOnClickListener(this);
@@ -90,6 +101,66 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         findViewById(R.id.tv_get_three).setOnClickListener(this);
         findViewById(R.id.tv_get_four).setOnClickListener(this);
         findViewById(R.id.lin_back).setOnClickListener(this);
+        etCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.toString().length()>0){
+                    imgClear1.setVisibility(View.VISIBLE);
+                }else{
+                    imgClear1.setVisibility(View.GONE);
+                }
+            }
+        });
+        etPhone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.toString().length()>0){
+                    imgClear2.setVisibility(View.VISIBLE);
+                }else{
+                    imgClear2.setVisibility(View.GONE);
+                }
+            }
+        });
+        etTanTou.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.toString().length()>0){
+                    imgClear3.setVisibility(View.VISIBLE);
+                }else{
+                    imgClear3.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
 
@@ -171,7 +242,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                  }else if(TextUtils.isEmpty(hour)){
                      showToastView("请输入采集间隔时间！");
                  }else{
-                     dialogView = new DialogView(mContext, "当采集时间和采集间隔时间更改后原数据将丢失!","确定", "取消", new View.OnClickListener() {
+                     dialogView = new DialogView(mContext, "当采集时间和采集间隔时间更改后原存储数据将丢失!","确定", "取消", new View.OnClickListener() {
                          public void onClick(View v) {
                              dialogView.dismiss();
                              SendBleStr.sendCaiJi(date.substring(0, date.length()-2).replace("-","").replace(" ","").replace(":",""),hour);
@@ -218,6 +289,18 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case R.id.tv_get_four:
                 sendData(BleContant.SEND_FA_SONG_PIN_LU,2);
                 break;
+            case R.id.img_clear1:
+                 etCode.setText(null);
+                 imgClear1.setVisibility(View.GONE);
+                 break;
+            case R.id.img_clear2:
+                etPhone.setText(null);
+                imgClear2.setVisibility(View.GONE);
+                break;
+            case R.id.img_clear3:
+                etTanTou.setText(null);
+                imgClear3.setVisibility(View.GONE);
+                break;
             case R.id.lin_back:
                  finish();
                  break;
@@ -261,7 +344,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             //显示发送频率
             case BleContant.SEND_FA_SONG_PIN_LU:
                   strings=data.split(",");
-                  etFStime.setText(strings[0].replace("GDSENDR",""));
+                  final String hour=strings[0].replace("GDSENDR","");
+                  etFStime.setText(mFormatter1.format(new Date())+" "+hour+":00");
                   etFEtime.setText(strings[1]);
                   break;
             default:

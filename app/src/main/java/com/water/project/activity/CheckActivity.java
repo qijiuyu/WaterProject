@@ -35,7 +35,7 @@ import com.water.project.view.DialogView;
  * Created by Administrator on 2018/9/2.
  */
 
-public class CheckActivity extends BaseActivity {
+public class CheckActivity extends BaseActivity implements View.OnClickListener{
     private TextView tvTime,tvYaLi,tvQiYa,tvTanTou,tvShuiWei,tvWuCha,tvDes;
     private EditText etCheck;
     private DialogView dialogView;
@@ -57,7 +57,7 @@ public class CheckActivity extends BaseActivity {
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
         register();//注册广播
-        sendData(BleContant.SEND_REAL_TIME_DATA);
+//        sendData(BleContant.SEND_REAL_TIME_DATA);
     }
 
     /**
@@ -74,34 +74,9 @@ public class CheckActivity extends BaseActivity {
         etCheck=(EditText)findViewById(R.id.et_ac_check);
         tvWuCha=(TextView)findViewById(R.id.tv_ac_wucha);
         tvDes=(TextView)findViewById(R.id.tv_check_des);
-        //数据校验
-        findViewById(R.id.tv_btn).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                final String YaLi=tvYaLi.getText().toString().trim();
-                wuCha=tvWuCha.getText().toString().trim();
-                if(YaLi.contains("99999999")){
-                    dialogView = new DialogView(mContext, "传感器故障，无法参与计算校准，请查找原因！", "知道了",null, new View.OnClickListener() {
-                        public void onClick(View v) {
-                            dialogView.dismiss();
-                        }
-                    }, null);
-                    dialogView.show();
-                    return;
-                }
-                if(TextUtils.isEmpty(wuCha)){
-                    showToastView("没有误差数据！");
-                }else{
-                    etCheck.setText("");
-                    tvWuCha.setText("");
-                    sendData(BleContant.SEND_CHECK_ERROR);
-                }
-            }
-        });
-        findViewById(R.id.lin_back).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        findViewById(R.id.tv_btn).setOnClickListener(this);
+        findViewById(R.id.tv_btn_update).setOnClickListener(this);
+        findViewById(R.id.lin_back).setOnClickListener(this);
 
         etCheck.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -169,6 +144,43 @@ public class CheckActivity extends BaseActivity {
             return;
         }
         SendBleStr.sendBleData(status,1);
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            //数据修改
+            case R.id.tv_btn:
+                final String YaLi=tvYaLi.getText().toString().trim();
+                wuCha=tvWuCha.getText().toString().trim();
+                if(YaLi.contains("99999999")){
+                    dialogView = new DialogView(mContext, "传感器故障，无法参与计算校准，请查找原因！", "知道了",null, new View.OnClickListener() {
+                        public void onClick(View v) {
+                            dialogView.dismiss();
+                        }
+                    }, null);
+                    dialogView.show();
+                    return;
+                }
+                if(TextUtils.isEmpty(wuCha)){
+                    showToastView("没有误差数据！");
+                }else{
+                    etCheck.setText("");
+                    tvWuCha.setText("");
+                    sendData(BleContant.SEND_CHECK_ERROR);
+                }
+                 break;
+            //数据实时更新
+            case R.id.tv_btn_update:
+                 sendData(BleContant.SEND_REAL_TIME_DATA);
+                 break;
+            case R.id.lin_back:
+                 finish();
+                 break;
+                 default:
+                     break;
+        }
     }
 
 
@@ -342,4 +354,5 @@ public class CheckActivity extends BaseActivity {
         super.onDestroy();
         unregisterReceiver(mBroadcastReceiver);
     }
+
 }

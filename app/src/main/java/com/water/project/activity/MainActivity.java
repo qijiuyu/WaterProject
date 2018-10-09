@@ -40,11 +40,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     //蓝牙参数
     public static BleService bleService = null;
     public static BluetoothAdapter mBtAdapter = null;
-    private Banner banner;
-    //设置图片资源:url或本地资源
-    private List<Integer> imgList=new ArrayList<>();
-    //设置图片标题:自动对应
-    private List<String> titleList=new ArrayList<>();
+//    private Banner banner;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -57,7 +53,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
-        startBanner();//加载轮播图片
+//        startBanner();//加载轮播图片
         initService();//注册蓝牙服务
         register();//注册广播
 
@@ -68,14 +64,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
      * 初始化控件
      */
     private void initView(){
-        banner = (Banner) findViewById(R.id.banner);
+//        banner = (Banner) findViewById(R.id.banner);
         linearLayout1=(LinearLayout)findViewById(R.id.lin_am1);
         linearLayout2=(LinearLayout)findViewById(R.id.lin_am2);
         TextView tvAbout=(TextView)findViewById(R.id.tv_about);
-        imgList.add(R.mipmap.banner_one);
-        imgList.add(R.mipmap.banner_two);
-        titleList.add("地下水监测站设备专业研发与生产");
-        titleList.add("ZKGD2000-M型地下水位监测仪");
         tvAbout.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
         tvAbout.setOnClickListener(this);
         findViewById(R.id.tv_am_scan).setOnClickListener(this);
@@ -86,26 +78,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     }
 
 
-    private void startBanner(){
-        //设置banner样式
-        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
-        //设置图片加载器
-        banner.setImageLoader(new GlideImageLoader());
-        //设置图片集合
-        banner.setImages(imgList);
-        //设置banner动画效果
-        banner.setBannerAnimation(Transformer.DepthPage);
-        //设置标题集合（当banner样式有显示title时）
-        banner.setBannerTitles(titleList);
-        //设置自动轮播，默认为true
-        banner.isAutoPlay(true);
-        //设置轮播时间
-        banner.setDelayTime(7000);
-        //设置指示器位置（当banner模式中有指示器时）
-        banner.setIndicatorGravity(BannerConfig.CENTER);
-        //banner设置方法全部调用完毕时最后调用
-        banner.start();
-    }
+//    private void startBanner(){
+//        //设置banner样式
+//        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
+//        //设置图片加载器
+//        banner.setImageLoader(new GlideImageLoader());
+//        //设置图片集合
+//        banner.setImages(imgList);
+//        //设置banner动画效果
+//        banner.setBannerAnimation(Transformer.DepthPage);
+//        //设置标题集合（当banner样式有显示title时）
+//        banner.setBannerTitles(titleList);
+//        //设置自动轮播，默认为true
+//        banner.isAutoPlay(true);
+//        //设置轮播时间
+//        banner.setDelayTime(7000);
+//        //设置指示器位置（当banner模式中有指示器时）
+//        banner.setIndicatorGravity(BannerConfig.CENTER);
+//        //banner设置方法全部调用完毕时最后调用
+//        banner.start();
+//    }
 
 
     /**
