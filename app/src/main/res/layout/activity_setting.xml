@@ -118,14 +118,11 @@
 
                     <com.water.project.view.ClickTextView
                         android:id="@+id/tv_setting_one"
-                        android:layout_width="80dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="设置"
-                        android:textColor="@android:color/white"
-                        android:textSize="15sp"
                         android:gravity="center"
-                        android:background="@color/color_1fc37f"
-                        android:layout_marginRight="20dp"/>
+                        android:layout_marginRight="20dp"
+                        android:background="@mipmap/setting_btn"/>
 
                     <com.water.project.view.ClickTextView
                         android:id="@+id/tv_get_one"
@@ -212,14 +209,11 @@
 
                 <com.water.project.view.ClickTextView
                     android:id="@+id/tv_setting_two"
-                    android:layout_width="80dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="设置"
-                    android:textColor="@android:color/white"
-                    android:textSize="15sp"
                     android:gravity="center"
-                    android:background="@color/color_1fc37f"
-                    android:layout_marginRight="20dp"/>
+                    android:layout_marginRight="20dp"
+                    android:background="@mipmap/setting_btn"/>
 
                 <com.water.project.view.ClickTextView
                     android:id="@+id/tv_get_two"
@@ -326,14 +320,11 @@
 
                     <com.water.project.view.ClickTextView
                         android:id="@+id/tv_setting_three"
-                        android:layout_width="80dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="设置"
-                        android:textColor="@android:color/white"
-                        android:textSize="15sp"
                         android:gravity="center"
-                        android:background="@color/color_1fc37f"
-                        android:layout_marginRight="20dp"/>
+                        android:layout_marginRight="20dp"
+                        android:background="@mipmap/setting_btn"/>
 
                     <com.water.project.view.ClickTextView
                         android:id="@+id/tv_get_three"
@@ -452,14 +443,11 @@
 
                     <com.water.project.view.ClickTextView
                         android:id="@+id/tv_setting_four"
-                        android:layout_width="80dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="设置"
-                        android:textColor="@android:color/white"
-                        android:textSize="15sp"
                         android:gravity="center"
-                        android:background="@color/color_1fc37f"
-                        android:layout_marginRight="20dp"/>
+                        android:layout_marginRight="20dp"
+                        android:background="@mipmap/setting_btn"/>
 
                     <com.water.project.view.ClickTextView
                         android:id="@+id/tv_get_four"
