@@ -12,7 +12,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="20dp">
+        android:paddingBottom="20dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -196,7 +196,7 @@
                 android:paddingTop="40dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="30dp">
 
                 <TextView
                     android:id="@+id/tv_address2"
@@ -297,7 +297,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_below="@id/rel1"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginLeft="60dp"
                 android:background="@android:color/white">
 
@@ -331,7 +331,7 @@
                 android:paddingTop="40dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="30dp">
 
                 <TextView
                     android:id="@+id/tv_address3"
@@ -432,7 +432,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_below="@id/rel2"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginLeft="60dp"
                 android:background="@android:color/white">
 
@@ -458,32 +458,24 @@
                 android:id="@+id/lin_as1"
                 android:layout_below="@id/rel3"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="30dp"
                 android:orientation="horizontal"
                 android:layout_centerInParent="true"
-                android:layout_gravity="center"
-                android:layout_marginTop="30dp">
+                android:layout_gravity="center">
 
                 <com.water.project.view.ClickTextView
                     android:id="@+id/tv_save"
-                    android:layout_width="80dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="修改"
-                    android:textColor="@android:color/white"
-                    android:textSize="14sp"
-                    android:gravity="center"
-                    android:background="@color/color_1fc37f"
+                    android:background="@mipmap/setting_btn"
                     android:layout_marginRight="20dp"/>
 
                 <com.water.project.view.ClickTextView
                     android:id="@+id/tv_red"
-                    android:layout_width="80dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="读取"
-                    android:textColor="@android:color/white"
-                    android:textSize="14sp"
-                    android:gravity="center"
-                    android:background="@color/color_1fc37f"
+                    android:background="@mipmap/red_icon"
                     android:layout_marginLeft="20dp"/>
 
             </LinearLayout>

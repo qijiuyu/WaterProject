@@ -189,14 +189,10 @@
 
             <com.water.project.view.ClickTextView
                 android:id="@+id/tv_btn_update"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:text="更新实时数据"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/view_ac5"
-                android:background="@color/color_1fc37f"
+                android:background="@mipmap/getdata_btn"
                 android:layout_marginTop="40dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="20dp"/>
@@ -302,14 +298,10 @@
 
             <com.water.project.view.ClickTextView
                 android:id="@+id/tv_btn"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:text="数据校正"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/view_ac7"
-                android:background="@color/color_1fc37f"
+                android:background="@mipmap/check_btn"
                 android:layout_marginTop="40dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="20dp"/>

@@ -55,7 +55,7 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
         register();
-        sendData(BleContant.SEND_GET_CODE_PHONE);
+//        sendData(BleContant.SEND_GET_CODE_PHONE);
     }
 
 

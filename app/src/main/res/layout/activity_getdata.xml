@@ -274,12 +274,9 @@
 
                 <com.water.project.view.ClickTextView
                     android:id="@+id/tv_get"
-                    android:layout_width="150dp"
-                    android:layout_height="40dp"
-                    android:text="更新实时数据"
-                    android:textColor="@android:color/white"
-                    android:textSize="17sp"
-                    android:background="@color/color_1fc37f"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/getdata_btn"
                     android:gravity="center"
                     android:layout_below="@id/view_ag8"
                     android:layout_marginTop="30dp"
