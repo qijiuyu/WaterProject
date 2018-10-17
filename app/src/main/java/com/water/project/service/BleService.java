@@ -64,6 +64,12 @@ public class BleService extends Service implements Serializable{
      * 没有发现指定蓝牙
      */
     public final static String ACTION_NO_DISCOVERY_BLE = "net.zkgd.adminapp.ACTION_NO_DISCOVERY_BLE";
+
+    /**
+     * 30秒扫描完毕
+     */
+    public final static String ACTION_SCAM_DEVICE_END = "net.zkgd.adminapp.ACTION_SCAM_DEVICE_END";
+
     /**
      * 数据交互超时
      */
@@ -90,7 +96,7 @@ public class BleService extends Service implements Serializable{
     //连接成功
     public static final int STATE_CONNECTED = 2;
     //timeOut：发送命令超时         scanTime:扫描蓝牙超时
-    private long timeOut = 1000 * 15, scanTime = 1000 * 15;
+    private long timeOut = 1000 * 15, scanTime = 1000 * 30;
     private TimerUtil timerUtil, startUtil;
     private Handler handler = new Handler();
     //蓝牙名称
@@ -190,9 +196,13 @@ public class BleService extends Service implements Serializable{
     }
 
     /**
-     * 扫描10秒钟
+     * 扫描30秒钟
      */
     private void startUtil() {
+        //关闭扫描计时器
+        if(null!=startUtil){
+            startUtil.stop();
+        }
         startUtil = new TimerUtil(scanTime, new TimerUtil.TimerCallBack() {
             public void onFulfill() {
                 //停止扫描
@@ -202,6 +212,8 @@ public class BleService extends Service implements Serializable{
                 //发送扫描不到该蓝牙设备的广播
                 if(!TextUtils.isEmpty(bleName)){
                     broadcastUpdate(ACTION_NO_DISCOVERY_BLE);
+                }else{
+                    broadcastUpdate(ACTION_SCAM_DEVICE_END);
                 }
             }
         });

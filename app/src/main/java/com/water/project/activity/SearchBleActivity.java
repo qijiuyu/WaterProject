@@ -68,7 +68,6 @@ public class SearchBleActivity extends BaseActivity {
         tvRight.setText("重新扫描");
         listView=(ListView)findViewById(R.id.list_asb);
         rippleBackground=(RippleBackground)findViewById(R.id.content);
-        rippleBackground.startRippleAnimation();
         tvRight.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 bleList.clear();
@@ -95,6 +94,7 @@ public class SearchBleActivity extends BaseActivity {
         if(null==MainActivity.bleService){
             return;
         }
+        rippleBackground.startRippleAnimation();
         MainActivity.bleService.scanDevice(null);
     }
 
@@ -105,6 +105,7 @@ public class SearchBleActivity extends BaseActivity {
     private void register() {
         IntentFilter myIntentFilter = new IntentFilter();
         myIntentFilter.addAction(BleService.ACTION_SCAN_SUCCESS);//扫描到蓝牙设备了
+        myIntentFilter.addAction(BleService.ACTION_SCAM_DEVICE_END);//30秒扫描完毕
         myIntentFilter.addAction(BleService.ACTION_GATT_DISCONNECTED);//蓝牙断开连接
         myIntentFilter.addAction(BleService.ACTION_ENABLE_NOTIFICATION_SUCCES);//蓝牙初始化通道成功
         registerReceiver(mBroadcastReceiver, myIntentFilter);
@@ -139,6 +140,25 @@ public class SearchBleActivity extends BaseActivity {
                     }else{
                         bleItemAdapter.notifyDataSetChanged();
                     }
+                     break;
+                //30秒扫描完毕
+                case BleService.ACTION_SCAM_DEVICE_END:
+                     boolean b=false;
+                     for (int i=0;i<bleList.size();i++){
+                          if(bleList.get(i).getBleName().contains("ZKGD")){
+                              b=true;
+                              break;
+                          }
+                     }
+                     if(!b){
+                         rippleBackground.stopRippleAnimation();
+                         dialogView = new DialogView(mContext, "未搜索到到蓝牙设备!","知道了", null, new View.OnClickListener() {
+                             public void onClick(View v) {
+                                 dialogView.dismiss();
+                             }
+                         }, null);
+                         dialogView.show();
+                     }
                      break;
                 //蓝牙断开连接
                 case BleService.ACTION_GATT_DISCONNECTED:
