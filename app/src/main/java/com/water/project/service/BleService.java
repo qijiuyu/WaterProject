@@ -96,7 +96,7 @@ public class BleService extends Service implements Serializable{
     //连接成功
     public static final int STATE_CONNECTED = 2;
     //timeOut：发送命令超时         scanTime:扫描蓝牙超时
-    private long timeOut = 1000 * 15, scanTime = 1000 * 30;
+    private long timeOut = 1000 * 15, scanTime = 1000 * 15;
     private TimerUtil timerUtil, startUtil;
     private Handler handler = new Handler();
     //蓝牙名称
@@ -169,7 +169,7 @@ public class BleService extends Service implements Serializable{
                 if(null!=ble){
                     if(ble.getBleName().equals(device.getName())){
                         //停止扫描
-                        stopScan(mLeScanCallback);
+                        stopScan();
                         //关闭扫描计时器
                         startUtil.stop();
                         //连接蓝牙
@@ -189,14 +189,14 @@ public class BleService extends Service implements Serializable{
     /**
      * 停止蓝牙扫描
      */
-    private void stopScan(BluetoothAdapter.LeScanCallback mLeScanCallback){
+    public void stopScan(){
         if(null!=mBluetoothAdapter){
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
         }
     }
 
     /**
-     * 扫描30秒钟
+     * 扫描15秒钟
      */
     private void startUtil() {
         //关闭扫描计时器
@@ -206,7 +206,7 @@ public class BleService extends Service implements Serializable{
         startUtil = new TimerUtil(scanTime, new TimerUtil.TimerCallBack() {
             public void onFulfill() {
                 //停止扫描
-                stopScan(mLeScanCallback);
+                stopScan();
                 //关闭扫描计时器
                 startUtil.stop();
                 //发送扫描不到该蓝牙设备的广播
@@ -226,7 +226,7 @@ public class BleService extends Service implements Serializable{
      */
     public boolean connect(final String address) {
         //停止扫描
-        stopScan(mLeScanCallback);
+        stopScan();
         connectionState = STATE_CONNECTING;
         if (mBluetoothAdapter == null || TextUtils.isEmpty(address)) {
             return false;

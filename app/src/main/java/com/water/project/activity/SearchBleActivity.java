@@ -67,6 +67,9 @@ public class SearchBleActivity extends BaseActivity {
         TextView tvRight=(TextView)findViewById(R.id.tv_right);
         tvRight.setText("重新扫描");
         listView=(ListView)findViewById(R.id.list_asb);
+        bleItemAdapter=new BleItemAdapter(mContext,bleList);
+        listView.setAdapter(bleItemAdapter);
+        bleItemAdapter.setCallBack(bleConCallBack);
         rippleBackground=(RippleBackground)findViewById(R.id.content);
         tvRight.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -129,20 +132,14 @@ public class SearchBleActivity extends BaseActivity {
                     bleMap.put(bleName,bleName);
                     ble=new Ble(bleName,bleMac);
                     if(bleName.contains("ZKGD")){
-                        bleList.add(0,ble);
-                    }else{
                         bleList.add(ble);
-                    }
-                    if(null==bleItemAdapter){
-                        bleItemAdapter=new BleItemAdapter(mContext,bleList);
-                        listView.setAdapter(bleItemAdapter);
-                        bleItemAdapter.setCallBack(bleConCallBack);
-                    }else{
                         bleItemAdapter.notifyDataSetChanged();
                     }
                      break;
                 //30秒扫描完毕
                 case BleService.ACTION_SCAM_DEVICE_END:
+                     //停止动态效果
+                     rippleBackground.stopRippleAnimation();
                      boolean b=false;
                      for (int i=0;i<bleList.size();i++){
                           if(bleList.get(i).getBleName().contains("ZKGD")){
@@ -151,7 +148,6 @@ public class SearchBleActivity extends BaseActivity {
                           }
                      }
                      if(!b){
-                         rippleBackground.stopRippleAnimation();
                          dialogView = new DialogView(mContext, "未搜索到到蓝牙设备!","知道了", null, new View.OnClickListener() {
                              public void onClick(View v) {
                                  dialogView.dismiss();
@@ -226,6 +222,7 @@ public class SearchBleActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        MainActivity.bleService.stopScan();
         unregisterReceiver(mBroadcastReceiver);
     }
 }
