@@ -217,7 +217,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:gravity="center"
-                    android:text="电压值"
+                    android:text="电池电压值"
                     android:textColor="@android:color/black"
                     android:textSize="15sp"
                     android:layout_marginTop="10dp"

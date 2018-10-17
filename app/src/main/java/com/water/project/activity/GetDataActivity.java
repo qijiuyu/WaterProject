@@ -89,7 +89,7 @@ public class GetDataActivity extends BaseActivity {
         if(!BleUtils.isEnabled(GetDataActivity.this,MainActivity.mBtAdapter)){
             return;
         }
-        showProgress("数据查询中...");
+        showProgress("正在读取实时数据...");
         //如果蓝牙连接断开，就扫描重连
         if(MainActivity.bleService.connectionState==MainActivity.bleService.STATE_DISCONNECTED){
             //扫描并重连蓝牙
