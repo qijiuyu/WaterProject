@@ -251,11 +251,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
         TextView tv = (TextView) mTabTitleViews.get(index);
 
         if (tv != null) {
-            if(index==1){
-                tv.setText(text.substring(0,text.indexOf(":"))+":00");
-            }else{
-                tv.setText(text);
-            }
+            tv.setText(text);
         }
     }
 

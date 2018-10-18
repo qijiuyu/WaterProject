@@ -223,10 +223,13 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             //设置探头埋深
             case R.id.tv_setting_two:
                   final String tantou=etTanTou.getText().toString().trim();
+                  final int index=tantou.indexOf(".");
                   if(TextUtils.isEmpty(tantou)){
                       showToastView("请输入探头埋深！");
                   }else if(tantou.indexOf(".")==-1 && tantou.length()>4){
                       showToastView("探头埋深最多只能输入4位整数！");
+                  }else if(index>4){
+                      showToastView("探头埋深的小数点前面最多只能是4位整数");
                   }else{
                       SendBleStr.sendSetTanTou(tantou);
                       sendData(BleContant.SET_TANTOU,2);
@@ -482,7 +485,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                          //解析并显示回执的数据
                          showData(data2);
                      }else{
-                         dialogView = new DialogView(mContext, "参数设置成功！", "好的",null, new View.OnClickListener() {
+                         dialogView = new DialogView(mContext, "参数设置成功！", "确定",null, new View.OnClickListener() {
                              public void onClick(View v) {
                                  dialogView.dismiss();
                              }

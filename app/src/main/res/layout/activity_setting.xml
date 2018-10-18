@@ -269,7 +269,6 @@
                     android:digits="0123456789"
                     android:maxLength="2"
                     android:layout_below="@id/view_as4"
-                    android:hint="请输入采集间隔时间"
                     android:textColor="@color/color_1fc37f"
                     android:textSize="15sp"
                     android:layout_alignParentRight="true"
@@ -344,12 +343,10 @@
                     android:id="@+id/et_as_fstime"
                     android:layout_width="200dp"
                     android:layout_height="40dp"
-                    android:hint="请输入发送起始时间"
                     android:textColor="@color/color_1fc37f"
                     android:textSize="15sp"
                     android:layout_alignParentRight="true"
-                    android:gravity="right|center"
-                    android:layout_marginRight="20dp"/>
+                    android:gravity="right|center"/>
 
                 <View
                     android:id="@+id/view_as6"
@@ -377,7 +374,6 @@
                     android:maxLength="2"
                     android:digits="0123456789"
                     android:layout_below="@id/view_as6"
-                    android:hint="请输入发送间隔时间"
                     android:textColor="@color/color_1fc37f"
                     android:textSize="15sp"
                     android:layout_alignParentRight="true"

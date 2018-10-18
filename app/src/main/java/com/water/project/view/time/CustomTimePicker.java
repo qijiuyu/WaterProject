@@ -52,7 +52,7 @@ public class CustomTimePicker extends TimePicker
 
 
             //隐藏分钟
-            minuteNumberPicker.setVisibility(View.GONE);
+//            minuteNumberPicker.setVisibility(View.GONE);
 
 
             amPmNumberPicker = (NumberPicker) findViewById(amPmField.getInt(null));
