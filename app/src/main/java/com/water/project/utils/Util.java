@@ -155,40 +155,6 @@ public class Util extends ClassLoader {
 
 
     /**
-     * 获取几点数据
-     * @return
-     */
-    public static List<String> getDateList(){
-        List<String> list=new ArrayList<>();
-        list.add("0点");
-        list.add("1点");
-        list.add("2点");
-        list.add("3点");
-        list.add("4点");
-        list.add("5点");
-        list.add("6点");
-        list.add("7点");
-        list.add("8点");
-        list.add("9点");
-        list.add("10点");
-        list.add("11点");
-        list.add("12点");
-        list.add("13点");
-        list.add("14点");
-        list.add("15点");
-        list.add("16点");
-        list.add("17点");
-        list.add("18点");
-        list.add("19点");
-        list.add("20点");
-        list.add("21点");
-        list.add("22点");
-        list.add("23点");
-        return list;
-    }
-
-
-    /**
      * 判断字符串中是否包含字母
      * @param cardNum
      * @return
@@ -208,5 +174,16 @@ public class Util extends ClassLoader {
     public static boolean isInteger(String str) {
         Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
         return pattern.matcher(str).matches();
+    }
+
+
+    /**
+     * 去掉字符串前面多余的0
+     * @param str
+     * @return
+     */
+    public static String delete_ling(String str){
+        str=str.replaceAll("^(0+)", "");
+        return str;
     }
 }

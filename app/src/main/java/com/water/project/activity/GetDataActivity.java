@@ -236,7 +236,7 @@ public class GetDataActivity extends BaseActivity {
         if(YaLi.contains("99999999")){
             tvMaiShen.setText(MaiShen+"m");
         }else{
-            tvMaiShen.setText(Util.setDouble(Double.parseDouble(MaiShen),2)+"m");
+            tvMaiShen.setText(Util.setDouble(Double.parseDouble(MaiShen),3)+"m");
         }
 
         //显示气压值
@@ -252,7 +252,7 @@ public class GetDataActivity extends BaseActivity {
         if(YaLi.contains("99999999")){
             tvShuiWen.setText(ShuiWen+"℃");
         }else{
-            tvShuiWen.setText(Double.parseDouble(ShuiWen)+"℃");
+            tvShuiWen.setText(Util.setDouble(Double.parseDouble(ShuiWen),2)+"℃");
         }
 
         //显示气温值
@@ -260,7 +260,7 @@ public class GetDataActivity extends BaseActivity {
         if(YaLi.contains("99999999")){
             tvQiWen.setText(QiWen+"℃");
         }else{
-            tvQiWen.setText(Double.parseDouble(QiWen)+"℃");
+            tvQiWen.setText(Util.setDouble(Double.parseDouble(QiWen),2)+"℃");
         }
 
         //显示电压值

@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 import android.widget.NumberPicker;
 import android.widget.TimePicker;
 
@@ -48,6 +49,12 @@ public class CustomTimePicker extends TimePicker
             // Use the resource IDs to get references to the hour, minute and amPm NumberPickers
             hourNumberPicker = (NumberPicker) findViewById(hourField.getInt(null));
             minuteNumberPicker = (NumberPicker) findViewById(minuteField.getInt(null));
+
+
+            //隐藏分钟
+            minuteNumberPicker.setVisibility(View.GONE);
+
+
             amPmNumberPicker = (NumberPicker) findViewById(amPmField.getInt(null));
 
             numberPickerClass = Class.forName("android.widget.NumberPicker");
@@ -57,7 +64,7 @@ public class CustomTimePicker extends TimePicker
             selectionDividerField = numberPickerClass.getDeclaredField("mSelectionDivider");
             selectionDividerField.setAccessible(true);
             selectionDividerField.set(hourNumberPicker, getResources().getDrawable(R.mipmap.selection_divider));
-            selectionDividerField.set(minuteNumberPicker, getResources().getDrawable(R.mipmap.selection_divider));
+//            selectionDividerField.set(minuteNumberPicker, getResources().getDrawable(R.mipmap.selection_divider));
             selectionDividerField.set(amPmNumberPicker, getResources().getDrawable(R.mipmap.selection_divider));
         }
         catch (ClassNotFoundException e)

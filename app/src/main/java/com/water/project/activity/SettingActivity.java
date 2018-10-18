@@ -175,7 +175,17 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         }
         SEND_STATUS=status;
         SEND_TYPE=type;
-        showProgress("发送数据中...");
+        switch (SEND_STATUS){
+            case BleContant.SEND_GET_CODE_PHONE:
+            case BleContant.SEND_GET_TANTOU:
+            case BleContant.SEND_CAI_JI_PIN_LU:
+            case BleContant.SEND_FA_SONG_PIN_LU:
+                 showProgress("正在读取参数设置...");
+                 break;
+             default:
+                 showProgress("正在设置参数信息...");
+                 break;
+        }
         //如果蓝牙连接断开，就扫描重连
         if(MainActivity.bleService.connectionState==MainActivity.bleService.STATE_DISCONNECTED){
             //扫描并重连蓝牙
@@ -199,6 +209,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                   final String sim=etPhone.getText().toString().trim();
                   if(TextUtils.isEmpty(code)){
                       showToastView("请输入统一编码！");
+                  }else if(code.length()<10 || code.length()==11){
+                      showToastView("统一编码的长度只能是10位或者12位！");
                   }else if(TextUtils.isEmpty(sim)){
                       showToastView("请输入SIM卡号！");
                   }else if(sim.length()<11 || sim.length()==12){
@@ -238,9 +250,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                  final String date=etCStime.getText().toString().trim();
                  final String hour=etCEtime.getText().toString().trim();
                  if(TextUtils.isEmpty(date)){
-                     showToastView("请输入采集起始时间！");
+                     showToastView("请选择采集起始时间！");
                  }else if(TextUtils.isEmpty(hour)){
-                     showToastView("请输入采集间隔时间！");
+                     showToastView("请选择采集间隔时间！");
                  }else{
                      dialogView = new DialogView(mContext, "当采集时间和采集间隔时间更改后原存储数据将丢失!","确定", "取消", new View.OnClickListener() {
                          public void onClick(View v) {
@@ -254,7 +266,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
             //选择发送起始时间
             case R.id.et_as_fstime:
-                  wheel(Util.getDateList(),etFStime,2);
+                TimeUtils.type=1;
+                new SlideDateTimePicker.Builder(getSupportFragmentManager())
+                        .setListener(listener)
+                        .setInitialDate(new Date())
+                        .build()
+                        .show();
                   break;
             //选择发送间隔小时
             case R.id.et_as_fetime:
@@ -267,7 +284,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                  if(TextUtils.isEmpty(startTime)){
                      showToastView("请选择发送起始时间！");
                  }else if(TextUtils.isEmpty(fHour)){
-                     showToastView("请输入发送间隔时间！");
+                     showToastView("请选择发送间隔时间！");
                  }else{
                      SendBleStr.setFaSong(startTime,fHour);
                      sendData(BleContant.SET_FA_SONG,2);
@@ -346,7 +363,11 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                   strings=data.split(",");
                   final String hour=strings[0].replace("GDSENDR","");
                   etFStime.setText(mFormatter1.format(new Date())+" "+hour+":00");
-                  etFEtime.setText(strings[1]);
+                  if(strings[1].equals("00")){
+                      etFEtime.setText("0");
+                  }else{
+                      etFEtime.setText(Util.delete_ling(strings[1]));
+                  }
                   break;
             default:
                 break;
@@ -503,7 +524,11 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     private SimpleDateFormat mFormatter = new SimpleDateFormat("yyyy-MM-dd HH");
     private SlideDateTimeListener listener = new SlideDateTimeListener() {
         public void onDateTimeSet(Date date) {
-            etCStime.setText(mFormatter.format(date)+":00");
+            if(TimeUtils.type==0){
+                etCStime.setText(mFormatter.format(date)+":00");
+            }else{
+                etFStime.setText(mFormatter.format(date)+":00");
+            }
         }
         public void onDateTimeCancel() {
         }

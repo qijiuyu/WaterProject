@@ -48,10 +48,6 @@ public class SendBleStr {
 
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
-        final int length=code.length();
-        for (int i=0;i<12-length;i++){
-            code="0"+code;
-        }
         StringBuffer stringBuffer=new StringBuffer();
         String[] strings=data.split(";");
         strings[1]=code;
@@ -91,7 +87,7 @@ public class SendBleStr {
 
 
     /**
-     * 设置采集频路
+     * 设置采集频率
      * @param startTime
      * @param hour
      */
@@ -99,7 +95,7 @@ public class SendBleStr {
         StringBuffer stringBuffer=new StringBuffer("GDREADW");
         stringBuffer.append(startTime+",");
         int minuts=((Integer.parseInt(hour)) * 60);
-        if(minuts<1000){
+        for(int i=0;i<4-String.valueOf(minuts).length();i++){
             stringBuffer.append("0");
         }
         stringBuffer.append(minuts);
@@ -115,6 +111,9 @@ public class SendBleStr {
     public static void setFaSong(String startTime,String hour){
         StringBuffer stringBuffer=new StringBuffer("GDSENDW");
         stringBuffer.append(startTime.replaceAll(" ","").substring(10,12)+",");
+        if(hour.length()==1){
+            stringBuffer.append("0");
+        }
         stringBuffer.append(hour);
         SET_FA_SONG_PIN_LU=stringBuffer.toString();
     }

@@ -179,14 +179,7 @@ public class BaseActivity extends FragmentActivity {
         view.findViewById(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 closeDialog();
-                message=message.replace("点","").replace("小时","");
-                if(message.length()==1){
-                    message="0"+message;
-                }
-                if(type==2){
-                    SimpleDateFormat mFormatter = new SimpleDateFormat("yyyy-MM-dd");
-                    message=mFormatter.format(new Date())+" "+message+":00";
-                }
+                message=message.replace("小时","");
                 tv.setText(message);
             }
         });
