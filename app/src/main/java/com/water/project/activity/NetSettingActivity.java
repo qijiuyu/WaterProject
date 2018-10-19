@@ -1,5 +1,6 @@
 package com.water.project.activity;
 
+import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +9,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -42,6 +46,8 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
     private int SEND_STATUS;
     //读取的数据
     private String strData;
+    //密码存储
+    private char[] arr;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -105,7 +111,11 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
             return;
         }
         SEND_STATUS=status;
-        showProgress("数据查询中...");
+        if(SEND_STATUS==BleContant.SEND_GET_CODE_PHONE){
+            showProgress("正在读取参数设置...");
+        }else{
+            showProgress("正在修改参数设置...");
+        }
         //如果蓝牙连接断开，就扫描重连
         if(MainActivity.bleService.connectionState==MainActivity.bleService.STATE_DISCONNECTED){
             //扫描并重连蓝牙
@@ -381,8 +391,85 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
                     showToastView("请输入APN！");
                     return;
                 }
-                SendBleStr.setIpPort(strData,address1,address2,address3,ip1,ip2,ip3,port1,port2,port3,apn);
-                sendData(BleContant.SET_IP_PORT);
+                final View pwdView= LayoutInflater.from(mContext).inflate(R.layout.pop_pwd,null);
+                dialogPop(pwdView,true);
+                final EditText etPwd=(EditText)pwdView.findViewById(R.id.editHide);
+                final TextView tv1 = (TextView) pwdView.findViewById(R.id.t1);
+                final TextView tv2 = (TextView)pwdView. findViewById(R.id.t2);
+                final TextView tv3 = (TextView)pwdView. findViewById(R.id.t3);
+                final TextView tv4 = (TextView)pwdView. findViewById(R.id.t4);
+                final TextView tv5 = (TextView)pwdView. findViewById(R.id.t5);
+                final TextView tv6 = (TextView) pwdView.findViewById(R.id.t6);
+                etPwd.addTextChangedListener(new TextWatcher() {
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    }
+
+                    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+                    public void afterTextChanged(Editable s) {
+                        arr = s.toString().toCharArray();
+                        tv1.setText(null);
+                        tv2.setText(null);
+                        tv3.setText(null);
+                        tv4.setText(null);
+                        tv5.setText(null);
+                        tv6.setText(null);
+                        if (TextUtils.isEmpty(s.toString())) {
+                            tv1.setBackground(getResources().getDrawable(R.drawable.scan_share));
+                        }
+                        for (int i = 0; i < arr.length; i++) {
+                            if (i == 0) {
+                                tv1.setText(String.valueOf(arr[0]));
+                                tv1.setBackgroundColor(getResources().getColor(R.color.color_1fc37f));
+                                tv2.setBackground(getResources().getDrawable(R.drawable.scan_share));
+                            } else if (i == 1) {
+                                tv2.setText(String.valueOf(arr[1]));
+                                tv2.setBackgroundColor(getResources().getColor(R.color.color_1fc37f));
+                                tv3.setBackground(getResources().getDrawable(R.drawable.scan_share));
+                            } else if (i == 2) {
+                                tv3.setText(String.valueOf(arr[2]));
+                                tv3.setBackgroundColor(getResources().getColor(R.color.color_1fc37f));
+                                tv4.setBackground(getResources().getDrawable(R.drawable.scan_share));
+                            } else if (i == 3) {
+                                tv4.setText(String.valueOf(arr[3]));
+                                tv4.setBackgroundColor(getResources().getColor(R.color.color_1fc37f));
+                                tv5.setBackground(getResources().getDrawable(R.drawable.scan_share));
+                            } else if (i == 4) {
+                                tv5.setText(String.valueOf(arr[4]));
+                                tv5.setBackgroundColor(getResources().getColor(R.color.color_1fc37f));
+                                tv6.setBackground(getResources().getDrawable(R.drawable.scan_share));
+                            } else if (i == 5) {
+                                tv6.setText(String.valueOf(arr[5]));
+                                tv6.setBackgroundColor(getResources().getColor(R.color.color_1fc37f));
+                            }
+                        }
+                    }
+                });
+                //确定
+                pwdView.findViewById(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        String strPwd=etPwd.getText().toString().trim();
+                        if(TextUtils.isEmpty(strPwd)){
+                            showToastView("请输入密码！");
+                        }else if(!strPwd.equals("100012")){
+                            showToastView("输入的密码错误！");
+                        }else{
+                            closeDialog();
+                            SendBleStr.setIpPort(strData,address1,address2,address3,ip1,ip2,ip3,port1,port2,port3,apn);
+                            sendData(BleContant.SET_IP_PORT);
+                        }
+                    }
+                });
+                //取消
+                pwdView.findViewById(R.id.tv_cancle).setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        closeDialog();
+                    }
+                });
                 break;
             //读取
             case R.id.tv_red:

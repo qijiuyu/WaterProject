@@ -210,12 +210,18 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                   if(TextUtils.isEmpty(code)){
                       showToastView("请输入统一编码！");
                   }else if(code.length()<10 || code.length()==11){
+                      etCode.setTextColor(getResources().getColor(R.color.color_EC191B));
                       showToastView("统一编码的长度只能是10位或者12位！");
                   }else if(TextUtils.isEmpty(sim)){
+                      etCode.setTextColor(getResources().getColor(R.color.color_1fc37f));
                       showToastView("请输入SIM卡号！");
                   }else if(sim.length()<11 || sim.length()==12){
+                      etCode.setTextColor(getResources().getColor(R.color.color_1fc37f));
+                      etPhone.setTextColor(getResources().getColor(R.color.color_EC191B));
                       showToastView("SIM卡号错误！");
                   }else{
+                      etCode.setTextColor(getResources().getColor(R.color.color_1fc37f));
+                      etPhone.setTextColor(getResources().getColor(R.color.color_1fc37f));
                       SendBleStr.sendSetCodeSim(code,sim,CODE_SIM_DATA);
                       sendData(BleContant.SET_CODE_PHONE,2);
                   }
@@ -223,14 +229,19 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             //设置探头埋深
             case R.id.tv_setting_two:
                   final String tantou=etTanTou.getText().toString().trim();
-                  final int index=tantou.indexOf(".");
+                  final int qIndex=tantou.indexOf(".");
+                  final int hIndex=tantou.length()-qIndex-1;
+                  etTanTou.setTextColor(getResources().getColor(R.color.color_EC191B));
                   if(TextUtils.isEmpty(tantou)){
                       showToastView("请输入探头埋深！");
                   }else if(tantou.indexOf(".")==-1 && tantou.length()>4){
                       showToastView("探头埋深最多只能输入4位整数！");
-                  }else if(index>4){
-                      showToastView("探头埋深的小数点前面最多只能是4位整数");
+                  }else if(qIndex>4){
+                      showToastView("探头埋深的小数点前面最多只能是4位数");
+                  }else if(hIndex>3){
+                      showToastView("探头埋深的小数点后面最多只能是3位数");
                   }else{
+                      etTanTou.setTextColor(getResources().getColor(R.color.color_1fc37f));
                       SendBleStr.sendSetTanTou(tantou);
                       sendData(BleContant.SET_TANTOU,2);
                   }
@@ -257,7 +268,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                  }else if(TextUtils.isEmpty(hour)){
                      showToastView("请选择采集间隔时间！");
                  }else{
-                     dialogView = new DialogView(mContext, "当采集时间和采集间隔时间更改后原存储数据将丢失!","确定", "取消", new View.OnClickListener() {
+                     dialogView = new DialogView(mContext, "采集起始时间和采集间隔时间一旦修改，RTU内部存储数据将全部清空!","确定", "取消", new View.OnClickListener() {
                          public void onClick(View v) {
                              dialogView.dismiss();
                              SendBleStr.sendCaiJi(date.substring(0, date.length()-2).replace("-","").replace(" ","").replace(":",""),hour);
