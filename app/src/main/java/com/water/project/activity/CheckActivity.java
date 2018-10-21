@@ -171,7 +171,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
                 }else if(TextUtils.isEmpty(wuCha)){
                     showToastView("没有误差数据！");
                 }else{
-                    float d=Float.parseFloat(wuCha.replace("-",""))*100;
+                    double d=Double.parseDouble(wuCha.replace("-",""))*100;
                     if(d>0 && d<10){
                         sendData(BleContant.SEND_CHECK_ERROR);
                     }
@@ -205,15 +205,16 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
      * 弹出提示误差框
      */
     private void showPop(int type,double data){
+        final String wuchaStr=Util.setDouble(data,1);
         View view=getLayoutInflater().inflate(R.layout.pop_check,null);
         dialogPop(view,true);
         ImageView imageView=(ImageView)view.findViewById(R.id.img_pc);
         TextView textView=(TextView)view.findViewById(R.id.tv_pc);
         if(type==1){
-            textView.setText("人工实测水位埋深大于设备采集水位埋深"+data+"cm，需要将线夹子向下调整"+data+"cm，线夹子调整完成，请重新读取实时数据。");
+            textView.setText("人工实测水位埋深大于设备采集水位埋深"+wuchaStr+"cm，需要将线夹子向下调整"+wuchaStr+"cm，线夹子调整完成，请重新读取实时数据。");
             imageView.setImageDrawable(getResources().getDrawable(R.mipmap.pop_check_down));
         }else{
-            textView.setText("人工实测水位埋深小于设备采集水位埋深"+data+"cm，需要将线夹子向上调整"+data+"cm，线夹子调整完成，请重新读取实时数据。");
+            textView.setText("人工实测水位埋深小于设备采集水位埋深"+wuchaStr+"cm，需要将线夹子向上调整"+wuchaStr+"cm，线夹子调整完成，请重新读取实时数据。");
             imageView.setImageDrawable(getResources().getDrawable(R.mipmap.pop_check_up));
         }
         view.findViewById(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
