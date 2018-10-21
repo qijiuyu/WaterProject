@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+   <RelativeLayout
+       android:layout_width="350dp"
+       android:layout_height="wrap_content"
+       android:background="@drawable/bg_white_share"
+       android:layout_centerHorizontal="true"
+       android:paddingBottom="20dp">
+
+       <ImageView
+           android:id="@+id/img_pc"
+           android:layout_width="90dp"
+           android:layout_height="140dp"
+           android:src="@mipmap/pop_check_up"
+           android:layout_marginTop="20dp"
+           android:layout_alignParentRight="true"/>
+
+       <TextView
+           android:id="@+id/tv_pc"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_toLeftOf="@id/img_pc"
+           android:lineSpacingExtra="5dp"
+           android:layout_marginTop="30dp"
+           android:layout_marginLeft="15dp"
+           android:textColor="@android:color/black"
+           android:textSize="14sp"/>
+
+       <com.water.project.view.ClickTextView
+           android:id="@+id/tv_confirm"
+           android:layout_width="80dp"
+           android:layout_height="35dp"
+           android:layout_below="@id/tv_pc"
+           android:layout_marginTop="30dp"
+           android:layout_centerHorizontal="true"
+           android:background="@drawable/bg_color"
+           android:text="确认"
+           android:textColor="@android:color/white"
+           android:textSize="14sp"
+           android:gravity="center"/>
+
+   </RelativeLayout>
+
+</RelativeLayout>

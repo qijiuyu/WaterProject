@@ -37,7 +37,7 @@ import java.util.List;
 
 public class NetSettingActivity extends BaseActivity implements View.OnClickListener{
 
-    private ImageView img1,img2,img3,imgClearApn,imgClearPort1,imgClearPort2,imgClearPort3,imgClearIp1;
+    private ImageView img1,img2,img3,imgClearApn,imgClearPort1,imgClearPort2,imgClearPort3,imgClearIp1,imgClearIp2,imgClearIp3;
     private EditText etAddress1,etAddress2,etAddress3,etApn,etIp1,etIp2,etIp3,etPort1,etPort2,etPort3;
     private TextView tvAddress1,tvAddress2,tvAddress3,tvIp1,tvIp2,tvIp3,tvPort1,tvPort2,tvPort3;
     private DialogView dialogView;
@@ -61,7 +61,7 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
         register();
-//        sendData(BleContant.SEND_GET_CODE_PHONE);
+        sendData(BleContant.SEND_GET_CODE_PHONE);
     }
 
 
@@ -79,6 +79,8 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
         imgClearPort2=(ImageView)findViewById(R.id.img_clear_port2);
         imgClearPort3=(ImageView)findViewById(R.id.img_clear_port3);
         imgClearIp1=(ImageView)findViewById(R.id.img_clear_ip1);
+        imgClearIp2=(ImageView)findViewById(R.id.img_clear_ip2);
+        imgClearIp3=(ImageView)findViewById(R.id.img_clear_ip3);
         etAddress1=(EditText)findViewById(R.id.et_address1);
         etAddress2=(EditText)findViewById(R.id.et_address2);
         etAddress3=(EditText)findViewById(R.id.et_address3);
@@ -106,6 +108,8 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
         imgClearPort2.setOnClickListener(this);
         imgClearPort3.setOnClickListener(this);
         imgClearIp1.setOnClickListener(this);
+        imgClearIp2.setOnClickListener(this);
+        imgClearIp3.setOnClickListener(this);
         findViewById(R.id.tv_save).setOnClickListener(this);
         findViewById(R.id.tv_red).setOnClickListener(this);
         findViewById(R.id.lin_back).setOnClickListener(this);
@@ -176,6 +180,34 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
                     imgClearIp1.setVisibility(View.VISIBLE);
                 }else{
                     imgClearIp1.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        etIp2.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            public void afterTextChanged(Editable s) {
+                if(s.toString().length()>0){
+                    imgClearIp2.setVisibility(View.VISIBLE);
+                }else{
+                    imgClearIp2.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        etIp3.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            public void afterTextChanged(Editable s) {
+                if(s.toString().length()>0){
+                    imgClearIp3.setVisibility(View.VISIBLE);
+                }else{
+                    imgClearIp3.setVisibility(View.GONE);
                 }
             }
         });
@@ -394,8 +426,14 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
                 etPort3.setText(null);
                 break;
             case R.id.img_clear_ip1:
-                 etIp1.setText(null);
-                 break;
+                etIp1.setText(null);
+                break;
+            case R.id.img_clear_ip2:
+                etIp2.setText(null);
+                break;
+            case R.id.img_clear_ip3:
+                etIp3.setText(null);
+                break;
             //保存
             case R.id.tv_save:
                 final String address1=etAddress1.getText().toString().trim();

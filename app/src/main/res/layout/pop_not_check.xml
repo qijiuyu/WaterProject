@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+   <LinearLayout
+       android:layout_width="250dp"
+       android:layout_height="wrap_content"
+       android:background="@drawable/bg_white_share"
+       android:layout_centerHorizontal="true"
+       android:orientation="vertical"
+       android:paddingBottom="20dp">
+
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:lineSpacingExtra="5dp"
+           android:layout_marginTop="20dp"
+           android:layout_marginLeft="15dp"
+           android:textColor="@android:color/black"
+           android:textSize="14sp"
+           android:text="人工实测水位埋深与设备采集水位埋深误差过大，请查找原因。"/>
+
+       <com.water.project.view.ClickTextView
+           android:id="@+id/tv_confirm"
+           android:layout_width="70dp"
+           android:layout_height="30dp"
+           android:layout_marginTop="30dp"
+           android:layout_gravity="center"
+           android:background="@drawable/bg_color"
+           android:text="确认"
+           android:textColor="@android:color/white"
+           android:textSize="14sp"
+           android:gravity="center"/>
+
+   </LinearLayout>
+
+</RelativeLayout>

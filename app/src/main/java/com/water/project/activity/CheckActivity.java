@@ -14,6 +14,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.water.project.R;
@@ -36,7 +37,8 @@ import com.water.project.view.DialogView;
  */
 
 public class CheckActivity extends BaseActivity implements View.OnClickListener{
-    private TextView tvTime,tvYaLi,tvQiYa,tvTanTou,tvShuiWei,tvWuCha,tvDes;
+    private ImageView imgClear;
+    private TextView tvTime,tvYaLi,tvQiYa,tvTanTou,tvShuiWei,tvWuCha;
     private EditText etCheck;
     private DialogView dialogView;
     private Handler mHandler=new Handler();
@@ -44,6 +46,8 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
     private int SEND_STATUS;
     //手动输入的误差数据
     private String wuCha;
+    //是否校验完成
+    private boolean isCheck=false;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -57,7 +61,8 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
         register();//注册广播
-        sendData(BleContant.SEND_REAL_TIME_DATA);
+//        sendData(BleContant.SEND_REAL_TIME_DATA);
+        showData("GDCURRENT>170606212645L0004.25T007.5B100V06.22CSQ19R022.3E0000P0025.661B09.938C0020.000;");
     }
 
     /**
@@ -65,7 +70,8 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
      */
     private void initView(){
         TextView tvHead=(TextView)findViewById(R.id.tv_head);
-        tvHead.setText("数据校测");
+        tvHead.setText("校测水位数据");
+        imgClear=(ImageView)findViewById(R.id.img_clear_check);
         tvTime=(TextView)findViewById(R.id.tv_ac_cjTime);
         tvYaLi=(TextView)findViewById(R.id.tv_ac_yali);
         tvQiYa=(TextView)findViewById(R.id.tv_ac_qiya);
@@ -73,7 +79,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
         tvShuiWei=(TextView)findViewById(R.id.tv_ac_shuiwei);
         etCheck=(EditText)findViewById(R.id.et_ac_check);
         tvWuCha=(TextView)findViewById(R.id.tv_ac_wucha);
-        tvDes=(TextView)findViewById(R.id.tv_check_des);
+        imgClear.setOnClickListener(this);
         findViewById(R.id.tv_btn).setOnClickListener(this);
         findViewById(R.id.tv_btn_update).setOnClickListener(this);
         findViewById(R.id.lin_back).setOnClickListener(this);
@@ -86,38 +92,30 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
 
             }
             public void afterTextChanged(Editable s) {
-                final String YaLi=tvYaLi.getText().toString().trim();
-                if(YaLi.contains("99999999")){
-                    dialogView = new DialogView(mContext, "传感器故障，无法参与计算校准，请查找原因！", "知道了",null, new View.OnClickListener() {
-                        public void onClick(View v) {
-                            dialogView.dismiss();
-                        }
-                    }, null);
-                    dialogView.show();
+                if(s.toString().length()>0){
+                    imgClear.setVisibility(View.VISIBLE);
+                }else{
+                    imgClear.setVisibility(View.GONE);
+                    tvWuCha.setText("");
                     return;
                 }
 
+                //计算误差
                 final String strShui=tvShuiWei.getText().toString().trim().replace("m","");
                 final double shuiWei=Double.parseDouble(strShui);
-
-                if(TextUtils.isEmpty(s.toString())){
-                    tvWuCha.setText("");
-                    tvDes.setText("");
-                    return;
-                }
                 final double check=Double.parseDouble(s.toString());
                 //显示误差
-                final String wuCha=Util.sub(shuiWei,check)+"";
+                wuCha=Util.sub(shuiWei,check)+"";
                 tvWuCha.setText(wuCha);
 
-                double d=Double.parseDouble(wuCha.replace("-",""))*100;
-                if(d<2){
-                    tvDes.setText("误差小于2CM，无需进行调整");
-                }else if(d>10){
-                    tvDes.setText("不建议点击修正误差，请先检查原因");
-                }else{
-                    tvDes.setText("");
-                }
+
+//                if(d<2){
+//                    tvDes.setText("误差小于2CM，无需进行调整");
+//                }else if(d>10){
+//                    tvDes.setText("不建议点击修正误差，请先检查原因");
+//                }else{
+//                    tvDes.setText("");
+//                }
             }
         });
     }
@@ -132,7 +130,11 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
             return;
         }
         SEND_STATUS=status;
-        showProgress("发送数据中...");
+        if(SEND_STATUS==BleContant.SEND_REAL_TIME_DATA){
+            showProgress("正在读取实时数据...");
+        }else{
+            showProgress("正在进行数据矫正...");
+        }
         //如果蓝牙连接断开，就扫描重连
         if(MainActivity.bleService.connectionState==MainActivity.bleService.STATE_DISCONNECTED){
             //扫描并重连蓝牙
@@ -150,12 +152,14 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.img_clear_check:
+                 etCheck.setText(null);
+                 break;
             //数据修改
             case R.id.tv_btn:
                 final String YaLi=tvYaLi.getText().toString().trim();
-                wuCha=tvWuCha.getText().toString().trim();
                 if(YaLi.contains("99999999")){
-                    dialogView = new DialogView(mContext, "传感器故障，无法参与计算校准，请查找原因！", "知道了",null, new View.OnClickListener() {
+                    dialogView = new DialogView(mContext, "传感器故障，无法参与计算校准，请查找原因！", "确认",null, new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
                         }
@@ -163,24 +167,83 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
                     dialogView.show();
                     return;
                 }
-                if(TextUtils.isEmpty(wuCha)){
+                wuCha=tvWuCha.getText().toString().trim();
+                final String strCheck=etCheck.getText().toString().trim();
+                final int qIndex=strCheck.indexOf(".");
+                final int hIndex=strCheck.length()-qIndex-1;
+                if(strCheck.indexOf(".")==-1 && strCheck.length()>4){
+                    showToastView("人工实测水位埋深最多只能输入4位整数！");
+                }else if(qIndex>4){
+                    showToastView("人工实测水位埋深的小数点前面最多只能是4位数");
+                }else if(hIndex>3){
+                    showToastView("人工实测水位埋深的小数点后面最多只能是3位数");
+                }else if(TextUtils.isEmpty(wuCha)){
                     showToastView("没有误差数据！");
                 }else{
-                    etCheck.setText("");
-                    tvWuCha.setText("");
-                    sendData(BleContant.SEND_CHECK_ERROR);
+                    double d=Double.parseDouble(wuCha.replace("-",""))*100;
+                    if(d>0 && d<10){
+                        sendData(BleContant.SEND_CHECK_ERROR);
+                    }
+                    if(d>=10 && d<20){
+                        if(wuCha.contains("-")){
+                            showPop(1,d);
+                        }else{
+                            showPop(2,d);
+                        }
+                    }
+                    if(d>=20){
+                        showNotCheckPop();
+                    }
                 }
                  break;
             //数据实时更新
             case R.id.tv_btn_update:
+                 isCheck=false;
                  sendData(BleContant.SEND_REAL_TIME_DATA);
                  break;
             case R.id.lin_back:
                  finish();
                  break;
-                 default:
-                     break;
+             default:
+                 break;
         }
+    }
+
+
+    /**
+     * 弹出提示误差框
+     */
+    private void showPop(int type,double data){
+        View view=getLayoutInflater().inflate(R.layout.pop_check,null);
+        dialogPop(view,true);
+        ImageView imageView=(ImageView)view.findViewById(R.id.img_pc);
+        TextView textView=(TextView)view.findViewById(R.id.tv_pc);
+        if(type==1){
+            textView.setText("人工实测水位埋深大于设备采集水位埋深"+data+"cm，需要将线夹子向下调整"+data+"cm，线夹子调整完成，请重新读取实时数据。");
+            imageView.setImageDrawable(getResources().getDrawable(R.mipmap.pop_check_down));
+        }else{
+            textView.setText("人工实测水位埋深小于设备采集水位埋深"+data+"cm，需要将线夹子向上调整"+data+"cm，线夹子调整完成，请重新读取实时数据。");
+            imageView.setImageDrawable(getResources().getDrawable(R.mipmap.pop_check_up));
+        }
+        view.findViewById(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                closeDialog();
+            }
+        });
+    }
+
+
+    /**
+     * 误差过大的提示
+     */
+    private void showNotCheckPop(){
+        View view=getLayoutInflater().inflate(R.layout.pop_not_check,null);
+        dialogPop(view,true);
+        view.findViewById(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                closeDialog();
+            }
+        });
     }
 
 
@@ -268,6 +331,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
                          SendBleStr.setCheck(wuCha,data);
                          sendData(BleContant.SET_DATA_CHECK);
                      }else{
+                         isCheck=true;
                          sendData(BleContant.SEND_REAL_TIME_DATA);
                      }
                     break;
@@ -345,7 +409,17 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
         if(YaLi.contains("99999999")){
             tvShuiWei.setText(MaiShen+"m");
         }else{
-            tvShuiWei.setText(Util.setDouble(Double.parseDouble(MaiShen),2)+"m");
+            tvShuiWei.setText(Util.setDouble(Double.parseDouble(MaiShen),3)+"m");
+        }
+
+        //判断是否是数据校验完成
+        if(isCheck){
+            dialogView = new DialogView(mContext, "数据校验完成！", "确认",null, new View.OnClickListener() {
+                public void onClick(View v) {
+                    dialogView.dismiss();
+                }
+            }, null);
+            dialogView.show();
         }
     }
 
