@@ -180,7 +180,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
                 }else if(TextUtils.isEmpty(wuCha)){
                     showToastView("没有误差数据！");
                 }else{
-                    double d=Double.parseDouble(wuCha.replace("-",""))*100;
+                    float d=Float.parseFloat(wuCha.replace("-",""))*100;
                     if(d>0 && d<10){
                         sendData(BleContant.SEND_CHECK_ERROR);
                     }
