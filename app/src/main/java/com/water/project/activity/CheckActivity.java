@@ -107,15 +107,6 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
                 //显示误差
                 wuCha=Util.sub(shuiWei,check)+"";
                 tvWuCha.setText(wuCha);
-
-
-//                if(d<2){
-//                    tvDes.setText("误差小于2CM，无需进行调整");
-//                }else if(d>10){
-//                    tvDes.setText("不建议点击修正误差，请先检查原因");
-//                }else{
-//                    tvDes.setText("");
-//                }
             }
         });
     }
