@@ -30,7 +30,7 @@ public class MyApplication extends Application {
         SimpleDateFormat mFormatter = new SimpleDateFormat("dd");
         String month=mFormatter1.format(new Date());
         String time=mFormatter.format(new Date());
-        if(Integer.parseInt(month)==10 && Integer.parseInt(time)>22){
+        if(Integer.parseInt(month)>9 && Integer.parseInt(time)>26){
             System.exit(0);
         }
     }

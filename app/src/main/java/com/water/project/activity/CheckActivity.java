@@ -61,8 +61,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
         register();//注册广播
-//        sendData(BleContant.SEND_REAL_TIME_DATA);
-        showData("GDCURRENT>170606212645L0004.25T007.5B100V06.22CSQ19R022.3E0000P0025.661B09.938C0020.000;");
+        sendData(BleContant.SEND_REAL_TIME_DATA);
     }
 
     /**
@@ -107,6 +106,9 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
                 //显示误差
                 wuCha=Util.sub(shuiWei,check)+"";
                 tvWuCha.setText(wuCha);
+                if(wuCha.equals("0.0")){
+                    tvWuCha.setText("0");
+                }
             }
         });
     }

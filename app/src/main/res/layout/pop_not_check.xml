@@ -19,7 +19,7 @@
            android:layout_marginTop="20dp"
            android:layout_marginLeft="15dp"
            android:textColor="@android:color/black"
-           android:textSize="14sp"
+           android:textSize="15sp"
            android:text="人工实测水位埋深与设备采集水位埋深误差过大，请查找原因。"/>
 
        <com.water.project.view.ClickTextView
