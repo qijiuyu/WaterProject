@@ -17,7 +17,8 @@
            android:layout_height="wrap_content"
            android:lineSpacingExtra="5dp"
            android:layout_marginTop="20dp"
-           android:layout_marginLeft="15dp"
+           android:layout_marginLeft="10dp"
+           android:layout_marginRight="10dp"
            android:textColor="@android:color/black"
            android:textSize="15sp"
            android:text="人工实测水位埋深与设备采集水位埋深误差过大，请查找原因。"/>

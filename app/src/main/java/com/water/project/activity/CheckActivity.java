@@ -62,6 +62,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
         initView();
         register();//注册广播
         sendData(BleContant.SEND_REAL_TIME_DATA);
+//        showData("GDCURRENT>170606212645L0004.25T007.5B100V06.22CSQ19R022.3E0000P0025.661B09.938C0020.000;");
     }
 
     /**
