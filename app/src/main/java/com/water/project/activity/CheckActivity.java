@@ -409,13 +409,6 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
 
         //判断是否是数据校验完成
         if(isCheck){
-            dialogView = new DialogView(mContext, "数据校验完成！", "确认",null, new View.OnClickListener() {
-                public void onClick(View v) {
-                    dialogView.dismiss();
-                }
-            }, null);
-            dialogView.show();
-
             //重新计算误差
             final String strCheck=etCheck.getText().toString().trim();
             final String strShui=tvShuiWei.getText().toString().trim().replace("m","");
@@ -425,6 +418,14 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
             if(wuCha.equals("0.0")){
                 tvWuCha.setText("0");
             }
+
+            dialogView = new DialogView(mContext, "数据校验完成！", "确认",null, new View.OnClickListener() {
+                public void onClick(View v) {
+                    dialogView.dismiss();
+                }
+            }, null);
+            dialogView.show();
+
         }
     }
 
