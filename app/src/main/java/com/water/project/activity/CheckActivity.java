@@ -415,6 +415,16 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
                 }
             }, null);
             dialogView.show();
+
+            //重新计算误差
+            final String strCheck=etCheck.getText().toString().trim();
+            final String strShui=tvShuiWei.getText().toString().trim().replace("m","");
+            //显示误差
+            wuCha=Util.sub(Double.parseDouble(strShui),Double.parseDouble(strCheck))+"";
+            tvWuCha.setText(wuCha);
+            if(wuCha.equals("0.0")){
+                tvWuCha.setText("0");
+            }
         }
     }
 
