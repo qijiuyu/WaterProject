@@ -7,33 +7,49 @@
     <Button
         android:id="@+id/btn_con"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:text="扫描并连接"
-        android:layout_marginTop="5dp"/>
-
+        android:layout_marginTop="10dp"/>
 
 
     <EditText
         android:id="@+id/et_msg"
         android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:text="12345678901234567890abcdefghij9876543210"
-        android:layout_marginTop="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:hint="输入您要发送的内容"/>
+
+    <TextView
+        android:id="@+id/tv_send_num"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="right|center"
+        android:layout_marginRight="20dp"
+        android:textColor="#B20808"/>
 
     <Button
         android:id="@+id/btn_send"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:text="发送数据"
         android:layout_marginTop="25dp"/>
 
 
-    <EditText
-        android:id="@+id/et_time"
+  <TextView
+      android:id="@+id/tv_show_data"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:textColor="@android:color/black"
+      android:layout_marginRight="10dp"
+      android:layout_marginLeft="10dp"
+      android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/tv_show_num"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:hint="请输入延时的毫秒"/>
+        android:layout_height="30dp"
+        android:textColor="#B20808"
+        android:gravity="right|center"
+        android:layout_marginRight="20dp"/>
 
 </LinearLayout>
