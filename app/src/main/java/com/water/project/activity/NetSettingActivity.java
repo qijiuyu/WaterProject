@@ -226,7 +226,7 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
         if(SEND_STATUS==BleContant.SEND_GET_CODE_PHONE){
             showProgress("正在读取参数设置...");
         }else{
-            showProgress("正在修改参数设置...");
+            showProgress("正在设置参数信息...");
         }
         //如果蓝牙连接断开，就扫描重连
         if(MainActivity.bleService.connectionState==MainActivity.bleService.STATE_DISCONNECTED){
