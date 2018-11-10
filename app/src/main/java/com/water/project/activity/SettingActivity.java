@@ -65,7 +65,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
         register();//注册广播
-        sendData(BleContant.SEND_GET_CODE_PHONE,1); //发送蓝牙命令
+//        sendData(BleContant.SEND_GET_CODE_PHONE,1); //发送蓝牙命令
     }
 
 
@@ -118,6 +118,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     imgClear1.setVisibility(View.VISIBLE);
                 }else{
                     imgClear1.setVisibility(View.GONE);
+                    etCode.setTextColor(getResources().getColor(R.color.color_1fc37f));
                 }
             }
         });
@@ -138,6 +139,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     imgClear2.setVisibility(View.VISIBLE);
                 }else{
                     imgClear2.setVisibility(View.GONE);
+                    etPhone.setTextColor(getResources().getColor(R.color.color_1fc37f));
                 }
             }
         });
@@ -158,6 +160,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     imgClear3.setVisibility(View.VISIBLE);
                 }else{
                     imgClear3.setVisibility(View.GONE);
+                    etTanTou.setTextColor(getResources().getColor(R.color.color_1fc37f));
                 }
             }
         });
@@ -218,7 +221,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                   }else if(sim.length()<11 || sim.length()==12){
                       etCode.setTextColor(getResources().getColor(R.color.color_1fc37f));
                       etPhone.setTextColor(getResources().getColor(R.color.color_EC191B));
-                      showToastView("SIM卡号错误！");
+                      showToastView("SIM卡位数错误！");
                   }else{
                       etCode.setTextColor(getResources().getColor(R.color.color_1fc37f));
                       etPhone.setTextColor(getResources().getColor(R.color.color_1fc37f));

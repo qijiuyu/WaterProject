@@ -61,8 +61,8 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
         register();//注册广播
-        sendData(BleContant.SEND_REAL_TIME_DATA);
-//        showData("GDCURRENT>170606212645L0004.25T007.5B100V06.22CSQ19R022.3E0000P0025.661B09.938C0020.000;");
+//        sendData(BleContant.SEND_REAL_TIME_DATA);
+        showData("GDCURRENT>170606212645L0004.25T007.5B100V06.22CSQ19R022.3E0000P0025.661B09.938C0020.000;");
     }
 
     /**
@@ -127,7 +127,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
         if(SEND_STATUS==BleContant.SEND_REAL_TIME_DATA){
             showProgress("正在读取实时数据...");
         }else{
-            showProgress("正在进行数据矫正...");
+            showProgress("正在进行数据校正...");
         }
         //如果蓝牙连接断开，就扫描重连
         if(MainActivity.bleService.connectionState==MainActivity.bleService.STATE_DISCONNECTED){
@@ -173,6 +173,8 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
                     showToastView("人工实测水位埋深的小数点后面最多只能是3位数");
                 }else if(TextUtils.isEmpty(wuCha)){
                     showToastView("没有误差数据！");
+                }else if(Double.parseDouble(wuCha)==0){
+                    showToastView("水位埋深数据无误差，无需校正！");
                 }else{
                     double d=Double.parseDouble(wuCha.replace("-",""))*100;
                     if(d>0 && d<10){
