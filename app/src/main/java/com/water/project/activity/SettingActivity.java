@@ -65,7 +65,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
         register();//注册广播
-//        sendData(BleContant.SEND_GET_CODE_PHONE,1); //发送蓝牙命令
+        sendData(BleContant.SEND_GET_CODE_PHONE,1); //发送蓝牙命令
     }
 
 
