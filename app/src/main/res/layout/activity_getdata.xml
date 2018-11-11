@@ -246,21 +246,20 @@
                     android:layout_below="@id/tv_ag_dianya"/>
 
                 <TextView
-                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:gravity="center"
-                    android:text="信号值"
+                    android:text="电导率"
                     android:textColor="@android:color/black"
                     android:textSize="15sp"
                     android:layout_marginTop="10dp"
                     android:layout_below="@id/view_ag7"/>
 
                 <TextView
-                    android:visibility="gone"
-                    android:id="@+id/tv_ag_xinhao"
+                    android:id="@+id/tv_ag_diandaolv"
                     android:layout_width="200dp"
                     android:layout_height="40dp"
+                    android:text="μS/cm"
                     android:textColor="@color/color_1fc37f"
                     android:textSize="15sp"
                     android:layout_alignParentRight="true"
@@ -269,12 +268,11 @@
                     android:layout_below="@id/view_ag7"/>
 
                 <View
-                    android:visibility="gone"
                     android:id="@+id/view_ag8"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:background="@color/color_888888"
-                    android:layout_below="@id/tv_ag_xinhao"/>
+                    android:layout_below="@id/tv_ag_diandaolv"/>
 
                 <com.water.project.view.ClickTextView
                     android:id="@+id/tv_get"

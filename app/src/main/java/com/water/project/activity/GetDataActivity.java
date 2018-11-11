@@ -33,7 +33,7 @@ import com.water.project.view.DialogView;
 
 public class GetDataActivity extends BaseActivity {
 
-    private TextView tvCJTime,tvMaiShen,tvYaLi,tvQiYa,tvShuiWen,tvQiWen,tvDianYa,tvXinHao;
+    private TextView tvCJTime,tvMaiShen,tvYaLi,tvQiYa,tvShuiWen,tvQiWen,tvDianYa,tvDianDaoLv;
     private DialogView dialogView;
     private Handler mHandler=new Handler();
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,7 +66,7 @@ public class GetDataActivity extends BaseActivity {
         tvShuiWen=(TextView)findViewById(R.id.tv_ag_shuiwen);
         tvQiWen=(TextView)findViewById(R.id.tv_ag_qiwen);
         tvDianYa=(TextView)findViewById(R.id.tv_ag_dianya);
-        tvXinHao=(TextView)findViewById(R.id.tv_ag_xinhao);
+        tvDianDaoLv=(TextView)findViewById(R.id.tv_ag_diandaolv);
         //查询实时数据
         findViewById(R.id.tv_get).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -212,6 +212,7 @@ public class GetDataActivity extends BaseActivity {
      * 展示数据
      */
     private void showData(String msg){
+        final int length=msg.length();
         //显示采集时间
         msg=msg.replace("GDCURRENT>","");
         StringBuffer stringBuffer=new StringBuffer("20");
@@ -271,9 +272,15 @@ public class GetDataActivity extends BaseActivity {
             tvDianYa.setText(Util.setDouble(Double.parseDouble(DianYa),1)+"V");
         }
 
-        //现实信号值
-//        final String XinHao=msg.substring(36,41).replace("CSQ","");
-//        tvXinHao.setText(XinHao);
+        if(length>90){
+            //显示电导率
+            final String DianDaoLv=msg.substring(77,87).replace("C","");
+            if(YaLi.contains("99999999")){
+                tvDianDaoLv.setText(DianDaoLv+"μS/cm");
+            }else{
+                tvDianDaoLv.setText(Util.setDouble(Double.parseDouble(DianDaoLv),2)+"μS/cm");
+            }
+        }
     }
 
     @Override
