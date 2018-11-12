@@ -50,6 +50,7 @@ public class GetDataActivity extends BaseActivity {
         initView();
         register();//注册广播
         sendData(); //发送蓝牙命令
+//        showData("GDCURRENT>140812153625L0010.97T028.8B100V05.98CSQ31R-35.4E0098P0010.125B10.009C0011.000C001413.00B001413.00T001413.00R001413.00X0.0200;");
     }
 
 
@@ -276,9 +277,9 @@ public class GetDataActivity extends BaseActivity {
             //显示电导率
             final String DianDaoLv=msg.substring(77,87).replace("C","");
             if(YaLi.contains("99999999")){
-                tvDianDaoLv.setText(DianDaoLv+"μS/cm");
+                tvDianDaoLv.setText(DianDaoLv+" uS/cm");
             }else{
-                tvDianDaoLv.setText(Util.setDouble(Double.parseDouble(DianDaoLv),2)+"μS/cm");
+                tvDianDaoLv.setText(Util.setDouble(Double.parseDouble(DianDaoLv),2)+" μS/cm");
             }
         }
     }
