@@ -33,7 +33,7 @@ import com.water.project.view.DialogView;
 
 public class GetDataActivity extends BaseActivity {
 
-    private TextView tvCJTime,tvMaiShen,tvYaLi,tvQiYa,tvShuiWen,tvQiWen,tvDianYa,tvDianDaoLv;
+    private TextView tvCJTime,tvMaiShen,tvYaLi,tvQiYa,tvShuiWen,tvQiWen,tvDianYa,tvDianDaoLv,tvddl;
     private View ddlView;
     private DialogView dialogView;
     private Handler mHandler=new Handler();
@@ -69,7 +69,8 @@ public class GetDataActivity extends BaseActivity {
         tvQiWen=(TextView)findViewById(R.id.tv_ag_qiwen);
         tvDianYa=(TextView)findViewById(R.id.tv_ag_dianya);
         tvDianDaoLv=(TextView)findViewById(R.id.tv_ag_diandaolv);
-        ddlView=(View)findViewById(R.id.view_ag8);
+        ddlView=(View)findViewById(R.id.view_ag3);
+        tvddl=(TextView)findViewById(R.id.tv_ddl);
         //查询实时数据
         findViewById(R.id.tv_get).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -276,6 +277,9 @@ public class GetDataActivity extends BaseActivity {
         }
 
         if(length>90){
+            tvddl.setVisibility(View.VISIBLE);
+            tvDianDaoLv.setVisibility(View.VISIBLE);
+            ddlView.setVisibility(View.VISIBLE);
             //显示电导率
             final String DianDaoLv=msg.substring(77,87).replace("C","");
             if(YaLi.contains("99999999")){

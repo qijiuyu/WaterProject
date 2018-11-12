@@ -77,6 +77,39 @@
                     android:layout_below="@id/tv_ag_maishen"/>
 
                 <TextView
+                    android:id="@+id/tv_ddl"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="电导率"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/view_ag2"/>
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/tv_ag_diandaolv"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:text="uS/cm"
+                    android:textColor="@color/color_1fc37f"
+                    android:textSize="15sp"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right|center"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/view_ag2"/>
+
+                <View
+                    android:visibility="gone"
+                    android:id="@+id/view_ag3"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/color_888888"
+                    android:layout_below="@id/tv_ag_diandaolv"/>
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:gravity="center"
@@ -84,51 +117,10 @@
                     android:textColor="@android:color/black"
                     android:textSize="15sp"
                     android:layout_marginTop="10dp"
-                    android:layout_below="@id/view_ag2"/>
-
-                <TextView
-                    android:id="@+id/tv_ag_yali"
-                    android:layout_width="200dp"
-                    android:layout_height="40dp"
-                    android:textColor="@color/color_1fc37f"
-                    android:textSize="15sp"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right|center"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="50dp"
-                    android:layout_below="@id/view_ag2"/>
-
-                <LinearLayout
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    android:layout_below="@id/view_ag2"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:layout_alignParentRight="true">
-
-                    <include layout="@layout/unit"/>
-
-                </LinearLayout>
-
-                <View
-                    android:id="@+id/view_ag3"
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/color_888888"
-                    android:layout_below="@id/tv_ag_yali"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:gravity="center"
-                    android:text="气压值"
-                    android:textColor="@android:color/black"
-                    android:textSize="15sp"
-                    android:layout_marginTop="10dp"
                     android:layout_below="@id/view_ag3"/>
 
                 <TextView
-                    android:id="@+id/tv_ag_qiya"
+                    android:id="@+id/tv_ag_yali"
                     android:layout_width="200dp"
                     android:layout_height="40dp"
                     android:textColor="@color/color_1fc37f"
@@ -156,6 +148,47 @@
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:background="@color/color_888888"
+                    android:layout_below="@id/tv_ag_yali"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="气压值"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/view_ag4"/>
+
+                <TextView
+                    android:id="@+id/tv_ag_qiya"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:textColor="@color/color_1fc37f"
+                    android:textSize="15sp"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right|center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="50dp"
+                    android:layout_below="@id/view_ag4"/>
+
+                <LinearLayout
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/view_ag4"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:layout_alignParentRight="true">
+
+                    <include layout="@layout/unit"/>
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/view_ag5"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/color_888888"
                     android:layout_below="@id/tv_ag_qiya"/>
 
                 <TextView
@@ -166,39 +199,10 @@
                     android:textColor="@android:color/black"
                     android:textSize="15sp"
                     android:layout_marginTop="10dp"
-                    android:layout_below="@id/view_ag4"/>
-
-                <TextView
-                    android:id="@+id/tv_ag_shuiwen"
-                    android:layout_width="200dp"
-                    android:layout_height="40dp"
-                    android:text="℃"
-                    android:textColor="@color/color_1fc37f"
-                    android:textSize="15sp"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right|center"
-                    android:layout_marginTop="10dp"
-                    android:layout_below="@id/view_ag4"/>
-
-                <View
-                    android:id="@+id/view_ag5"
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/color_888888"
-                    android:layout_below="@id/tv_ag_shuiwen"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:gravity="center"
-                    android:text="气温值"
-                    android:textColor="@android:color/black"
-                    android:textSize="15sp"
-                    android:layout_marginTop="10dp"
                     android:layout_below="@id/view_ag5"/>
 
                 <TextView
-                    android:id="@+id/tv_ag_qiwen"
+                    android:id="@+id/tv_ag_shuiwen"
                     android:layout_width="200dp"
                     android:layout_height="40dp"
                     android:text="℃"
@@ -214,23 +218,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:background="@color/color_888888"
-                    android:layout_below="@id/tv_ag_qiwen"/>
+                    android:layout_below="@id/tv_ag_shuiwen"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:gravity="center"
-                    android:text="电池电压值"
+                    android:text="气温值"
                     android:textColor="@android:color/black"
                     android:textSize="15sp"
                     android:layout_marginTop="10dp"
                     android:layout_below="@id/view_ag6"/>
 
                 <TextView
-                    android:id="@+id/tv_ag_dianya"
+                    android:id="@+id/tv_ag_qiwen"
                     android:layout_width="200dp"
                     android:layout_height="40dp"
-                    android:text="V"
+                    android:text="℃"
                     android:textColor="@color/color_1fc37f"
                     android:textSize="15sp"
                     android:layout_alignParentRight="true"
@@ -243,23 +247,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:background="@color/color_888888"
-                    android:layout_below="@id/tv_ag_dianya"/>
+                    android:layout_below="@id/tv_ag_qiwen"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:gravity="center"
-                    android:text="电导率"
+                    android:text="电池电压值"
                     android:textColor="@android:color/black"
                     android:textSize="15sp"
                     android:layout_marginTop="10dp"
                     android:layout_below="@id/view_ag7"/>
 
                 <TextView
-                    android:id="@+id/tv_ag_diandaolv"
+                    android:id="@+id/tv_ag_dianya"
                     android:layout_width="200dp"
                     android:layout_height="40dp"
-                    android:text="uS/cm"
+                    android:text="V"
                     android:textColor="@color/color_1fc37f"
                     android:textSize="15sp"
                     android:layout_alignParentRight="true"
@@ -272,7 +276,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:background="@color/color_888888"
-                    android:layout_below="@id/tv_ag_diandaolv"/>
+                    android:layout_below="@id/tv_ag_dianya"/>
 
                 <com.water.project.view.ClickTextView
                     android:id="@+id/tv_get"
