@@ -221,7 +221,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                   }else if(sim.length()<11 || sim.length()==12){
                       etCode.setTextColor(getResources().getColor(R.color.color_1fc37f));
                       etPhone.setTextColor(getResources().getColor(R.color.color_EC191B));
-                      showToastView("SIM卡位数错误！");
+                      showToastView("SIM卡号位数错误！");
                   }else{
                       etCode.setTextColor(getResources().getColor(R.color.color_1fc37f));
                       etPhone.setTextColor(getResources().getColor(R.color.color_1fc37f));
