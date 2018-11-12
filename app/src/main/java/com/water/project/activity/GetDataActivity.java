@@ -34,6 +34,7 @@ import com.water.project.view.DialogView;
 public class GetDataActivity extends BaseActivity {
 
     private TextView tvCJTime,tvMaiShen,tvYaLi,tvQiYa,tvShuiWen,tvQiWen,tvDianYa,tvDianDaoLv;
+    private View ddlView;
     private DialogView dialogView;
     private Handler mHandler=new Handler();
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,7 +51,7 @@ public class GetDataActivity extends BaseActivity {
         initView();
         register();//注册广播
         sendData(); //发送蓝牙命令
-//        showData("GDCURRENT>140812153625L0010.97T028.8B100V05.98CSQ31R-35.4E0098P0010.125B10.009C0011.000C001413.00B001413.00T001413.00R001413.00X0.0200;");
+//        showData("GDCURRENT>140812153625L0010.97T028.8B100V05.98CSQ31R-35.4E0098P0010.125B10.009C0011.000C001413.25B001413.00T001413.00R001413.00X0.0200;");
     }
 
 
@@ -68,6 +69,7 @@ public class GetDataActivity extends BaseActivity {
         tvQiWen=(TextView)findViewById(R.id.tv_ag_qiwen);
         tvDianYa=(TextView)findViewById(R.id.tv_ag_dianya);
         tvDianDaoLv=(TextView)findViewById(R.id.tv_ag_diandaolv);
+        ddlView=(View)findViewById(R.id.view_ag8);
         //查询实时数据
         findViewById(R.id.tv_get).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -279,8 +281,10 @@ public class GetDataActivity extends BaseActivity {
             if(YaLi.contains("99999999")){
                 tvDianDaoLv.setText(DianDaoLv+" uS/cm");
             }else{
-                tvDianDaoLv.setText(Util.setDouble(Double.parseDouble(DianDaoLv),2)+" μS/cm");
+                tvDianDaoLv.setText(Util.setDouble(Double.parseDouble(DianDaoLv)/1000,4)+" uS/cm");
             }
+        }else{
+
         }
     }
 
