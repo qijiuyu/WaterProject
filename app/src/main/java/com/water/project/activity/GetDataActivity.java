@@ -51,8 +51,8 @@ public class GetDataActivity extends BaseActivity {
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
         register();//注册广播
-        sendData(); //发送蓝牙命令
-//        showData("GDCURRENT>140812153625L0010.97T028.8B100V05.98CSQ31R-35.4E0098P0010.125B10.009C0011.000C001413.25B001413.00T001413.00R001413.00X0.0200;");
+//        sendData(); //发送蓝牙命令
+        showData("GDCURRENT>181116173412L0074.97T023.6V05.14CSQ28R009.3P0030.507B10.443C0095.000;");
     }
 
 
@@ -291,7 +291,7 @@ public class GetDataActivity extends BaseActivity {
         if(length>85){
             DianYa=msg.substring(30,36).replace("V","");
         }else{
-            DianYa=msg.substring(26,32).replace("V","");
+            DianYa=msg.substring(26,33).replace("V","");
         }
         if(YaLi.contains("99999999")){
             tvDianYa.setText(DianYa+"V");

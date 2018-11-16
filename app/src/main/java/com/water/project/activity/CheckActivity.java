@@ -62,8 +62,8 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
         register();//注册广播
-        sendData(BleContant.SEND_REAL_TIME_DATA);
-//        showData("GDCURRENT>170606212645L0004.25T007.5B100V06.22CSQ19R022.3E0000P0025.661B09.938C0020.000;");
+//        sendData(BleContant.SEND_REAL_TIME_DATA);
+        showData("GDCURRENT>181116173412L0074.97T023.6V05.14CSQ28R009.3P0030.507B10.443C0095.000;");
     }
 
     /**
@@ -370,6 +370,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
         BuglyUtils.uploadBleMsg("数据校测界面读取的数据是："+msg);
 
 
+        final int length=msg.length();
         //显示采集时间
         msg=msg.replace("GDCURRENT>","");
         StringBuffer stringBuffer=new StringBuffer("20");
@@ -382,7 +383,12 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
         tvTime.setText(stringBuffer.toString());
 
         //显示压力值
-        final String YaLi=msg.substring(52,61).replace("P","");
+        String YaLi;
+        if(length>85){
+            YaLi=msg.substring(52,61).replace("P","");
+        }else{
+            YaLi=msg.substring(43,52).replace("P","");
+        }
         if(YaLi.contains("99999999")){
             tvYaLi.setText(YaLi+"");
         }else{
@@ -390,7 +396,12 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
         }
 
         //显示气压值
-        final String QiYa=msg.substring(61,68).replace("B","");
+        String QiYa;
+        if(length>85){
+            QiYa=msg.substring(61,68).replace("B","");
+        }else{
+            QiYa=msg.substring(52,59).replace("B","");
+        }
         if(YaLi.contains("99999999")){
             tvQiYa.setText(QiYa+"");
         }else{
@@ -398,7 +409,12 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
         }
 
         //显示探头埋深
-        final String TanTou=msg.substring(68,77).replace("C","");
+        String TanTou;
+        if(length>85){
+            TanTou=msg.substring(68,77).replace("C","");
+        }else{
+            TanTou=msg.substring(59,68).replace("C","");
+        }
         if(YaLi.contains("99999999")){
             tvTanTou.setText(TanTou+"m");
         }else{
