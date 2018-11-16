@@ -21,6 +21,7 @@ import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
+import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.StatusBarUtils;
@@ -349,6 +350,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
      * @param data
      */
     private void showData(String data){
+        BuglyUtils.uploadBleMsg("参数设置界面读取的数据是："+data);
+
         String[] strings =null;
         switch (SEND_STATUS){
             //显示统一编码，SIM卡号

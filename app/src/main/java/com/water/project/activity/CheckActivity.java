@@ -22,6 +22,7 @@ import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
+import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.StatusBarUtils;
@@ -366,6 +367,9 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
      * 显示数据
      */
     private void showData(String msg){
+        BuglyUtils.uploadBleMsg("数据校测界面读取的数据是："+msg);
+
+
         //显示采集时间
         msg=msg.replace("GDCURRENT>","");
         StringBuffer stringBuffer=new StringBuffer("20");

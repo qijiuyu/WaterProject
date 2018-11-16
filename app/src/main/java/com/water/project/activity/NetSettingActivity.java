@@ -24,6 +24,7 @@ import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
+import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.StatusBarUtils;
@@ -360,6 +361,8 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
      * 解析并显示数据
      */
     private  void showData(String msg){
+        BuglyUtils.uploadBleMsg("网络连接设置界面读取的数据是："+msg);
+
         strData=msg;
         String[] strings=msg.split(";");
         if(null==strings || strings.length==0){

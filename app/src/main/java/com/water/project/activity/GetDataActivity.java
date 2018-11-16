@@ -17,6 +17,7 @@ import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
+import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.StatusBarUtils;
@@ -216,6 +217,8 @@ public class GetDataActivity extends BaseActivity {
      * 展示数据
      */
     private void showData(String msg){
+        BuglyUtils.uploadBleMsg("实时数据界面读取的数据是："+msg);
+
         final int length=msg.length();
         //显示采集时间
         msg=msg.replace("GDCURRENT>","");

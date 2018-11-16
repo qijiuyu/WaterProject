@@ -3,6 +3,7 @@ package com.water.project.application;
 import android.app.Application;
 
 import com.google.gson.Gson;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 
@@ -33,5 +34,20 @@ public class MyApplication extends Application {
 //        if(Integer.parseInt(month)>9 && Integer.parseInt(time)>28){
 //            System.exit(0);
 //        }
+
+        initBugly();
+    }
+
+
+    /**
+     * 初始化bugly异常捕获
+     */
+    private void initBugly(){
+        try {
+            CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(getApplicationContext());
+            CrashReport.initCrashReport(this, "8cb05f1e70", false, strategy);
+        }catch (Exception e){
+
+        }
     }
 }
