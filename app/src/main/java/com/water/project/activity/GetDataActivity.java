@@ -253,7 +253,12 @@ public class GetDataActivity extends BaseActivity {
         }
 
         //显示气压值
-        final String QiYa=msg.substring(61,68).replace("B","");
+        String QiYa;
+        if(length>85){
+            QiYa=msg.substring(61,68).replace("B","");
+        }else{
+            QiYa=msg.substring(52,59).replace("B","");
+        }
         if(YaLi.contains("99999999")){
             tvQiYa.setText(QiYa+"");
         }else{
@@ -269,7 +274,12 @@ public class GetDataActivity extends BaseActivity {
         }
 
         //显示气温值
-        final String QiWen=msg.substring(41,47).replace("R","");
+        String QiWen;
+        if(length>85){
+            QiWen=msg.substring(41,47).replace("R","");
+        }else{
+            QiWen=msg.substring(37,43).replace("R","");
+        }
         if(YaLi.contains("99999999")){
             tvQiWen.setText(QiWen+"℃");
         }else{
@@ -277,7 +287,12 @@ public class GetDataActivity extends BaseActivity {
         }
 
         //显示电压值
-        final String DianYa=msg.substring(30,36).replace("V","");
+        String DianYa;
+        if(length>85){
+            DianYa=msg.substring(30,36).replace("V","");
+        }else{
+            DianYa=msg.substring(26,32).replace("V","");
+        }
         if(YaLi.contains("99999999")){
             tvDianYa.setText(DianYa+"V");
         }else{
