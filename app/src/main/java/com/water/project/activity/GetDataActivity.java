@@ -51,8 +51,8 @@ public class GetDataActivity extends BaseActivity {
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
         register();//注册广播
-//        sendData(); //发送蓝牙命令
-        showData("GDCURRENT>181116173412L0074.97T023.6V05.14CSQ28R009.3P0030.507B10.443C0095.000;");
+        sendData(); //发送蓝牙命令
+//        showData("GDCURRENT>181116173412L0074.97T023.6V05.14CSQ28R009.3P0030.507B10.443C0095.000;");
     }
 
 

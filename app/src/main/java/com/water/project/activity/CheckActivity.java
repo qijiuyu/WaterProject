@@ -62,8 +62,8 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
         register();//注册广播
-//        sendData(BleContant.SEND_REAL_TIME_DATA);
-        showData("GDCURRENT>181116173412L0074.97T023.6V05.14CSQ28R009.3P0030.507B10.443C0095.000;");
+        sendData(BleContant.SEND_REAL_TIME_DATA);
+//        showData("GDCURRENT>181116173412L0074.97T023.6V05.14CSQ28R009.3P0030.507B10.443C0095.000;");
     }
 
     /**
