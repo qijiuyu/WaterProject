@@ -232,7 +232,12 @@ public class GetDataActivity extends BaseActivity {
         tvCJTime.setText(stringBuffer.toString());
 
         //显示压力值
-        final String YaLi=msg.substring(52,61).replace("P","");
+        String YaLi;
+        if(length>85){
+            YaLi=msg.substring(52,61).replace("P","");
+        }else{
+            YaLi=msg.substring(43,52).replace("P","");
+        }
         if(YaLi.contains("99999999")){
             tvYaLi.setText(YaLi+"");
         }else{
