@@ -291,7 +291,7 @@ public class GetDataActivity extends BaseActivity {
         if(length>85){
             DianYa=msg.substring(30,36).replace("V","");
         }else{
-            DianYa=msg.substring(26,33).replace("V","");
+            DianYa=msg.substring(26,32).replace("V","");
         }
         if(YaLi.contains("99999999")){
             tvDianYa.setText(DianYa+"V");
@@ -306,9 +306,9 @@ public class GetDataActivity extends BaseActivity {
             //显示电导率
             final String DianDaoLv=msg.substring(77,87).replace("C","");
             if(YaLi.contains("99999999")){
-                tvDianDaoLv.setText(DianDaoLv+" uS/cm");
+                tvDianDaoLv.setText(DianDaoLv+" mS/cm");
             }else{
-                tvDianDaoLv.setText(Util.setDouble(Double.parseDouble(DianDaoLv)/1000,4)+" uS/cm");
+                tvDianDaoLv.setText(Util.setDouble(Double.parseDouble(DianDaoLv)/1000,4)+" mS/cm");
             }
         }else{
 
