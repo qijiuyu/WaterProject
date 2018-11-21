@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -19,20 +20,22 @@ import android.widget.TextView;
 import com.water.project.R;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
+import com.water.project.bean.SelectTime;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
+import com.water.project.utils.SelectTimeUtils;
 import com.water.project.utils.StatusBarUtils;
 import com.water.project.utils.SystemBarTintManager;
 import com.water.project.utils.Util;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
+import com.water.project.view.CycleWheelView;
 import com.water.project.view.DialogView;
-import com.water.project.view.time.SlideDateTimeListener;
-import com.water.project.view.time.SlideDateTimePicker;
-import com.water.project.view.time.TimeUtils;
+import com.water.project.view.SelectTimeDialog;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -41,7 +44,7 @@ import java.util.Date;
  * Created by Administrator on 2018/9/1.
  */
 
-public class SettingActivity extends BaseActivity implements View.OnClickListener{
+public class SettingActivity extends BaseActivity implements View.OnClickListener,SelectTime{
     private EditText etCode,etPhone,etTanTou;
     private TextView etCStime,etFStime,etCEtime,etFEtime;
     private ImageView imgClear1,imgClear2,imgClear3;
@@ -66,7 +69,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
         register();//注册广播
-        sendData(BleContant.SEND_GET_CODE_PHONE,1); //发送蓝牙命令
+//        sendData(BleContant.SEND_GET_CODE_PHONE,1); //发送蓝牙命令
     }
 
 
@@ -252,12 +255,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
             //选择采集时间
             case R.id.et_as_cstime:
-                 TimeUtils.type=0;
-                 new SlideDateTimePicker.Builder(getSupportFragmentManager())
-                        .setListener(listener)
-                        .setInitialDate(new Date())
-                        .build()
-                        .show();
+                 SelectTimeDialog selectTimeDialog=new SelectTimeDialog(SettingActivity.this,this,1);
+                 selectTimeDialog.show();
                  break;
             //选择采集间隔时间
             case R.id.tv_as_cetime:
@@ -284,12 +283,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
             //选择发送起始时间
             case R.id.et_as_fstime:
-                TimeUtils.type=1;
-                new SlideDateTimePicker.Builder(getSupportFragmentManager())
-                        .setListener(listener)
-                        .setInitialDate(new Date())
-                        .build()
-                        .show();
+                 SelectTimeDialog selectTimeDialog2=new SelectTimeDialog(SettingActivity.this,this,2);
+                 selectTimeDialog2.show();
                   break;
             //选择发送间隔小时
             case R.id.et_as_fetime:
@@ -542,21 +537,32 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
 
     private SimpleDateFormat mFormatter = new SimpleDateFormat("yyyy-MM-dd HH");
-    private SlideDateTimeListener listener = new SlideDateTimeListener() {
-        public void onDateTimeSet(Date date) {
-            if(TimeUtils.type==0){
-                etCStime.setText(mFormatter.format(date)+":00");
-            }else{
-                etFStime.setText(mFormatter.format(date)+":00");
-            }
+//    private SlideDateTimeListener listener = new SlideDateTimeListener() {
+//        public void onDateTimeSet(Date date) {
+//            if(TimeUtils.type==0){
+//                etCStime.setText(mFormatter.format(date)+":00");
+//            }else{
+//                etFStime.setText(mFormatter.format(date)+":00");
+//            }
+//        }
+//        public void onDateTimeCancel() {
+//        }
+//    };
+
+    @Override
+    public void getTime(String time,int type) {
+        if(type==1){
+            etCStime.setText(time);
+        }else{
+            etFStime.setText(time);
         }
-        public void onDateTimeCancel() {
-        }
-    };
+    }
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mBroadcastReceiver);
     }
+
 }

@@ -214,8 +214,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 exitTime = System.currentTimeMillis();
             } else {
                 bleService.disconnect();
-                unbindService(mServiceConnection);
-                unregisterReceiver(mBroadcastReceiver);
+                try {
+                    unbindService(mServiceConnection);
+                    unregisterReceiver(mBroadcastReceiver);
+                }catch (Exception e){
+
+                }
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         finish();
