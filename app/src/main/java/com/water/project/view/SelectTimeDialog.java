@@ -13,6 +13,8 @@ import com.water.project.R;
 import com.water.project.bean.SelectTime;
 import com.water.project.utils.SelectTimeUtils;
 
+import java.util.Calendar;
+
 /**
  * 故障保修，联系客服，使用说明等功能
  * Created by lyn on 2017/3/14.
@@ -56,6 +58,67 @@ public class SelectTimeDialog extends Dialog implements View.OnClickListener {
         hour=(CycleWheelView)findViewById(R.id.wv_hour);
         hour.setLabels(SelectTimeUtils.getHour());
 
+        Calendar calendar = Calendar.getInstance();
+        //年
+        int intYear = calendar.get(Calendar.YEAR);
+        //月
+        int intMonth = (calendar.get(Calendar.MONTH)+1);
+        //日
+        int intDay = calendar.get(Calendar.DAY_OF_MONTH);
+        //小时
+        int intHour = calendar.get(Calendar.HOUR_OF_DAY);
+
+        for(int i=0;i<SelectTimeUtils.getYear().size();i++){
+            if(SelectTimeUtils.getYear().get(i).replace("年","").equals(String.valueOf(intYear))){
+                year.setSelection(i);
+                break;
+            }
+        }
+
+        for(int i=0;i<SelectTimeUtils.getMonth().size();i++){
+            if(intMonth<10 && String.valueOf(intMonth).length()==1){
+                if(SelectTimeUtils.getMonth().get(i).replace("月","").equals("0"+intMonth)){
+                    month.setSelection(i);
+                    break;
+                }
+            }else{
+                if(SelectTimeUtils.getMonth().get(i).replace("月","").equals(String.valueOf(intMonth))){
+                    month.setSelection(i);
+                    break;
+                }
+            }
+        }
+
+
+        for(int i=0;i<SelectTimeUtils.getDay().size();i++){
+            if(intDay<10 && String.valueOf(intDay).length()==1){
+                if(SelectTimeUtils.getDay().get(i).replace("日","").equals("0"+intDay)){
+                    day.setSelection(i);
+                    break;
+                }
+            }else{
+                if(SelectTimeUtils.getDay().get(i).replace("日","").equals(String.valueOf(intDay))){
+                    day.setSelection(i);
+                    break;
+                }
+            }
+        }
+
+
+        for(int i=0;i<SelectTimeUtils.getHour().size();i++){
+            if(intHour<10 && String.valueOf(intHour).length()==1){
+                if(SelectTimeUtils.getHour().get(i).replace("时","").equals("0"+intHour)){
+                    hour.setSelection(i);
+                    break;
+                }
+            }else{
+                if(SelectTimeUtils.getHour().get(i).replace("时","").equals(String.valueOf(intHour))){
+                    hour.setSelection(i);
+                    break;
+                }
+            }
+        }
+
         try {
             year.setWheelSize(5);
             month.setWheelSize(5);
@@ -65,7 +128,6 @@ public class SelectTimeDialog extends Dialog implements View.OnClickListener {
             e.printStackTrace();
         }
         year.setCycleEnable(false);
-        year.setSelection(10);
         year.setAlphaGradual(0.5f);
         year.setDivider(Color.parseColor("#abcdef"),1);
         year.setSolid(Color.WHITE,Color.WHITE);
@@ -78,7 +140,6 @@ public class SelectTimeDialog extends Dialog implements View.OnClickListener {
         });
 
         month.setCycleEnable(false);
-        month.setSelection(10);
         month.setAlphaGradual(0.5f);
         month.setDivider(Color.parseColor("#abcdef"),1);
         month.setSolid(Color.WHITE,Color.WHITE);
@@ -91,7 +152,6 @@ public class SelectTimeDialog extends Dialog implements View.OnClickListener {
         });
 
         day.setCycleEnable(false);
-        day.setSelection(10);
         day.setAlphaGradual(0.5f);
         day.setDivider(Color.parseColor("#abcdef"),1);
         day.setSolid(Color.WHITE,Color.WHITE);
@@ -104,7 +164,6 @@ public class SelectTimeDialog extends Dialog implements View.OnClickListener {
         });
 
         hour.setCycleEnable(false);
-        hour.setSelection(10);
         hour.setAlphaGradual(0.5f);
         hour.setDivider(Color.parseColor("#abcdef"),1);
         hour.setSolid(Color.WHITE,Color.WHITE);

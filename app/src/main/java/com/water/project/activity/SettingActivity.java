@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -26,16 +25,13 @@ import com.water.project.utils.BleUtils;
 import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
-import com.water.project.utils.SelectTimeUtils;
 import com.water.project.utils.StatusBarUtils;
 import com.water.project.utils.SystemBarTintManager;
 import com.water.project.utils.Util;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
-import com.water.project.view.CycleWheelView;
 import com.water.project.view.DialogView;
 import com.water.project.view.SelectTimeDialog;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -69,7 +65,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
         register();//注册广播
-//        sendData(BleContant.SEND_GET_CODE_PHONE,1); //发送蓝牙命令
+        sendData(BleContant.SEND_GET_CODE_PHONE,1); //发送蓝牙命令
     }
 
 
@@ -535,21 +531,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         }
     };
 
-
-    private SimpleDateFormat mFormatter = new SimpleDateFormat("yyyy-MM-dd HH");
-//    private SlideDateTimeListener listener = new SlideDateTimeListener() {
-//        public void onDateTimeSet(Date date) {
-//            if(TimeUtils.type==0){
-//                etCStime.setText(mFormatter.format(date)+":00");
-//            }else{
-//                etFStime.setText(mFormatter.format(date)+":00");
-//            }
-//        }
-//        public void onDateTimeCancel() {
-//        }
-//    };
-
-    @Override
     public void getTime(String time,int type) {
         if(type==1){
             etCStime.setText(time);
@@ -557,9 +538,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             etFStime.setText(time);
         }
     }
-
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mBroadcastReceiver);
