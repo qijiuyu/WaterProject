@@ -7,14 +7,14 @@
     <LinearLayout
         android:clickable="true"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="250dp"
         android:orientation="vertical"
         android:layout_alignParentBottom="true"
         android:background="@android:color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="200dp"
             android:orientation="horizontal">
 
             <com.water.project.view.CycleWheelView
@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:orientation="horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="30dp"
             android:layout_marginLeft="30dp">
 
