@@ -369,7 +369,6 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
     private void showData(String msg){
         BuglyUtils.uploadBleMsg("数据校测界面读取的数据是："+msg);
 
-
         final int length=msg.length();
         //显示采集时间
         msg=msg.replace("GDCURRENT>","");
@@ -383,11 +382,15 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
         tvTime.setText(stringBuffer.toString());
 
         //显示压力值
-        String YaLi;
-        if(length>85){
-            YaLi=msg.substring(52,61).replace("P","");
-        }else{
+        String YaLi = null;
+        if(length==79){
             YaLi=msg.substring(43,52).replace("P","");
+        }
+        if(length==88 || length==138){
+            YaLi=msg.substring(52,61).replace("P","");
+        }
+        if(length==90 || length==140){
+            YaLi=msg.substring(54,63).replace("P","");
         }
         if(YaLi.contains("99999999")){
             tvYaLi.setText(YaLi+"");
@@ -395,12 +398,17 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
             tvYaLi.setText(Util.setDouble(Double.parseDouble(YaLi),3)+"");
         }
 
+
         //显示气压值
-        String QiYa;
-        if(length>85){
-            QiYa=msg.substring(61,68).replace("B","");
-        }else{
+        String QiYa = null;
+        if(length==79){
             QiYa=msg.substring(52,59).replace("B","");
+        }
+        if(length==88 || length==138){
+            QiYa=msg.substring(61,68).replace("B","");
+        }
+        if(length==90 || length==140){
+            QiYa=msg.substring(63,70).replace("B","");
         }
         if(YaLi.contains("99999999")){
             tvQiYa.setText(QiYa+"");
@@ -408,12 +416,17 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
             tvQiYa.setText(Util.setDouble(Double.parseDouble(QiYa),3)+"");
         }
 
+
         //显示探头埋深
-        String TanTou;
-        if(length>85){
-            TanTou=msg.substring(68,77).replace("C","");
-        }else{
+        String TanTou=null;
+        if(length==79){
             TanTou=msg.substring(59,68).replace("C","");
+        }
+        if(length==88 || length==138){
+            TanTou=msg.substring(68,77).replace("C","");
+        }
+        if(length==90 || length==140){
+            TanTou=msg.substring(70,79).replace("C","");
         }
         if(YaLi.contains("99999999")){
             tvTanTou.setText(TanTou+"m");
@@ -421,6 +434,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
             tvTanTou.setText(Util.setDouble(Double.parseDouble(TanTou),3)+"m");
         }
 
+        
         //显示水位埋深
         final String MaiShen=msg.substring(12,20).replace("L","");
         if(YaLi.contains("99999999")){

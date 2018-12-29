@@ -24,6 +24,7 @@ import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
+import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.StatusBarUtils;
 import com.water.project.utils.SystemBarTintManager;
@@ -60,7 +61,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 //        startBanner();//加载轮播图片
         initService();//注册蓝牙服务
         register();//注册广播
-
     }
 
 
@@ -234,6 +234,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        bleService.disconnect();
+        if(null!=bleService){
+            bleService.disconnect();
+        }
     }
 }

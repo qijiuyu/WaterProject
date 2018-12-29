@@ -52,7 +52,7 @@ public class GetDataActivity extends BaseActivity {
         initView();
         register();//注册广播
         sendData(); //发送蓝牙命令
-//        showData("GDCURRENT>181116173412L0074.97T023.6V05.14CSQ28R009.3P0030.507B10.443C0095.000;");
+//        showData("GDCURRENT>180812153625L0010.97T028.89B100V05.98CSQ31R-35.45E0098P0010.125B10.009C0011.000;");
     }
 
 
@@ -232,11 +232,15 @@ public class GetDataActivity extends BaseActivity {
         tvCJTime.setText(stringBuffer.toString());
 
         //显示压力值
-        String YaLi;
-        if(length>85){
-            YaLi=msg.substring(52,61).replace("P","");
-        }else{
+        String YaLi = null;
+        if(length==79){
             YaLi=msg.substring(43,52).replace("P","");
+        }
+        if(length==88 || length==138){
+            YaLi=msg.substring(52,61).replace("P","");
+        }
+        if(length==90 || length==140){
+            YaLi=msg.substring(54,63).replace("P","");
         }
         if(YaLi.contains("99999999")){
             tvYaLi.setText(YaLi+"");
@@ -253,11 +257,15 @@ public class GetDataActivity extends BaseActivity {
         }
 
         //显示气压值
-        String QiYa;
-        if(length>85){
-            QiYa=msg.substring(61,68).replace("B","");
-        }else{
+        String QiYa = null;
+        if(length==79){
             QiYa=msg.substring(52,59).replace("B","");
+        }
+        if(length==88 || length==138){
+            QiYa=msg.substring(61,68).replace("B","");
+        }
+        if(length==90 || length==140){
+            QiYa=msg.substring(63,70).replace("B","");
         }
         if(YaLi.contains("99999999")){
             tvQiYa.setText(QiYa+"");
@@ -266,7 +274,13 @@ public class GetDataActivity extends BaseActivity {
         }
 
         //显示水温值
-        final String ShuiWen=msg.substring(20,26).replace("T","");
+        String ShuiWen=null;
+        if(length==79 || length==88 || length==138){
+            ShuiWen=msg.substring(20,26).replace("T","");
+        }
+        if(length==90 || length==140){
+            ShuiWen=msg.substring(20,27).replace("T","");
+        }
         if(YaLi.contains("99999999")){
             tvShuiWen.setText(ShuiWen+"℃");
         }else{
@@ -274,11 +288,15 @@ public class GetDataActivity extends BaseActivity {
         }
 
         //显示气温值
-        String QiWen;
-        if(length>85){
-            QiWen=msg.substring(41,47).replace("R","");
-        }else{
+        String QiWen=null;
+        if(length==79){
             QiWen=msg.substring(37,43).replace("R","");
+        }
+        if(length==88 || length==138){
+            QiWen=msg.substring(41,47).replace("R","");
+        }
+        if(length==90 || length==140){
+            QiWen=msg.substring(42,49).replace("R","");
         }
         if(YaLi.contains("99999999")){
             tvQiWen.setText(QiWen+"℃");
@@ -287,11 +305,15 @@ public class GetDataActivity extends BaseActivity {
         }
 
         //显示电压值
-        String DianYa;
-        if(length>85){
-            DianYa=msg.substring(30,36).replace("V","");
-        }else{
+        String DianYa=null;
+        if(length==79){
             DianYa=msg.substring(26,32).replace("V","");
+        }
+        if(length==88 || length==138){
+            DianYa=msg.substring(30,36).replace("V","");
+        }
+        if(length==90 || length==140){
+            DianYa=msg.substring(31,37).replace("V","");
         }
         if(YaLi.contains("99999999")){
             tvDianYa.setText(DianYa+"V");
@@ -299,19 +321,23 @@ public class GetDataActivity extends BaseActivity {
             tvDianYa.setText(Util.setDouble(Double.parseDouble(DianYa),1)+"V");
         }
 
-        if(length>90){
+        if(length==138 || length==140){
             tvddl.setVisibility(View.VISIBLE);
             tvDianDaoLv.setVisibility(View.VISIBLE);
             ddlView.setVisibility(View.VISIBLE);
             //显示电导率
-            final String DianDaoLv=msg.substring(77,87).replace("C","");
-            if(YaLi.contains("99999999")){
-                tvDianDaoLv.setText(DianDaoLv+" mS/cm");
-            }else{
-                tvDianDaoLv.setText(Util.setDouble(Double.parseDouble(DianDaoLv)/1000,4)+" mS/cm");
+            String DianDaoLv=null;
+            if(length==138){
+                DianDaoLv=msg.substring(77,87).replace("C","");
             }
-        }else{
-
+            if(length==140){
+                DianDaoLv=msg.substring(79,89).replace("C","");
+            }
+            if(YaLi.contains("99999999")){
+                tvDianDaoLv.setText(DianDaoLv+" uS/cm");
+            }else{
+                tvDianDaoLv.setText(Util.setDouble(Double.parseDouble(DianDaoLv)/1000,4)+" uS/cm");
+            }
         }
     }
 

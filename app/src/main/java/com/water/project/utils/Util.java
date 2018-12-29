@@ -186,4 +186,19 @@ public class Util extends ClassLoader {
         str=str.replaceAll("^(0+)", "");
         return str;
     }
+
+
+    /**
+     * 判断字符串是否是字母
+     * @param fstrData
+     * @return
+     */
+    public static  boolean check(String fstrData) {
+        char c = fstrData.charAt(0);
+        if (((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
