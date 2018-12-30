@@ -58,6 +58,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
+        //删除缓存
+        deleteCache();
 //        startBanner();//加载轮播图片
         initService();//注册蓝牙服务
         register();//注册广播
@@ -205,6 +207,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
         }
     };
+
+
+    /**
+     * 删除缓存
+     */
+    private void deleteCache(){
+        MyApplication.spUtil.removeAll();
+    }
 
     // 按两次退出
     public boolean onKeyDown(int keyCode, KeyEvent event) {

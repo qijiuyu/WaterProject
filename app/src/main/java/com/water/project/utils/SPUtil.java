@@ -17,6 +17,12 @@ public class SPUtil {
 
     //蓝牙对象
     public final static String BLE_DEVICE="ble_device";
+    //水温值
+    public final static String SHUI_WEN="shui_wen";
+    //水位埋深
+    public final static String SHUI_WEI_MAI_SHEN="shui_wei_mai_shen";
+    //电导率
+    public final static String DIAN_DAO_LV="dian_dao_lv";
 
     private static SPUtil sharUtil = null;
 

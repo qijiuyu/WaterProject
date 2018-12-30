@@ -25,8 +25,6 @@ public class MyApplication extends Application {
         spUtil = SPUtil.getInstance(this);
         gson=new Gson();
 
-        spUtil.removeMessage(SPUtil.BLE_DEVICE);
-
         SimpleDateFormat mFormatter1 = new SimpleDateFormat("MM");
         SimpleDateFormat mFormatter = new SimpleDateFormat("dd");
         String month=mFormatter1.format(new Date());
