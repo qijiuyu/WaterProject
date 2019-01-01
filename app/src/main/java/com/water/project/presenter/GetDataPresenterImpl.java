@@ -41,7 +41,7 @@ public class GetDataPresenterImpl {
         TextView tvTitle=(TextView)view.findViewById(R.id.tv_title);
         tvTitle.setText("设置水温偏移量");
         final EditText editText=(EditText)view.findViewById(R.id.et_data);
-        InputFilter[] filters = {new InputFilter.LengthFilter(5)};
+        InputFilter[] filters = {new InputFilter.LengthFilter(6)};
         editText.setFilters(filters);
         final Spinner spinner=(Spinner)view.findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -57,6 +57,20 @@ public class GetDataPresenterImpl {
                 final String data=editText.getText().toString().trim();
                 if(TextUtils.isEmpty(data)){
                     Toast.makeText(activity,"请输入偏移量",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                int qIndex=data.indexOf(".");
+                int hIndex=data.length()-qIndex-1;
+                if(data.indexOf(".")==-1 && data.length()>3){
+                    Toast.makeText(activity,"水温最多只能输入3位整数",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(data.indexOf(".")!=-1 && qIndex>3){
+                    Toast.makeText(activity,"水温的小数点前面最多只能是3位数",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(data.indexOf(".")!=-1 && hIndex>2){
+                    Toast.makeText(activity,"水温的小数点后面最多只能是2位数",Toast.LENGTH_LONG).show();
                     return;
                 }
                 dialog.dismiss();
@@ -102,6 +116,20 @@ public class GetDataPresenterImpl {
                     Toast.makeText(activity,"请输入偏移量",Toast.LENGTH_LONG).show();
                     return;
                 }
+                int qIndex=data.indexOf(".");
+                int hIndex=data.length()-qIndex-1;
+                if(data.indexOf(".")==-1 && data.length()>4){
+                    Toast.makeText(activity,"水位埋深最多只能输入4位整数",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(data.indexOf(".")!=-1 && qIndex>4){
+                    Toast.makeText(activity,"水位埋深的小数点前面最多只能是4位数",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(data.indexOf(".")!=-1 && hIndex>3){
+                    Toast.makeText(activity,"水位埋深的小数点后面最多只能是3位数",Toast.LENGTH_LONG).show();
+                    return;
+                }
                 dialog.dismiss();
                 String type =activity.getResources().getStringArray(R.array.spingarr1)[dataType];
                 MyApplication.spUtil.addString(SPUtil.SHUI_WEI_MAI_SHEN,type+data);
@@ -143,6 +171,20 @@ public class GetDataPresenterImpl {
                 final String data=editText.getText().toString().trim();
                 if(TextUtils.isEmpty(data)){
                     Toast.makeText(activity,"请输入偏移量",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                int qIndex=data.indexOf(".");
+                int hIndex=data.length()-qIndex-1;
+                if(data.indexOf(".")==-1 && data.length()>6){
+                    Toast.makeText(activity,"电导率最多只能输入6位整数",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(data.indexOf(".")!=-1 && qIndex>6){
+                    Toast.makeText(activity,"电导率的小数点前面最多只能是6位数",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(data.indexOf(".")!=-1 && hIndex>2){
+                    Toast.makeText(activity,"电导率的小数点后面最多只能是2位数",Toast.LENGTH_LONG).show();
                     return;
                 }
                 dialog.dismiss();
