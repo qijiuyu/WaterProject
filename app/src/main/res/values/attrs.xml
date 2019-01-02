@@ -12,4 +12,9 @@
             <enum name="strokeRipple" value="1"/>
         </attr>
     </declare-styleable>
+
+    <string-array name="spingarr1">
+        <item>+</item>
+        <item>-</item>
+    </string-array>
 </resources>

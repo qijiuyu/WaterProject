@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rel_ap"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent">
+
+    <LinearLayout
+        android:layout_width="275dp"
+        android:layout_height="145dp"
+        android:orientation="vertical"
+        android:background="@drawable/bg_white_share"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="设置水温偏移量"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:gravity="center"/>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="25dp"
+            android:layout_gravity="center_horizontal">
+
+            <Spinner
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:id="@+id/spinner"
+                android:overlapAnchor="false"
+                android:spinnerMode="dropdown"
+                android:layout_gravity="center_vertical"
+                android:entries="@array/spingarr1"/>
+
+            <EditText
+                android:id="@+id/et_data"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:digits="0123456789."
+                android:background="@null"
+                android:hint="请输入偏移量"
+                android:textSize="14sp"
+                android:textColor="@android:color/black"
+                android:layout_gravity="center_vertical"/>
+
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"
+            android:background="@color/color_FFECECEC"
+            android:layout_marginTop="15dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_cancle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="取消"
+                android:textSize="15sp"
+                android:textColor="@color/color_1fc37f"
+                android:gravity="center"/>
+
+            <View
+                android:layout_width="0.8dp"
+                android:layout_height="match_parent"
+                android:background="@color/color_FFECECEC"/>
+
+            <TextView
+                android:id="@+id/tv_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="保存"
+                android:textSize="15sp"
+                android:textColor="@color/color_1fc37f"
+                android:gravity="center"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

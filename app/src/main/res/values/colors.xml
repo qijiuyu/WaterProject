@@ -17,4 +17,6 @@
     <color name="color_EC191B">#EC191B</color>
     <!-- 半透明 -->
     <color name="half_transparent">#b0000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="color_FFECECEC">#FFECECEC</color>
 </resources>

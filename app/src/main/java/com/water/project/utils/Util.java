@@ -1,8 +1,16 @@
 package com.water.project.utils;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.view.Gravity;
+import android.view.View;
+import android.view.Window;
+
+import com.water.project.R;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -200,5 +208,23 @@ public class Util extends ClassLoader {
         } else {
             return false;
         }
+    }
+
+
+    /**
+     * dialog弹框
+     *
+     * @param view
+     */
+    public static Dialog dialogPop(Activity activity,View view) {
+        Dialog baseDialog = new Dialog(activity, R.style.ActionSheetDialogStyle);
+        baseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        baseDialog.setTitle(null);
+        baseDialog.setCancelable(true);
+        baseDialog.setContentView(view);
+        Window window = baseDialog.getWindow();
+        window.setGravity(Gravity.CENTER);  //此处可以设置dialog显示的位置
+        baseDialog.show();
+        return baseDialog;
     }
 }

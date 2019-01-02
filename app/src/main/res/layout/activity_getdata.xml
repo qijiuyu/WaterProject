@@ -48,6 +48,7 @@
                     android:layout_below="@id/tv_ag_cjTime"/>
 
                 <TextView
+                    android:id="@+id/tv_maishen"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:gravity="center"
@@ -192,6 +193,7 @@
                     android:layout_below="@id/tv_ag_qiya"/>
 
                 <TextView
+                    android:id="@+id/tv_shuiwen"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:gravity="center"

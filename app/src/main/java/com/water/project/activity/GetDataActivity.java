@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 import com.water.project.R;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
+import com.water.project.presenter.GetDataPresenter;
+import com.water.project.presenter.GetDataPresenterImpl;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.BuglyUtils;
@@ -32,12 +35,13 @@ import com.water.project.view.DialogView;
  * Created by Administrator on 2018/9/2.
  */
 
-public class GetDataActivity extends BaseActivity {
+public class GetDataActivity extends BaseActivity implements View.OnClickListener,GetDataPresenter {
 
     private TextView tvCJTime,tvMaiShen,tvYaLi,tvQiYa,tvShuiWen,tvQiWen,tvDianYa,tvDianDaoLv,tvddl;
     private View ddlView;
     private DialogView dialogView;
     private Handler mHandler=new Handler();
+    private GetDataPresenterImpl getDataPresenter;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -49,12 +53,19 @@ public class GetDataActivity extends BaseActivity {
         SystemBarTintManager tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setStatusBarTintResource(R.color.color_1fc37f);
+        initMvp();
         initView();
         register();//注册广播
         sendData(); //发送蓝牙命令
-//        showData("GDCURRENT>180812153625L0010.97T028.89B100V05.98CSQ31R-35.45E0098P0010.125B10.009C0011.000;");
+//        showData("GDCURRENT>180812153625L0010.97T028.8B100V05.98CSQ31R-35.4E0098P0010.125B10.009C0011.000C001413.01B001413.00T001413.00R001413.00+0000.0200;");
     }
 
+    /**
+     * 初始化MVP
+     */
+    private void initMvp(){
+        getDataPresenter=new GetDataPresenterImpl(this,this);
+    }
 
     /**
      * 初始化控件
@@ -73,16 +84,38 @@ public class GetDataActivity extends BaseActivity {
         ddlView=(View)findViewById(R.id.view_ag3);
         tvddl=(TextView)findViewById(R.id.tv_ddl);
         //查询实时数据
-        findViewById(R.id.tv_get).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                sendData();
-            }
-        });
-        findViewById(R.id.lin_back).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        findViewById(R.id.tv_get).setOnClickListener(this);
+        findViewById(R.id.lin_back).setOnClickListener(this);
+        findViewById(R.id.tv_shuiwen).setOnClickListener(this);
+        findViewById(R.id.tv_maishen).setOnClickListener(this);
+        tvddl.setOnClickListener(this);
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            //获取实时数据
+            case R.id.tv_get:
+                 sendData();
+                 break;
+            //设置水温偏移量
+            case R.id.tv_shuiwen:
+                 getDataPresenter.setShuiWen();
+                 break;
+            //设置水位埋深
+            case R.id.tv_maishen:
+                 getDataPresenter.setSWMS();
+                 break;
+             //设置电导率
+            case R.id.tv_ddl:
+                 getDataPresenter.setDdl();
+                 break;
+            case R.id.lin_back:
+                 finish();
+                 break;
+        }
+
     }
 
 
@@ -333,11 +366,56 @@ public class GetDataActivity extends BaseActivity {
             if(length==140){
                 DianDaoLv=msg.substring(79,89).replace("C","");
             }
-            if(YaLi.contains("99999999")){
-                tvDianDaoLv.setText(DianDaoLv+" uS/cm");
-            }else{
-                tvDianDaoLv.setText(Util.setDouble(Double.parseDouble(DianDaoLv)/1000,4)+" uS/cm");
-            }
+            tvDianDaoLv.setText(Util.setDouble(Double.parseDouble(DianDaoLv),2)+"uS/cm");
+        }
+
+
+        updateData(1);
+        updateData(2);
+        updateData(3);
+    }
+
+
+    /**
+     * 修改数据
+     * @param type
+     */
+    public void updateData(int type) {
+        String pyl;//偏移量
+        double data; //加减后的值
+        switch (type){
+            //修改水温值
+            case 1:
+                 final String ShuiWen=tvShuiWen.getText().toString().trim().replace("℃","");
+                 pyl=MyApplication.spUtil.getString(SPUtil.SHUI_WEN);
+                 if(TextUtils.isEmpty(pyl)){
+                     return;
+                 }
+                 data=Util.sum(Double.parseDouble(ShuiWen),Double.parseDouble(pyl));
+                 tvShuiWen.setText(Util.setDouble(data,2)+"℃");
+                 break;
+            //修改水位埋深
+            case 2:
+                final String maiShen=tvMaiShen.getText().toString().trim().replace("m","");
+                pyl=MyApplication.spUtil.getString(SPUtil.SHUI_WEI_MAI_SHEN);
+                if(TextUtils.isEmpty(pyl)){
+                    return;
+                }
+                data=Util.sum(Double.parseDouble(maiShen),Double.parseDouble(pyl));
+                tvMaiShen.setText(Util.setDouble(data,3)+"m");
+                break;
+            //修改电导率
+            case 3:
+                final String ddl=tvDianDaoLv.getText().toString().trim().replace("uS/cm","");
+                pyl=MyApplication.spUtil.getString(SPUtil.DIAN_DAO_LV);
+                if(TextUtils.isEmpty(pyl)){
+                    return;
+                }
+                data=Util.sum(Double.parseDouble(ddl),Double.parseDouble(pyl));
+                tvDianDaoLv.setText(Util.setDouble(data,2)+"uS/cm");
+                break;
+            default:
+                break;
         }
     }
 
@@ -346,4 +424,5 @@ public class GetDataActivity extends BaseActivity {
         super.onDestroy();
         unregisterReceiver(mBroadcastReceiver);
     }
+
 }
