@@ -434,7 +434,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
             tvTanTou.setText(Util.setDouble(Double.parseDouble(TanTou),3)+"m");
         }
 
-        
+
         //显示水位埋深
         final String MaiShen=msg.substring(12,20).replace("L","");
         if(YaLi.contains("99999999")){
