@@ -63,7 +63,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
         initView();
         register();//注册广播
         sendData(BleContant.SEND_REAL_TIME_DATA);
-//        showData("GDCURRENT>181116173412L0074.97T023.6V05.14CSQ28R009.3P0030.507B10.443C0095.000;");
+//        showData("GDCURRENT>180812153625L0010.97T028.8B100V05.98CSQ31R-35.4E0098P0010.125B10.009C0011.000C001413.01B001413.00T001413.00R001413.00+0000.0200;");
     }
 
     /**
@@ -389,8 +389,8 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
         if(length==88 || length==138){
             YaLi=msg.substring(52,61).replace("P","");
         }
-        if(length==90 || length==140){
-            YaLi=msg.substring(54,63).replace("P","");
+        if(length==91 || length==140){
+            YaLi=msg.substring(55,64).replace("P","");
         }
         if(YaLi.contains("99999999")){
             tvYaLi.setText(YaLi+"");
@@ -407,8 +407,8 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
         if(length==88 || length==138){
             QiYa=msg.substring(61,68).replace("B","");
         }
-        if(length==90 || length==140){
-            QiYa=msg.substring(63,70).replace("B","");
+        if(length==91 || length==140){
+            QiYa=msg.substring(64,71).replace("B","");
         }
         if(YaLi.contains("99999999")){
             tvQiYa.setText(QiYa+"");
@@ -425,8 +425,8 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
         if(length==88 || length==138){
             TanTou=msg.substring(68,77).replace("C","");
         }
-        if(length==90 || length==140){
-            TanTou=msg.substring(70,79).replace("C","");
+        if(length==91 || length==140){
+            TanTou=msg.substring(71,80).replace("C","");
         }
         if(YaLi.contains("99999999")){
             tvTanTou.setText(TanTou+"m");
@@ -436,7 +436,12 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener{
 
         
         //显示水位埋深
-        final String MaiShen=msg.substring(12,20).replace("L","");
+        String MaiShen=null;
+        if(length==91 || length==140){
+            MaiShen=msg.substring(12,21).replace("L","");
+        }else{
+            MaiShen=msg.substring(12,20).replace("L","");
+        }
         if(YaLi.contains("99999999")){
             tvShuiWei.setText(MaiShen+"m");
         }else{
