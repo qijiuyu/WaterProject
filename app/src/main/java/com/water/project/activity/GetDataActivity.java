@@ -272,8 +272,8 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
         if(length==88 || length==138){
             YaLi=msg.substring(52,61).replace("P","");
         }
-        if(length==90 || length==140){
-            YaLi=msg.substring(54,63).replace("P","");
+        if(length==91 || length==140){
+            YaLi=msg.substring(55,64).replace("P","");
         }
         if(YaLi.contains("99999999")){
             tvYaLi.setText(YaLi+"");
@@ -282,7 +282,12 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
         }
 
         //显示水位埋深
-        String MaiShen=msg.substring(12,20).replace("L","");
+        String MaiShen=null;
+        if(length==91 || length==140){
+            MaiShen=msg.substring(12,21).replace("L","");
+        }else{
+            MaiShen=msg.substring(12,20).replace("L","");
+        }
         if(YaLi.contains("99999999")){
             tvMaiShen.setText(MaiShen+"m");
         }else{
@@ -297,8 +302,8 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
         if(length==88 || length==138){
             QiYa=msg.substring(61,68).replace("B","");
         }
-        if(length==90 || length==140){
-            QiYa=msg.substring(63,70).replace("B","");
+        if(length==91 || length==140){
+            QiYa=msg.substring(64,71).replace("B","");
         }
         if(YaLi.contains("99999999")){
             tvQiYa.setText(QiYa+"");
@@ -311,8 +316,8 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
         if(length==79 || length==88 || length==138){
             ShuiWen=msg.substring(20,26).replace("T","");
         }
-        if(length==90 || length==140){
-            ShuiWen=msg.substring(20,27).replace("T","");
+        if(length==91 || length==140){
+            ShuiWen=msg.substring(21,28).replace("T","");
         }
         if(YaLi.contains("99999999")){
             tvShuiWen.setText(ShuiWen+"℃");
@@ -328,8 +333,8 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
         if(length==88 || length==138){
             QiWen=msg.substring(41,47).replace("R","");
         }
-        if(length==90 || length==140){
-            QiWen=msg.substring(42,49).replace("R","");
+        if(length==91 || length==140){
+            QiWen=msg.substring(43,50).replace("R","");
         }
         if(YaLi.contains("99999999")){
             tvQiWen.setText(QiWen+"℃");
@@ -345,8 +350,8 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
         if(length==88 || length==138){
             DianYa=msg.substring(30,36).replace("V","");
         }
-        if(length==90 || length==140){
-            DianYa=msg.substring(31,37).replace("V","");
+        if(length==91 || length==140){
+            DianYa=msg.substring(32,38).replace("V","");
         }
         if(YaLi.contains("99999999")){
             tvDianYa.setText(DianYa+"V");
@@ -364,7 +369,7 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
                 DianDaoLv=msg.substring(77,87).replace("C","");
             }
             if(length==140){
-                DianDaoLv=msg.substring(79,89).replace("C","");
+                DianDaoLv=msg.substring(80,90).replace("C","");
             }
             tvDianDaoLv.setText(Util.setDouble(Double.parseDouble(DianDaoLv),2)+"uS/cm");
         }
