@@ -46,6 +46,18 @@ public class SendBleStr {
     //校测前先读取偏移量
     public static String SEND_CHECK_ERROR="GD&#PYR001T";
 
+    //校测前先读取水温偏移量
+    public static String RED_SHUI_WEN_PYL="GDTYR";
+
+    //设置水温误差数据
+    public static String SEND_DATA_SHUI_WEN;
+
+    //校测前先读取电导率偏移量
+    public static  String RED_DIAN_DAO_LV_PYL="GD&#CYR001T";
+
+    //设置水温电导率数据
+    public static  String SEND_DATA_DIAN_DAO_LV;
+
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
         StringBuffer stringBuffer=new StringBuffer();
@@ -154,6 +166,72 @@ public class SendBleStr {
 
 
     /**
+     * 校测水温
+     * @param wucha
+     * @param data
+     */
+    public static void checkShui_wen(String wucha,String data){
+        StringBuffer stringBuffer=new StringBuffer("GDTYW");
+        data=data.replace("GDTYR","");
+        final double pyl=Double.parseDouble(data);
+        final double wc=Double.parseDouble(wucha);
+        String result=Util.sum(pyl,wc)+"";
+
+        if(result.contains("-")){
+            stringBuffer.append("-");
+        }else{
+            stringBuffer.append("+");
+        }
+        result=result.replace("-","");
+        final int index=result.indexOf(".");
+        //判断小数点前面几位
+        for(int i=0;i<2-index;i++){
+            stringBuffer.append("0");
+        }
+        stringBuffer.append(result);
+
+        //判断小数点后面几位
+        for(int i=0;i<2-(result.length()-index-1);i++){
+            stringBuffer.append("0");
+        }
+        SEND_DATA_SHUI_WEN=stringBuffer.toString();
+    }
+
+
+    /**
+     * 校测电导率
+     * @param wucha
+     * @param data
+     */
+    public static void checkDian_Dao_Lv(String wucha,String data){
+        StringBuffer stringBuffer=new StringBuffer("GD&#CYW001T");
+        data=data.replace("GD&#CYR001T","");
+        final double pyl=Double.parseDouble(data);
+        final double wc=Double.parseDouble(wucha);
+        String result=Util.sum(pyl,wc)+"";
+
+        if(result.contains("-")){
+            stringBuffer.append("-");
+        }else{
+            stringBuffer.append("+");
+        }
+        result=result.replace("-","");
+        final int index=result.indexOf(".");
+        //判断小数点前面几位
+        for(int i=0;i<6-index;i++){
+            stringBuffer.append("0");
+        }
+        stringBuffer.append(result);
+
+        //判断小数点后面几位
+        for(int i=0;i<2-(result.length()-index-1);i++){
+            stringBuffer.append("0");
+        }
+        SEND_DATA_DIAN_DAO_LV=stringBuffer.toString();
+    }
+
+
+    /**
      * 设置三个ip
      * @param address1
      * @param address2
@@ -232,6 +310,22 @@ public class SendBleStr {
             //校测前先读取偏移量
             case BleContant.SEND_CHECK_ERROR:
                  SendBleDataManager.getInstance().sendData(SEND_CHECK_ERROR,type);
+                 break;
+            //校测前先读取水温偏移量
+            case BleContant.RED_SHUI_WEN_PYL:
+                  SendBleDataManager.getInstance().sendData(SEND_CHECK_ERROR,type);
+                  break;
+            //设置水温误差数据
+            case BleContant.SEND_DATA_SHUI_WEN:
+                  SendBleDataManager.getInstance().sendData(SEND_DATA_SHUI_WEN,type);
+                  break;
+            //校测前先读取电导率偏移量
+            case BleContant.RED_DIAN_DAO_LV_PYL:
+                  SendBleDataManager.getInstance().sendData(RED_DIAN_DAO_LV_PYL,type);
+                  break;
+            //设置水温电导率数据
+            case BleContant.SEND_DATA_DIAN_DAO_LV:
+                 SendBleDataManager.getInstance().sendData(SEND_DATA_DIAN_DAO_LV,type);
                  break;
              default:
                  break;

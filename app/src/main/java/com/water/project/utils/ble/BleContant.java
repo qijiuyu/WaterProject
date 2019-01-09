@@ -43,4 +43,16 @@ public class BleContant {
 
     //校测前先读取偏移量
     public static final int SEND_CHECK_ERROR=1011;
+
+    //校测前先读取水温偏移量
+    public static final int RED_SHUI_WEN_PYL=1012;
+
+    //设置水温误差数据
+    public static final int SEND_DATA_SHUI_WEN=1013;
+
+    //校测前先读取电导率偏移量
+    public static final int RED_DIAN_DAO_LV_PYL=1014;
+
+    //设置水温电导率数据
+    public static final int SEND_DATA_DIAN_DAO_LV=1015;
 }
