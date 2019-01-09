@@ -105,7 +105,9 @@ public class BleService extends Service implements Serializable{
     private StringBuffer sb;
     //根据类型发送不同的回执广播
     private int type;
-
+    //是否重新连接蓝牙
+    private boolean isConnect = true;
+    private Handler mHandler=new Handler();
     public class LocalBinder extends Binder {
         public BleService getService() {
             return BleService.this;
@@ -158,7 +160,6 @@ public class BleService extends Service implements Serializable{
             if(TextUtils.isEmpty(device.getName())){
                 return;
             }
-            LogUtils.e("搜索到蓝牙：" + device.getName() + "___" + device.getAddress());
             if(TextUtils.isEmpty(bleName)){
                 intent.setAction(ACTION_SCAN_SUCCESS);
                 intent.putExtra("bleName",device.getName());
@@ -225,6 +226,7 @@ public class BleService extends Service implements Serializable{
      * @param address 蓝牙的地址
      */
     public boolean connect(final String address) {
+        isConnect=true;
         //停止扫描
         stopScan();
         connectionState = STATE_CONNECTING;
@@ -249,19 +251,16 @@ public class BleService extends Service implements Serializable{
     public void enableTXNotification() {
         try {
             if (mBluetoothGatt == null) {
-                LogUtils.e("初始化通道错误:mBluetoothGatt=====null");
                 disconnect();
                 return;
             }
             BluetoothGattService RxService = mBluetoothGatt.getService(RX_SERVICE_UUID);
             if (RxService == null) {
-                LogUtils.e("初始化通道错误:BluetoothGattService=====null");
                 disconnect();
                 return;
             }
             BluetoothGattCharacteristic TxChar = RxService.getCharacteristic(TX_CHAR_UUID);
             if (TxChar == null) {
-                LogUtils.e("初始化通道错误:BluetoothGattCharacteristic=====null");
                 disconnect();
                 return;
             }
@@ -305,14 +304,12 @@ public class BleService extends Service implements Serializable{
         try {
             BluetoothGattService RxService = mBluetoothGatt.getService(RX_SERVICE_UUID);
             if (RxService == null) {
-                LogUtils.e("传输数据：BluetoothGattService==null");
                 disconnect();
                 return false;
             }
             final BluetoothGattCharacteristic RxChar = RxService.getCharacteristic(RX_CHAR_UUID);
             if (RxChar == null) {
                 disconnect();
-                LogUtils.e("传输数据：BluetoothGattCharacteristic==null");
                 return false;
             }
 
@@ -412,7 +409,13 @@ public class BleService extends Service implements Serializable{
                 connectionState = STATE_DISCONNECTED;
                 close();
                 stopTimeOut();
-                broadcastUpdate(ACTION_GATT_DISCONNECTED,status);
+                if(status==0){
+                    //发送蓝牙连接断开的广播
+                    broadcastUpdate(ACTION_GATT_DISCONNECTED,status);
+                }else{
+                    //重新连接蓝牙
+                    resumeConnect(status);
+                }
             }
         }
 
@@ -488,6 +491,27 @@ public class BleService extends Service implements Serializable{
 
 
     /**
+     * 重新连接蓝牙
+     * @param status
+     */
+    public void resumeConnect(int status){
+        if(isConnect){
+            isConnect=false;
+            mHandler.postDelayed(new Runnable() {
+                public void run() {
+                    LogUtils.e("重连一次蓝牙");
+                    Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
+                    connect(ble.getBleMac());
+                }
+            },500);
+            return;
+        }
+        //发送蓝牙连接断开的广播
+        broadcastUpdate(ACTION_GATT_DISCONNECTED,status);
+    }
+
+
+    /**
      * 通过广播抛出数据
      */
     private void broadCastError(){
@@ -520,19 +544,7 @@ public class BleService extends Service implements Serializable{
         }
     }
 
-
-    public BluetoothGatt getBluetoothGatt() {
-        return mBluetoothGatt;
-    }
-
     public int getConnectionState() {
         return connectionState;
-    }
-
-    /**
-     * 设置数据交互超时时间，默认10s
-     */
-    public void setTimeOut(long timeOut) {
-        this.timeOut = timeOut;
     }
 }

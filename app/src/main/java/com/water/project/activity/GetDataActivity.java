@@ -157,8 +157,6 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
         registerReceiver(mBroadcastReceiver, myIntentFilter);
     }
 
-    private boolean isConnect = true;
-    private Ble ble;
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()){
@@ -175,37 +173,21 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
                     break;
                 //蓝牙断开连接
                 case BleService.ACTION_GATT_DISCONNECTED:
-                    final int status=intent.getIntExtra("status",0);
-                    if(status!=0){
-                        ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
-                        if (isConnect) {
-                            isConnect=false;
-                            LogUtils.e("重新连接一次蓝牙!");
+                     clearTask();
+                     dialogView = new DialogView(mContext, "蓝牙连接断开，请靠近设备进行连接!","重新连接", "取消", new View.OnClickListener() {
+                        public void onClick(View v) {
+                            dialogView.dismiss();
+                            showProgress("蓝牙连接中...");
                             mHandler.postDelayed(new Runnable() {
                                 public void run() {
-                                    MainActivity.bleService.connect(GetDataActivity.this.ble.getBleMac());
+                                    Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
+                                    MainActivity.bleService.connect(ble.getBleMac());
                                 }
                             },100);
-                            return;
-                        }else{
-                            isConnect=true;
-                            dialogView = new DialogView(mContext, "蓝牙连接断开，请靠近设备进行连接!","重新连接", "取消", new View.OnClickListener() {
-                                public void onClick(View v) {
-                                    dialogView.dismiss();
-                                    showProgress("蓝牙连接中...");
-                                    mHandler.postDelayed(new Runnable() {
-                                        public void run() {
-                                            MainActivity.bleService.connect(GetDataActivity.this.ble.getBleMac());
-                                        }
-                                    },100);
-                                }
-                            }, null);
-                            dialogView.show();
-                        }
-                    }
-                    clearTask();
-                    showToastView("蓝牙连接断开！");
-                    break;
+                         }
+                    }, null);
+                     dialogView.show();
+                     break;
                 //初始化通道成功
                 case BleService.ACTION_ENABLE_NOTIFICATION_SUCCES:
                      sendData();

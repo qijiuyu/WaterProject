@@ -181,7 +181,6 @@ public class SendBleStr {
             stringBuffer.append(strings[i]+";");
         }
         SET_IP_PORT=stringBuffer.toString();
-        LogUtils.e(SET_IP_PORT+"+++++++++++");
     }
 
     public static void sendBleData(int status,int type){
@@ -234,8 +233,8 @@ public class SendBleStr {
             case BleContant.SEND_CHECK_ERROR:
                  SendBleDataManager.getInstance().sendData(SEND_CHECK_ERROR,type);
                  break;
-                 default:
-                     break;
+             default:
+                 break;
 
         }
     }
