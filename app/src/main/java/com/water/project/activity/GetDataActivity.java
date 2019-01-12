@@ -37,8 +37,7 @@ import com.water.project.view.DialogView;
 
 public class GetDataActivity extends BaseActivity implements View.OnClickListener,GetDataPresenter {
 
-    private TextView tvCJTime,tvMaiShen,tvYaLi,tvQiYa,tvShuiWen,tvQiWen,tvDianYa,tvDianDaoLv,tvddl;
-    private View ddlView;
+    private TextView tvCJTime,tvMaiShen,tvYaLi,tvQiYa,tvShuiWen,tvQiWen,tvDianYa,tvDianDaoLv;
     private DialogView dialogView;
     private Handler mHandler=new Handler();
     private GetDataPresenterImpl getDataPresenter;
@@ -56,8 +55,8 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
         initMvp();
         initView();
         register();//注册广播
-        sendData(); //发送蓝牙命令
-//        showData("GDCURRENT>180812153625L0010.97T028.8B100V05.98CSQ31R-35.4E0098P0010.125B10.009C0011.000C001413.01B001413.00T001413.00R001413.00+0000.0200;");
+//        sendData(); //发送蓝牙命令
+        showData("GDCURRENT>180812153625L0010.97T028.8B100V05.98CSQ31R-35.4E0098P0010.125B10.009C0011.000C001413.01B001413.00T001413.00R001413.00+0000.0200;");
     }
 
     /**
@@ -81,14 +80,12 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
         tvQiWen=(TextView)findViewById(R.id.tv_ag_qiwen);
         tvDianYa=(TextView)findViewById(R.id.tv_ag_dianya);
         tvDianDaoLv=(TextView)findViewById(R.id.tv_ag_diandaolv);
-        ddlView=(View)findViewById(R.id.view_ag3);
-        tvddl=(TextView)findViewById(R.id.tv_ddl);
         //查询实时数据
         findViewById(R.id.tv_get).setOnClickListener(this);
         findViewById(R.id.lin_back).setOnClickListener(this);
         findViewById(R.id.tv_shuiwen).setOnClickListener(this);
         findViewById(R.id.tv_maishen).setOnClickListener(this);
-        tvddl.setOnClickListener(this);
+        findViewById(R.id.rel_ddl).setOnClickListener(this);
     }
 
 
@@ -108,7 +105,7 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
                  getDataPresenter.setSWMS();
                  break;
              //设置电导率
-            case R.id.tv_ddl:
+            case R.id.rel_ddl:
                  getDataPresenter.setDdl();
                  break;
             case R.id.lin_back:
@@ -342,9 +339,7 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
         }
 
         if(length==138 || length==140){
-            tvddl.setVisibility(View.VISIBLE);
-            tvDianDaoLv.setVisibility(View.VISIBLE);
-            ddlView.setVisibility(View.VISIBLE);
+            findViewById(R.id.rel_ddl).setVisibility(View.VISIBLE);
             //显示电导率
             String DianDaoLv=null;
             if(length==138){

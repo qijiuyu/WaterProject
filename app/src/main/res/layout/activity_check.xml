@@ -13,322 +13,578 @@
         android:layout_height="match_parent"
         android:paddingBottom="20dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <RelativeLayout
-                android:id="@+id/rel1"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:orientation="vertical"
                 android:background="@drawable/bg_kuang"
                 android:padding="10dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:gravity="center"
-                    android:text="采集时间"
-                    android:textColor="@android:color/black"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/tv_ac_cjTime"
-                    android:layout_width="200dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right|center"
-                    android:textColor="@color/color_1fc37f"
-                    android:textSize="15sp" />
-
-                <View
-                    android:id="@+id/view_ac1"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_below="@id/tv_ac_cjTime"
-                    android:background="@color/color_888888" />
-
-                <TextView
-                    android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_below="@id/view_ac1"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:text="压力值"
-                    android:textColor="@android:color/black"
-                    android:textSize="15sp" />
+                    android:background="@drawable/bg_bottom_border">
 
-                <TextView
-                    android:id="@+id/tv_ac_yali"
-                    android:layout_width="200dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@id/view_ac1"
-                    android:layout_marginRight="50dp"
-                    android:layout_marginTop="10dp"
-                    android:gravity="right|center"
-                    android:textColor="@color/color_1fc37f"
-                    android:textSize="15sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:text="采集时间"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp" />
 
-                <LinearLayout
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@id/view_ac1"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/tv_ac_cjTime"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right|center"
+                        android:textColor="@color/color_1fc37f"
+                        android:textSize="15sp" />
 
-                    <include layout="@layout/unit" />
+                </RelativeLayout>
 
-                </LinearLayout>
-
-                <View
-                    android:id="@+id/view_ac2"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_below="@id/tv_ac_yali"
-                    android:background="@color/color_888888" />
-
-                <TextView
-                    android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_below="@id/view_ac2"
                     android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:text="气压值"
-                    android:textColor="@android:color/black"
-                    android:textSize="15sp" />
+                    android:background="@drawable/bg_bottom_border">
 
-                <TextView
-                    android:id="@+id/tv_ac_qiya"
-                    android:layout_width="200dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@id/view_ac2"
-                    android:layout_marginRight="50dp"
-                    android:layout_marginTop="10dp"
-                    android:gravity="right|center"
-                    android:textColor="@color/color_1fc37f"
-                    android:textSize="15sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:text="压力值"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp" />
 
-                <LinearLayout
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@id/view_ac2"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/tv_ac_yali"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="50dp"
+                        android:gravity="right|center"
+                        android:textColor="@color/color_1fc37f"
+                        android:textSize="15sp" />
 
-                    <include layout="@layout/unit" />
+                    <LinearLayout
+                        android:layout_width="50dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center">
 
-                </LinearLayout>
+                        <include layout="@layout/unit" />
 
-                <View
-                    android:id="@+id/view_ac3"
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_below="@id/tv_ac_qiya"
-                    android:background="@color/color_888888" />
-
-                <TextView
-                    android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_below="@id/view_ac3"
                     android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:text="探头埋深"
-                    android:textColor="@android:color/black"
-                    android:textSize="15sp" />
+                    android:background="@drawable/bg_bottom_border">
 
-                <TextView
-                    android:id="@+id/tv_ac_tantou"
-                    android:layout_width="200dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@id/view_ac3"
-                    android:layout_marginTop="10dp"
-                    android:gravity="right|center"
-                    android:text="m"
-                    android:textColor="@color/color_1fc37f"
-                    android:textSize="15sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:text="气压值"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp" />
 
-                <View
-                    android:id="@+id/view_ac4"
+                    <TextView
+                        android:id="@+id/tv_ac_qiya"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="50dp"
+                        android:gravity="right|center"
+                        android:textColor="@color/color_1fc37f"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:layout_width="50dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center">
+
+                        <include layout="@layout/unit" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_below="@id/tv_ac_tantou"
-                    android:background="@color/color_888888" />
-
-                <TextView
-                    android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_below="@id/view_ac4"
                     android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:text="水位埋深"
-                    android:textColor="@android:color/black"
-                    android:textSize="15sp" />
+                    android:background="@drawable/bg_bottom_border">
 
-                <TextView
-                    android:id="@+id/tv_ac_shuiwei"
-                    android:layout_width="200dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@id/view_ac4"
-                    android:layout_marginTop="10dp"
-                    android:gravity="right|center"
-                    android:text="m"
-                    android:textColor="@color/color_1fc37f"
-                    android:textSize="15sp" />
+                    <TextView
+                        android:id="@+id/tv_shuiwen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:text="水温值"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp"/>
 
-                <View
-                    android:id="@+id/view_ac5"
+                    <TextView
+                        android:id="@+id/tv_ag_shuiwen"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:text="℃"
+                        android:textColor="@color/color_1fc37f"
+                        android:textSize="15sp"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right|center"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_below="@id/tv_ac_shuiwei"
-                    android:background="@color/color_888888" />
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_bottom_border">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:text="探头埋深"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_ac_tantou"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right|center"
+                        android:text="m"
+                        android:textColor="@color/color_1fc37f"
+                        android:textSize="15sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_bottom_border">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:text="水位埋深"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_ac_shuiwei"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right|center"
+                        android:text="m"
+                        android:textColor="@color/color_1fc37f"
+                        android:textSize="15sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rel_ddl"
+                    android:visibility="gone"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_bottom_border">
+
+                    <TextView
+                        android:id="@+id/tv_ddl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:text="电导率"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_ag_diandaolv"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:text="uS/cm"
+                        android:textColor="@color/color_1fc37f"
+                        android:textSize="15sp"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right|center"/>
+
+                </RelativeLayout>
+
 
                 <com.water.project.view.ClickTextView
                     android:id="@+id/tv_btn_update"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/view_ac5"
-                    android:layout_centerHorizontal="true"
                     android:layout_marginBottom="20dp"
                     android:layout_marginTop="20dp"
+                    android:layout_gravity="center"
                     android:background="@mipmap/btn_bg"
                     android:text="读取实时数据"
                     android:textColor="@android:color/white"
                     android:textSize="15sp"
                     android:gravity="center" />
 
-            </RelativeLayout>
+            </LinearLayout>
 
-            <RelativeLayout
+            <!-- 水位埋深校测-->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/rel1"
+                android:orientation="vertical"
                 android:layout_margin="10dp"
                 android:background="@drawable/bg_kuang"
                 android:padding="10dp"
                 android:paddingTop="5dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:text="人工实测水位埋深"
-                    android:textColor="@android:color/black"
-                    android:textSize="15sp" />
-
-                <EditText
-                    android:id="@+id/et_ac_check"
-                    android:layout_width="150dp"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_toLeftOf="@+id/lin_check"
-                    android:background="@null"
-                    android:digits="0123456789."
-                    android:gravity="right|center"
-                    android:maxLength="8"
-                    android:textColor="@color/color_1fc37f"
-                    android:textSize="15sp" />
-
-                <LinearLayout
-                    android:id="@+id/lin_check"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:orientation="horizontal">
+                    android:background="@drawable/bg_bottom_border">
 
                     <TextView
-                        android:id="@+id/textView2"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
-                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:text="人工实测水位埋深"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_alignParentRight="true">
+
+                        <EditText
+                            android:id="@+id/et_ac_check"
+                            android:layout_width="150dp"
+                            android:layout_height="40dp"
+                            android:background="@null"
+                            android:digits="0123456789."
+                            android:gravity="right|center"
+                            android:maxLength="8"
+                            android:textColor="@color/color_1fc37f"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="center"
+                            android:text="m"
+                            android:textColor="@color/color_1fc37f"
+                            android:textSize="15sp" />
+
+                        <ImageView
+                            android:id="@+id/img_clear_check"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:src="@mipmap/clear"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_bottom_border">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:text="误差"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_ac_wucha"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="20dp"
+                        android:gravity="right|center"
+                        android:textColor="@color/color_1fc37f"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
                         android:gravity="center"
                         android:text="m"
                         android:textColor="@color/color_1fc37f"
                         android:textSize="15sp" />
 
-                    <ImageView
-                        android:id="@+id/img_clear_check"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="20dp"
-                        android:src="@mipmap/clear"
-                        android:visibility="gone" />
-
-                </LinearLayout>
-
-                <View
-                    android:id="@+id/view_ac6"
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_below="@id/et_ac_check"
-                    android:background="@color/color_888888" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_below="@id/view_ac6"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:text="误差"
-                    android:textColor="@android:color/black"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/tv_ac_wucha"
-                    android:layout_width="200dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@id/view_ac6"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
-                    android:gravity="right|center"
-                    android:textColor="@color/color_1fc37f"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@id/view_ac6"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:text="m"
-                    android:textColor="@color/color_1fc37f"
-                    android:textSize="15sp" />
-
-                <View
-                    android:id="@+id/view_ac7"
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_below="@id/tv_ac_wucha"
-                    android:background="@color/color_888888" />
+                </RelativeLayout>
 
                 <com.water.project.view.ClickTextView
                     android:id="@+id/tv_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/view_ac7"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="20dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp"
                     android:background="@mipmap/btn_bg"
-                    android:text="数据校正"
+                    android:text="水位校正"
                     android:textColor="@android:color/white"
                     android:textSize="15sp"
                     android:gravity="center" />
 
-            </RelativeLayout>
+            </LinearLayout>
 
-        </RelativeLayout>
+
+            <!--水温校测 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="10dp"
+                android:background="@drawable/bg_kuang"
+                android:padding="10dp"
+                android:paddingTop="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_bottom_border">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:text="人工实测水温"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_alignParentRight="true">
+
+                        <EditText
+                            android:id="@+id/et_sw_check"
+                            android:layout_width="150dp"
+                            android:layout_height="40dp"
+                            android:background="@null"
+                            android:digits="0123456789."
+                            android:gravity="right|center"
+                            android:maxLength="5"
+                            android:textColor="@color/color_1fc37f"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="center"
+                            android:text="℃"
+                            android:textColor="@color/color_1fc37f"
+                            android:textSize="15sp" />
+
+                        <ImageView
+                            android:id="@+id/img_clear_SW"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:src="@mipmap/clear"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_bottom_border">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:text="误差"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_wc_sw"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="20dp"
+                        android:gravity="right|center"
+                        android:textColor="@color/color_1fc37f"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center"
+                        android:text="℃"
+                        android:textColor="@color/color_1fc37f"
+                        android:textSize="15sp" />
+
+                </RelativeLayout>
+
+                <com.water.project.view.ClickTextView
+                    android:id="@+id/tv_SW_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@mipmap/btn_bg"
+                    android:text="水温校正"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+
+            <!--电导率校测 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="10dp"
+                android:background="@drawable/bg_kuang"
+                android:padding="10dp"
+                android:paddingTop="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_bottom_border">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:text="人工实测电导率"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_alignParentRight="true">
+
+                        <EditText
+                            android:id="@+id/et_ddl_check"
+                            android:layout_width="150dp"
+                            android:layout_height="40dp"
+                            android:background="@null"
+                            android:digits="0123456789."
+                            android:gravity="right|center"
+                            android:maxLength="9"
+                            android:textColor="@color/color_1fc37f"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="center"
+                            android:text="uS/cm"
+                            android:textColor="@color/color_1fc37f"
+                            android:textSize="15sp" />
+
+                        <ImageView
+                            android:id="@+id/img_clear_DDL"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:src="@mipmap/clear"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_bottom_border">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:text="误差"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_wc_ddl"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="50dp"
+                        android:gravity="right|center"
+                        android:textColor="@color/color_1fc37f"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center"
+                        android:text="uS/cm"
+                        android:textColor="@color/color_1fc37f"
+                        android:textSize="15sp" />
+
+                </RelativeLayout>
+
+                <com.water.project.view.ClickTextView
+                    android:id="@+id/tv_DDL_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@mipmap/btn_bg"
+                    android:text="电导率校正"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </ScrollView>
 

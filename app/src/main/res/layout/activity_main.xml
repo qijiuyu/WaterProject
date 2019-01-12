@@ -45,7 +45,6 @@
 
     <LinearLayout
         android:id="@+id/lin_am1"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_am_scan"

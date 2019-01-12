@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 import com.water.project.R;
 import com.water.project.utils.LogUtils;
+import com.water.project.utils.SystemBarTintManager;
 import com.water.project.view.CycleWheelView;
 
 import java.text.SimpleDateFormat;

@@ -37,17 +37,17 @@ public class SendBleStr {
     //查询实时数据
     public static String SEND_REAL_TIME_DATA="GDCURRENT";
 
-    //设置误差数据
-    public static String SET_DATA_CHECK;
-
     //设置三个ip
     public static String SET_IP_PORT;
 
-    //校测前先读取偏移量
+    //校测前先读取水位偏移量
     public static String SEND_CHECK_ERROR="GD&#PYR001T";
 
+    //设置水位埋深误差数据
+    public static String SET_DATA_CHECK;
+
     //校测前先读取水温偏移量
-    public static String RED_SHUI_WEN_PYL="GDTYR";
+    public static String RED_SHUI_WEN_PYL="GD&#TYR001T";
 
     //设置水温误差数据
     public static String SEND_DATA_SHUI_WEN;
@@ -132,10 +132,10 @@ public class SendBleStr {
 
 
     /**
-     * 设置误差数据
+     * 设置水位埋深误差数据
      * @param data:偏移量
      */
-    public static void setCheck(String wucha,String data){
+    public static void setMS_check(String wucha,String data){
         StringBuffer stringBuffer=new StringBuffer("GD&>#PYW001T");
         data=data.replace("GD&>#PYR001T","");
 
@@ -170,9 +170,9 @@ public class SendBleStr {
      * @param wucha
      * @param data
      */
-    public static void checkShui_wen(String wucha,String data){
-        StringBuffer stringBuffer=new StringBuffer("GDTYW");
-        data=data.replace("GDTYR","");
+    public static void setSW_check(String wucha,String data){
+        StringBuffer stringBuffer=new StringBuffer("GD&#TYW001T");
+        data=data.replace("GD&#TYR001T","");
         final double pyl=Double.parseDouble(data);
         final double wc=Double.parseDouble(wucha);
         String result=Util.sum(pyl,wc)+"";
@@ -195,6 +195,7 @@ public class SendBleStr {
             stringBuffer.append("0");
         }
         SEND_DATA_SHUI_WEN=stringBuffer.toString();
+        LogUtils.e("_____"+SEND_DATA_SHUI_WEN);
     }
 
 
@@ -203,7 +204,7 @@ public class SendBleStr {
      * @param wucha
      * @param data
      */
-    public static void checkDian_Dao_Lv(String wucha,String data){
+    public static void setDDL_check(String wucha,String data){
         StringBuffer stringBuffer=new StringBuffer("GD&#CYW001T");
         data=data.replace("GD&#CYR001T","");
         final double pyl=Double.parseDouble(data);
@@ -228,6 +229,7 @@ public class SendBleStr {
             stringBuffer.append("0");
         }
         SEND_DATA_DIAN_DAO_LV=stringBuffer.toString();
+        LogUtils.e("_________"+SEND_DATA_DIAN_DAO_LV);
     }
 
 
@@ -307,13 +309,13 @@ public class SendBleStr {
             case BleContant.SET_IP_PORT:
                  SendBleDataManager.getInstance().sendData(SET_IP_PORT,type);
                  break;
-            //校测前先读取偏移量
+            //校测前先读取水位偏移量
             case BleContant.SEND_CHECK_ERROR:
                  SendBleDataManager.getInstance().sendData(SEND_CHECK_ERROR,type);
                  break;
             //校测前先读取水温偏移量
             case BleContant.RED_SHUI_WEN_PYL:
-                  SendBleDataManager.getInstance().sendData(SEND_CHECK_ERROR,type);
+                  SendBleDataManager.getInstance().sendData(RED_SHUI_WEN_PYL,type);
                   break;
             //设置水温误差数据
             case BleContant.SEND_DATA_SHUI_WEN:
