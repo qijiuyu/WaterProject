@@ -136,7 +136,7 @@ public class CheckPresenterImpl {
         }else if(qIndex>6){
             checkPresenter.showToast("人工实测电导率的小数点前面最多只能是6位数");
         }else if(hIndex>2){
-            checkPresenter.showToast("人工实测水温的小数点后面最多只能是2位数");
+            checkPresenter.showToast("人工实测电导率的小数点后面最多只能是2位数");
         }else if(TextUtils.isEmpty(wuCha)){
             checkPresenter.showToast("没有误差数据！");
         }else if(Double.parseDouble(wuCha)==0){

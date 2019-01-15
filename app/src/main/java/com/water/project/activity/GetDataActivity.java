@@ -55,8 +55,8 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
         initMvp();
         initView();
         register();//注册广播
-//        sendData(); //发送蓝牙命令
-        showData("GDCURRENT>180812153625L0010.97T028.8B100V05.98CSQ31R-35.4E0098P0010.125B10.009C0011.000C001413.01B001413.00T001413.00R001413.00+0000.0200;");
+        sendData(); //发送蓝牙命令
+//        showData("GDCURRENT>180812153625L0010.97T028.8B100V05.98CSQ31R-35.4E0098P0010.125B10.009C0011.000C001413.01B001413.00T001413.00R001413.00+0000.0200;");
     }
 
     /**
@@ -229,7 +229,7 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
      * 展示数据
      */
     private void showData(String msg){
-        BuglyUtils.uploadBleMsg("实时数据界面读取的数据是："+msg);
+//        BuglyUtils.uploadBleMsg("实时数据界面读取的数据是："+msg);
 
         final int length=msg.length();
         //显示采集时间

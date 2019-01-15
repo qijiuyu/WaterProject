@@ -63,8 +63,8 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener,
         initMVP();
         initView();
         register();//注册广播
-//        sendData(BleContant.SEND_REAL_TIME_DATA);
-        showData("GDCURRENT>180812153625L0010.97T028.8B100V05.98CSQ31R-35.4E0098P0010.125B10.009C0011.000C001413.01B001413.00T001413.00R001413.00+0000.0200;");
+        sendData(BleContant.SEND_REAL_TIME_DATA);
+//        showData("GDCURRENT>180812153625L0010.97T028.8B100V05.98CSQ31R-35.4E0098P0010.125B10.009C0011.000C001413.01B001413.00T001413.00R001413.00+0000.0200;");
     }
 
     /**
@@ -352,7 +352,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener,
      * 显示数据
      */
     private void showData(String msg){
-        BuglyUtils.uploadBleMsg("数据校测界面读取的数据是："+msg);
+//        BuglyUtils.uploadBleMsg("数据校测界面读取的数据是："+msg);
 
         final int length=msg.length();
         //显示采集时间
@@ -486,7 +486,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener,
                 if(Double.parseDouble(SW_wucha)==0){
                     tv_SW_wucha.setText("0");
                 }else{
-                    tv_MS_wucha.setText(SW_wucha);
+                    tv_SW_wucha.setText(SW_wucha);
                 }
             }
 
