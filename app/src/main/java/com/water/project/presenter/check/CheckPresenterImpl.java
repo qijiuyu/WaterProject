@@ -14,6 +14,7 @@ import com.water.project.R;
 import com.water.project.activity.MainActivity;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
+import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.Util;
 import com.water.project.utils.ble.BleContant;
@@ -54,7 +55,7 @@ public class CheckPresenterImpl {
             checkPresenter.showToast("人工实测水温最多只能输入2位整数！");
         }else if(qIndex>2){
             checkPresenter.showToast("人工实测水温的小数点前面最多只能是2位数");
-        }else if(hIndex>2){
+        }else if(qIndex!=-1 && hIndex>2){
             checkPresenter.showToast("人工实测水温的小数点后面最多只能是2位数");
         }else if(TextUtils.isEmpty(wuCha)){
             checkPresenter.showToast("没有误差数据！");
@@ -87,7 +88,7 @@ public class CheckPresenterImpl {
             checkPresenter.showToast("人工实测水位埋深最多只能输入4位整数！");
         }else if(qIndex>4){
             checkPresenter.showToast("人工实测水位埋深的小数点前面最多只能是4位数");
-        }else if(hIndex>3){
+        }else if(qIndex!=-1 && hIndex>3){
             checkPresenter.showToast("人工实测水位埋深的小数点后面最多只能是3位数");
         }else if(TextUtils.isEmpty(wuCha)){
             checkPresenter.showToast("没有误差数据！");
@@ -135,7 +136,7 @@ public class CheckPresenterImpl {
             checkPresenter.showToast("人工实测电导率最多只能输入6位整数！");
         }else if(qIndex>6){
             checkPresenter.showToast("人工实测电导率的小数点前面最多只能是6位数");
-        }else if(hIndex>2){
+        }else if(qIndex!=-1 && hIndex>2){
             checkPresenter.showToast("人工实测电导率的小数点后面最多只能是2位数");
         }else if(TextUtils.isEmpty(wuCha)){
             checkPresenter.showToast("没有误差数据！");
