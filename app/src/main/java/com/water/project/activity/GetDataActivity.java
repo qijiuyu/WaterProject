@@ -56,7 +56,7 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
         initView();
         register();//注册广播
         sendData(); //发送蓝牙命令
-//        showData("GDCURRENT>180812153625L0010.97T028.8B100V05.98CSQ31R-35.4E0098P0010.125B10.009C0011.000C001413.01B001413.00T001413.00R001413.00+0000.0200;");
+//        showData("GDCURRENT>180812153625L0010.975T028.893B100V05.98CSQ31R-35.452E0098P0010.125B10.009C0011.000C001413.01B001413.00T001413.00R001413.00+0.0200;");
     }
 
     /**
@@ -251,8 +251,18 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
         if(length==88 || length==138){
             YaLi=msg.substring(52,61).replace("P","");
         }
-        if(length==91 || length==140){
+        if(length==91){
             YaLi=msg.substring(55,64).replace("P","");
+        }
+        if(length==140){
+            if(Util.isInteger(msg.substring(28,29))){
+                YaLi=msg.substring(57,66).replace("P","");
+            }else{
+                YaLi=msg.substring(55,64).replace("P","");
+            }
+        }
+        if(length==93){
+            YaLi=msg.substring(57,66).replace("P","");
         }
         if(YaLi.contains("99999999")){
             tvYaLi.setText(YaLi+"");
@@ -262,7 +272,7 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
 
         //显示水位埋深
         String MaiShen=null;
-        if(length==91 || length==140){
+        if(length==91 || length==93 || length==140){
             MaiShen=msg.substring(12,21).replace("L","");
         }else{
             MaiShen=msg.substring(12,20).replace("L","");
@@ -281,8 +291,18 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
         if(length==88 || length==138){
             QiYa=msg.substring(61,68).replace("B","");
         }
-        if(length==91 || length==140){
+        if(length==91){
             QiYa=msg.substring(64,71).replace("B","");
+        }
+        if(length==93){
+            QiYa=msg.substring(66,73).replace("B","");
+        }
+        if(length==140){
+            if(Util.isInteger(msg.substring(28,29))){
+                QiYa=msg.substring(66,73).replace("B","");
+            }else{
+                QiYa=msg.substring(64,71).replace("B","");
+            }
         }
         if(YaLi.contains("99999999")){
             tvQiYa.setText(QiYa+"");
@@ -295,13 +315,23 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
         if(length==79 || length==88 || length==138){
             ShuiWen=msg.substring(20,26).replace("T","");
         }
-        if(length==91 || length==140){
+        if(length==91){
             ShuiWen=msg.substring(21,28).replace("T","");
+        }
+        if(length==93){
+            ShuiWen=msg.substring(21,29).replace("T","");
+        }
+        if(length==140){
+            if(Util.isInteger(msg.substring(28,29))){
+                ShuiWen=msg.substring(21,29).replace("T","");
+            }else{
+                ShuiWen=msg.substring(21,28).replace("T","");
+            }
         }
         if(YaLi.contains("99999999")){
             tvShuiWen.setText(ShuiWen+"℃");
         }else{
-            tvShuiWen.setText(Util.setDouble(Double.parseDouble(ShuiWen),2)+"℃");
+            tvShuiWen.setText(Util.setDouble(Double.parseDouble(ShuiWen),3)+"℃");
         }
 
         //显示气温值
@@ -312,13 +342,23 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
         if(length==88 || length==138){
             QiWen=msg.substring(41,47).replace("R","");
         }
-        if(length==91 || length==140){
+        if(length==91){
             QiWen=msg.substring(43,50).replace("R","");
+        }
+        if(length==93){
+            QiWen=msg.substring(44,52).replace("R","");
+        }
+        if(length==140){
+            if(Util.isInteger(msg.substring(28,29))){
+                QiWen=msg.substring(44,52).replace("R","");
+            }else{
+                QiWen=msg.substring(43,50).replace("R","");
+            }
         }
         if(YaLi.contains("99999999")){
             tvQiWen.setText(QiWen+"℃");
         }else{
-            tvQiWen.setText(Util.setDouble(Double.parseDouble(QiWen),2)+"℃");
+            tvQiWen.setText(Util.setDouble(Double.parseDouble(QiWen),3)+"℃");
         }
 
         //显示电压值
@@ -329,8 +369,18 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
         if(length==88 || length==138){
             DianYa=msg.substring(30,36).replace("V","");
         }
-        if(length==91 || length==140){
+        if(length==91){
             DianYa=msg.substring(32,38).replace("V","");
+        }
+        if(length==93){
+            DianYa=msg.substring(33,39).replace("V","");
+        }
+        if(length==140){
+            if(Util.isInteger(msg.substring(28,29))){
+                DianYa=msg.substring(33,39).replace("V","");
+            }else{
+                DianYa=msg.substring(32,38).replace("V","");
+            }
         }
         if(YaLi.contains("99999999")){
             tvDianYa.setText(DianYa+"V");
@@ -338,15 +388,20 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
             tvDianYa.setText(Util.setDouble(Double.parseDouble(DianYa),1)+"V");
         }
 
+
+        //显示电导率
         if(length==138 || length==140){
             findViewById(R.id.rel_ddl).setVisibility(View.VISIBLE);
-            //显示电导率
             String DianDaoLv=null;
             if(length==138){
                 DianDaoLv=msg.substring(77,87).replace("C","");
             }
             if(length==140){
-                DianDaoLv=msg.substring(80,90).replace("C","");
+                if(Util.isInteger(msg.substring(28,29))){
+                    DianDaoLv=msg.substring(82,92).replace("C","");
+                }else{
+                    DianDaoLv=msg.substring(80,90).replace("C","");
+                }
             }
             tvDianDaoLv.setText(Util.setDouble(Double.parseDouble(DianDaoLv),2)+"uS/cm");
         }
