@@ -185,13 +185,13 @@ public class SendBleStr {
         result=result.replace("-","");
         final int index=result.indexOf(".");
         //判断小数点前面几位
-        for(int i=0;i<2-index;i++){
+        for(int i=0;i<3-index;i++){
             stringBuffer.append("0");
         }
         stringBuffer.append(result);
 
         //判断小数点后面几位
-        for(int i=0;i<2-(result.length()-index-1);i++){
+        for(int i=0;i<3-(result.length()-index-1);i++){
             stringBuffer.append("0");
         }
         SEND_DATA_SHUI_WEN=stringBuffer.toString();
