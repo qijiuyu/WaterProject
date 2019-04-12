@@ -173,7 +173,7 @@ public class SendBleStr {
      */
     public static void setSW_check(String wucha,String data){
         StringBuffer stringBuffer=new StringBuffer("GD&#TYW001T");
-        data=data.replace("GD&#TYR001T","");
+        data=data.replace("GD&>#TYR001T","");
         final double pyl=Double.parseDouble(data);
         final double wc=Double.parseDouble(wucha);
         String result=Util.sum(pyl,wc)+"";
@@ -186,13 +186,13 @@ public class SendBleStr {
         result=result.replace("-","");
         final int index=result.indexOf(".");
         //判断小数点前面几位
-        for(int i=0;i<3-index;i++){
+        for(int i=0;i<2-index;i++){
             stringBuffer.append("0");
         }
         stringBuffer.append(result);
 
         //判断小数点后面几位
-        for(int i=0;i<3-(result.length()-index-1);i++){
+        for(int i=0;i<2-(result.length()-index-1);i++){
             stringBuffer.append("0");
         }
         SEND_DATA_SHUI_WEN=stringBuffer.toString();
@@ -207,7 +207,7 @@ public class SendBleStr {
      */
     public static void setDDL_check(String wucha,String data){
         StringBuffer stringBuffer=new StringBuffer("GD&#CYW001T");
-        data=data.replace("GD&#CYR001T","");
+        data=data.replace("GD&>#CYR001T","");
         final double pyl=Double.parseDouble(data);
         final double wc=Double.parseDouble(wucha);
         String result=Util.sum(pyl,wc)+"";
@@ -320,7 +320,7 @@ public class SendBleStr {
                   break;
             //设置水温误差数据
             case BleContant.SEND_DATA_SHUI_WEN:
-                BuglyUtils.uploadBleMsg("发送给设备的水温校正数据是："+SEND_DATA_SHUI_WEN);
+//                BuglyUtils.uploadBleMsg("发送给设备的水温校正数据是："+SEND_DATA_SHUI_WEN);
                   SendBleDataManager.getInstance().sendData(SEND_DATA_SHUI_WEN,type);
                   break;
             //校测前先读取电导率偏移量
@@ -329,7 +329,7 @@ public class SendBleStr {
                   break;
             //设置水温电导率数据
             case BleContant.SEND_DATA_DIAN_DAO_LV:
-                BuglyUtils.uploadBleMsg("发送给设备的电导率数据是："+SEND_DATA_DIAN_DAO_LV);
+//                BuglyUtils.uploadBleMsg("发送给设备的电导率数据是："+SEND_DATA_DIAN_DAO_LV);
                  SendBleDataManager.getInstance().sendData(SEND_DATA_DIAN_DAO_LV,type);
                  break;
              default:

@@ -51,12 +51,12 @@ public class CheckPresenterImpl {
         final String strCheck=et_SW_check.getText().toString().trim();
         final int qIndex=strCheck.indexOf(".");
         final int hIndex=strCheck.length()-qIndex-1;
-        if(strCheck.indexOf(".")==-1 && strCheck.length()>3){
-            checkPresenter.showToast("人工实测水温最多只能输入3位整数！");
-        }else if(qIndex>3){
-            checkPresenter.showToast("人工实测水温的小数点前面最多只能是3位数");
-        }else if(qIndex!=-1 && hIndex>3){
-            checkPresenter.showToast("人工实测水温的小数点后面最多只能是3位数");
+        if(strCheck.indexOf(".")==-1 && strCheck.length()>2){
+            checkPresenter.showToast("人工实测水温最多只能输入2位整数！");
+        }else if(qIndex>2){
+            checkPresenter.showToast("人工实测水温的小数点前面最多只能是2位数");
+        }else if(qIndex!=-1 && hIndex>2){
+            checkPresenter.showToast("人工实测水温的小数点后面最多只能是2位数");
         }else if(TextUtils.isEmpty(wuCha)){
             checkPresenter.showToast("没有误差数据！");
         }else if(Double.parseDouble(wuCha)==0){

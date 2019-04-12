@@ -303,7 +303,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener,
                      switch (SEND_STATUS){
                          //查询数据回执
                          case BleContant.SEND_REAL_TIME_DATA:
-                             BuglyUtils.uploadBleMsg("总数据是："+data);
+//                             BuglyUtils.uploadBleMsg("总数据是："+data);
                               clearTask();
                               SEND_STATUS=BleContant.NOT_SEND_DATA;
                               //解析并显示回执的数据
@@ -316,13 +316,13 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener,
                               break;
                          //读取水温偏移量回执
                          case BleContant.RED_SHUI_WEN_PYL:
-                             BuglyUtils.uploadBleMsg("水温偏移量回执："+data);
+//                             BuglyUtils.uploadBleMsg("水温偏移量回执："+data);
                               SendBleStr.setSW_check(SW_wucha,data);
                               sendData(BleContant.SEND_DATA_SHUI_WEN);
                               break;
                          //读取电导率偏移量回执
                          case BleContant.RED_DIAN_DAO_LV_PYL:
-                             BuglyUtils.uploadBleMsg("电导率偏移量回执："+data);
+//                             BuglyUtils.uploadBleMsg("电导率偏移量回执："+data);
                               SendBleStr.setDDL_check(DDL_wucha,data);
                               sendData(BleContant.SEND_DATA_DIAN_DAO_LV);
                               break;
