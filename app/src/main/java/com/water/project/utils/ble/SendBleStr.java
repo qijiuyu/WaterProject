@@ -1,5 +1,6 @@
 package com.water.project.utils.ble;
 
+import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.Util;
 
@@ -319,6 +320,7 @@ public class SendBleStr {
                   break;
             //设置水温误差数据
             case BleContant.SEND_DATA_SHUI_WEN:
+                BuglyUtils.uploadBleMsg("发送给设备的水温校正数据是："+SEND_DATA_SHUI_WEN);
                   SendBleDataManager.getInstance().sendData(SEND_DATA_SHUI_WEN,type);
                   break;
             //校测前先读取电导率偏移量
@@ -327,6 +329,7 @@ public class SendBleStr {
                   break;
             //设置水温电导率数据
             case BleContant.SEND_DATA_DIAN_DAO_LV:
+                BuglyUtils.uploadBleMsg("发送给设备的电导率数据是："+SEND_DATA_DIAN_DAO_LV);
                  SendBleDataManager.getInstance().sendData(SEND_DATA_DIAN_DAO_LV,type);
                  break;
              default:
