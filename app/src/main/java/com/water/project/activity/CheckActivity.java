@@ -153,7 +153,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener,
 
                 //计算误差
                 final String strSW=tvShuiWen.getText().toString().trim().replace("℃","");
-                SW_wucha =Util.sub(Double.parseDouble(strSW),Double.parseDouble(s.toString()))+"";
+                SW_wucha =Util.sub(Double.parseDouble(s.toString()),Double.parseDouble(strSW))+"";
                 if(Double.parseDouble(SW_wucha)==0){
                     tv_SW_wucha.setText("0");
                 }else{
@@ -182,7 +182,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener,
 
                 //计算误差
                 final String strSW=tvDianDaoLv.getText().toString().trim().replace("uS/cm","");
-                DDL_wucha =Util.sub(Double.parseDouble(strSW),Double.parseDouble(s.toString()))+"";
+                DDL_wucha =Util.sub(Double.parseDouble(s.toString()),Double.parseDouble(strSW))+"";
                 if(Double.parseDouble(DDL_wucha)==0){
                     tv_DDL_wucha.setText("0");
                 }else{
