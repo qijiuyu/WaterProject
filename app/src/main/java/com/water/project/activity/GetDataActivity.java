@@ -44,14 +44,7 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        StatusBarUtils.transparencyBar(this);
         setContentView(R.layout.activity_getdata);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) { //系统版本大于19
-            setTranslucentStatus(true);
-        }
-        SystemBarTintManager tintManager = new SystemBarTintManager(this);
-        tintManager.setStatusBarTintEnabled(true);
-        tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initMvp();
         initView();
         register();//注册广播
@@ -219,6 +212,7 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
                 case BleService.ACTION_GET_DATA_ERROR:
                     clearTask();
                     showToastView("设备回执数据异常");
+                    break;
                 default:
                     break;
             }

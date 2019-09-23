@@ -1,4 +1,4 @@
-package com.water.project.activity;
+package com.water.project.activity.new_version;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -16,22 +16,31 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.water.project.R;
+import com.water.project.activity.BaseActivity;
+import com.water.project.activity.MainActivity;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
 import com.water.project.bean.SelectTime;
+import com.water.project.bean.eventbus.EventStatus;
+import com.water.project.bean.eventbus.EventType;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.BuglyUtils;
-import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.StatusBarUtils;
 import com.water.project.utils.SystemBarTintManager;
 import com.water.project.utils.Util;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
+import com.water.project.utils.photo.DialogUtils;
 import com.water.project.view.DialogView;
 import com.water.project.view.SelectTimeDialog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -40,7 +49,7 @@ import java.util.Date;
  * Created by Administrator on 2018/9/1.
  */
 
-public class SettingActivity extends BaseActivity implements View.OnClickListener,SelectTime{
+public class New_SettingActivity extends BaseActivity implements View.OnClickListener,SelectTime{
     private EditText etCode,etPhone,etTanTou;
     private TextView etCStime,etFStime,etCEtime,etFEtime;
     private ImageView imgClear1,imgClear2,imgClear3;
@@ -55,9 +64,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_new_setting);
+        //注册EventBus
+        EventBus.getDefault().register(this);
         initView();
         register();//注册广播
-        sendData(BleContant.SEND_GET_CODE_PHONE,1); //发送蓝牙命令
+//        sendData(BleContant.SEND_GET_CODE_PHONE,1); //发送蓝牙命令
     }
 
 
@@ -84,11 +96,13 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         imgClear1.setOnClickListener(this);
         imgClear2.setOnClickListener(this);
         imgClear3.setOnClickListener(this);
-        findViewById(R.id.tv_setting_one).setOnClickListener(this);
+        findViewById(R.id.tv_setting_code).setOnClickListener(this);
+        findViewById(R.id.tv_setting_mobile).setOnClickListener(this);
         findViewById(R.id.tv_setting_two).setOnClickListener(this);
         findViewById(R.id.tv_setting_three).setOnClickListener(this);
         findViewById(R.id.tv_setting_four).setOnClickListener(this);
-        findViewById(R.id.tv_get_one).setOnClickListener(this);
+        findViewById(R.id.tv_get_code).setOnClickListener(this);
+        findViewById(R.id.tv_get_mobile).setOnClickListener(this);
         findViewById(R.id.tv_get_two).setOnClickListener(this);
         findViewById(R.id.tv_get_three).setOnClickListener(this);
         findViewById(R.id.tv_get_four).setOnClickListener(this);
@@ -165,7 +179,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
      */
     private void sendData(int status,int type){
         //判断蓝牙是否打开
-        if(!BleUtils.isEnabled(SettingActivity.this,MainActivity.mBtAdapter)){
+        if(!BleUtils.isEnabled(New_SettingActivity.this,MainActivity.mBtAdapter)){
             return;
         }
         SEND_STATUS=status;
@@ -198,29 +212,34 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            //设置统一编码和SIM
-            case R.id.tv_setting_one:
+            //设置统一编码
+            case R.id.tv_setting_code:
                   final String code=etCode.getText().toString().trim();
-                  final String sim=etPhone.getText().toString().trim();
                   if(TextUtils.isEmpty(code)){
                       showToastView("请输入统一编码！");
-                  }else if(code.length()<10 || code.length()==11){
+                  }else if(code.length()<10 || code.length()>15){
                       etCode.setTextColor(getResources().getColor(R.color.color_EC191B));
-                      showToastView("统一编码的长度只能是10位或者12位！");
-                  }else if(TextUtils.isEmpty(sim)){
-                      etCode.setTextColor(getResources().getColor(R.color.color_1fc37f));
-                      showToastView("请输入SIM卡号！");
-                  }else if(sim.length()<11 || sim.length()==12){
-                      etCode.setTextColor(getResources().getColor(R.color.color_1fc37f));
-                      etPhone.setTextColor(getResources().getColor(R.color.color_EC191B));
-                      showToastView("SIM卡号位数错误！");
+                      showToastView("统一编码的长度只能是10到15位！");
                   }else{
                       etCode.setTextColor(getResources().getColor(R.color.color_1fc37f));
-                      etPhone.setTextColor(getResources().getColor(R.color.color_1fc37f));
-                      SendBleStr.sendSetCodeSim(code,sim,CODE_SIM_DATA);
+                      SendBleStr.set_new_code(code);
                       sendData(BleContant.SET_CODE_PHONE,2);
                   }
                  break;
+            //设置SIM卡号
+            case R.id.tv_setting_mobile:
+                final String sim=etPhone.getText().toString().trim();
+                if(TextUtils.isEmpty(sim)){
+                    showToastView("请输入SIM卡号！");
+                }else if(sim.length()<11 || sim.length()==12){
+                    etPhone.setTextColor(getResources().getColor(R.color.color_EC191B));
+                    showToastView("SIM卡号位数错误！");
+                }else{
+                    etPhone.setTextColor(getResources().getColor(R.color.color_1fc37f));
+                    SendBleStr.set_new_Sim(sim,CODE_SIM_DATA);
+                    sendData(BleContant.SET_CODE_PHONE,2);
+                }
+                  break;
             //设置探头埋深
             case R.id.tv_setting_two:
                   final String tantou=etTanTou.getText().toString().trim();
@@ -243,26 +262,26 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
             //选择采集时间
             case R.id.et_as_cstime:
-                 SelectTimeDialog selectTimeDialog=new SelectTimeDialog(SettingActivity.this,this,1);
+                 SelectTimeDialog selectTimeDialog=new SelectTimeDialog(New_SettingActivity.this,this,1);
                  selectTimeDialog.show();
                  break;
             //选择采集间隔时间
             case R.id.tv_as_cetime:
-                 wheel(Util.getHourList(),etCEtime,1);
+                 DialogUtils.getHourAndMinute(New_SettingActivity.this,1);
                  break;
             //设置采集频率
             case R.id.tv_setting_three:
                  final String date=etCStime.getText().toString().trim();
-                 final String hour=etCEtime.getText().toString().trim();
+                 final String totalMinute=etCEtime.getText().toString().trim();
                  if(TextUtils.isEmpty(date)){
                      showToastView("请选择采集起始时间！");
-                 }else if(TextUtils.isEmpty(hour)){
+                 }else if(TextUtils.isEmpty(totalMinute)){
                      showToastView("请选择采集间隔时间！");
                  }else{
                      dialogView = new DialogView(mContext, "采集起始时间和采集间隔时间一旦修改，RTU内部存储数据将全部清空!","确定", "取消", new View.OnClickListener() {
                          public void onClick(View v) {
                              dialogView.dismiss();
-                             SendBleStr.sendCaiJi(date.substring(0, date.length()-2).replace("-","").replace(" ","").replace(":",""),hour);
+                             SendBleStr.new_sendCaiJi(date.substring(0, date.length()-2).replace("-","").replace(" ","").replace(":",""),totalMinute);
                              sendData(BleContant.SET_CAI_JI_PIN_LU,2);
                          }
                      }, null);
@@ -271,12 +290,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
             //选择发送起始时间
             case R.id.et_as_fstime:
-                 SelectTimeDialog selectTimeDialog2=new SelectTimeDialog(SettingActivity.this,this,2);
+                 SelectTimeDialog selectTimeDialog2=new SelectTimeDialog(New_SettingActivity.this,this,2);
                  selectTimeDialog2.show();
                   break;
             //选择发送间隔小时
             case R.id.et_as_fetime:
-                 wheel(Util.getHourList(),etFEtime,1);
+                 DialogUtils.getHourAndMinute(New_SettingActivity.this,2);
                  break;
             //设置发送频率
             case R.id.tv_setting_four:
@@ -292,7 +311,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                  }
                 break;
             //读取统一编码和SIM
-            case R.id.tv_get_one:
+            case R.id.tv_get_mobile:
+            case R.id.tv_get_code:
                  sendData(BleContant.SEND_GET_CODE_PHONE,2);
                  break;
             //读取探头埋深
@@ -379,6 +399,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         }catch (Exception e){
             e.printStackTrace();
         }
+
     }
 
 
@@ -437,7 +458,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                          sendData(SEND_STATUS,SEND_TYPE);
                      }
                     break;
-                //接收到了回执的数据
+                //接收到了读取回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
                     final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
                     //解析并显示回执的数据
@@ -508,6 +529,24 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         }
     };
 
+
+    /**
+     * EventBus注解
+     */
+    @Subscribe
+    public void onEvent(EventType eventType){
+        switch (eventType.getStatus()){
+            //获取采集时间间隔数据
+            case EventStatus.NEW_SETTING_CJSJJG:
+                  etCEtime.setText(String.valueOf(eventType.getObject()));
+                  break;
+            //获取发送时间间隔数据
+            case EventStatus.NEW_SETTING_FSSJJG:
+                 etFEtime.setText(String.valueOf(eventType.getObject()));
+                 break;
+        }
+    }
+
     public void getTime(String time,int type) {
         if(type==1){
             etCStime.setText(time+":00");
@@ -517,6 +556,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     }
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         unregisterReceiver(mBroadcastReceiver);
     }
 

@@ -65,8 +65,30 @@ public class SelectTimeUtils {
      */
     public static List<String> getHour(){
         List<String> list=new ArrayList<>();
-        list.add("00时");list.add("01时");list.add("02时");list.add("03时");list.add("04时");list.add("05时");list.add("06时");list.add("07时");list.add("08时");list.add("09时");list.add("10时");list.add("11时");
-        list.add("12时");list.add("13时");list.add("14时");list.add("15时");list.add("16时");list.add("17时");list.add("18时");list.add("19时");list.add("20时");list.add("21时");list.add("22时");list.add("23时");
+        for (int i=0;i<24;i++){
+            if(i<10){
+                list.add("0"+i+"时");
+            }else{
+                list.add(i+"时");
+            }
+        }
+        return list;
+    }
+
+
+    /**
+     * 获取分钟
+     * @return
+     */
+    public static List<String> getMinute(){
+        List<String> list=new ArrayList<>();
+        for (int i=0;i<60;i++){
+             if(i<10){
+                 list.add("0"+i+"分");
+             }else{
+                 list.add(i+"分");
+             }
+        }
         return list;
     }
 }

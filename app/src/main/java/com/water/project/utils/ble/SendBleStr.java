@@ -10,6 +10,9 @@ import com.water.project.utils.Util;
 
 public class SendBleStr {
 
+    //读取设备的版本号
+    public static final String RED_VERSION="GDBBR";
+
     //读取统一编码，SIM卡号
     public static final String GET_CODE_PHONE="GDGET";
 
@@ -73,6 +76,33 @@ public class SendBleStr {
 
 
     /**
+     * 新版设备，设置统一编码
+     * @param code
+     */
+    public static void set_new_code(String code){
+        StringBuffer stringBuffer=new StringBuffer("GDIDW");
+        stringBuffer.append(code);
+        SET_CODE_PHONE=stringBuffer.toString();
+    }
+
+
+    /**
+     * 新版设备，设置SIM卡号
+     * @param sim
+     * @param data
+     */
+    public static void set_new_Sim(String sim,String data){
+        StringBuffer stringBuffer=new StringBuffer();
+        String[] strings=data.split(";");
+        strings[6]=sim;
+        for (int i=0;i<strings.length;i++){
+            stringBuffer.append(strings[i]+";");
+        }
+        SET_CODE_PHONE=stringBuffer.toString();
+    }
+
+
+    /**
      * 设置探头埋深
      * @param data
      */
@@ -112,6 +142,18 @@ public class SendBleStr {
             stringBuffer.append("0");
         }
         stringBuffer.append(minuts);
+        SET_CAI_JI_PIN_LU=stringBuffer.toString();
+    }
+
+
+    /**
+     * 新版-采集频率-拼接要发送的数据
+     * @param startTime
+     * @param totalMinute
+     */
+    public static void new_sendCaiJi(String startTime,String totalMinute){
+        StringBuffer stringBuffer=new StringBuffer("GDREADW");
+        stringBuffer.append(startTime+","+totalMinute);
         SET_CAI_JI_PIN_LU=stringBuffer.toString();
     }
 
@@ -266,6 +308,10 @@ public class SendBleStr {
 
     public static void sendBleData(int status,int type){
         switch (status){
+            //读取设备版本号
+            case BleContant.RED_DEVICE_VERSION:
+                SendBleDataManager.getInstance().sendData(RED_VERSION,type);
+                break;
             //读取统一编码，SIM卡号
             case BleContant.SEND_GET_CODE_PHONE:
                  SendBleDataManager.getInstance().sendData(GET_CODE_PHONE,type);
@@ -320,7 +366,6 @@ public class SendBleStr {
                   break;
             //设置水温误差数据
             case BleContant.SEND_DATA_SHUI_WEN:
-//                BuglyUtils.uploadBleMsg("发送给设备的水温校正数据是："+SEND_DATA_SHUI_WEN);
                   SendBleDataManager.getInstance().sendData(SEND_DATA_SHUI_WEN,type);
                   break;
             //校测前先读取电导率偏移量
@@ -329,7 +374,6 @@ public class SendBleStr {
                   break;
             //设置水温电导率数据
             case BleContant.SEND_DATA_DIAN_DAO_LV:
-//                BuglyUtils.uploadBleMsg("发送给设备的电导率数据是："+SEND_DATA_DIAN_DAO_LV);
                  SendBleDataManager.getInstance().sendData(SEND_DATA_DIAN_DAO_LV,type);
                  break;
              default:

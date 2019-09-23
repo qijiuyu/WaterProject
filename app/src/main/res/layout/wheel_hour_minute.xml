@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/half_transparent">
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:background="#ffffff" >
+
+        <TextView
+            android:id="@+id/tv_wh_title"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:text="请选择时间"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="18dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#E5E6E7"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:orientation="horizontal">
+
+            <com.water.project.view.CycleWheelView
+                android:id="@+id/wv_hour"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+            </com.water.project.view.CycleWheelView>
+
+            <com.water.project.view.CycleWheelView
+                android:id="@+id/wv_minute"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+            </com.water.project.view.CycleWheelView>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#E5E6E7"/>
+
+        <TextView
+            android:id="@+id/tv_confirm"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:text="确定"
+            android:onClick="onClick"
+            android:gravity="center"
+            android:textColor="#197FEE"
+            android:textSize="16dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

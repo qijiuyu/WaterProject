@@ -52,14 +52,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener,
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        StatusBarUtils.transparencyBar(this);
         setContentView(R.layout.activity_check);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) { //系统版本大于19
-            setTranslucentStatus(true);
-        }
-        SystemBarTintManager tintManager = new SystemBarTintManager(this);
-        tintManager.setStatusBarTintEnabled(true);
-        tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initMVP();
         initView();
         register();//注册广播

@@ -446,7 +446,7 @@ public class BleService extends Service implements Serializable{
                 return;
             }
             LogUtils.e("接收到的数据是："+data);
-            if(data.contains("GD")){
+            if(data.contains("GD") || data.contains("ZKGD2000")){
                 sb.append(data);
                 if(data.contains("OK")){
                     broadCastData();

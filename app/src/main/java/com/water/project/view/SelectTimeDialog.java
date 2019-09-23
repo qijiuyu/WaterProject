@@ -10,7 +10,10 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import com.water.project.R;
+import com.water.project.activity.SettingActivity;
+import com.water.project.activity.new_version.New_SettingActivity;
 import com.water.project.bean.SelectTime;
+import com.water.project.utils.LogUtils;
 import com.water.project.utils.SelectTimeUtils;
 
 import java.util.Calendar;
@@ -24,10 +27,10 @@ public class SelectTimeDialog extends Dialog implements View.OnClickListener {
 
     private View mContentView;
     private Activity context;
-    private CycleWheelView year,month,day,hour;
+    private CycleWheelView year,month,day,hour,minute;
     private SelectTime selectTime;
     private int type;
-    private String strYear,strMonth,strDay,strHour;
+    private String strYear,strMonth,strDay,strHour,strMinute;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -57,7 +60,20 @@ public class SelectTimeDialog extends Dialog implements View.OnClickListener {
         day.setLabels(SelectTimeUtils.getDay());
         hour=(CycleWheelView)findViewById(R.id.wv_hour);
         hour.setLabels(SelectTimeUtils.getHour());
+        minute=(CycleWheelView)findViewById(R.id.wv_minute);
+        minute.setLabels(SelectTimeUtils.getMinute());
 
+        //根据不同的类隐藏对应的功能
+        if(context instanceof SettingActivity){
+            minute.setVisibility(View.GONE);
+        }
+        if(context instanceof New_SettingActivity){
+            if(type==1){
+                minute.setVisibility(View.GONE);
+            }
+        }
+
+        //获取当前年月日
         Calendar calendar = Calendar.getInstance();
         //年
         int intYear = calendar.get(Calendar.YEAR);
@@ -67,6 +83,8 @@ public class SelectTimeDialog extends Dialog implements View.OnClickListener {
         int intDay = calendar.get(Calendar.DAY_OF_MONTH);
         //小时
         int intHour = calendar.get(Calendar.HOUR_OF_DAY);
+        //分钟
+        int intMinute=calendar.get(Calendar.MINUTE);
 
         for(int i=0;i<SelectTimeUtils.getYear().size();i++){
             if(SelectTimeUtils.getYear().get(i).replace("年","").equals(String.valueOf(intYear))){
@@ -76,46 +94,34 @@ public class SelectTimeDialog extends Dialog implements View.OnClickListener {
         }
 
         for(int i=0;i<SelectTimeUtils.getMonth().size();i++){
-            if(intMonth<10 && String.valueOf(intMonth).length()==1){
-                if(SelectTimeUtils.getMonth().get(i).replace("月","").equals("0"+intMonth)){
-                    month.setSelection(i);
-                    break;
-                }
-            }else{
-                if(SelectTimeUtils.getMonth().get(i).replace("月","").equals(String.valueOf(intMonth))){
-                    month.setSelection(i);
-                    break;
-                }
+            LogUtils.e(Integer.parseInt(SelectTimeUtils.getMonth().get(i).replace("月",""))+"+++++++++++++"+intMonth);
+            if(Integer.parseInt(SelectTimeUtils.getMonth().get(i).replace("月",""))==intMonth){
+                month.setSelection(i);
+                break;
             }
         }
 
 
         for(int i=0;i<SelectTimeUtils.getDay().size();i++){
-            if(intDay<10 && String.valueOf(intDay).length()==1){
-                if(SelectTimeUtils.getDay().get(i).replace("日","").equals("0"+intDay)){
-                    day.setSelection(i);
-                    break;
-                }
-            }else{
-                if(SelectTimeUtils.getDay().get(i).replace("日","").equals(String.valueOf(intDay))){
-                    day.setSelection(i);
-                    break;
-                }
+            if(Integer.parseInt(SelectTimeUtils.getDay().get(i).replace("日",""))==intDay){
+                day.setSelection(i);
+                break;
             }
         }
 
 
         for(int i=0;i<SelectTimeUtils.getHour().size();i++){
-            if(intHour<10 && String.valueOf(intHour).length()==1){
-                if(SelectTimeUtils.getHour().get(i).replace("时","").equals("0"+intHour)){
-                    hour.setSelection(i);
-                    break;
-                }
-            }else{
-                if(SelectTimeUtils.getHour().get(i).replace("时","").equals(String.valueOf(intHour))){
-                    hour.setSelection(i);
-                    break;
-                }
+            if(Integer.parseInt(SelectTimeUtils.getHour().get(i).replace("时",""))==intHour){
+                hour.setSelection(i);
+                break;
+            }
+        }
+
+
+        for(int i=0;i<SelectTimeUtils.getMinute().size();i++){
+            if(Integer.parseInt(SelectTimeUtils.getMinute().get(i).replace("分",""))==intMinute){
+                minute.setSelection(i);
+                break;
             }
         }
 
@@ -124,6 +130,7 @@ public class SelectTimeDialog extends Dialog implements View.OnClickListener {
             month.setWheelSize(5);
             day.setWheelSize(5);
             hour.setWheelSize(5);
+            minute.setWheelSize(5);
         } catch (CycleWheelView.CycleWheelViewException e) {
             e.printStackTrace();
         }
@@ -174,6 +181,18 @@ public class SelectTimeDialog extends Dialog implements View.OnClickListener {
                 strHour=label;
             }
         });
+
+        minute.setCycleEnable(false);
+        minute.setAlphaGradual(0.5f);
+        minute.setDivider(Color.parseColor("#abcdef"),1);
+        minute.setSolid(Color.WHITE,Color.WHITE);
+        minute.setLabelColor(Color.GRAY);
+        minute.setLabelSelectColor(Color.BLACK);
+        minute.setOnWheelItemSelectedListener(new CycleWheelView.WheelItemSelectedListener() {
+            public void onItemSelected(int position, String label) {
+                strMinute=label;
+            }
+        });
     }
 
     private void initListener() {
@@ -190,7 +209,17 @@ public class SelectTimeDialog extends Dialog implements View.OnClickListener {
                  final String month=strMonth.replace("月","");
                  final String day=strDay.replace("日","");
                  final String hour=strHour.replace("时","");
-                 selectTime.getTime(year+"-"+month+"-"+day+" "+hour+":00",type);
+                 final String minute=strMinute.replace("分","");
+                 if(context instanceof SettingActivity){
+                     selectTime.getTime(year+"-"+month+"-"+day+" "+hour,type);
+                 }
+                if(context instanceof New_SettingActivity){
+                    if(type==1){
+                        selectTime.getTime(year+"-"+month+"-"+day+" "+hour,type);
+                    }else {
+                        selectTime.getTime(year+"-"+month+"-"+day+" "+hour+":"+minute,type);
+                    }
+                }
                  break;
             case R.id.cancle:
                  break;

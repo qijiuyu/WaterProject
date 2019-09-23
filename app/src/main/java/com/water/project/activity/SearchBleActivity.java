@@ -22,6 +22,8 @@ import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.StatusBarUtils;
 import com.water.project.utils.SystemBarTintManager;
+import com.water.project.utils.ble.BleContant;
+import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
 import com.water.project.view.RippleBackground;
 import java.util.ArrayList;
@@ -44,14 +46,7 @@ public class SearchBleActivity extends BaseActivity {
     private Handler mHandler=new Handler();
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StatusBarUtils.transparencyBar(this);
         setContentView(R.layout.activity_search_ble);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) { //系统版本大于19
-            setTranslucentStatus(true);
-        }
-        SystemBarTintManager tintManager = new SystemBarTintManager(this);
-        tintManager.setStatusBarTintEnabled(true);
-        tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
         register();//注册广播
         scanBle();//开始扫描蓝牙
@@ -192,9 +187,43 @@ public class SearchBleActivity extends BaseActivity {
                 //初始化通道成功
                 case BleService.ACTION_ENABLE_NOTIFICATION_SUCCES:
                      clearTask();
-                     showToastView("蓝牙连接成功！");
-                     SearchBleActivity.this.finish();
+                     //读取设备版本号
+                     redVersion();
                      break;
+                //接收到了回执的数据
+                case BleService.ACTION_DATA_AVAILABLE:
+                    clearTask();
+                    final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
+                    //存在版本信息
+                    SPUtil.getInstance(SearchBleActivity.this).addString(SPUtil.DEVICE_VERSION,data);
+                    SearchBleActivity.this.finish();
+                    break;
+                case BleService.ACTION_INTERACTION_TIMEOUT:
+                    clearTask();
+                    dialogView = new DialogView(mContext, "接收数据超时！", "重试","取消", new View.OnClickListener() {
+                        public void onClick(View v) {
+                            dialogView.dismiss();
+                            //读取设备版本号
+                            redVersion();
+                        }
+                    }, null);
+                    dialogView.show();
+                    break;
+                case BleService.ACTION_SEND_DATA_FAIL:
+                    clearTask();
+                    dialogView = new DialogView(mContext, "下发命令失败！", "重试","取消", new View.OnClickListener() {
+                        public void onClick(View v) {
+                            dialogView.dismiss();
+                            //读取设备版本号
+                            redVersion();
+                        }
+                    }, null);
+                    dialogView.show();
+                    break;
+                case BleService.ACTION_GET_DATA_ERROR:
+                    clearTask();
+                    showToastView("设备回执数据异常");
+                    break;
                 default:
                      break;
             }
@@ -217,6 +246,15 @@ public class SearchBleActivity extends BaseActivity {
             boolean isCon=MainActivity.bleService.connect(ble.getBleMac());
         }
     };
+
+
+    /**
+     * 读取设备版本号
+     */
+    private void redVersion(){
+        showProgress("正在读取版本号...");
+        SendBleStr.sendBleData(BleContant.RED_DEVICE_VERSION,1);
+    }
 
 
     @Override

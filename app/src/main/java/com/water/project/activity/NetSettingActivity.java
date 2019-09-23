@@ -52,14 +52,6 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        StatusBarUtils.transparencyBar(this);
-        setContentView(R.layout.activity_net);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) { //系统版本大于19
-            setTranslucentStatus(true);
-        }
-        SystemBarTintManager tintManager = new SystemBarTintManager(this);
-        tintManager.setStatusBarTintEnabled(true);
-        tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
         register();
         sendData(BleContant.SEND_GET_CODE_PHONE);

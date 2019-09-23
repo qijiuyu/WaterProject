@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -20,8 +21,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.water.project.R;
+import com.water.project.activity.new_version.New_SettingActivity;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
+import com.water.project.bean.SelectTime;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.LogUtils;
@@ -45,22 +48,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     //蓝牙参数
     public static BleService bleService = null;
     public static BluetoothAdapter mBtAdapter = null;
-//    private Banner banner;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        StatusBarUtils.transparencyBar(this);
         setContentView(R.layout.activity_main);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) { //系统版本大于19
-            setTranslucentStatus(true);
-        }
-        SystemBarTintManager tintManager = new SystemBarTintManager(this);
-        tintManager.setStatusBarTintEnabled(true);
-        tintManager.setStatusBarTintResource(R.color.color_1fc37f);
         initView();
         //删除缓存
         deleteCache();
-//        startBanner();//加载轮播图片
         initService();//注册蓝牙服务
         register();//注册广播
     }
@@ -70,7 +64,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
      * 初始化控件
      */
     private void initView(){
-//        banner = (Banner) findViewById(R.id.banner);
         linearLayout1=(LinearLayout)findViewById(R.id.lin_am1);
         linearLayout2=(LinearLayout)findViewById(R.id.lin_am2);
         TextView tvAbout=(TextView)findViewById(R.id.tv_about);
@@ -82,28 +75,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         findViewById(R.id.lin_am_yan).setOnClickListener(this);
         findViewById(R.id.lin_am_net).setOnClickListener(this);
     }
-
-
-//    private void startBanner(){
-//        //设置banner样式
-//        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
-//        //设置图片加载器
-//        banner.setImageLoader(new GlideImageLoader());
-//        //设置图片集合
-//        banner.setImages(imgList);
-//        //设置banner动画效果
-//        banner.setBannerAnimation(Transformer.DepthPage);
-//        //设置标题集合（当banner样式有显示title时）
-//        banner.setBannerTitles(titleList);
-//        //设置自动轮播，默认为true
-//        banner.isAutoPlay(true);
-//        //设置轮播时间
-//        banner.setDelayTime(7000);
-//        //设置指示器位置（当banner模式中有指示器时）
-//        banner.setIndicatorGravity(BannerConfig.CENTER);
-//        //banner设置方法全部调用完毕时最后调用
-//        banner.start();
-//    }
 
 
     /**
@@ -136,7 +107,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 break;
             //参数设置
             case R.id.lin_am_setting:
-                 setClass(SettingActivity.class);
+                 final int code=getVersion();
+//                 if(code==1){
+//                     setClass(SettingActivity.class);
+//                 }else{
+                     setClass(New_SettingActivity.class);
+//                 }
                  break;
             //网络shezhi
             case R.id.lin_am_net:
@@ -207,6 +183,35 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
         }
     };
+
+
+    /**
+     * 获取设备版本
+     * @return
+     */
+    private int getVersion(){
+        String version=SPUtil.getInstance(this).getString(SPUtil.DEVICE_VERSION);
+        if(TextUtils.isEmpty(version)){
+            return 0;
+        }
+        String[] vs=version.split("-");
+        if(null==vs || vs.length==0){
+            return 0;
+        }
+        if(version.contains("GDsender")){
+            return 1;
+        }
+        if(version.contains("ZKGD2000")){
+            if(vs.length==2){
+                return 1;
+            }
+            if(vs[2].contains("V1") || vs[2].contains("V2")){
+                return 1;
+            }
+            return 2;
+        }
+        return 0;
+    }
 
 
     /**

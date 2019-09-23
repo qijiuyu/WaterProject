@@ -8,6 +8,9 @@ public class BleContant {
     //没有要发送的数据
     public  static final int NOT_SEND_DATA=0001;
 
+    //读取设备版本号
+    public static final int RED_DEVICE_VERSION=0x009;
+
     //读取统一编码，SIM卡号
     public static final int SEND_GET_CODE_PHONE=1000;
 
