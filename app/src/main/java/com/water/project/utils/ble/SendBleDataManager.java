@@ -35,7 +35,7 @@ public class SendBleDataManager {
      *
      * @param data  发送的蓝牙命令
      */
-    public void sendData(final String data,final int type) {
+    public void sendData(final String data) {
         if (mService == null || mService.getConnectionState() == BleService.STATE_DISCONNECTED) {
             return;
         }
@@ -49,9 +49,9 @@ public class SendBleDataManager {
                 //将字符串进行20字节的截取
                 final List<String> sendList=getSendData(data,20);
                 //下发蓝牙命令
-                boolean b = mService.writeRXCharacteristic(sendList,type);
+                boolean b = mService.writeRXCharacteristic(sendList);
                 if (!b) {
-                    b = mService.writeRXCharacteristic(sendList,type);
+                    b = mService.writeRXCharacteristic(sendList);
                     if (!b) {
                         LogUtils.e("发送数据第二次失败");
                         mService.stopTimeOut();

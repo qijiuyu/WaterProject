@@ -48,6 +48,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     private Handler mHandler=new Handler();
     //下发命令的编号
     private int SEND_STATUS;
+    /**
+     * 1：刚进入读取命令
+     * 2： 单独读取，设置命令
+     */
     private int SEND_TYPE;
     //设置统一编码和SIM的数据
     private String CODE_SIM_DATA;
@@ -94,17 +98,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         findViewById(R.id.tv_get_four).setOnClickListener(this);
         findViewById(R.id.lin_back).setOnClickListener(this);
         etCode.addTextChangedListener(new TextWatcher() {
-            @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
-            @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
-
-            @Override
             public void afterTextChanged(Editable s) {
                 if(s.toString().length()>0){
                     imgClear1.setVisibility(View.VISIBLE);
@@ -115,17 +114,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             }
         });
         etPhone.addTextChangedListener(new TextWatcher() {
-            @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
-            @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
-
-            @Override
             public void afterTextChanged(Editable s) {
                 if(s.toString().length()>0){
                     imgClear2.setVisibility(View.VISIBLE);
@@ -136,17 +130,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             }
         });
         etTanTou.addTextChangedListener(new TextWatcher() {
-            @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
-            @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
-
-            @Override
             public void afterTextChanged(Editable s) {
                 if(s.toString().length()>0){
                     imgClear3.setVisibility(View.VISIBLE);
@@ -191,7 +180,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             }
             return;
         }
-        SendBleStr.sendBleData(status,type);
+        SendBleStr.sendBleData(status);
     }
 
 
@@ -391,7 +380,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         myIntentFilter.addAction(BleService.ACTION_GATT_DISCONNECTED);//蓝牙断开连接
         myIntentFilter.addAction(BleService.ACTION_ENABLE_NOTIFICATION_SUCCES);//蓝牙初始化通道成功
         myIntentFilter.addAction(BleService.ACTION_DATA_AVAILABLE);//接收到了回执的数据
-        myIntentFilter.addAction(BleService.ACTION_DATA_AVAILABLE2);//接收到了回执的数据
         myIntentFilter.addAction(BleService.ACTION_INTERACTION_TIMEOUT);//发送命令超时
         myIntentFilter.addAction(BleService.ACTION_SEND_DATA_FAIL);//发送数据失败
         myIntentFilter.addAction(BleService.ACTION_GET_DATA_ERROR);//回执error数据
@@ -440,45 +428,49 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
                     final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
-                    //解析并显示回执的数据
-                    showData(data);
-                    //继续发送命令
-                    switch (SEND_STATUS){
-                        case BleContant.SEND_GET_CODE_PHONE:
-                            sendData(BleContant.SEND_GET_TANTOU,1);
-                            break;
-                        case BleContant.SEND_GET_TANTOU:
-                            sendData(BleContant.SEND_CAI_JI_PIN_LU,1);
-                            break;
-                        case BleContant.SEND_CAI_JI_PIN_LU:
-                            sendData(BleContant.SEND_FA_SONG_PIN_LU,1);
-                            break;
-                        case BleContant.SEND_FA_SONG_PIN_LU:
-                             clearTask();
-                             SEND_STATUS=BleContant.NOT_SEND_DATA;
-                            break;
-                        default:
-                            clearTask();
-                            break;
+
+                    //刚进入界面读取的操作
+                    if(SEND_TYPE==1){
+                        //解析并显示回执的数据
+                        showData(data);
+                        //继续发送命令
+                        switch (SEND_STATUS){
+                            case BleContant.SEND_GET_CODE_PHONE:
+                                sendData(BleContant.SEND_GET_TANTOU,1);
+                                break;
+                            case BleContant.SEND_GET_TANTOU:
+                                sendData(BleContant.SEND_CAI_JI_PIN_LU,1);
+                                break;
+                            case BleContant.SEND_CAI_JI_PIN_LU:
+                                sendData(BleContant.SEND_FA_SONG_PIN_LU,1);
+                                break;
+                            case BleContant.SEND_FA_SONG_PIN_LU:
+                                clearTask();
+                                SEND_STATUS=BleContant.NOT_SEND_DATA;
+                                break;
+                            default:
+                                clearTask();
+                                break;
+                        }
+                    }
+
+                    //单独读取与设置等操作
+                    if(SEND_TYPE==2){
+                        clearTask();
+                        if(SEND_STATUS==BleContant.SEND_GET_CODE_PHONE || SEND_STATUS==BleContant.SEND_GET_TANTOU || SEND_STATUS==BleContant.SEND_CAI_JI_PIN_LU || SEND_STATUS==BleContant.SEND_FA_SONG_PIN_LU){
+                            //解析并显示回执的数据
+                            showData(data);
+                        }else{
+                            dialogView = new DialogView(mContext, "参数设置成功！", "确定",null, new View.OnClickListener() {
+                                public void onClick(View v) {
+                                    dialogView.dismiss();
+                                }
+                            }, null);
+                            dialogView.show();
+                        }
+                        SEND_STATUS=BleContant.NOT_SEND_DATA;
                     }
                     break;
-                //接收到了回执的数据
-                case BleService.ACTION_DATA_AVAILABLE2:
-                     clearTask();
-                     final String data2=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
-                     if(SEND_STATUS==BleContant.SEND_GET_CODE_PHONE || SEND_STATUS==BleContant.SEND_GET_TANTOU || SEND_STATUS==BleContant.SEND_CAI_JI_PIN_LU || SEND_STATUS==BleContant.SEND_FA_SONG_PIN_LU){
-                         //解析并显示回执的数据
-                         showData(data2);
-                     }else{
-                         dialogView = new DialogView(mContext, "参数设置成功！", "确定",null, new View.OnClickListener() {
-                             public void onClick(View v) {
-                                 dialogView.dismiss();
-                             }
-                         }, null);
-                         dialogView.show();
-                     }
-                     SEND_STATUS=BleContant.NOT_SEND_DATA;
-                     break;
                 case BleService.ACTION_INTERACTION_TIMEOUT:
                     clearTask();
                     dialogView = new DialogView(mContext, "接收数据超时！", "重试","取消", new View.OnClickListener() {

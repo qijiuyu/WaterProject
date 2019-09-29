@@ -14,6 +14,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,7 @@ public class FileUtils {
      * 获取sd卡路径
      */
     public static String getSdcardPath() {
-        String path = Environment.getExternalStorageDirectory() + File.separator + "waterProject" + File.separator;
+        String path = Environment.getExternalStorageDirectory() + File.separator + "zkgd" + File.separator;
         File file = new File(path);
         if (!file.exists()) {
             file.mkdirs();
@@ -196,5 +198,32 @@ public class FileUtils {
         }
         return fileSizeString;
     }
+
+
+    /**
+     * 创建文件或文件夹
+     *
+     */
+    public static String createFile(String fileName,String message) {
+        File file = new File(getSdcardPath() + fileName);
+        if (fileName.indexOf(".") != -1) {
+            // 说明包含，即使创建文件, 返回值为-1就说明不包含.,即使文件
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                final FileOutputStream outStream = new FileOutputStream(file);
+                outStream.write(message.getBytes());
+                outStream.close();
+            }catch (Exception e){
+                e.printStackTrace();
+        }
+
+    }
+    return file.getPath();
+}
 
 }

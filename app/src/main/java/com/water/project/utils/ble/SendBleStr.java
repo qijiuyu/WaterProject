@@ -306,75 +306,75 @@ public class SendBleStr {
         SET_IP_PORT=stringBuffer.toString();
     }
 
-    public static void sendBleData(int status,int type){
+    public static void sendBleData(int status){
         switch (status){
             //读取设备版本号
             case BleContant.RED_DEVICE_VERSION:
-                SendBleDataManager.getInstance().sendData(RED_VERSION,type);
+                SendBleDataManager.getInstance().sendData(RED_VERSION);
                 break;
             //读取统一编码，SIM卡号
             case BleContant.SEND_GET_CODE_PHONE:
-                 SendBleDataManager.getInstance().sendData(GET_CODE_PHONE,type);
+                 SendBleDataManager.getInstance().sendData(GET_CODE_PHONE);
                  break;
             //读取探头埋深
             case BleContant.SEND_GET_TANTOU:
-                 SendBleDataManager.getInstance().sendData(GET_TANTOU,type);
+                 SendBleDataManager.getInstance().sendData(GET_TANTOU);
                  break;
             //读取采集频率
             case BleContant.SEND_CAI_JI_PIN_LU:
-                 SendBleDataManager.getInstance().sendData(GET_CAI_JI_PIN_LU,type);
+                 SendBleDataManager.getInstance().sendData(GET_CAI_JI_PIN_LU);
                  break;
             //读取发送频率
             case BleContant.SEND_FA_SONG_PIN_LU:
-                 SendBleDataManager.getInstance().sendData(GET_FA_SONG_PIN_LU,type);
+                 SendBleDataManager.getInstance().sendData(GET_FA_SONG_PIN_LU);
                  break;
             //设置统一编码，SIM卡号
             case BleContant.SET_CODE_PHONE:
-                 SendBleDataManager.getInstance().sendData(SET_CODE_PHONE,type);
+                 SendBleDataManager.getInstance().sendData(SET_CODE_PHONE);
                  break;
             //设置探头埋深
             case BleContant.SET_TANTOU:
-                 SendBleDataManager.getInstance().sendData(SET_TANTOU,type);
+                 SendBleDataManager.getInstance().sendData(SET_TANTOU);
                  break;
             //设置采集频率
             case BleContant.SET_CAI_JI_PIN_LU:
-                 SendBleDataManager.getInstance().sendData(SET_CAI_JI_PIN_LU,type);
+                 SendBleDataManager.getInstance().sendData(SET_CAI_JI_PIN_LU);
                  break;
              //设置发送频率
             case BleContant.SET_FA_SONG:
-                 SendBleDataManager.getInstance().sendData(SET_FA_SONG_PIN_LU,type);
+                 SendBleDataManager.getInstance().sendData(SET_FA_SONG_PIN_LU);
                  break;
             //设置误差数据
             case BleContant.SET_DATA_CHECK:
-                 SendBleDataManager.getInstance().sendData(SET_DATA_CHECK,type);
+                 SendBleDataManager.getInstance().sendData(SET_DATA_CHECK);
                  break;
             //查询实时数据
             case BleContant.SEND_REAL_TIME_DATA:
-                 SendBleDataManager.getInstance().sendData(SEND_REAL_TIME_DATA,type);
+                 SendBleDataManager.getInstance().sendData(SEND_REAL_TIME_DATA);
                  break;
             //设置网络数据
             case BleContant.SET_IP_PORT:
-                 SendBleDataManager.getInstance().sendData(SET_IP_PORT,type);
+                 SendBleDataManager.getInstance().sendData(SET_IP_PORT);
                  break;
             //校测前先读取水位偏移量
             case BleContant.SEND_CHECK_ERROR:
-                 SendBleDataManager.getInstance().sendData(SEND_CHECK_ERROR,type);
+                 SendBleDataManager.getInstance().sendData(SEND_CHECK_ERROR);
                  break;
             //校测前先读取水温偏移量
             case BleContant.RED_SHUI_WEN_PYL:
-                  SendBleDataManager.getInstance().sendData(RED_SHUI_WEN_PYL,type);
+                  SendBleDataManager.getInstance().sendData(RED_SHUI_WEN_PYL);
                   break;
             //设置水温误差数据
             case BleContant.SEND_DATA_SHUI_WEN:
-                  SendBleDataManager.getInstance().sendData(SEND_DATA_SHUI_WEN,type);
+                  SendBleDataManager.getInstance().sendData(SEND_DATA_SHUI_WEN);
                   break;
             //校测前先读取电导率偏移量
             case BleContant.RED_DIAN_DAO_LV_PYL:
-                  SendBleDataManager.getInstance().sendData(RED_DIAN_DAO_LV_PYL,type);
+                  SendBleDataManager.getInstance().sendData(RED_DIAN_DAO_LV_PYL);
                   break;
             //设置水温电导率数据
             case BleContant.SEND_DATA_DIAN_DAO_LV:
-                 SendBleDataManager.getInstance().sendData(SEND_DATA_DIAN_DAO_LV,type);
+                 SendBleDataManager.getInstance().sendData(SEND_DATA_DIAN_DAO_LV);
                  break;
              default:
                  break;

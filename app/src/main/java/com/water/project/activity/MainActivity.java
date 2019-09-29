@@ -1,11 +1,9 @@
 package com.water.project.activity;
 
 import android.bluetooth.BluetoothAdapter;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Paint;
 import android.os.Build;
@@ -23,23 +21,10 @@ import android.widget.TextView;
 import com.water.project.R;
 import com.water.project.activity.new_version.New_SettingActivity;
 import com.water.project.application.MyApplication;
-import com.water.project.bean.Ble;
-import com.water.project.bean.SelectTime;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
-import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
-import com.water.project.utils.StatusBarUtils;
-import com.water.project.utils.SystemBarTintManager;
 import com.water.project.utils.ble.SendBleDataManager;
-import com.water.project.utils.photo.GlideImageLoader;
-import com.water.project.view.DialogView;
-import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
-import com.youth.banner.Transformer;
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     private LinearLayout linearLayout1,linearLayout2;
@@ -56,7 +41,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         //删除缓存
         deleteCache();
         initService();//注册蓝牙服务
-        register();//注册广播
     }
 
 
@@ -103,7 +87,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         switch (v.getId()){
             //扫描链接蓝牙
             case R.id.tv_am_scan:
-                 setClass(SearchBleActivity.class);
+                Intent intent=new Intent(this,TestActivity.class);
+                startActivityForResult(intent,0x001);
                 break;
             //参数设置
             case R.id.lin_am_setting:
@@ -136,54 +121,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     }
 
 
-    /**
-     * 判断是否连接了蓝牙
-     */
-    private DialogView dialogView;
-    private boolean isConnect(){
-        if(MainActivity.bleService.connectionState==MainActivity.bleService.STATE_DISCONNECTED){
-            final Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
-            if(null==ble){
-                dialogView = new DialogView(mContext, "请回到首页去扫描并连接蓝牙！", "知道了",null, new View.OnClickListener() {
-                    public void onClick(View v) {
-                        dialogView.dismiss();
-                    }
-                }, null);
-                dialogView.show();
-                return false;
-            }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==0x001){
+            //读取版本信息成功
+            linearLayout1.setVisibility(View.VISIBLE);
+            linearLayout2.setVisibility(View.VISIBLE);
         }
-        return true;
     }
-
-
-    /**
-     * 注册广播
-     */
-    private void register() {
-        IntentFilter myIntentFilter = new IntentFilter();
-        myIntentFilter.addAction(BleService.ACTION_ENABLE_NOTIFICATION_SUCCES);//蓝牙初始化通道成功
-        registerReceiver(mBroadcastReceiver, myIntentFilter);
-    }
-
-    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            if(null==intent){
-                return;
-            }
-            switch (intent.getAction()){
-                //蓝牙初始化通道成功
-                case BleService.ACTION_ENABLE_NOTIFICATION_SUCCES:
-                     linearLayout1.setVisibility(View.VISIBLE);
-                     linearLayout2.setVisibility(View.VISIBLE);
-                    break;
-                default:
-                    break;
-            }
-
-        }
-    };
-
 
     /**
      * 获取设备版本
@@ -231,7 +179,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 bleService.disconnect();
                 try {
                     unbindService(mServiceConnection);
-                    unregisterReceiver(mBroadcastReceiver);
                 }catch (Exception e){
 
                 }

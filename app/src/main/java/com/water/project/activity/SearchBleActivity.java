@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -16,16 +15,19 @@ import com.water.project.R;
 import com.water.project.adapter.BleItemAdapter;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
-import com.water.project.bean.BleConCallBack;
+import com.water.project.bean.eventbus.EventStatus;
+import com.water.project.bean.eventbus.EventType;
 import com.water.project.service.BleService;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
-import com.water.project.utils.StatusBarUtils;
-import com.water.project.utils.SystemBarTintManager;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
 import com.water.project.view.RippleBackground;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +49,8 @@ public class SearchBleActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_ble);
+        //注册EventBus
+        EventBus.getDefault().register(this);
         initView();
         register();//注册广播
         scanBle();//开始扫描蓝牙
@@ -64,7 +68,6 @@ public class SearchBleActivity extends BaseActivity {
         listView=(ListView)findViewById(R.id.list_asb);
         bleItemAdapter=new BleItemAdapter(mContext,bleList);
         listView.setAdapter(bleItemAdapter);
-        bleItemAdapter.setCallBack(bleConCallBack);
         rippleBackground=(RippleBackground)findViewById(R.id.content);
         tvRight.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -135,14 +138,7 @@ public class SearchBleActivity extends BaseActivity {
                 case BleService.ACTION_SCAM_DEVICE_END:
                      //停止动态效果
                      rippleBackground.stopRippleAnimation();
-                     boolean b=false;
-                     for (int i=0;i<bleList.size();i++){
-                          if(bleList.get(i).getBleName().contains("ZKGD")){
-                              b=true;
-                              break;
-                          }
-                     }
-                     if(!b){
+                     if(bleList.size()==0){
                          dialogView = new DialogView(mContext, "未搜索到到蓝牙设备!","知道了", null, new View.OnClickListener() {
                              public void onClick(View v) {
                                  dialogView.dismiss();
@@ -186,7 +182,6 @@ public class SearchBleActivity extends BaseActivity {
                      break;
                 //初始化通道成功
                 case BleService.ACTION_ENABLE_NOTIFICATION_SUCCES:
-                     clearTask();
                      //读取设备版本号
                      redVersion();
                      break;
@@ -194,8 +189,9 @@ public class SearchBleActivity extends BaseActivity {
                 case BleService.ACTION_DATA_AVAILABLE:
                     clearTask();
                     final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
-                    //存在版本信息
+                    //存储版本信息
                     SPUtil.getInstance(SearchBleActivity.this).addString(SPUtil.DEVICE_VERSION,data);
+                    SearchBleActivity.this.setResult(0x001,new Intent());
                     SearchBleActivity.this.finish();
                     break;
                 case BleService.ACTION_INTERACTION_TIMEOUT:
@@ -232,20 +228,26 @@ public class SearchBleActivity extends BaseActivity {
     };
 
 
-    private BleConCallBack bleConCallBack=new BleConCallBack() {
-        /**
-         * 连接蓝牙
-         * @param ble
-         */
-        public void connetion(Ble ble) {
-            if(null==ble){
-                return;
-            }
-            MyApplication.spUtil.addObject(SPUtil.BLE_DEVICE,ble);
-            showProgress("蓝牙连接中...");
-            boolean isCon=MainActivity.bleService.connect(ble.getBleMac());
+    /**
+     * EventBus注解
+     */
+    @Subscribe
+    public void onEvent(EventType eventType){
+        switch (eventType.getStatus()){
+            //去连接蓝牙
+            case EventStatus.CONNCATION_BLE:
+                  final Ble ble= (Ble) eventType.getObject();
+                  if(null==ble){
+                      return;
+                  }
+                  MyApplication.spUtil.addObject(SPUtil.BLE_DEVICE,ble);
+                  showProgress("蓝牙连接中...");
+                  MainActivity.bleService.connect(ble.getBleMac());
+                  break;
+            default:
+                break;
         }
-    };
+    }
 
 
     /**
@@ -253,13 +255,14 @@ public class SearchBleActivity extends BaseActivity {
      */
     private void redVersion(){
         showProgress("正在读取版本号...");
-        SendBleStr.sendBleData(BleContant.RED_DEVICE_VERSION,1);
+        SendBleStr.sendBleData(BleContant.RED_DEVICE_VERSION);
     }
 
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         MainActivity.bleService.stopScan();
         unregisterReceiver(mBroadcastReceiver);
     }

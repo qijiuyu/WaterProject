@@ -231,7 +231,7 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
             }
             return;
         }
-        SendBleStr.sendBleData(status,1);
+        SendBleStr.sendBleData(status);
     }
 
 

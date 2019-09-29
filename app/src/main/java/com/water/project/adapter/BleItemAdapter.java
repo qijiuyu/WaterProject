@@ -9,7 +9,10 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.water.project.R;
 import com.water.project.bean.Ble;
-import com.water.project.bean.BleConCallBack;
+import com.water.project.bean.eventbus.EventStatus;
+import com.water.project.bean.eventbus.EventType;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -18,7 +21,6 @@ public class BleItemAdapter extends BaseAdapter {
 	private List<Ble> list;
 	private LayoutInflater inflater;
 	private Context context;
-	private BleConCallBack bleConCallBack;
 	public BleItemAdapter(Context context, List<Ble> list){
 		this.context=context;
 		this.list=list;
@@ -63,17 +65,13 @@ public class BleItemAdapter extends BaseAdapter {
 						return;
 					}
 					//连接蓝牙
-					bleConCallBack.connetion((Ble) v.getTag());
+					EventBus.getDefault().post(new EventType(EventStatus.CONNCATION_BLE,v.getTag()));
 				}
 			});
 		}
 		return convertView;
 	}
 
-
-	public void setCallBack(BleConCallBack bleConCallBack){
-		this.bleConCallBack=bleConCallBack;
-	}
 
 	private class ViewHolder {
 		TextView tvBleName,tvConnect;

@@ -128,7 +128,7 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
             }
             return;
         }
-        SendBleStr.sendBleData(BleContant.SEND_REAL_TIME_DATA,1);
+        SendBleStr.sendBleData(BleContant.SEND_REAL_TIME_DATA);
     }
 
 

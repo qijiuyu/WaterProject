@@ -51,7 +51,6 @@ public class BleService extends Service implements Serializable{
      * 接收到了数据
      */
     public final static String ACTION_DATA_AVAILABLE = "net.zkgd.adminapp.ACTION_DATA_AVAILABLE";
-    public final static String ACTION_DATA_AVAILABLE2 = "net.zkgd.adminapp.ACTION_DATA_AVAILABLE2";
     /**
      * 发送接到的数据的KEY
      */
@@ -96,15 +95,13 @@ public class BleService extends Service implements Serializable{
     //连接成功
     public static final int STATE_CONNECTED = 2;
     //timeOut：发送命令超时         scanTime:扫描蓝牙超时
-    private long timeOut = 1000 * 20, scanTime = 1000 * 15;
+    private long timeOut = 1000 * 30, scanTime = 1000 * 15;
     private TimerUtil timerUtil, startUtil;
     private Handler handler = new Handler();
     //蓝牙名称
     private String bleName;
     //接收回执的数据，进行拼接
     private StringBuffer sb;
-    //根据类型发送不同的回执广播
-    private int type;
     //是否重新连接蓝牙
     private boolean isConnect = true;
     private Handler mHandler=new Handler();
@@ -297,9 +294,8 @@ public class BleService extends Service implements Serializable{
      * 传输数据
      */
     boolean isSuccess;
-    public boolean writeRXCharacteristic(List<String> list, final int type) {
+    public boolean writeRXCharacteristic(List<String> list) {
         sb=new StringBuffer();
-        this.type=type;
         isSuccess=true;
         try {
             BluetoothGattService RxService = mBluetoothGatt.getService(RX_SERVICE_UUID);
@@ -480,13 +476,8 @@ public class BleService extends Service implements Serializable{
     private void broadCastData(){
         //关闭超时计时器
         stopTimeOut();
-        if(type==1){
-            LogUtils.e("回执的完整数据是："+sb.toString());
-            broadcastUpdate(ACTION_DATA_AVAILABLE, sb.toString().replace(">OK",""));
-        }else{
-            LogUtils.e("回执的完整数据是："+sb.toString());
-            broadcastUpdate(ACTION_DATA_AVAILABLE2, sb.toString().replace(">OK",""));
-        }
+        LogUtils.e("回执的完整数据是："+sb.toString());
+        broadcastUpdate(ACTION_DATA_AVAILABLE, sb.toString().replace(">OK",""));
     }
 
 

@@ -40,7 +40,7 @@
 
 
         <activity
-            android:name=".activity.WelcomeActivity">
+            android:name=".activity.aaa.TestActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -59,6 +59,10 @@
         <activity android:name=".photo.NetBigPhotoActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".activity.VersionActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".activity.new_version.New_SettingActivity"  android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.TestActivity" ></activity>
+
+        <activity android:name=".activity.aaa.AActivity" ></activity>
 
         <service
             android:name=".service.BleService"

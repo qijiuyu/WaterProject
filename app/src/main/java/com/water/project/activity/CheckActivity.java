@@ -210,7 +210,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener,
             }
             return;
         }
-        SendBleStr.sendBleData(status,1);
+        SendBleStr.sendBleData(status);
     }
 
 
@@ -296,7 +296,6 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener,
                      switch (SEND_STATUS){
                          //查询数据回执
                          case BleContant.SEND_REAL_TIME_DATA:
-//                             BuglyUtils.uploadBleMsg("总数据是："+data);
                               clearTask();
                               SEND_STATUS=BleContant.NOT_SEND_DATA;
                               //解析并显示回执的数据

@@ -1,6 +1,8 @@
-package com.water.project.utils.photo;
+package com.water.project.utils;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.Gravity;
@@ -24,6 +26,7 @@ import java.util.List;
  */
 
 public class DialogUtils {
+    static ProgressDialog progressDialog = null;
 
    static String hour=null,minute=null;
 
@@ -40,10 +43,10 @@ public class DialogUtils {
         try {
             wvHour.setLabels(hourList);
             wvMinute.setLabels(minuteList);
-            wvHour.setWheelSize(5);
-            wvMinute.setWheelSize(5);
             wvHour.setSelection(5);
             wvMinute.setSelection(5);
+            wvHour.setWheelSize(5);
+            wvMinute.setWheelSize(5);
         } catch (CycleWheelView.CycleWheelViewException e) {
             e.printStackTrace();
         }
@@ -108,4 +111,31 @@ public class DialogUtils {
         dialog.show();
         return dialog;
     }
+
+
+    /**
+     * loding弹框
+     */
+    public static void showProgress(Activity activity, String message) {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.setMessage(message);
+            return;
+        }
+        progressDialog = new ProgressDialog(activity);
+        progressDialog.setMessage(message);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(true);
+        progressDialog.show();
+    }
+
+
+    /**
+     * 取消进度条
+     */
+    public static void closeProgress() {
+        if (progressDialog != null && progressDialog.isShowing()){
+            progressDialog.dismiss();
+        }
+    }
+
 }

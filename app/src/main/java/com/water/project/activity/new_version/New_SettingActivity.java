@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -25,16 +24,15 @@ import com.water.project.bean.Ble;
 import com.water.project.bean.SelectTime;
 import com.water.project.bean.eventbus.EventStatus;
 import com.water.project.bean.eventbus.EventType;
+import com.water.project.presenter.new_device.New_SettingPresenter;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.SPUtil;
-import com.water.project.utils.StatusBarUtils;
-import com.water.project.utils.SystemBarTintManager;
 import com.water.project.utils.Util;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
-import com.water.project.utils.photo.DialogUtils;
+import com.water.project.utils.DialogUtils;
 import com.water.project.view.DialogView;
 import com.water.project.view.SelectTimeDialog;
 
@@ -57,16 +55,24 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
     private Handler mHandler=new Handler();
     //下发命令的编号
     private int SEND_STATUS;
+    /**
+     * 1：刚进入读取命令
+     * 2： 单独读取，设置命令
+     */
     private int SEND_TYPE;
     //设置统一编码和SIM的数据
     private String CODE_SIM_DATA;
     private SimpleDateFormat mFormatter1 = new SimpleDateFormat("yyyy-MM-dd");
+    //MVP对象
+    private New_SettingPresenter new_settingPresenter;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_new_setting);
         //注册EventBus
         EventBus.getDefault().register(this);
+        //实例化MVP
+        new_settingPresenter=new New_SettingPresenter(this);
         initView();
         register();//注册广播
 //        sendData(BleContant.SEND_GET_CODE_PHONE,1); //发送蓝牙命令
@@ -108,17 +114,12 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
         findViewById(R.id.tv_get_four).setOnClickListener(this);
         findViewById(R.id.lin_back).setOnClickListener(this);
         etCode.addTextChangedListener(new TextWatcher() {
-            @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
-            @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
-
-            @Override
             public void afterTextChanged(Editable s) {
                 if(s.toString().length()>0){
                     imgClear1.setVisibility(View.VISIBLE);
@@ -129,17 +130,12 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
             }
         });
         etPhone.addTextChangedListener(new TextWatcher() {
-            @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
-            @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
-
-            @Override
             public void afterTextChanged(Editable s) {
                 if(s.toString().length()>0){
                     imgClear2.setVisibility(View.VISIBLE);
@@ -150,17 +146,12 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
             }
         });
         etTanTou.addTextChangedListener(new TextWatcher() {
-            @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
-            @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
-
-            @Override
             public void afterTextChanged(Editable s) {
                 if(s.toString().length()>0){
                     imgClear3.setVisibility(View.VISIBLE);
@@ -205,7 +196,7 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
             }
             return;
         }
-        SendBleStr.sendBleData(status,type);
+        SendBleStr.sendBleData(status);
     }
 
 
@@ -412,7 +403,6 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
         myIntentFilter.addAction(BleService.ACTION_GATT_DISCONNECTED);//蓝牙断开连接
         myIntentFilter.addAction(BleService.ACTION_ENABLE_NOTIFICATION_SUCCES);//蓝牙初始化通道成功
         myIntentFilter.addAction(BleService.ACTION_DATA_AVAILABLE);//接收到了回执的数据
-        myIntentFilter.addAction(BleService.ACTION_DATA_AVAILABLE2);//接收到了回执的数据
         myIntentFilter.addAction(BleService.ACTION_INTERACTION_TIMEOUT);//发送命令超时
         myIntentFilter.addAction(BleService.ACTION_SEND_DATA_FAIL);//发送数据失败
         myIntentFilter.addAction(BleService.ACTION_GET_DATA_ERROR);//回执error数据
@@ -424,31 +414,11 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
             switch (intent.getAction()){
                 //扫描不到指定蓝牙设备
                 case BleService.ACTION_NO_DISCOVERY_BLE:
-                     clearTask();
-                     dialogView = new DialogView(mContext, "扫描不到该蓝牙设备，请靠近设备再进行扫描！", "重新扫描","取消", new View.OnClickListener() {
-                        public void onClick(View v) {
-                            dialogView.dismiss();
-                            sendData(SEND_STATUS,SEND_TYPE);
-                         }
-                    }, null);
-                     dialogView.show();
+                     new_settingPresenter.resumeScan();
                      break;
                 //蓝牙断开连接
                 case BleService.ACTION_GATT_DISCONNECTED:
-                     clearTask();
-                     dialogView = new DialogView(mContext, "蓝牙连接断开，请靠近设备进行连接!","重新连接", "取消", new View.OnClickListener() {
-                        public void onClick(View v) {
-                            dialogView.dismiss();
-                            showProgress("蓝牙连接中...");
-                            mHandler.postDelayed(new Runnable() {
-                                public void run() {
-                                    Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
-                                    MainActivity.bleService.connect(ble.getBleMac());
-                                }
-                            },100);
-                         }
-                    }, null);
-                     dialogView.show();
+                     new_settingPresenter.bleConncation();
                      break;
                 //初始化通道成功
                 case BleService.ACTION_ENABLE_NOTIFICATION_SUCCES:
@@ -461,68 +431,60 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
                 //接收到了读取回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
                     final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
-                    //解析并显示回执的数据
-                    showData(data);
-                    //继续发送命令
-                    switch (SEND_STATUS){
-                        case BleContant.SEND_GET_CODE_PHONE:
-                            sendData(BleContant.SEND_GET_TANTOU,1);
-                            break;
-                        case BleContant.SEND_GET_TANTOU:
-                            sendData(BleContant.SEND_CAI_JI_PIN_LU,1);
-                            break;
-                        case BleContant.SEND_CAI_JI_PIN_LU:
-                            sendData(BleContant.SEND_FA_SONG_PIN_LU,1);
-                            break;
-                        case BleContant.SEND_FA_SONG_PIN_LU:
-                             clearTask();
-                             SEND_STATUS=BleContant.NOT_SEND_DATA;
-                            break;
-                        default:
-                            clearTask();
-                            break;
+
+                    //刚进入界面读取的操作
+                    if(SEND_TYPE==1){
+                        //解析并显示回执的数据
+                        showData(data);
+                        //继续发送命令
+                        switch (SEND_STATUS){
+                            case BleContant.SEND_GET_CODE_PHONE:
+                                sendData(BleContant.SEND_GET_TANTOU,1);
+                                break;
+                            case BleContant.SEND_GET_TANTOU:
+                                sendData(BleContant.SEND_CAI_JI_PIN_LU,1);
+                                break;
+                            case BleContant.SEND_CAI_JI_PIN_LU:
+                                sendData(BleContant.SEND_FA_SONG_PIN_LU,1);
+                                break;
+                            case BleContant.SEND_FA_SONG_PIN_LU:
+                                clearTask();
+                                SEND_STATUS=BleContant.NOT_SEND_DATA;
+                                break;
+                            default:
+                                clearTask();
+                                break;
+                        }
+                    }
+
+                    //单独读取与设置等操作
+                    if(SEND_TYPE==2){
+                        clearTask();
+                        if(SEND_STATUS==BleContant.SEND_GET_CODE_PHONE || SEND_STATUS==BleContant.SEND_GET_TANTOU || SEND_STATUS==BleContant.SEND_CAI_JI_PIN_LU || SEND_STATUS==BleContant.SEND_FA_SONG_PIN_LU){
+                            //解析并显示回执的数据
+                            showData(data);
+                        }else{
+                            dialogView = new DialogView(mContext, "参数设置成功！", "确定",null, new View.OnClickListener() {
+                                public void onClick(View v) {
+                                    dialogView.dismiss();
+                                }
+                            }, null);
+                            dialogView.show();
+                        }
+                        SEND_STATUS=BleContant.NOT_SEND_DATA;
                     }
                     break;
-                //接收到了回执的数据
-                case BleService.ACTION_DATA_AVAILABLE2:
-                     clearTask();
-                     final String data2=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
-                     if(SEND_STATUS==BleContant.SEND_GET_CODE_PHONE || SEND_STATUS==BleContant.SEND_GET_TANTOU || SEND_STATUS==BleContant.SEND_CAI_JI_PIN_LU || SEND_STATUS==BleContant.SEND_FA_SONG_PIN_LU){
-                         //解析并显示回执的数据
-                         showData(data2);
-                     }else{
-                         dialogView = new DialogView(mContext, "参数设置成功！", "确定",null, new View.OnClickListener() {
-                             public void onClick(View v) {
-                                 dialogView.dismiss();
-                             }
-                         }, null);
-                         dialogView.show();
-                     }
-                     SEND_STATUS=BleContant.NOT_SEND_DATA;
-                     break;
+                //接收数据超时
                 case BleService.ACTION_INTERACTION_TIMEOUT:
-                    clearTask();
-                    dialogView = new DialogView(mContext, "接收数据超时！", "重试","取消", new View.OnClickListener() {
-                        public void onClick(View v) {
-                            dialogView.dismiss();
-                            sendData(SEND_STATUS,SEND_TYPE);
-                        }
-                    }, null);
-                    dialogView.show();
+                      new_settingPresenter.timeOut();
                     break;
+                //下发命令失败
                 case BleService.ACTION_SEND_DATA_FAIL:
-                    clearTask();
-                    dialogView = new DialogView(mContext, "下发命令失败！", "重试","取消", new View.OnClickListener() {
-                        public void onClick(View v) {
-                            dialogView.dismiss();
-                            sendData(SEND_STATUS,SEND_TYPE);
-                        }
-                    }, null);
-                    dialogView.show();
+                     new_settingPresenter.sendCmdFail();
                      break;
                 case BleService.ACTION_GET_DATA_ERROR:
-                    clearTask();
-                    showToastView("设备回执数据异常！");
+                     clearTask();
+                     showToastView("设备回执数据异常！");
                 default:
                     break;
             }
@@ -536,6 +498,10 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
     @Subscribe
     public void onEvent(EventType eventType){
         switch (eventType.getStatus()){
+            //重新扫描蓝牙设备
+            case EventStatus.RESUME_SCAN_BLE:
+                  sendData(SEND_STATUS,SEND_TYPE);
+                  break;
             //获取采集时间间隔数据
             case EventStatus.NEW_SETTING_CJSJJG:
                   etCEtime.setText(String.valueOf(eventType.getObject()));
