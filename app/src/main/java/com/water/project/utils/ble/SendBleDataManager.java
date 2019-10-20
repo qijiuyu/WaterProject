@@ -2,6 +2,7 @@ package com.water.project.utils.ble;
 import android.content.Intent;
 import com.water.project.service.BleService;
 import com.water.project.utils.LogUtils;
+import com.water.project.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ public class SendBleDataManager {
      */
     public void sendData(final String data) {
         if (mService == null || mService.getConnectionState() == BleService.STATE_DISCONNECTED) {
+            ToastUtil.showLong("蓝牙没有连接成功，不能发送数据");
             return;
         }
         try {

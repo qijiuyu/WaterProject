@@ -209,7 +209,7 @@ public class SelectTimeDialog extends Dialog implements View.OnClickListener {
                  final String month=strMonth.replace("月","");
                  final String day=strDay.replace("日","");
                  final String hour=strHour.replace("时","");
-                 final String minute=strMinute.replace("分","");
+
                  if(context instanceof SettingActivity){
                      selectTime.getTime(year+"-"+month+"-"+day+" "+hour,type);
                  }
@@ -217,6 +217,7 @@ public class SelectTimeDialog extends Dialog implements View.OnClickListener {
                     if(type==1){
                         selectTime.getTime(year+"-"+month+"-"+day+" "+hour,type);
                     }else {
+                        final String minute=strMinute.replace("分","");
                         selectTime.getTime(year+"-"+month+"-"+day+" "+hour+":"+minute,type);
                     }
                 }

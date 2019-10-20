@@ -62,6 +62,9 @@ public class SendBleStr {
     //设置水温电导率数据
     public static  String SEND_DATA_DIAN_DAO_LV;
 
+    //读取设备记录
+    public static String RED_DEVOCE_RECORD="GDERRREAD";
+
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
         StringBuffer stringBuffer=new StringBuffer();
@@ -376,6 +379,10 @@ public class SendBleStr {
             case BleContant.SEND_DATA_DIAN_DAO_LV:
                  SendBleDataManager.getInstance().sendData(SEND_DATA_DIAN_DAO_LV);
                  break;
+            //读取设备记录
+            case BleContant.RED_DEVICE_RECOFD:
+                  SendBleDataManager.getInstance().sendData(RED_DEVOCE_RECORD);
+                  break;
              default:
                  break;
 

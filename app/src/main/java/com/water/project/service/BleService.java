@@ -95,7 +95,7 @@ public class BleService extends Service implements Serializable{
     //连接成功
     public static final int STATE_CONNECTED = 2;
     //timeOut：发送命令超时         scanTime:扫描蓝牙超时
-    private long timeOut = 1000 * 30, scanTime = 1000 * 15;
+    private long timeOut = 1000 * 20, scanTime = 1000 * 15;
     private TimerUtil timerUtil, startUtil;
     private Handler handler = new Handler();
     //蓝牙名称
@@ -442,11 +442,11 @@ public class BleService extends Service implements Serializable{
                 return;
             }
             LogUtils.e("接收到的数据是："+data);
-            if(data.contains("GD") || data.contains("ZKGD2000")){
+            if(data.startsWith("GD")){
                 sb.append(data);
-                if(data.contains("OK")){
+                if(data.endsWith("OK")){
                     broadCastData();
-                }else if(data.contains("ERROR")){
+                }else if(data.endsWith("ERROR")){
                     //广播错误数据
                     broadCastError();
                 }
@@ -455,13 +455,11 @@ public class BleService extends Service implements Serializable{
 
             if(sb.length()>0){
                 sb.append(data);
-                if(sb.toString().contains("OK")){
+                if(sb.toString().endsWith("OK")){
                     broadCastData();
-                }else if(sb.toString().contains("GDCURRENT")){
-                    if(data.contains(";")){
-                        broadCastData();
-                    }
-                }else if(sb.toString().contains("ERROR")){
+                }else if(sb.toString().startsWith("GDCURRENT") && data.endsWith(";")){
+                    broadCastData();
+                }else if(sb.toString().endsWith("ERROR")){
                     //广播错误数据
                     broadCastError();
                 }

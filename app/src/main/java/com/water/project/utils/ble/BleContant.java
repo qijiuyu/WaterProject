@@ -58,4 +58,7 @@ public class BleContant {
 
     //设置水温电导率数据
     public static final int SEND_DATA_DIAN_DAO_LV=1015;
+
+    //读取设备记录
+    public static final int RED_DEVICE_RECOFD=1016;
 }

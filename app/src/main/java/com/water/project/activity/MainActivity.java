@@ -27,7 +27,7 @@ import com.water.project.utils.SPUtil;
 import com.water.project.utils.ble.SendBleDataManager;
 public class MainActivity extends BaseActivity implements View.OnClickListener{
 
-    private LinearLayout linearLayout1,linearLayout2;
+    private LinearLayout linearLayout1,linearLayout2,linearLayout3;
     // 按两次退出
     protected long exitTime = 0;
     //蓝牙参数
@@ -50,6 +50,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     private void initView(){
         linearLayout1=(LinearLayout)findViewById(R.id.lin_am1);
         linearLayout2=(LinearLayout)findViewById(R.id.lin_am2);
+        linearLayout3=(LinearLayout)findViewById(R.id.lin_am3);
         TextView tvAbout=(TextView)findViewById(R.id.tv_about);
         tvAbout.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
         tvAbout.setOnClickListener(this);
@@ -58,6 +59,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         findViewById(R.id.lin_am_data).setOnClickListener(this);
         findViewById(R.id.lin_am_yan).setOnClickListener(this);
         findViewById(R.id.lin_am_net).setOnClickListener(this);
+        findViewById(R.id.lin_am_record).setOnClickListener(this);
     }
 
 
@@ -87,17 +89,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         switch (v.getId()){
             //扫描链接蓝牙
             case R.id.tv_am_scan:
-                Intent intent=new Intent(this,TestActivity.class);
+                Intent intent=new Intent(this,SearchBleActivity.class);
                 startActivityForResult(intent,0x001);
                 break;
             //参数设置
             case R.id.lin_am_setting:
                  final int code=getVersion();
-//                 if(code==1){
-//                     setClass(SettingActivity.class);
-//                 }else{
+                 if(code==1){
+                     setClass(SettingActivity.class);
+                 }else{
                      setClass(New_SettingActivity.class);
-//                 }
+                 }
                  break;
             //网络shezhi
             case R.id.lin_am_net:
@@ -111,6 +113,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             case R.id.lin_am_yan:
                  setClass(CheckActivity.class);
                  break;
+            //读取设备记录
+            case R.id.lin_am_record:
+                setClass(GetRecordActivity.class);
+                  break;
             //关于我们
             case R.id.tv_about:
                  setClass(AboutActivity.class);
@@ -130,6 +136,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             //读取版本信息成功
             linearLayout1.setVisibility(View.VISIBLE);
             linearLayout2.setVisibility(View.VISIBLE);
+            linearLayout3.setVisibility(View.VISIBLE);
         }
     }
 
@@ -140,16 +147,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     private int getVersion(){
         String version=SPUtil.getInstance(this).getString(SPUtil.DEVICE_VERSION);
         if(TextUtils.isEmpty(version)){
-            return 0;
+            return 1;
         }
         String[] vs=version.split("-");
         if(null==vs || vs.length==0){
-            return 0;
-        }
-        if(version.contains("GDsender")){
             return 1;
         }
-        if(version.contains("ZKGD2000")){
+        if(version.startsWith("GDBBRGDsender")){
+            return 1;
+        }
+        if(version.startsWith("GDBBRZKGD2000")){
             if(vs.length==2){
                 return 1;
             }

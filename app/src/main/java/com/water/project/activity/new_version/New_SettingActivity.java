@@ -75,7 +75,7 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
         new_settingPresenter=new New_SettingPresenter(this);
         initView();
         register();//注册广播
-//        sendData(BleContant.SEND_GET_CODE_PHONE,1); //发送蓝牙命令
+        sendData(BleContant.SEND_GET_CODE_PHONE,1); //发送蓝牙命令
     }
 
 
@@ -297,7 +297,7 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
                  }else if(TextUtils.isEmpty(fHour)){
                      showToastView("请选择发送间隔时间！");
                  }else{
-                     SendBleStr.setFaSong(startTime,fHour);
+                     SendBleStr.new_sendCaiJi(startTime,fHour);
                      sendData(BleContant.SET_FA_SONG,2);
                  }
                 break;
