@@ -91,4 +91,38 @@ public class SelectTimeUtils {
         }
         return list;
     }
+
+
+    /**
+     * 获取gprs模式数据
+     * @return
+     */
+    public static List<String> getGPRS(){
+        List<String> list=new ArrayList<>();
+        for (int i=1;i<11;i++){
+            if(i<10){
+                list.add("0"+i);
+            }else{
+                list.add(String.valueOf(i));
+            }
+        }
+        return list;
+    }
+
+
+    /**
+     * 获取补发次数数据
+     * @return
+     */
+    public static List<String> getSendNum(){
+        List<String> list=new ArrayList<>();
+        for (int i=0;i<11;i++){
+            if(i<10){
+                list.add("0"+i);
+            }else{
+                list.add(String.valueOf(i));
+            }
+        }
+        return list;
+    }
 }

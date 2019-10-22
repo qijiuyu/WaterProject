@@ -91,6 +91,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             case R.id.tv_am_scan:
                 Intent intent=new Intent(this,SearchBleActivity.class);
                 startActivityForResult(intent,0x001);
+//                Intent intent=new Intent(this,New_SettingActivity.class);
+//                startActivityForResult(intent,0x001);
                 break;
             //参数设置
             case R.id.lin_am_setting:
@@ -136,7 +138,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             //读取版本信息成功
             linearLayout1.setVisibility(View.VISIBLE);
             linearLayout2.setVisibility(View.VISIBLE);
-            linearLayout3.setVisibility(View.VISIBLE);
+            final int code=getVersion();
+            if(code!=1){
+                linearLayout3.setVisibility(View.VISIBLE);
+            }
         }
     }
 

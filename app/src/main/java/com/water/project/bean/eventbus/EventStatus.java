@@ -14,4 +14,13 @@ public class EventStatus {
     //重新扫描蓝牙设备
     public static final int RESUME_SCAN_BLE=10003;
 
+    //发送命令
+    public static final int SEND_CHECK_MCD=10004;
+
+    //选择的gprs模式
+    public static final int SELECT_GRPS=10005;
+
+    //选择的补发次数
+    public static final int SELECT_SEND_NUM=10006;
+
 }

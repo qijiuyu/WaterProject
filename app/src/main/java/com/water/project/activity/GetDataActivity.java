@@ -21,6 +21,7 @@ import com.water.project.presenter.GetDataPresenterImpl;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.BuglyUtils;
+import com.water.project.utils.DialogUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.StatusBarUtils;
@@ -117,13 +118,13 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
         if(!BleUtils.isEnabled(GetDataActivity.this,MainActivity.mBtAdapter)){
             return;
         }
-        showProgress("正在读取实时数据...");
+        DialogUtils.showProgress(GetDataActivity.this,"正在读取实时数据...");
         //如果蓝牙连接断开，就扫描重连
         if(MainActivity.bleService.connectionState==MainActivity.bleService.STATE_DISCONNECTED){
             //扫描并重连蓝牙
             final Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
             if(null!=ble){
-                showProgress("扫描并连接蓝牙设备...");
+                DialogUtils.showProgress(GetDataActivity.this,"扫描并连接蓝牙设备...");
                 MainActivity.bleService.scanDevice(ble.getBleName());
             }
             return;
@@ -152,7 +153,7 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
             switch (intent.getAction()){
                 //扫描不到指定蓝牙设备
                 case BleService.ACTION_NO_DISCOVERY_BLE:
-                    clearTask();
+                    DialogUtils.closeProgress();
                     dialogView = new DialogView(mContext, "扫描不到该蓝牙设备，请靠近设备再进行扫描！", "重新扫描","取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
@@ -163,11 +164,11 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
                     break;
                 //蓝牙断开连接
                 case BleService.ACTION_GATT_DISCONNECTED:
-                     clearTask();
+                    DialogUtils.closeProgress();
                      dialogView = new DialogView(mContext, "蓝牙连接断开，请靠近设备进行连接!","重新连接", "取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
-                            showProgress("蓝牙连接中...");
+                            DialogUtils.showProgress(GetDataActivity.this,"蓝牙连接中...");
                             mHandler.postDelayed(new Runnable() {
                                 public void run() {
                                     Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
@@ -184,13 +185,13 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
                     break;
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
-                     clearTask();
+                    DialogUtils.closeProgress();
                      final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
                      //解析并显示回执的数据
                      showData(data);
                     break;
                 case BleService.ACTION_INTERACTION_TIMEOUT:
-                    clearTask();
+                    DialogUtils.closeProgress();
                     dialogView = new DialogView(mContext, "接收数据超时！", "重试","取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
@@ -200,7 +201,7 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
                     dialogView.show();
                     break;
                 case BleService.ACTION_SEND_DATA_FAIL:
-                    clearTask();
+                    DialogUtils.closeProgress();
                     dialogView = new DialogView(mContext, "下发命令失败！", "重试","取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
@@ -210,7 +211,7 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
                     dialogView.show();
                     break;
                 case BleService.ACTION_GET_DATA_ERROR:
-                    clearTask();
+                    DialogUtils.closeProgress();
                     showToastView("设备回执数据异常");
                     break;
                 default:

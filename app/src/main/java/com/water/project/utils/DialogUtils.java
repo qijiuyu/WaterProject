@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.water.project.R;
@@ -28,7 +29,7 @@ import java.util.List;
 public class DialogUtils {
     static ProgressDialog progressDialog = null;
 
-   static String hour=null,minute=null;
+   static String hour=null,minute=null,data=null;
 
     public static void getHourAndMinute(final Context context,final int type){
         View view= LayoutInflater.from(context).inflate(R.layout.wheel_hour_minute,null);
@@ -88,6 +89,51 @@ public class DialogUtils {
                     EventBus.getDefault().post(new EventType(EventStatus.NEW_SETTING_CJSJJG,totalMinute));
                 }else{
                     EventBus.getDefault().post(new EventType(EventStatus.NEW_SETTING_FSSJJG,totalMinute));
+                }
+                dialog.dismiss();
+            }
+        });
+    }
+
+
+    public static void selectNewSetting(final Context context,final int type){
+        View view= LayoutInflater.from(context).inflate(R.layout.wheel,null);
+        final Dialog dialog=dialogPop(view,context);
+        TextView tvTitle=(TextView)view.findViewById(R.id.tv_wh_title);
+        List<String> dataList;
+        if(type==1){
+            tvTitle.setText("请选择GRPS模式");
+            dataList=SelectTimeUtils.getGPRS();
+        }else{
+            tvTitle.setText("请选择补发间隔次数");
+            dataList=SelectTimeUtils.getSendNum();
+        }
+        CycleWheelView cycleWheelView=(CycleWheelView)view.findViewById(R.id.cycleWheelView);
+        try {
+            cycleWheelView.setLabels(dataList);
+            cycleWheelView.setWheelSize(5);
+        } catch (CycleWheelView.CycleWheelViewException e) {
+            e.printStackTrace();
+        }
+        cycleWheelView.setCycleEnable(false);
+        cycleWheelView.setSelection(0);
+        cycleWheelView.setAlphaGradual(0.5f);
+        cycleWheelView.setDivider(Color.parseColor("#abcdef"),1);
+        cycleWheelView.setSolid(Color.WHITE,Color.WHITE);
+        cycleWheelView.setLabelColor(Color.GRAY);
+        cycleWheelView.setLabelSelectColor(Color.BLACK);
+        cycleWheelView.setOnWheelItemSelectedListener(new CycleWheelView.WheelItemSelectedListener() {
+            public void onItemSelected(int position, String label) {
+                data=label;
+            }
+        });
+
+        view.findViewById(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if(type==1){
+                    EventBus.getDefault().post(new EventType(EventStatus.SELECT_GRPS,data));
+                }else{
+                    EventBus.getDefault().post(new EventType(EventStatus.SELECT_SEND_NUM,data));
                 }
                 dialog.dismiss();
             }

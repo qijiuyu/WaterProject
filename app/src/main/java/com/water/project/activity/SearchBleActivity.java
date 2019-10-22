@@ -18,6 +18,7 @@ import com.water.project.bean.Ble;
 import com.water.project.bean.eventbus.EventStatus;
 import com.water.project.bean.eventbus.EventType;
 import com.water.project.service.BleService;
+import com.water.project.utils.DialogUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ble.BleContant;
@@ -109,6 +110,10 @@ public class SearchBleActivity extends BaseActivity {
         myIntentFilter.addAction(BleService.ACTION_SCAM_DEVICE_END);//30秒扫描完毕
         myIntentFilter.addAction(BleService.ACTION_GATT_DISCONNECTED);//蓝牙断开连接
         myIntentFilter.addAction(BleService.ACTION_ENABLE_NOTIFICATION_SUCCES);//蓝牙初始化通道成功
+        myIntentFilter.addAction(BleService.ACTION_DATA_AVAILABLE);//接收到了回执的数据
+        myIntentFilter.addAction(BleService.ACTION_INTERACTION_TIMEOUT);//发送命令超时
+        myIntentFilter.addAction(BleService.ACTION_SEND_DATA_FAIL);//发送数据失败
+        myIntentFilter.addAction(BleService.ACTION_GET_DATA_ERROR);//回执error数据
         registerReceiver(mBroadcastReceiver, myIntentFilter);
     }
 
@@ -168,7 +173,7 @@ public class SearchBleActivity extends BaseActivity {
                                      dialogView.dismiss();
                                      mHandler.postDelayed(new Runnable() {
                                          public void run() {
-                                             showProgress("蓝牙连接中...");
+                                             DialogUtils.showProgress(SearchBleActivity.this,"蓝牙连接中...");
                                              MainActivity.bleService.connect(SearchBleActivity.this.ble.getBleMac());
                                          }
                                      },100);
@@ -177,7 +182,7 @@ public class SearchBleActivity extends BaseActivity {
                              dialogView.show();
                          }
                      }
-                     clearTask();
+                     DialogUtils.closeProgress();
                      showToastView("蓝牙连接断开！");
                      break;
                 //初始化通道成功
@@ -187,7 +192,7 @@ public class SearchBleActivity extends BaseActivity {
                      break;
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
-                    clearTask();
+                    DialogUtils.closeProgress();
                     final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
                     //存储版本信息
                     SPUtil.getInstance(SearchBleActivity.this).addString(SPUtil.DEVICE_VERSION,data);
@@ -195,7 +200,7 @@ public class SearchBleActivity extends BaseActivity {
                     SearchBleActivity.this.finish();
                     break;
                 case BleService.ACTION_INTERACTION_TIMEOUT:
-                    clearTask();
+                    DialogUtils.closeProgress();
                     dialogView = new DialogView(mContext, "接收数据超时！", "重试","取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
@@ -206,7 +211,7 @@ public class SearchBleActivity extends BaseActivity {
                     dialogView.show();
                     break;
                 case BleService.ACTION_SEND_DATA_FAIL:
-                    clearTask();
+                    DialogUtils.closeProgress();
                     dialogView = new DialogView(mContext, "下发命令失败！", "重试","取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
@@ -217,7 +222,7 @@ public class SearchBleActivity extends BaseActivity {
                     dialogView.show();
                     break;
                 case BleService.ACTION_GET_DATA_ERROR:
-                    clearTask();
+                    DialogUtils.closeProgress();
                     showToastView("设备回执数据异常");
                     break;
                 default:
@@ -241,7 +246,7 @@ public class SearchBleActivity extends BaseActivity {
                       return;
                   }
                   MyApplication.spUtil.addObject(SPUtil.BLE_DEVICE,ble);
-                  showProgress("蓝牙连接中...");
+                  DialogUtils.showProgress(SearchBleActivity.this,"蓝牙连接中...");
                   MainActivity.bleService.connect(ble.getBleMac());
                   break;
             default:
@@ -254,7 +259,7 @@ public class SearchBleActivity extends BaseActivity {
      * 读取设备版本号
      */
     private void redVersion(){
-        showProgress("正在读取版本号...");
+        DialogUtils.showProgress(SearchBleActivity.this,"正在读取版本号...");
         SendBleStr.sendBleData(BleContant.RED_DEVICE_VERSION);
     }
 

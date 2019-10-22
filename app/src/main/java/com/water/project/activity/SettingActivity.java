@@ -23,6 +23,7 @@ import com.water.project.bean.SelectTime;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.BuglyUtils;
+import com.water.project.utils.DialogUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.StatusBarUtils;
@@ -59,6 +60,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_setting);
         initView();
         register();//注册广播
         sendData(BleContant.SEND_GET_CODE_PHONE,1); //发送蓝牙命令
@@ -164,10 +166,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case BleContant.SEND_GET_TANTOU:
             case BleContant.SEND_CAI_JI_PIN_LU:
             case BleContant.SEND_FA_SONG_PIN_LU:
-                 showProgress("正在读取参数设置...");
+                DialogUtils.showProgress(SettingActivity.this,"正在读取参数设置...");
                  break;
              default:
-                 showProgress("正在设置参数信息...");
+                 DialogUtils.showProgress(SettingActivity.this,"正在设置参数信息...");
                  break;
         }
         //如果蓝牙连接断开，就扫描重连
@@ -175,7 +177,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             //扫描并重连蓝牙
             final Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
             if(null!=ble){
-                showProgress("扫描并连接蓝牙设备...");
+                DialogUtils.showProgress(SettingActivity.this,"扫描并连接蓝牙设备...");
                 MainActivity.bleService.scanDevice(ble.getBleName());
             }
             return;
@@ -391,7 +393,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             switch (intent.getAction()){
                 //扫描不到指定蓝牙设备
                 case BleService.ACTION_NO_DISCOVERY_BLE:
-                     clearTask();
+                    DialogUtils.closeProgress();
                      dialogView = new DialogView(mContext, "扫描不到该蓝牙设备，请靠近设备再进行扫描！", "重新扫描","取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
@@ -402,11 +404,11 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                      break;
                 //蓝牙断开连接
                 case BleService.ACTION_GATT_DISCONNECTED:
-                     clearTask();
+                    DialogUtils.closeProgress();
                      dialogView = new DialogView(mContext, "蓝牙连接断开，请靠近设备进行连接!","重新连接", "取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
-                            showProgress("蓝牙连接中...");
+                            DialogUtils.showProgress(SettingActivity.this,"蓝牙连接中...");
                             mHandler.postDelayed(new Runnable() {
                                 public void run() {
                                     Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
@@ -445,18 +447,18 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                                 sendData(BleContant.SEND_FA_SONG_PIN_LU,1);
                                 break;
                             case BleContant.SEND_FA_SONG_PIN_LU:
-                                clearTask();
+                               DialogUtils.closeProgress();
                                 SEND_STATUS=BleContant.NOT_SEND_DATA;
                                 break;
                             default:
-                                clearTask();
+                               DialogUtils.closeProgress();
                                 break;
                         }
                     }
 
                     //单独读取与设置等操作
                     if(SEND_TYPE==2){
-                        clearTask();
+                       DialogUtils.closeProgress();
                         if(SEND_STATUS==BleContant.SEND_GET_CODE_PHONE || SEND_STATUS==BleContant.SEND_GET_TANTOU || SEND_STATUS==BleContant.SEND_CAI_JI_PIN_LU || SEND_STATUS==BleContant.SEND_FA_SONG_PIN_LU){
                             //解析并显示回执的数据
                             showData(data);
@@ -472,7 +474,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     }
                     break;
                 case BleService.ACTION_INTERACTION_TIMEOUT:
-                    clearTask();
+                   DialogUtils.closeProgress();
                     dialogView = new DialogView(mContext, "接收数据超时！", "重试","取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
@@ -482,7 +484,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     dialogView.show();
                     break;
                 case BleService.ACTION_SEND_DATA_FAIL:
-                    clearTask();
+                   DialogUtils.closeProgress();
                     dialogView = new DialogView(mContext, "下发命令失败！", "重试","取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
@@ -492,7 +494,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     dialogView.show();
                      break;
                 case BleService.ACTION_GET_DATA_ERROR:
-                    clearTask();
+                   DialogUtils.closeProgress();
                     showToastView("设备回执数据异常！");
                 default:
                     break;

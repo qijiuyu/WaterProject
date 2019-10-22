@@ -14,22 +14,26 @@ import com.water.project.R;
 import com.water.project.activity.MainActivity;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
+import com.water.project.bean.eventbus.EventStatus;
+import com.water.project.bean.eventbus.EventType;
+import com.water.project.utils.DialogUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
+import com.water.project.utils.ToastUtil;
 import com.water.project.utils.Util;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
 
+import org.greenrobot.eventbus.EventBus;
+
 public class CheckPresenterImpl {
 
     private Activity activity;
-    private CheckPresenter checkPresenter;
     private DialogView dialogView;
 
-    public CheckPresenterImpl(Activity activity,CheckPresenter checkPresenter){
+    public CheckPresenterImpl(Activity activity){
         this.activity=activity;
-        this.checkPresenter=checkPresenter;
     }
 
 
@@ -52,17 +56,17 @@ public class CheckPresenterImpl {
         final int qIndex=strCheck.indexOf(".");
         final int hIndex=strCheck.length()-qIndex-1;
         if(strCheck.indexOf(".")==-1 && strCheck.length()>2){
-            checkPresenter.showToast("人工实测水温最多只能输入2位整数！");
+            ToastUtil.showLong("人工实测水温最多只能输入2位整数！");
         }else if(qIndex>2){
-            checkPresenter.showToast("人工实测水温的小数点前面最多只能是2位数");
+            ToastUtil.showLong("人工实测水温的小数点前面最多只能是2位数");
         }else if(qIndex!=-1 && hIndex>2){
-            checkPresenter.showToast("人工实测水温的小数点后面最多只能是2位数");
+            ToastUtil.showLong("人工实测水温的小数点后面最多只能是2位数");
         }else if(TextUtils.isEmpty(wuCha)){
-            checkPresenter.showToast("没有误差数据！");
+            ToastUtil.showLong("没有误差数据！");
         }else if(Double.parseDouble(wuCha)==0){
-            checkPresenter.showToast("水温数据无误差，无需校正！");
+            ToastUtil.showLong("水温数据无误差，无需校正！");
         }else{
-            checkPresenter.sendData(BleContant.RED_SHUI_WEN_PYL);
+            EventBus.getDefault().post(new EventType(EventStatus.SEND_CHECK_MCD,BleContant.RED_SHUI_WEN_PYL));
         }
     }
 
@@ -85,19 +89,19 @@ public class CheckPresenterImpl {
         final int qIndex=strCheck.indexOf(".");
         final int hIndex=strCheck.length()-qIndex-1;
         if(strCheck.indexOf(".")==-1 && strCheck.length()>4){
-            checkPresenter.showToast("人工实测水位埋深最多只能输入4位整数！");
+            ToastUtil.showLong("人工实测水位埋深最多只能输入4位整数！");
         }else if(qIndex>4){
-            checkPresenter.showToast("人工实测水位埋深的小数点前面最多只能是4位数");
+            ToastUtil.showLong("人工实测水位埋深的小数点前面最多只能是4位数");
         }else if(qIndex!=-1 && hIndex>3){
-            checkPresenter.showToast("人工实测水位埋深的小数点后面最多只能是3位数");
+            ToastUtil.showLong("人工实测水位埋深的小数点后面最多只能是3位数");
         }else if(TextUtils.isEmpty(wuCha)){
-            checkPresenter.showToast("没有误差数据！");
+            ToastUtil.showLong("没有误差数据！");
         }else if(Double.parseDouble(wuCha)==0){
-            checkPresenter.showToast("水位埋深数据无误差，无需校正！");
+            ToastUtil.showLong("水位埋深数据无误差，无需校正！");
         }else{
             double d=Double.parseDouble(wuCha.replace("-",""))*100;
             if(d>0 && d<10){
-                checkPresenter.sendData(BleContant.SEND_CHECK_ERROR);
+                EventBus.getDefault().post(new EventType(EventStatus.SEND_CHECK_MCD,BleContant.SEND_CHECK_ERROR));
             }
             if(d>=10 && d<20){
                 if(wuCha.contains("-")){
@@ -133,17 +137,17 @@ public class CheckPresenterImpl {
         final int qIndex=strCheck.indexOf(".");
         final int hIndex=strCheck.length()-qIndex-1;
         if(strCheck.indexOf(".")==-1 && strCheck.length()>6){
-            checkPresenter.showToast("人工实测电导率最多只能输入6位整数！");
+            ToastUtil.showLong("人工实测电导率最多只能输入6位整数！");
         }else if(qIndex>6){
-            checkPresenter.showToast("人工实测电导率的小数点前面最多只能是6位数");
+            ToastUtil.showLong("人工实测电导率的小数点前面最多只能是6位数");
         }else if(qIndex!=-1 && hIndex>2){
-            checkPresenter.showToast("人工实测电导率的小数点后面最多只能是2位数");
+            ToastUtil.showLong("人工实测电导率的小数点后面最多只能是2位数");
         }else if(TextUtils.isEmpty(wuCha)){
-            checkPresenter.showToast("没有误差数据！");
+            ToastUtil.showLong("没有误差数据！");
         }else if(Double.parseDouble(wuCha)==0){
-            checkPresenter.showToast("电导率数据无误差，无需校正！");
+            ToastUtil.showLong("电导率数据无误差，无需校正！");
         }else{
-            checkPresenter.sendData(BleContant.RED_DIAN_DAO_LV_PYL);
+            EventBus.getDefault().post(new EventType(EventStatus.SEND_CHECK_MCD,BleContant.RED_DIAN_DAO_LV_PYL));
         }
     }
 
@@ -191,14 +195,14 @@ public class CheckPresenterImpl {
      * @param SEND_STATUS
      */
     public void resumeScan(final int SEND_STATUS){
-        checkPresenter.clearLoding();
+        DialogUtils.closeProgress();
         if(null!=dialogView){
             dialogView.dismiss();
         }
         dialogView = new DialogView(activity, "扫描不到该蓝牙设备，请靠近设备再进行扫描！", "重新扫描","取消", new View.OnClickListener() {
             public void onClick(View v) {
                 dialogView.dismiss();
-                checkPresenter.sendData(SEND_STATUS);
+                EventBus.getDefault().post(new EventType(EventStatus.SEND_CHECK_MCD,SEND_STATUS));
             }
         }, null);
         dialogView.show();
@@ -209,14 +213,14 @@ public class CheckPresenterImpl {
      * 蓝牙连接断开
      */
     public void bleDisConnect(){
-        checkPresenter.clearLoding();
+        DialogUtils.closeProgress();
         if(null!=dialogView){
             dialogView.dismiss();
         }
         dialogView = new DialogView(activity, "蓝牙连接断开，请靠近设备进行连接!","重新连接", "取消", new View.OnClickListener() {
             public void onClick(View v) {
                 dialogView.dismiss();
-                checkPresenter.showLoding("蓝牙连接中...");
+                DialogUtils.showProgress(activity,"蓝牙连接中...");
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
@@ -233,14 +237,14 @@ public class CheckPresenterImpl {
      * 读取数据超时
      */
     public void timeOut(final int SEND_STATUS){
-        checkPresenter.clearLoding();
+        DialogUtils.closeProgress();
         if(null!=dialogView){
             dialogView.dismiss();
         }
         dialogView = new DialogView(activity, "接收数据超时！", "重试","取消", new View.OnClickListener() {
             public void onClick(View v) {
                 dialogView.dismiss();
-                checkPresenter.sendData(SEND_STATUS);
+                EventBus.getDefault().post(new EventType(EventStatus.SEND_CHECK_MCD,SEND_STATUS));
             }
         }, null);
         dialogView.show();
@@ -251,14 +255,14 @@ public class CheckPresenterImpl {
      * 下发命令失败
      */
     public void sendCmdFail(final int SEND_STATUS){
-        checkPresenter.clearLoding();
+        DialogUtils.closeProgress();
         if(null!=dialogView){
             dialogView.dismiss();
         }
         dialogView = new DialogView(activity, "下发命令失败！", "重试","取消", new View.OnClickListener() {
             public void onClick(View v) {
                 dialogView.dismiss();
-                checkPresenter.sendData(SEND_STATUS);
+                EventBus.getDefault().post(new EventType(EventStatus.SEND_CHECK_MCD,SEND_STATUS));
             }
         }, null);
         dialogView.show();

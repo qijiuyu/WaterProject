@@ -39,7 +39,6 @@ import java.util.List;
 
 public class BaseActivity extends FragmentActivity {
 
-    ProgressDialog progressDialog = null;
     public PopupWindow mPopuwindow;
     public Dialog baseDialog;
     protected Context mContext = this;
@@ -80,32 +79,6 @@ public class BaseActivity extends FragmentActivity {
         toast.show();
     }
 
-
-    /**
-     * 取消进度条
-     */
-    public void clearTask() {
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
-
-
-    /**
-     * 显示进度条
-     * @param msg
-     */
-    public void showProgress(String msg) {
-        //如果已经存在并且在显示中就不处理
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.setMessage(msg);
-            return;
-        }
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(msg);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-    }
 //
 //
 //    protected void bottomPopupWindow(int x, int y, View view) {

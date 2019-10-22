@@ -61,4 +61,7 @@ public class BleContant {
 
     //读取设备记录
     public static final int RED_DEVICE_RECOFD=1016;
+
+    //新设备读取统一编码
+    public static final int RED_NEW_GET_CODE=1017;
 }

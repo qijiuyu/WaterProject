@@ -4,6 +4,8 @@ import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.Util;
 
+import java.util.Map;
+
 /**
  * Created by Administrator on 2018/9/1.
  */
@@ -64,6 +66,9 @@ public class SendBleStr {
 
     //读取设备记录
     public static String RED_DEVOCE_RECORD="GDERRREAD";
+
+    //新设备读取统一编码
+    public static final String RED_NEW_GET_CODE="GDIDR";
 
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
@@ -176,6 +181,43 @@ public class SendBleStr {
         SET_FA_SONG_PIN_LU=stringBuffer.toString();
     }
 
+
+    /**
+     * 新版设置发送频率
+     */
+    public static void new_setFaSong(String time, String minute, String grps, String sendNum, Map<Integer,Integer> map){
+        StringBuffer stringBuffer=new StringBuffer("GDSENDW");
+        stringBuffer.append(time.substring(0,4));
+        stringBuffer.append(time.substring(5,7));
+        stringBuffer.append(time.substring(8,10));
+        stringBuffer.append(time.substring(11,13));
+        stringBuffer.append(time.substring(14,16));
+        stringBuffer.append("00,");
+        //追加发送间隔时间
+        stringBuffer.append(append(4,minute)+",");
+        //追加gprs模式,补发次数
+        stringBuffer.append(grps+","+sendNum);
+        SET_FA_SONG_PIN_LU=stringBuffer.toString();
+        if(Integer.parseInt(sendNum)>0){
+            stringBuffer.append(",");
+            for (int i=0;i<map.size();i++){
+                 stringBuffer.append(append(4,String.valueOf(map.get(i)))+",");
+            }
+            SET_FA_SONG_PIN_LU=stringBuffer.substring(0,stringBuffer.length()-1);
+        }
+    }
+
+
+    /**
+     * 数据不够，用0补齐
+     */
+    private static String append(int num,String data){
+        String str=data;
+        for (int i=0;i<num-data.length();i++){
+              str="0"+str;
+        }
+        return str;
+    }
 
     /**
      * 设置水位埋深误差数据
@@ -382,6 +424,10 @@ public class SendBleStr {
             //读取设备记录
             case BleContant.RED_DEVICE_RECOFD:
                   SendBleDataManager.getInstance().sendData(RED_DEVOCE_RECORD);
+                  break;
+            //新设备读取统一编码
+            case BleContant.RED_NEW_GET_CODE:
+                  SendBleDataManager.getInstance().sendData(RED_NEW_GET_CODE);
                   break;
              default:
                  break;

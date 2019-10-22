@@ -14,11 +14,13 @@ import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.water.project.R;
 import com.water.project.activity.BaseActivity;
 import com.water.project.activity.MainActivity;
+import com.water.project.adapter.NewSettingTimeAdapter;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
 import com.water.project.bean.SelectTime;
@@ -33,6 +35,7 @@ import com.water.project.utils.Util;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.utils.DialogUtils;
+import com.water.project.view.CustomListView;
 import com.water.project.view.DialogView;
 import com.water.project.view.SelectTimeDialog;
 
@@ -49,9 +52,10 @@ import java.util.Date;
 
 public class New_SettingActivity extends BaseActivity implements View.OnClickListener,SelectTime{
     private EditText etCode,etPhone,etTanTou;
-    private TextView etCStime,etFStime,etCEtime,etFEtime;
+    private TextView etCStime,etFStime,etCEtime,etFEtime,tvGprs,tvSendNum;
     private ImageView imgClear1,imgClear2,imgClear3;
     private DialogView dialogView;
+    private CustomListView listView;
     private Handler mHandler=new Handler();
     //下发命令的编号
     private int SEND_STATUS;
@@ -65,6 +69,9 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
     private SimpleDateFormat mFormatter1 = new SimpleDateFormat("yyyy-MM-dd");
     //MVP对象
     private New_SettingPresenter new_settingPresenter;
+    private NewSettingTimeAdapter newSettingTimeAdapter;
+    //补发间隔时间次数
+    private int sendNum=3;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -75,7 +82,7 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
         new_settingPresenter=new New_SettingPresenter(this);
         initView();
         register();//注册广播
-        sendData(BleContant.SEND_GET_CODE_PHONE,1); //发送蓝牙命令
+        sendData(BleContant.RED_NEW_GET_CODE,1); //发送蓝牙命令
     }
 
 
@@ -95,6 +102,9 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
         imgClear1=(ImageView)findViewById(R.id.img_clear1);
         imgClear2=(ImageView)findViewById(R.id.img_clear2);
         imgClear3=(ImageView)findViewById(R.id.img_clear3);
+        tvGprs=(TextView)findViewById(R.id.tv_as_grps);
+        tvSendNum=(TextView)findViewById(R.id.tv_send_num);
+        listView=(CustomListView) findViewById(R.id.listView);
         etCStime.setOnClickListener(this);
         etFStime.setOnClickListener(this);
         etCEtime.setOnClickListener(this);
@@ -113,6 +123,8 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
         findViewById(R.id.tv_get_three).setOnClickListener(this);
         findViewById(R.id.tv_get_four).setOnClickListener(this);
         findViewById(R.id.lin_back).setOnClickListener(this);
+        tvGprs.setOnClickListener(this);
+        tvSendNum.setOnClickListener(this);
         etCode.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -161,6 +173,10 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
                 }
             }
         });
+
+        //默认补发次数是03
+        newSettingTimeAdapter=new NewSettingTimeAdapter(New_SettingActivity.this,sendNum);
+        listView.setAdapter(newSettingTimeAdapter);
     }
 
 
@@ -176,14 +192,15 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
         SEND_STATUS=status;
         SEND_TYPE=type;
         switch (SEND_STATUS){
+            case BleContant.RED_NEW_GET_CODE:
             case BleContant.SEND_GET_CODE_PHONE:
             case BleContant.SEND_GET_TANTOU:
             case BleContant.SEND_CAI_JI_PIN_LU:
             case BleContant.SEND_FA_SONG_PIN_LU:
-                 showProgress("正在读取参数设置...");
+                 DialogUtils.showProgress(New_SettingActivity.this,"正在读取参数设置...");
                  break;
              default:
-                 showProgress("正在设置参数信息...");
+                 DialogUtils.showProgress(New_SettingActivity.this,"正在设置参数信息...");
                  break;
         }
         //如果蓝牙连接断开，就扫描重连
@@ -191,7 +208,7 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
             //扫描并重连蓝牙
             final Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
             if(null!=ble){
-                showProgress("扫描并连接蓝牙设备...");
+                DialogUtils.showProgress(New_SettingActivity.this,"扫描并连接蓝牙设备...");
                 MainActivity.bleService.scanDevice(ble.getBleName());
             }
             return;
@@ -288,22 +305,68 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
             case R.id.et_as_fetime:
                  DialogUtils.getHourAndMinute(New_SettingActivity.this,2);
                  break;
+            //选择GPRS模式
+            case R.id.tv_as_grps:
+                DialogUtils.selectNewSetting(New_SettingActivity.this,1);
+                 break;
+            //选择补发次数
+            case R.id.tv_send_num:
+                DialogUtils.selectNewSetting(New_SettingActivity.this,2);
+                  break;
             //设置发送频率
             case R.id.tv_setting_four:
                  final String startTime=etFStime.getText().toString().trim();
-                 final String fHour=etFEtime.getText().toString().trim();
+                 final String minute=etFEtime.getText().toString().trim();
+                 final String grps=tvGprs.getText().toString().trim();
+                 final String number=tvSendNum.getText().toString().trim();
                  if(TextUtils.isEmpty(startTime)){
                      showToastView("请选择发送起始时间！");
-                 }else if(TextUtils.isEmpty(fHour)){
-                     showToastView("请选择发送间隔时间！");
-                 }else{
-                     SendBleStr.new_sendCaiJi(startTime,fHour);
-                     sendData(BleContant.SET_FA_SONG,2);
+                     return;
                  }
+                 if(TextUtils.isEmpty(minute)){
+                     showToastView("请选择发送间隔时间！");
+                     return;
+                 }if(sendNum>0){
+                     if(sendNum>newSettingTimeAdapter.map.size()){
+                         showToastView("请将"+sendNum+"个补发间隔时间数据完善");
+                         return;
+                     }
+                     boolean b=true;
+                    for (int i=0;i<newSettingTimeAdapter.map.size();i++){
+                            if(i==0 && newSettingTimeAdapter.map.get(i)>=Integer.parseInt(minute)){
+                                b=false;
+                                showToastView("补发间隔时间1的分钟必须小于发送间隔时间");
+                                break;
+                            }
+                            if(i>0 && newSettingTimeAdapter.map.get(i)<=newSettingTimeAdapter.map.get(i-1)){
+                                b=false;
+                                showToastView("补发间隔时间"+(i+1)+"的分钟必须大于补发间隔时间"+(i)+"的分钟");
+                                break;
+                            }
+                            //最后一个数据不能大于发送间隔时间
+                            if(i==newSettingTimeAdapter.map.size()-1){
+                                if(newSettingTimeAdapter.map.get(i)>=Integer.parseInt(minute)){
+                                    b=false;
+                                    showToastView("最后一个补发间隔时间的分钟必须小于发送间隔时间");
+                                    break;
+                                }
+                            }
+
+                    }
+                    if(!b){
+                        return;
+                    }
+                 }
+                 //设置并发送命令
+                SendBleStr.new_setFaSong(startTime,minute,grps,number,newSettingTimeAdapter.map);
+                sendData(BleContant.SET_FA_SONG,2);
                 break;
-            //读取统一编码和SIM
-            case R.id.tv_get_mobile:
+            //读取统一编码
             case R.id.tv_get_code:
+                 sendData(BleContant.RED_NEW_GET_CODE,2);
+                  break;
+            //读取SIM
+            case R.id.tv_get_mobile:
                  sendData(BleContant.SEND_GET_CODE_PHONE,2);
                  break;
             //读取探头埋深
@@ -344,16 +407,18 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
      * @param data
      */
     private void showData(String data){
-        BuglyUtils.uploadBleMsg("参数设置界面读取的数据是："+data);
-
         try {
             String[] strings =null;
             switch (SEND_STATUS){
-                //显示统一编码，SIM卡号
+                //显示统一编码
+                case BleContant.RED_NEW_GET_CODE:
+                      String code=data.replace("GDIDR","");
+                      etCode.setText(code);
+                      break;
+                //SIM卡号
                 case BleContant.SEND_GET_CODE_PHONE:
                     CODE_SIM_DATA=data;
                     strings=data.split(";");
-                    etCode.setText(strings[1]);
                     etPhone.setText(strings[6]);
                     break;
                 //显示探头埋深
@@ -438,6 +503,9 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
                         showData(data);
                         //继续发送命令
                         switch (SEND_STATUS){
+                            case BleContant.RED_NEW_GET_CODE:
+                                  sendData(BleContant.SEND_GET_CODE_PHONE,1);
+                                  break;
                             case BleContant.SEND_GET_CODE_PHONE:
                                 sendData(BleContant.SEND_GET_TANTOU,1);
                                 break;
@@ -448,19 +516,19 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
                                 sendData(BleContant.SEND_FA_SONG_PIN_LU,1);
                                 break;
                             case BleContant.SEND_FA_SONG_PIN_LU:
-                                clearTask();
+                                DialogUtils.closeProgress();
                                 SEND_STATUS=BleContant.NOT_SEND_DATA;
                                 break;
                             default:
-                                clearTask();
+                                DialogUtils.closeProgress();
                                 break;
                         }
                     }
 
                     //单独读取与设置等操作
                     if(SEND_TYPE==2){
-                        clearTask();
-                        if(SEND_STATUS==BleContant.SEND_GET_CODE_PHONE || SEND_STATUS==BleContant.SEND_GET_TANTOU || SEND_STATUS==BleContant.SEND_CAI_JI_PIN_LU || SEND_STATUS==BleContant.SEND_FA_SONG_PIN_LU){
+                        DialogUtils.closeProgress();
+                        if(SEND_STATUS==BleContant.RED_NEW_GET_CODE || SEND_STATUS==BleContant.SEND_GET_CODE_PHONE || SEND_STATUS==BleContant.SEND_GET_TANTOU || SEND_STATUS==BleContant.SEND_CAI_JI_PIN_LU || SEND_STATUS==BleContant.SEND_FA_SONG_PIN_LU){
                             //解析并显示回执的数据
                             showData(data);
                         }else{
@@ -483,7 +551,7 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
                      new_settingPresenter.sendCmdFail();
                      break;
                 case BleService.ACTION_GET_DATA_ERROR:
-                     clearTask();
+                     DialogUtils.closeProgress();
                      showToastView("设备回执数据异常！");
                 default:
                     break;
@@ -510,6 +578,18 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
             case EventStatus.NEW_SETTING_FSSJJG:
                  etFEtime.setText(String.valueOf(eventType.getObject()));
                  break;
+            //获取gprs模式数据
+            case EventStatus.SELECT_GRPS:
+                  tvGprs.setText(eventType.getObject().toString());
+                  break;
+            //获取补发次数数据
+            case EventStatus.SELECT_SEND_NUM:
+                  final String num=eventType.getObject().toString();
+                  tvSendNum.setText(num);
+                  sendNum=Integer.parseInt(num);
+                  newSettingTimeAdapter=new NewSettingTimeAdapter(New_SettingActivity.this,sendNum);
+                  listView.setAdapter(newSettingTimeAdapter);
+                  break;
         }
     }
 

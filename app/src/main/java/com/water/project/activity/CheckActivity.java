@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -19,24 +18,27 @@ import android.widget.TextView;
 import com.water.project.R;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
-import com.water.project.presenter.check.CheckPresenter;
+import com.water.project.bean.eventbus.EventStatus;
+import com.water.project.bean.eventbus.EventType;
 import com.water.project.presenter.check.CheckPresenterImpl;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
-import com.water.project.utils.BuglyUtils;
+import com.water.project.utils.DialogUtils;
 import com.water.project.utils.SPUtil;
-import com.water.project.utils.StatusBarUtils;
-import com.water.project.utils.SystemBarTintManager;
 import com.water.project.utils.Util;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 /**
  * 数据校验
  * Created by Administrator on 2018/9/2.
  */
 
-public class CheckActivity extends BaseActivity implements View.OnClickListener,CheckPresenter {
+public class CheckActivity extends BaseActivity implements View.OnClickListener {
     private ImageView MS_clear, SW_clear,DDL_clear;
     private TextView tvTime,tvYaLi,tvQiYa,tvTanTou,tvShuiWei, tv_MS_wucha, tv_SW_wucha,tv_DDL_wucha,tvShuiWen,tvDianDaoLv;
     private EditText et_MS_check, et_SW_check,et_DDL_check;
@@ -53,6 +55,8 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener,
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_check);
+        //注册EventBus
+        EventBus.getDefault().register(this);
         initMVP();
         initView();
         register();//注册广播
@@ -64,7 +68,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener,
      * 初始化MVP
      */
     private void initMVP(){
-        checkPresenter=new CheckPresenterImpl(this,this);
+        checkPresenter=new CheckPresenterImpl(this);
     }
 
     /**
@@ -196,16 +200,16 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener,
         }
         SEND_STATUS=status;
         if(SEND_STATUS==BleContant.SEND_REAL_TIME_DATA){
-            showProgress("正在读取实时数据...");
+            DialogUtils.showProgress(CheckActivity.this,"正在读取实时数据...");
         }else{
-            showProgress("正在进行数据校正...");
+            DialogUtils.showProgress(CheckActivity.this,"正在进行数据校正...");
         }
         //如果蓝牙连接断开，就扫描重连
         if(MainActivity.bleService.connectionState==MainActivity.bleService.STATE_DISCONNECTED){
             //扫描并重连蓝牙
             final Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
             if(null!=ble){
-                showProgress("扫描并连接蓝牙设备...");
+                DialogUtils.showProgress(CheckActivity.this,"扫描并连接蓝牙设备...");
                 MainActivity.bleService.scanDevice(ble.getBleName());
             }
             return;
@@ -296,7 +300,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener,
                      switch (SEND_STATUS){
                          //查询数据回执
                          case BleContant.SEND_REAL_TIME_DATA:
-                              clearTask();
+                              DialogUtils.closeProgress();
                               SEND_STATUS=BleContant.NOT_SEND_DATA;
                               //解析并显示回执的数据
                               showData(data);
@@ -334,7 +338,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener,
                      checkPresenter.sendCmdFail(SEND_STATUS);
                      break;
                 case BleService.ACTION_GET_DATA_ERROR:
-                     clearTask();
+                     DialogUtils.closeProgress();
                      showToastView("设备回执数据异常！");
                      break;
                 default:
@@ -556,24 +560,24 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener,
     }
 
 
-    @Override
-    public void showToast(String msg) {
-        showToastView(msg);
-    }
-
-    @Override
-    public void showLoding(String msg) {
-        showProgress(msg);
-    }
-
-    @Override
-    public void clearLoding() {
-        clearTask();
+    /**
+     * EventBus注解
+     */
+    @Subscribe
+    public void onEvent(EventType eventType) {
+        switch (eventType.getStatus()) {
+            //发送命令
+            case EventStatus.SEND_CHECK_MCD:
+                  final int cmd= (int) eventType.getObject();
+                  sendData(cmd);
+                  break;
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         unregisterReceiver(mBroadcastReceiver);
     }
 

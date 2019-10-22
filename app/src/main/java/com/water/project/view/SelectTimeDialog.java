@@ -19,7 +19,6 @@ import com.water.project.utils.SelectTimeUtils;
 import java.util.Calendar;
 
 /**
- * 故障保修，联系客服，使用说明等功能
  * Created by lyn on 2017/3/14.
  */
 
@@ -94,7 +93,6 @@ public class SelectTimeDialog extends Dialog implements View.OnClickListener {
         }
 
         for(int i=0;i<SelectTimeUtils.getMonth().size();i++){
-            LogUtils.e(Integer.parseInt(SelectTimeUtils.getMonth().get(i).replace("月",""))+"+++++++++++++"+intMonth);
             if(Integer.parseInt(SelectTimeUtils.getMonth().get(i).replace("月",""))==intMonth){
                 month.setSelection(i);
                 break;

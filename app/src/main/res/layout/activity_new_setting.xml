@@ -19,334 +19,330 @@
             android:padding="10dp">
 
             <RelativeLayout
-                android:background="@drawable/bg_kuang"
-                android:padding="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_kuang"
+                android:padding="10dp">
 
                 <TextView
-                    android:id="@+id/tv_as_code"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:gravity="center"
                     android:text="统一编码"
                     android:textColor="@android:color/black"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <EditText
                     android:id="@+id/et_as_code"
                     android:layout_width="200dp"
                     android:layout_height="40dp"
-                    android:hint="请输入统一编码"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="30dp"
+                    android:background="@null"
                     android:digits="0123456789qwertyuioplkjhgfdsazxcvbnm"
+                    android:gravity="right|center"
+                    android:hint="请输入统一编码"
                     android:maxLength="12"
                     android:textColor="@color/color_1fc37f"
-                    android:textSize="15sp"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right|center"
-                    android:layout_marginRight="30dp"
-                    android:background="@null"/>
+                    android:textSize="15sp" />
 
                 <ImageView
-                    android:visibility="gone"
                     android:id="@+id/img_clear1"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
                     android:layout_marginTop="10dp"
                     android:src="@mipmap/clear"
-                    android:layout_alignParentRight="true" />
+                    android:visibility="gone" />
 
                 <View
                     android:id="@+id/view_as1"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/color_888888"
-                    android:layout_below="@id/et_as_code"/>
+                    android:layout_below="@id/et_as_code"
+                    android:background="@color/color_888888" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:orientation="horizontal"
+                    android:layout_below="@id/view_as1"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="10dp"
-                    android:layout_below="@id/view_as1">
+                    android:orientation="horizontal">
 
                     <com.water.project.view.ClickTextView
                         android:id="@+id/tv_setting_code"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginRight="20dp"
-                        android:background="@mipmap/setting_btn"/>
+                        android:background="@mipmap/setting_btn" />
 
                     <com.water.project.view.ClickTextView
                         android:id="@+id/tv_get_code"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:background="@mipmap/red_icon"
-                        android:layout_marginLeft="20dp"/>
+                        android:layout_marginLeft="20dp"
+                        android:background="@mipmap/red_icon" />
 
                 </LinearLayout>
 
             </RelativeLayout>
 
             <RelativeLayout
-                android:background="@drawable/bg_kuang"
-                android:padding="10dp"
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_kuang"
+                android:padding="10dp">
 
                 <TextView
-                    android:id="@+id/tv_as_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:text="SIM卡号"
                     android:textColor="@android:color/black"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <EditText
                     android:id="@+id/et_as_phone"
                     android:layout_width="200dp"
                     android:layout_height="40dp"
-                    android:digits="0123456789"
-                    android:maxLength="13"
-                    android:hint="请输入SIM卡号"
-                    android:textColor="@color/color_1fc37f"
-                    android:textSize="15sp"
-                    android:gravity="right|center"
-                    android:background="@null"
-                    android:layout_marginTop="10dp"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginRight="30dp"
-                    android:layout_alignParentEnd="true" />
+                    android:layout_marginTop="10dp"
+                    android:background="@null"
+                    android:digits="0123456789"
+                    android:gravity="right|center"
+                    android:hint="请输入SIM卡号"
+                    android:maxLength="13"
+                    android:textColor="@color/color_1fc37f"
+                    android:textSize="15sp" />
 
                 <ImageView
-                    android:visibility="gone"
                     android:id="@+id/img_clear2"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
                     android:layout_marginTop="20dp"
                     android:src="@mipmap/clear"
-                    android:layout_alignParentRight="true" />
+                    android:visibility="gone" />
 
                 <View
                     android:id="@+id/view_as2"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/color_888888"
-                    android:layout_below="@id/et_as_phone"/>
+                    android:layout_below="@id/et_as_phone"
+                    android:background="@color/color_888888" />
 
                 <LinearLayout
                     android:id="@+id/lin_as1"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:orientation="horizontal"
+                    android:layout_below="@id/view_as2"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="10dp"
-                    android:layout_below="@id/view_as2">
+                    android:orientation="horizontal">
 
                     <com.water.project.view.ClickTextView
                         android:id="@+id/tv_setting_mobile"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginRight="20dp"
-                        android:background="@mipmap/setting_btn"/>
+                        android:background="@mipmap/setting_btn" />
 
                     <com.water.project.view.ClickTextView
                         android:id="@+id/tv_get_mobile"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:background="@mipmap/red_icon"
-                        android:layout_marginLeft="20dp"/>
+                        android:layout_marginLeft="20dp"
+                        android:background="@mipmap/red_icon" />
 
                 </LinearLayout>
 
             </RelativeLayout>
 
-        <RelativeLayout
-            android:background="@drawable/bg_kuang"
-            android:padding="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tv_as_tantou"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:text="探头埋深"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"/>
-
-            <EditText
-                android:id="@+id/et_as_tantou"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:digits="0123456789."
-                android:maxLength="8"
-                android:hint="请输入探头埋深"
-                android:textColor="@color/color_1fc37f"
-                android:textSize="15sp"
-                android:layout_alignParentRight="true"
-                android:gravity="right|center"
-                android:background="@null"
-                android:layout_marginRight="45dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:text="m"
-                android:textSize="15sp"
-                android:textColor="@android:color/black"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="25dp"
-                android:gravity="center"/>
-
-            <ImageView
-                android:visibility="gone"
-                android:id="@+id/img_clear3"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="10dp"
-                android:src="@mipmap/clear"
-                android:layout_alignParentRight="true" />
-
-            <View
-                android:id="@+id/view_as3"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_888888"
-                android:layout_below="@id/et_as_tantou"/>
-
-            <LinearLayout
-                android:id="@+id/lin_as2"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:orientation="horizontal"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/view_as3">
-
-                <com.water.project.view.ClickTextView
-                    android:id="@+id/tv_setting_two"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:layout_marginRight="20dp"
-                    android:background="@mipmap/setting_btn"/>
-
-                <com.water.project.view.ClickTextView
-                    android:id="@+id/tv_get_two"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="@mipmap/red_icon"
-                    android:layout_marginLeft="20dp"/>
-
-            </LinearLayout>
-
-
-        </RelativeLayout>
-
             <RelativeLayout
-                android:background="@drawable/bg_kuang"
-                android:padding="10dp"
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_kuang"
+                android:padding="10dp">
 
                 <TextView
-                    android:id="@+id/tv_as_cstime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="探头埋深"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/et_as_tantou"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="45dp"
+                    android:background="@null"
+                    android:digits="0123456789."
+                    android:gravity="right|center"
+                    android:hint="请输入探头埋深"
+                    android:maxLength="8"
+                    android:textColor="@color/color_1fc37f"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="25dp"
+                    android:gravity="center"
+                    android:text="m"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/img_clear3"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="10dp"
+                    android:src="@mipmap/clear"
+                    android:visibility="gone" />
+
+                <View
+                    android:id="@+id/view_as3"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_below="@id/et_as_tantou"
+                    android:background="@color/color_888888" />
+
+                <LinearLayout
+                    android:id="@+id/lin_as2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_below="@id/view_as3"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <com.water.project.view.ClickTextView
+                        android:id="@+id/tv_setting_two"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="20dp"
+                        android:background="@mipmap/setting_btn"
+                        android:gravity="center" />
+
+                    <com.water.project.view.ClickTextView
+                        android:id="@+id/tv_get_two"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:background="@mipmap/red_icon" />
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_kuang"
+                android:padding="10dp">
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:gravity="center"
                     android:text="采集起始时间"
                     android:textColor="@android:color/black"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/et_as_cstime"
                     android:layout_width="200dp"
                     android:layout_height="40dp"
-                    android:textColor="@color/color_1fc37f"
-                    android:textSize="15sp"
                     android:layout_alignParentRight="true"
-                    android:gravity="right|center"/>
+                    android:gravity="right|center"
+                    android:textColor="@color/color_1fc37f"
+                    android:textSize="15sp" />
 
                 <View
                     android:id="@+id/view_as4"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/color_888888"
-                    android:layout_below="@id/et_as_cstime"/>
+                    android:layout_below="@id/et_as_cstime"
+                    android:background="@color/color_888888" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
                     android:layout_below="@id/view_as4"
+                    android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:text="采集间隔时间"
                     android:textColor="@android:color/black"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/tv_as_cetime"
                     android:layout_width="200dp"
                     android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:digits="0123456789"
-                    android:maxLength="4"
-                    android:layout_below="@id/view_as4"
-                    android:textColor="@color/color_1fc37f"
-                    android:textSize="15sp"
                     android:layout_alignParentRight="true"
-                    android:gravity="right|center"
+                    android:layout_below="@id/view_as4"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="10dp"
                     android:background="@null"
-                    android:layout_marginRight="30dp"/>
+                    android:digits="0123456789"
+                    android:gravity="right|center"
+                    android:maxLength="4"
+                    android:textColor="@color/color_1fc37f"
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_below="@id/view_as4"
-                    android:text="小时"
-                    android:textColor="@android:color/black"
-                    android:textSize="15sp"
                     android:layout_alignParentRight="true"
-                    android:gravity="center"/>
+                    android:layout_below="@id/view_as4"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="分钟"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
 
                 <View
                     android:id="@+id/view_as5"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/color_888888"
-                    android:layout_below="@id/tv_as_cetime"/>
+                    android:layout_below="@id/tv_as_cetime"
+                    android:background="@color/color_888888" />
 
                 <LinearLayout
                     android:id="@+id/lin_as3"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:orientation="horizontal"
+                    android:layout_below="@id/view_as5"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="10dp"
-                    android:layout_below="@id/view_as5">
+                    android:orientation="horizontal">
 
                     <com.water.project.view.ClickTextView
                         android:id="@+id/tv_setting_three"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:gravity="center"
                         android:layout_marginRight="20dp"
-                        android:background="@mipmap/setting_btn"/>
+                        android:background="@mipmap/setting_btn"
+                        android:gravity="center" />
 
                     <com.water.project.view.ClickTextView
                         android:id="@+id/tv_get_three"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:background="@mipmap/red_icon"
-                        android:layout_marginLeft="20dp"/>
+                        android:layout_marginLeft="20dp"
+                        android:background="@mipmap/red_icon" />
 
                 </LinearLayout>
 
@@ -354,103 +350,167 @@
 
 
             <RelativeLayout
-                android:background="@drawable/bg_kuang"
-                android:padding="10dp"
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_kuang"
+                android:padding="10dp">
 
                 <TextView
-                    android:id="@+id/tv_as_fstime"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:gravity="center"
                     android:text="发送起始时间"
                     android:textColor="@android:color/black"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/et_as_fstime"
                     android:layout_width="200dp"
                     android:layout_height="40dp"
-                    android:textColor="@color/color_1fc37f"
-                    android:textSize="15sp"
                     android:layout_alignParentRight="true"
-                    android:gravity="right|center"/>
+                    android:gravity="right|center"
+                    android:textColor="@color/color_1fc37f"
+                    android:textSize="15sp" />
 
                 <View
                     android:id="@+id/view_as6"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/color_888888"
-                    android:layout_below="@id/et_as_fstime"/>
+                    android:layout_below="@id/et_as_fstime"
+                    android:background="@color/color_888888" />
 
                 <TextView
-                    android:id="@+id/tv_as_fetime"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
                     android:layout_below="@id/view_as6"
+                    android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:text="发送间隔时间"
                     android:textColor="@android:color/black"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/et_as_fetime"
                     android:layout_width="200dp"
                     android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:maxLength="4"
-                    android:digits="0123456789"
-                    android:layout_below="@id/view_as6"
-                    android:textColor="@color/color_1fc37f"
-                    android:textSize="15sp"
                     android:layout_alignParentRight="true"
-                    android:gravity="right|center"
+                    android:layout_below="@id/view_as6"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="10dp"
                     android:background="@null"
-                    android:layout_marginRight="30dp"/>
+                    android:digits="0123456789"
+                    android:gravity="right|center"
+                    android:maxLength="4"
+                    android:textColor="@color/color_1fc37f"
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_below="@id/view_as6"
-                    android:text="小时"
-                    android:textColor="@android:color/black"
-                    android:textSize="15sp"
                     android:layout_alignParentRight="true"
-                    android:gravity="center"/>
+                    android:layout_below="@id/view_as6"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="分钟"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
 
                 <View
                     android:id="@+id/view_as7"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/color_888888"
-                    android:layout_below="@id/et_as_fetime"/>
+                    android:layout_below="@id/et_as_fetime"
+                    android:background="@color/color_888888" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/view_as7"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="GPRS模式"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_as_grps"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/view_as7"
+                    android:layout_marginTop="10dp"
+                    android:gravity="right|center"
+                    android:text="03"
+                    android:textColor="@color/color_1fc37f"
+                    android:textSize="15sp" />
+
+                <View
+                    android:id="@+id/view_as8"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_below="@id/tv_as_grps"
+                    android:background="@color/color_888888" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/view_as8"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="补发数据次数"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_send_num"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/view_as8"
+                    android:layout_marginTop="10dp"
+                    android:gravity="right|center"
+                    android:text="03"
+                    android:textColor="@color/color_1fc37f"
+                    android:textSize="15sp" />
+
+                <View
+                    android:id="@+id/view_as9"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_below="@id/tv_send_num"
+                    android:background="@color/color_888888" />
+
+                <com.water.project.view.CustomListView
+                    android:id="@+id/listView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/view_as9"
+                    android:layout_marginTop="10dp"
+                    android:divider="@null"></com.water.project.view.CustomListView>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:orientation="horizontal"
+                    android:layout_below="@id/listView"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="10dp"
-                    android:layout_below="@id/view_as7">
+                    android:orientation="horizontal">
 
                     <com.water.project.view.ClickTextView
                         android:id="@+id/tv_setting_four"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:gravity="center"
                         android:layout_marginRight="20dp"
-                        android:background="@mipmap/setting_btn"/>
+                        android:background="@mipmap/setting_btn"
+                        android:gravity="center" />
 
                     <com.water.project.view.ClickTextView
                         android:id="@+id/tv_get_four"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:background="@mipmap/red_icon"
-                        android:layout_marginLeft="20dp"/>
+                        android:layout_marginLeft="20dp"
+                        android:background="@mipmap/red_icon" />
 
                 </LinearLayout>
 
