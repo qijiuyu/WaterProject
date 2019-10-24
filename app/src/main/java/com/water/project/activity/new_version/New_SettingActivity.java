@@ -326,7 +326,8 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
                  if(TextUtils.isEmpty(minute)){
                      showToastView("请选择发送间隔时间！");
                      return;
-                 }if(sendNum>0){
+                 }
+                 if(sendNum>0){
                      if(sendNum>newSettingTimeAdapter.map.size()){
                          showToastView("请将"+sendNum+"个补发间隔时间数据完善");
                          return;
@@ -335,19 +336,19 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
                     for (int i=0;i<newSettingTimeAdapter.map.size();i++){
                             if(i==0 && newSettingTimeAdapter.map.get(i)>=Integer.parseInt(minute)){
                                 b=false;
-                                showToastView("补发间隔时间1的分钟必须小于发送间隔时间");
+                                new_settingPresenter.trip("补发间隔时间1的分钟必须小于发送间隔时间的分钟");
                                 break;
                             }
                             if(i>0 && newSettingTimeAdapter.map.get(i)<=newSettingTimeAdapter.map.get(i-1)){
                                 b=false;
-                                showToastView("补发间隔时间"+(i+1)+"的分钟必须大于补发间隔时间"+(i)+"的分钟");
+                                new_settingPresenter.trip("补发间隔时间"+(i+1)+"的分钟必须大于补发间隔时间"+(i)+"的分钟");
                                 break;
                             }
                             //最后一个数据不能大于发送间隔时间
                             if(i==newSettingTimeAdapter.map.size()-1){
                                 if(newSettingTimeAdapter.map.get(i)>=Integer.parseInt(minute)){
                                     b=false;
-                                    showToastView("最后一个补发间隔时间的分钟必须小于发送间隔时间");
+                                    new_settingPresenter.trip("最后一个补发间隔时间的分钟必须小于发送间隔时间的分钟");
                                     break;
                                 }
                             }

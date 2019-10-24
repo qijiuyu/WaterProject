@@ -93,4 +93,18 @@ public class New_SettingPresenter {
         }, null);
         dialogView.show();
     }
+
+
+    /**
+     * 弹框提示
+     * @param msg
+     */
+    public void trip(String msg){
+        dialogView = new DialogView(activity, msg, "确定",null, new View.OnClickListener() {
+            public void onClick(View v) {
+                dialogView.dismiss();
+            }
+        }, null);
+        dialogView.show();
+    }
 }
