@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.water.project.R;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class NewSettingTimeAdapter extends BaseAdapter {
@@ -19,9 +20,11 @@ public class NewSettingTimeAdapter extends BaseAdapter {
 	private Context context;
 	private int count;
 	public Map<Integer,Integer> map=new HashMap<>();
-	public NewSettingTimeAdapter(Context context, int count){
+	private List<String> list;
+	public NewSettingTimeAdapter(Context context, int count,List<String> list){
 		this.context=context;
 		this.count=count;
+		this.list=list;
 		this.inflater = LayoutInflater.from(context);
 	}
 
@@ -65,6 +68,13 @@ public class NewSettingTimeAdapter extends BaseAdapter {
 				}
 			}
 		});
+		if(list!=null){
+			if(list.size()>position){
+				holder.etTime.setText(list.get(position));
+			}else{
+                holder.etTime.setText(null);
+            }
+		}
 		return convertView;
 	}
 

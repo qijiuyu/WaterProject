@@ -43,7 +43,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 参数设置
@@ -72,6 +74,8 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
     private NewSettingTimeAdapter newSettingTimeAdapter;
     //补发间隔时间次数
     private int sendNum=3;
+    //补发间隔时间集合
+    private List<String> list;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -82,7 +86,9 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
         new_settingPresenter=new New_SettingPresenter(this);
         initView();
         register();//注册广播
-        sendData(BleContant.RED_NEW_GET_CODE,1); //发送蓝牙命令
+//        sendData(BleContant.RED_NEW_GET_CODE,1); //发送蓝牙命令
+        SEND_STATUS=BleContant.SEND_FA_SONG_PIN_LU;
+        showData("GDSENDR20190930080000,1440,03,03,0020,0040,0060");
     }
 
 
@@ -175,7 +181,7 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
         });
 
         //默认补发次数是03
-        newSettingTimeAdapter=new NewSettingTimeAdapter(New_SettingActivity.this,sendNum);
+        newSettingTimeAdapter=new NewSettingTimeAdapter(New_SettingActivity.this,sendNum,list);
         listView.setAdapter(newSettingTimeAdapter);
     }
 
@@ -437,18 +443,33 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
                     sb.append(s.substring(6, 8)+" ");
                     sb.append(s.substring(8, 10)+":00");
                     etCStime.setText(sb.toString());
-                    etCEtime.setText((Integer.parseInt(strings[1])/60)+"");
+                    //要显示分钟
+                    String ceMinute=SendBleStr.append(4,strings[1]);
+                    etCEtime.setText(ceMinute);
                     break;
                 //显示发送频率
                 case BleContant.SEND_FA_SONG_PIN_LU:
                     strings=data.split(",");
-                    final String hour=strings[0].replace("GDSENDR","");
-                    etFStime.setText(mFormatter1.format(new Date())+" "+hour+":00");
-                    if(strings[1].equals("00")){
-                        etFEtime.setText("0");
-                    }else{
-                        etFEtime.setText(Util.delete_ling(strings[1]));
+                    if(strings==null || strings.length==0){
+                        return;
                     }
+                    final String time=strings[0].replace("GDSENDR","");
+                    etFStime.setText(time.substring(0, 4)+"-"+time.substring(4,6)+"-"+time.substring(6,8)+" "+time.substring(8,10)+":"+time.substring(10,12)+":"+time.substring(12,14));
+                    //显示发送间隔时间
+                    etFEtime.setText(strings[1]);
+                    tvGprs.setText(strings[2]);
+                    tvSendNum.setText(strings[3]);
+
+                    if(strings.length<=4){
+                        return;
+                    }
+                    //补发间隔时间集合
+                    list=new ArrayList<>();
+                    for(int i=4;i<strings.length;i++){
+                        list.add(strings[i]);
+                    }
+                    newSettingTimeAdapter=new NewSettingTimeAdapter(New_SettingActivity.this,sendNum,list);
+                    listView.setAdapter(newSettingTimeAdapter);
                     break;
                 default:
                     break;
@@ -588,7 +609,7 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
                   final String num=eventType.getObject().toString();
                   tvSendNum.setText(num);
                   sendNum=Integer.parseInt(num);
-                  newSettingTimeAdapter=new NewSettingTimeAdapter(New_SettingActivity.this,sendNum);
+                  newSettingTimeAdapter=new NewSettingTimeAdapter(New_SettingActivity.this,sendNum,list);
                   listView.setAdapter(newSettingTimeAdapter);
                   break;
         }

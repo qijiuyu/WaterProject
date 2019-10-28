@@ -89,10 +89,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         switch (v.getId()){
             //扫描链接蓝牙
             case R.id.tv_am_scan:
-                Intent intent=new Intent(this,SearchBleActivity.class);
-                startActivityForResult(intent,0x001);
-//                Intent intent=new Intent(this,New_SettingActivity.class);
+//                Intent intent=new Intent(this,SearchBleActivity.class);
 //                startActivityForResult(intent,0x001);
+                Intent intent=new Intent(this,New_SettingActivity.class);
+                startActivityForResult(intent,0x001);
                 break;
             //参数设置
             case R.id.lin_am_setting:

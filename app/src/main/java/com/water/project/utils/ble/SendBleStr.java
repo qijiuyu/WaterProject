@@ -211,7 +211,7 @@ public class SendBleStr {
     /**
      * 数据不够，用0补齐
      */
-    private static String append(int num,String data){
+    public static String append(int num,String data){
         String str=data;
         for (int i=0;i<num-data.length();i++){
               str="0"+str;
