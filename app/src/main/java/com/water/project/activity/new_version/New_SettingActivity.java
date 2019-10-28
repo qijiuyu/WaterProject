@@ -86,9 +86,7 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
         new_settingPresenter=new New_SettingPresenter(this);
         initView();
         register();//注册广播
-//        sendData(BleContant.RED_NEW_GET_CODE,1); //发送蓝牙命令
-        SEND_STATUS=BleContant.SEND_FA_SONG_PIN_LU;
-        showData("GDSENDR20190930080000,1440,03,03,0020,0040,0060");
+        sendData(BleContant.RED_NEW_GET_CODE,1); //发送蓝牙命令
     }
 
 
