@@ -58,7 +58,6 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
     private ImageView imgClear1,imgClear2,imgClear3;
     private DialogView dialogView;
     private CustomListView listView;
-    private Handler mHandler=new Handler();
     //下发命令的编号
     private int SEND_STATUS;
     /**
@@ -68,12 +67,9 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
     private int SEND_TYPE;
     //设置统一编码和SIM的数据
     private String CODE_SIM_DATA;
-    private SimpleDateFormat mFormatter1 = new SimpleDateFormat("yyyy-MM-dd");
     //MVP对象
     private New_SettingPresenter new_settingPresenter;
     private NewSettingTimeAdapter newSettingTimeAdapter;
-    //补发间隔时间次数
-    private int sendNum=3;
     //补发间隔时间集合
     private List<String> list;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,6 +83,8 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
         initView();
         register();//注册广播
         sendData(BleContant.RED_NEW_GET_CODE,1); //发送蓝牙命令
+//        SEND_STATUS=BleContant.SEND_FA_SONG_PIN_LU;
+//        showData("GDSENDR20190930080000,1440,03,03,0020,0040,0060");
     }
 
 
@@ -177,10 +175,6 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
                 }
             }
         });
-
-        //默认补发次数是03
-        newSettingTimeAdapter=new NewSettingTimeAdapter(New_SettingActivity.this,sendNum,list);
-        listView.setAdapter(newSettingTimeAdapter);
     }
 
 
@@ -331,9 +325,17 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
                      showToastView("请选择发送间隔时间！");
                      return;
                  }
-                 if(sendNum>0){
-                     if(sendNum>newSettingTimeAdapter.map.size()){
-                         showToastView("请将"+sendNum+"个补发间隔时间数据完善");
+                if(TextUtils.isEmpty(grps)){
+                    showToastView("请选择GPRS模式！");
+                    return;
+                }
+                if(TextUtils.isEmpty(number)){
+                    showToastView("请选择补发数据次数！");
+                    return;
+                }
+                 if(Integer.parseInt(number)>0){
+                     if(Integer.parseInt(number)>newSettingTimeAdapter.map.size()){
+                         showToastView("请将"+Integer.parseInt(number)+"个补发间隔时间数据完善");
                          return;
                      }
                      boolean b=true;
@@ -466,7 +468,7 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
                     for(int i=4;i<strings.length;i++){
                         list.add(strings[i]);
                     }
-                    newSettingTimeAdapter=new NewSettingTimeAdapter(New_SettingActivity.this,sendNum,list);
+                    newSettingTimeAdapter=new NewSettingTimeAdapter(New_SettingActivity.this,Integer.parseInt(strings[3]),list);
                     listView.setAdapter(newSettingTimeAdapter);
                     break;
                 default:
@@ -606,8 +608,7 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
             case EventStatus.SELECT_SEND_NUM:
                   final String num=eventType.getObject().toString();
                   tvSendNum.setText(num);
-                  sendNum=Integer.parseInt(num);
-                  newSettingTimeAdapter=new NewSettingTimeAdapter(New_SettingActivity.this,sendNum,list);
+                  newSettingTimeAdapter=new NewSettingTimeAdapter(New_SettingActivity.this,Integer.parseInt(num),list);
                   listView.setAdapter(newSettingTimeAdapter);
                   break;
         }

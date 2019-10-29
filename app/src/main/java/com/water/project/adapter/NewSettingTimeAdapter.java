@@ -71,6 +71,7 @@ public class NewSettingTimeAdapter extends BaseAdapter {
 		if(list!=null){
 			if(list.size()>position){
 				holder.etTime.setText(list.get(position));
+				map.put(position,Integer.parseInt(list.get(position)));
 			}else{
                 holder.etTime.setText(null);
             }
