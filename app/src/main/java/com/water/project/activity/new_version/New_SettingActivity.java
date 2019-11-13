@@ -326,7 +326,7 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
                      return;
                  }
                 if(TextUtils.isEmpty(grps)){
-                    showToastView("请选择GPRS模式！");
+                    showToastView("请选择连接服务器次数！");
                     return;
                 }
                 if(TextUtils.isEmpty(number)){

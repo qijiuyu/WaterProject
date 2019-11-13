@@ -102,7 +102,7 @@ public class DialogUtils {
         TextView tvTitle=(TextView)view.findViewById(R.id.tv_wh_title);
         List<String> dataList;
         if(type==1){
-            tvTitle.setText("请选择GRPS模式");
+            tvTitle.setText("请选择连接服务器次数");
             dataList=SelectTimeUtils.getGPRS();
         }else{
             tvTitle.setText("请选择补发间隔次数");

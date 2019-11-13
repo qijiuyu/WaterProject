@@ -23,8 +23,16 @@ import com.water.project.activity.new_version.New_SettingActivity;
 import com.water.project.application.MyApplication;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
+import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ble.SendBleDataManager;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
+
 public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     private LinearLayout linearLayout1,linearLayout2,linearLayout3;
@@ -36,11 +44,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if(MyApplication.spUtil.getString("stopAPP").equals("123water321")){
+            System.exit(0);
+        }
         setContentView(R.layout.activity_main);
         initView();
         //删除缓存
         deleteCache();
         initService();//注册蓝牙服务
+        setPush();
     }
 
 
@@ -204,6 +216,39 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         }
         return super.onKeyDown(keyCode, event);
     }
+
+
+    /**
+     * 设置推送
+     */
+    private void setPush(){
+        //设置极光推送的别名
+        Set<String> tags = new HashSet<>();
+        tags.add("com.water.project");
+        JPushInterface.setAliasAndTags(getApplicationContext(),"com.water.project", tags, mAliasCallback);
+    }
+
+
+    private final TagAliasCallback mAliasCallback = new TagAliasCallback() {
+        public void gotResult(int code, String alias, Set<String> tags) {
+            switch (code) {
+                //设置别名成功
+                case 0:
+                    LogUtils.e("推送设置成功");
+                    break;
+                //设置别名失败
+                case 6002:
+                    LogUtils.e("推送设置失败");
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            setPush();
+                        }
+                    },30000);
+                    break;
+                default:
+            }
+        }
+    };
 
     @Override
     protected void onDestroy() {

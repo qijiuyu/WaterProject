@@ -53,6 +53,7 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_net);
         initView();
         register();
         sendData(BleContant.SEND_GET_CODE_PHONE);

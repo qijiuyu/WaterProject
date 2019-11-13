@@ -7,6 +7,11 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.water.project.R;
+import com.water.project.utils.LogUtils;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2019/9/24.
@@ -21,6 +26,7 @@ public class AActivity extends Activity {
         findViewById(R.id.btn).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
+                List li=new ArrayList(20);
             }
         });
     }
