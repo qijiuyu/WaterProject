@@ -19,6 +19,8 @@ public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuAdapter.MyHold
 
     private Context context;
     private List<Menu> menuList;
+    //设置该下标的菜单无法点击
+    private int noClick=-1;
     private OnItemClickListener onItemClickListener;
     public MainMenuAdapter(Context context, List<Menu> menuList, OnItemClickListener onItemClickListener) {
         this.context = context;
@@ -44,7 +46,10 @@ public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuAdapter.MyHold
         holder.relClick.setTag(i);
         holder.relClick.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                onItemClickListener.onItemClick((Integer)v.getTag());
+                final int position=(Integer)v.getTag();
+                if(position!=noClick){
+                    onItemClickListener.onItemClick(position);
+                }
             }
         });
     }
@@ -66,5 +71,8 @@ public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuAdapter.MyHold
         }
     }
 
+    public void setNoClickIndex(int noClick){
+        this.noClick=noClick;
+    }
 }
 

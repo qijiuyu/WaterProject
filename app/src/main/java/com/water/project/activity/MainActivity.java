@@ -52,6 +52,7 @@ public class MainActivity extends BaseActivity{
     public static BluetoothAdapter mBtAdapter = null;
     //存储菜单
     private List<Menu> menuList = new ArrayList<>();
+    private MainMenuAdapter mainMenuAdapter;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -60,9 +61,9 @@ public class MainActivity extends BaseActivity{
         }
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        initView();
         //设置菜单数据
         setMenuList();
-        initView();
         //删除缓存
         deleteCache();
         initService();//注册蓝牙服务
@@ -75,6 +76,38 @@ public class MainActivity extends BaseActivity{
      */
     private void initView() {
         tvAbout.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        GridLayoutManager gridLayoutManager=new GridLayoutManager(this, 2);
+        listView.setLayoutManager(gridLayoutManager);
+        mainMenuAdapter=new MainMenuAdapter(this, menuList, new MainMenuAdapter.OnItemClickListener() {
+            public void onItemClick(int position) {
+                final String menuName=menuList.get(position).getName();
+                switch (menuName){
+                    case "实时数据":
+                        setClass(GetDataActivity.class);
+                        break;
+                    case "校测水位数据":
+                        setClass(CheckActivity.class);
+                        break;
+                    case "网络连接设置":
+                        setClass(NetSettingActivity.class);
+                        break;
+                    case "参数设置":
+                        final int code = getVersion();
+                        if (code == 1) {
+                            setClass(SettingActivity.class);
+                        } else {
+                            setClass(New_SettingActivity.class);
+                        }
+                        break;
+                    case "读取设备记录":
+                        setClass(GetRecordActivity.class);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+
     }
 
 
@@ -123,41 +156,14 @@ public class MainActivity extends BaseActivity{
         if (resultCode == 0x001) {
             //读取版本信息成功
             final int code = getVersion();
-            if (code != 1) {
+            if (code==1) {
                 menuList.remove(menuList.get(4));
             }
-
-            GridLayoutManager gridLayoutManager=new GridLayoutManager(this, 2);
-            listView.setLayoutManager(gridLayoutManager);
-            MainMenuAdapter mainMenuAdapter=new MainMenuAdapter(this, menuList, new MainMenuAdapter.OnItemClickListener() {
-                public void onItemClick(int position) {
-                    final String menuName=menuList.get(position).getName();
-                    switch (menuName){
-                        case "实时数据":
-                            setClass(GetDataActivity.class);
-                            break;
-                        case "校测水位数据":
-                            setClass(CheckActivity.class);
-                            break;
-                        case "网络连接设置":
-                            setClass(NetSettingActivity.class);
-                            break;
-                        case "参数设置":
-                            final int code = getVersion();
-                            if (code == 1) {
-                                setClass(SettingActivity.class);
-                            } else {
-                                setClass(New_SettingActivity.class);
-                            }
-                            break;
-                        case "读取设备记录":
-                            setClass(GetRecordActivity.class);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            });
+            if(code==3){
+                menuList.remove(menuList.get(4));
+                mainMenuAdapter.setNoClickIndex(2);
+                mainMenuAdapter.notifyDataSetChanged();
+            }
             listView.setAdapter(mainMenuAdapter);
         }
     }
@@ -189,6 +195,9 @@ public class MainActivity extends BaseActivity{
         if (TextUtils.isEmpty(version)) {
             return 1;
         }
+        if(version.contains("V3.00")){
+            return 3;
+        }
         String[] vs = version.split("-");
         if (null == vs || vs.length == 0) {
             return 1;
@@ -205,7 +214,7 @@ public class MainActivity extends BaseActivity{
             }
             return 2;
         }
-        return 0;
+        return 1;
     }
 
 
