@@ -83,6 +83,8 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
         initView();
         register();//注册广播
         sendData(BleContant.RED_NEW_GET_CODE,1); //发送蓝牙命令
+//        SEND_STATUS=BleContant.SEND_FA_SONG_PIN_LU;
+//        showData("GDSENDW20191112000100,0001,01,00");
     }
 
 
@@ -363,7 +365,7 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
                     }
                  }
                  //设置并发送命令
-                SendBleStr.new_setFaSong(startTime,minute,grps,number,newSettingTimeAdapter.map);
+                SendBleStr.new_setFaSong(startTime,minute,grps,number,newSettingTimeAdapter==null ? null : newSettingTimeAdapter.map);
                 sendData(BleContant.SET_FA_SONG,2);
                 break;
             //读取统一编码
