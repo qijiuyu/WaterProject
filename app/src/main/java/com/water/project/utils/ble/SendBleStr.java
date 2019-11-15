@@ -70,6 +70,9 @@ public class SendBleStr {
     //新设备读取统一编码
     public static final String RED_NEW_GET_CODE="GDIDR";
 
+    //发送数据菜单：发送数据
+    public static final String MENU_SEND_DATA="GDBLEGPRSSENDDATA";
+
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
         StringBuffer stringBuffer=new StringBuffer();
@@ -428,6 +431,10 @@ public class SendBleStr {
             //新设备读取统一编码
             case BleContant.RED_NEW_GET_CODE:
                   SendBleDataManager.getInstance().sendData(RED_NEW_GET_CODE);
+                  break;
+            //发送数据菜单：发送数据
+            case BleContant.MENU_SEND_DATA:
+                  SendBleDataManager.getInstance().sendData(MENU_SEND_DATA);
                   break;
              default:
                  break;

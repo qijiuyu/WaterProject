@@ -64,4 +64,7 @@ public class BleContant {
 
     //新设备读取统一编码
     public static final int RED_NEW_GET_CODE=1017;
+
+    //发送数据菜单：发送数据
+    public static final int MENU_SEND_DATA=1018;
 }

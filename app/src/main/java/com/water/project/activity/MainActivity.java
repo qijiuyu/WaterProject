@@ -102,6 +102,9 @@ public class MainActivity extends BaseActivity{
                     case "读取设备记录":
                         setClass(GetRecordActivity.class);
                         break;
+                    case "发送数据":
+                        setClass(SendDataActivity.class);
+                        break;
                     default:
                         break;
                 }
@@ -183,6 +186,8 @@ public class MainActivity extends BaseActivity{
         menuList.add(menu4);
         Menu menu5=new Menu(R.mipmap.record_icon,"读取设备记录");
         menuList.add(menu5);
+//        Menu menu6=new Menu(R.mipmap.status_icon,"发送数据");
+//        menuList.add(menu6);
     }
 
 
