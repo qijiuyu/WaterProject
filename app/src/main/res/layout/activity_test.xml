@@ -4,6 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include layout="@layout/head"></include>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,11 +21,23 @@
         android:text="ZKGDBluetooth"
         android:hint="请输入设备的蓝牙名称"/>
 
+    <EditText
+        android:id="@+id/et_version"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="0：旧版本   1：新版本"/>
+
     <Button
         android:id="@+id/btn"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="发送命令"
-        android:layout_marginTop="30dp"
-        />
+        android:text="发送数据"
+        android:layout_marginTop="10dp" />
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </ListView>
+
 </LinearLayout>

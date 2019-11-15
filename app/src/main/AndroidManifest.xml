@@ -42,7 +42,7 @@
 
 
         <activity
-            android:name=".activity.WelcomeActivity">
+            android:name=".activity.aaa.Test2Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -64,8 +64,6 @@
         <activity android:name=".activity.GetRecordActivity"  android:screenOrientation="portrait"/>
 
         <activity android:name=".activity.TestActivity" ></activity>
-
-        <activity android:name=".activity.aaa.AActivity" ></activity>
 
         <service
             android:name=".service.BleService"

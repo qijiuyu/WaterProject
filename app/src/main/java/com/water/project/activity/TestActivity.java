@@ -1,37 +1,12 @@
 package com.water.project.activity;
 
-import android.bluetooth.BluetoothAdapter;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
-import android.gesture.GestureOverlayView;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.water.project.R;
-import com.water.project.activity.aaa.AActivity;
-import com.water.project.application.MyApplication;
-import com.water.project.bean.Ble;
-import com.water.project.service.BleService;
-import com.water.project.utils.BleUtils;
-import com.water.project.utils.LogUtils;
-import com.water.project.utils.SPUtil;
-import com.water.project.utils.ble.SendBleDataManager;
-import com.water.project.view.DialogView;
 
 import android.view.GestureDetector.OnGestureListener;
 
@@ -122,11 +97,6 @@ public class TestActivity extends BaseActivity{
                     )
             {
                 // 向右滑动
-                Intent intent = new Intent();
-                intent.setClass(TestActivity.this, AActivity.class);
-//				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);	//不重复打开多个界面
-                startActivity(intent);
-                overridePendingTransition(R.anim.left, R.anim.right);
             }
             return false;
         }

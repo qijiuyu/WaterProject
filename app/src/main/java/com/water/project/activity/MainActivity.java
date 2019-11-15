@@ -92,7 +92,7 @@ public class MainActivity extends BaseActivity{
                         setClass(NetSettingActivity.class);
                         break;
                     case "参数设置":
-                        final int code = getVersion();
+                        final int code = BleUtils.getVersion(MainActivity.this);
                         if (code == 1) {
                             setClass(SettingActivity.class);
                         } else {
@@ -155,7 +155,7 @@ public class MainActivity extends BaseActivity{
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 0x001) {
             //读取版本信息成功
-            final int code = getVersion();
+            final int code = BleUtils.getVersion(MainActivity.this);
             if (code==1) {
                 menuList.remove(menuList.get(4));
             }
@@ -183,38 +183,6 @@ public class MainActivity extends BaseActivity{
         menuList.add(menu4);
         Menu menu5=new Menu(R.mipmap.record_icon,"读取设备记录");
         menuList.add(menu5);
-    }
-
-    /**
-     * 获取设备版本
-     *
-     * @return
-     */
-    private int getVersion() {
-        String version = SPUtil.getInstance(this).getString(SPUtil.DEVICE_VERSION);
-        if (TextUtils.isEmpty(version)) {
-            return 1;
-        }
-        if(version.contains("V3.00")){
-            return 3;
-        }
-        String[] vs = version.split("-");
-        if (null == vs || vs.length == 0) {
-            return 1;
-        }
-        if (version.startsWith("GDBBRGDsender")) {
-            return 1;
-        }
-        if (version.startsWith("GDBBRZKGD2000")) {
-            if (vs.length == 2) {
-                return 1;
-            }
-            if (vs[2].contains("V1") || vs[2].contains("V2")) {
-                return 1;
-            }
-            return 2;
-        }
-        return 1;
     }
 
 
