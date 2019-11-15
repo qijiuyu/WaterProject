@@ -160,8 +160,8 @@ public class SendBleStr {
      * @param totalMinute
      */
     public static void new_sendCaiJi(String startTime,String totalMinute){
-        StringBuffer stringBuffer=new StringBuffer("GDREADW");
-        stringBuffer.append(startTime+","+totalMinute);
+        StringBuffer stringBuffer=new StringBuffer("GDREADW"+startTime+",");
+        stringBuffer.append(append(4,totalMinute));
         SET_CAI_JI_PIN_LU=stringBuffer.toString();
     }
 

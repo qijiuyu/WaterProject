@@ -44,7 +44,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        if(MyApplication.spUtil.getString("stopAPP").equals("123water321")){
+        if(MyApplication.spUtil.getString("stopAPP").equals("12345water54321")){
             System.exit(0);
         }
         setContentView(R.layout.activity_main);

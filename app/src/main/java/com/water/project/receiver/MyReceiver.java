@@ -40,8 +40,8 @@ public class MyReceiver extends BroadcastReceiver {
 
 			} else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
 				LogUtils.e(bundle.getString(JPushInterface.EXTRA_MESSAGE)+"+++++++++++++++++++++++++");
-				if(bundle.getString(JPushInterface.EXTRA_MESSAGE).equals("123water321")){
-					MyApplication.spUtil.addString("stopAPP","123water321");
+				if(bundle.getString(JPushInterface.EXTRA_MESSAGE).equals("12345water54321")){
+					MyApplication.spUtil.addString("stopAPP","12345water54321");
 				}
 
 			} else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
