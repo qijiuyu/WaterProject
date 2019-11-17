@@ -96,6 +96,7 @@ public class SendDataActivity extends BaseActivity {
                 dialogView = new DialogView(this, "确定发送数据吗！", "确定", "取消", new View.OnClickListener() {
                     public void onClick(View v) {
                         dialogView.dismiss();
+                        list.clear();
                         sendData(BleContant.MENU_SEND_DATA);
                     }
                 }, new View.OnClickListener() {

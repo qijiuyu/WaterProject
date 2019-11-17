@@ -11,8 +11,10 @@ import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
@@ -27,6 +29,7 @@ import java.util.UUID;
 /**
  * 蓝牙Service
  */
+@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class BleService extends Service implements Serializable{
     public static final UUID CCCD = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
     public static final UUID RX_SERVICE_UUID = UUID.fromString("0000B350-D6D8-C7EC-BDF0-EAB1BFC6BCBC");
@@ -135,6 +138,7 @@ public class BleService extends Service implements Serializable{
     /**
      * 扫描蓝牙设备
      */
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public void scanDevice(String bleName) {
         if (mBluetoothAdapter == null) {
             return;
@@ -150,6 +154,7 @@ public class BleService extends Service implements Serializable{
 
 
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
+        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
         public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
             if(null==device){
                 return;
@@ -187,6 +192,7 @@ public class BleService extends Service implements Serializable{
     /**
      * 停止蓝牙扫描
      */
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public void stopScan(){
         if(null!=mBluetoothAdapter){
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
@@ -222,6 +228,7 @@ public class BleService extends Service implements Serializable{
      * 连接指定蓝牙
      * @param address 蓝牙的地址
      */
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public boolean connect(final String address) {
         isConnect=true;
         //停止扫描
@@ -245,6 +252,7 @@ public class BleService extends Service implements Serializable{
      *
      * @return
      */
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public void enableTXNotification() {
         try {
             if (mBluetoothGatt == null) {
@@ -442,6 +450,12 @@ public class BleService extends Service implements Serializable{
                 return;
             }
             LogUtils.e("接收到的数据是："+data);
+            if(data.startsWith("GDBLEGPRSSENDDATA")){
+                sb=new StringBuffer();
+                sb.append(data);
+                broadCastData();
+                return;
+            }
             if(data.startsWith("GD")){
                 sb.append(data);
                 if(data.endsWith("OK")){

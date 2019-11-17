@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -123,6 +125,7 @@ public class MainActivity extends BaseActivity{
     }
 
     private ServiceConnection mServiceConnection = new ServiceConnection() {
+        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
         public void onServiceConnected(ComponentName className, IBinder rawBinder) {
             bleService = ((BleService.LocalBinder) rawBinder).getService();
             mBtAdapter = bleService.createBluetoothAdapter();
@@ -199,6 +202,7 @@ public class MainActivity extends BaseActivity{
     }
 
     // 按两次退出
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
             if ((System.currentTimeMillis() - exitTime) > 2000) {
