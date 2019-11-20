@@ -20,12 +20,13 @@
         android:background="@drawable/bg_setting_select"
         android:gravity="center"/>
 
-    <ListView
-        android:id="@+id/listView"
+    <TextView
+        android:id="@+id/tv_status"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none"
-        android:layout_marginTop="20dp">
-    </ListView>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:layout_marginLeft="20dp"/>
 
 </LinearLayout>

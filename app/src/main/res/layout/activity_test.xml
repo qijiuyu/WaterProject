@@ -34,10 +34,12 @@
         android:text="发送数据"
         android:layout_marginTop="10dp" />
 
-    <ListView
-        android:id="@+id/listView"
+    <TextView
+        android:id="@+id/tv_status"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ListView>
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"/>
 
 </LinearLayout>

@@ -7,33 +7,30 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.water.project.R;
 import com.water.project.activity.BaseActivity;
-import com.water.project.adapter.Test2Adapter;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.DialogUtils;
-import com.water.project.utils.FileUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ToastUtil;
 import com.water.project.utils.ble.SendBleDataManager;
 import com.water.project.view.DialogView;
-
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -48,8 +45,7 @@ public class Test2Activity extends BaseActivity {
     private DialogView dialogView;
     private String blutoothName;
     private Handler mHandler=new Handler();
-    private ListView listView;
-    private Test2Adapter test2Adapter;
+    private TextView tvStatus;
     /**
      * true：正在接受数据，不能离开界面
      * false：反之
@@ -68,8 +64,9 @@ public class Test2Activity extends BaseActivity {
         tvHead.setText("发送数据");
         final EditText etName=(EditText)findViewById(R.id.et_name);
         final EditText etVersion=findViewById(R.id.et_version);
-        listView=findViewById(R.id.listView);
+        tvStatus=findViewById(R.id.tv_status);
         findViewById(R.id.btn).setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
             @Override
             public void onClick(View v) {
                 blutoothName=etName.getText().toString().trim();
@@ -81,6 +78,7 @@ public class Test2Activity extends BaseActivity {
                     ToastUtil.showLong("请输入版本");
                 }
                 else{
+                   tvStatus.setText(null);
                     if(version.equals("0")){
                         isNewDevice=false;
                     }else{
@@ -107,28 +105,6 @@ public class Test2Activity extends BaseActivity {
                 }
             }
         });
-
-
-        test2Adapter=new Test2Adapter(this,list);
-        listView.setAdapter(test2Adapter);
-
-        List<String> name=new ArrayList<>();
-        name.add("GDBLEGPRSSENDDATA-1.00");
-        name.add("GDBLEGPRSSENDDATA-2.00");
-        name.add("GDBLEGPRSSENDDATA-3.00");
-        name.add("GDBLEGPRSSENDDATA-4.00");
-        name.add("GDBLEGPRSSENDDATA-5.20");
-        name.add("GDBLEGPRSSENDDATA-6.40");
-        name.add("GDBLEGPRSSENDDATA-7.00");
-        name.add("GDBLEGPRSSENDDATA-8.60");
-        name.add("GDBLEGPRSSENDDATA-9.00");
-        name.add("GDBLEGPRSSENDDATA-10.00");
-        name.add("GDBLEGPRSSENDDATA-11.00");
-        name.add("GDBLEGPRSSENDDATA-12.00");
-
-        for (int i=0;i<name.size();i++){
-             showData(name.get(i));
-        }
     }
 
 
@@ -141,6 +117,7 @@ public class Test2Activity extends BaseActivity {
     }
 
     private ServiceConnection mServiceConnection = new ServiceConnection() {
+        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
         public void onServiceConnected(ComponentName className, IBinder rawBinder) {
             bleService = ((BleService.LocalBinder) rawBinder).getService();
             mBtAdapter = bleService.createBluetoothAdapter();
@@ -177,6 +154,7 @@ public class Test2Activity extends BaseActivity {
                 case BleService.ACTION_NO_DISCOVERY_BLE:
                     DialogUtils.closeProgress();
                     dialogView = new DialogView(mContext, "扫描不到该蓝牙设备，请靠近设备再进行扫描！", "重新扫描","取消", new View.OnClickListener() {
+                        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
                         public void onClick(View v) {
                             dialogView.dismiss();
                             DialogUtils.showProgress(Test2Activity.this,"扫描并连接蓝牙设备...");
@@ -194,6 +172,7 @@ public class Test2Activity extends BaseActivity {
                             isSend=false;
                             DialogUtils.showProgress(Test2Activity.this,"蓝牙连接中...");
                             mHandler.postDelayed(new Runnable() {
+                                @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
                                 public void run() {
                                     Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
                                     bleService.connect(ble.getBleMac());
@@ -254,87 +233,61 @@ public class Test2Activity extends BaseActivity {
      * @param data
      */
     private void showData(String data){
-        if(data.equals("GDBLEGPRSSENDDATA-11.00") || data.equals("GDBLEGPRSSENDDATA-12.00")){
+        if(data.startsWith("GDBLEGPRSSENDDATA-11.") || data.startsWith("GDBLEGPRSSENDDATA-12.")){
             isSend=false;
         }else{
             isSend=true;
         }
         if(!isNewDevice){
-            list.add(data);
-            test2Adapter.notifyDataSetChanged();
-            listView.setSelection(list.size()-1);
+            tvStatus.setText(data);
             return;
         }
-        if(data.equals("GDBLEGPRSSENDDATA-1.00")){
-            list.add("正在搜索无线信号");
-            test2Adapter.notifyDataSetChanged();
-            listView.setSelection(list.size()-1);
+        if(data.startsWith("GDBLEGPRSSENDDATA-1.")){
+            tvStatus.setText("正在搜索无线信号");
             return;
         }
-        if(data.equals("GDBLEGPRSSENDDATA-2.00")){
-            list.add("正在搜索无线信号");
-            test2Adapter.notifyDataSetChanged();
-            listView.setSelection(list.size()-1);
+        if(data.startsWith("GDBLEGPRSSENDDATA-2.")){
+            tvStatus.setText("正在搜索无线信号");
             return;
         }
-        if(data.equals("GDBLEGPRSSENDDATA-3.00")){
-            list.add("未安装SIM卡或SIM卡安装错误,请检查!");
-            test2Adapter.notifyDataSetChanged();
-            listView.setSelection(list.size()-1);
+        if(data.startsWith("GDBLEGPRSSENDDATA-3.")){
+            tvStatus.setText("未安装SIM卡或SIM卡安装错误,请检查!");
             return;
         }
-        if(data.equals("GDBLEGPRSSENDDATA-4.00")){
-            list.add("SIM卡正常,但无法找到无线信号. 请用手机或其它设备测试信号");
-            test2Adapter.notifyDataSetChanged();
-            listView.setSelection(list.size()-1);
+        if(data.startsWith("GDBLEGPRSSENDDATA-4.")){
+            tvStatus.setText("SIM卡正常,但无法找到无线信号. 请用手机或其它设备测试信号");
             return;
         }
-        if(data.contains("GDBLEGPRSSENDDATA-5.")){
-            list.add("已成功找到无线信号信号质量： "+getPercentage(data));
-            test2Adapter.notifyDataSetChanged();
-            listView.setSelection(list.size()-1);
+        if(data.startsWith("GDBLEGPRSSENDDATA-5.")){
+            tvStatus.setText("已成功找到无线信号信号质量： "+getPercentage(data));
             return;
         }
-        if(data.contains("GDBLEGPRSSENDDATA-6.")){
-            list.add("正在登录 internet网络信号质量： "+getPercentage(data));
-            test2Adapter.notifyDataSetChanged();
-            listView.setSelection(list.size()-1);
+        if(data.startsWith("GDBLEGPRSSENDDATA-6.")){
+            tvStatus.setText("正在登录 internet网络信号质量： "+getPercentage(data));
             return;
         }
-        if(data.equals("GDBLEGPRSSENDDATA-7.00")){
-            list.add("无法登录 internet 网络");
-            test2Adapter.notifyDataSetChanged();
-            listView.setSelection(list.size()-1);
+        if(data.startsWith("GDBLEGPRSSENDDATA-7.")){
+            tvStatus.setText("无法登录 internet 网络");
             return;
         }
-        if(data.contains("GDBLEGPRSSENDDATA-8.")){
-            list.add("正在连接数据服务器信号质量： "+getPercentage(data));
-            test2Adapter.notifyDataSetChanged();
-            listView.setSelection(list.size()-1);
+        if(data.startsWith("GDBLEGPRSSENDDATA-8.")){
+            tvStatus.setText("正在连接数据服务器信号质量： "+getPercentage(data));
             return;
         }
-        if(data.equals("GDBLEGPRSSENDDATA-9.00")){
-            list.add("连接数据服务器失败");
-            test2Adapter.notifyDataSetChanged();
-            listView.setSelection(list.size()-1);
+        if(data.startsWith("GDBLEGPRSSENDDATA-9.")){
+            tvStatus.setText("连接数据服务器失败");
             return;
         }
-        if(data.equals("GDBLEGPRSSENDDATA-10.00")){
-            list.add("正在发送数据");
-            test2Adapter.notifyDataSetChanged();
-            listView.setSelection(list.size()-1);
+        if(data.startsWith("GDBLEGPRSSENDDATA-10.")){
+            tvStatus.setText("正在发送数据");
             return;
         }
-        if(data.equals("GDBLEGPRSSENDDATA-11.00")){
-            list.add("发送数据成功");
-            test2Adapter.notifyDataSetChanged();
-            listView.setSelection(list.size()-1);
+        if(data.startsWith("GDBLEGPRSSENDDATA-11.")){
+            tvStatus.setText("发送数据成功");
             return;
         }
-        if(data.equals("GDBLEGPRSSENDDATA-12.00")){
-            list.add("发送数据失败");
-            test2Adapter.notifyDataSetChanged();
-            listView.setSelection(list.size()-1);
+        if(data.startsWith("GDBLEGPRSSENDDATA-12.")){
+            tvStatus.setText("发送数据失败");
             return;
         }
     }
@@ -385,6 +338,7 @@ public class Test2Activity extends BaseActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
     protected void onDestroy() {
         super.onDestroy();
