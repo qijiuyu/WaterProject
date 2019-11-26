@@ -95,10 +95,11 @@ public class MainActivity extends BaseActivity{
                         break;
                     case "参数设置":
                         final int code = BleUtils.getVersion(MainActivity.this);
-                        if (code == 1) {
-                            setClass(SettingActivity.class);
-                        } else {
+                        if (code == 2) {
+//                        if (code == 2 || code==3) {
                             setClass(New_SettingActivity.class);
+                        } else {
+                            setClass(SettingActivity.class);
                         }
                         break;
                     case "读取设备记录":
@@ -144,7 +145,7 @@ public class MainActivity extends BaseActivity{
         switch (view.getId()) {
             //扫描蓝牙
             case R.id.tv_am_scan:
-                Intent intent = new Intent(this, SearchBleActivity.class);
+                Intent intent = new Intent(this, SendDataActivity.class);
                 startActivityForResult(intent, 0x001);
                 break;
             //关于我们
@@ -189,8 +190,8 @@ public class MainActivity extends BaseActivity{
         menuList.add(menu4);
         Menu menu5=new Menu(R.mipmap.record_icon,"读取设备记录");
         menuList.add(menu5);
-//        Menu menu6=new Menu(R.mipmap.status_icon,"发送数据");
-//        menuList.add(menu6);
+        Menu menu6=new Menu(R.mipmap.status_icon,"发送数据");
+        menuList.add(menu6);
     }
 
 

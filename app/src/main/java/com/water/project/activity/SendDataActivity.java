@@ -91,6 +91,7 @@ public class SendDataActivity extends BaseActivity {
             //发送命令
             case R.id.tv_send:
                 dialogView = new DialogView(this, "确定发送数据吗！", "确定", "取消", new View.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
                     public void onClick(View v) {
                         dialogView.dismiss();
                         tvStatus.setText(null);
@@ -236,39 +237,39 @@ public class SendDataActivity extends BaseActivity {
         /**
          * 新设备做判断来显示对应的文案
          */
-        if (data.startsWith("GDBLEGPRSSENDDATA-1.")) {
+        if (data.startsWith("GDBLEGPRSSENDDATA-01.")) {
             tvStatus.setText("正在搜索无线信号");
             return;
         }
-        if (data.startsWith("GDBLEGPRSSENDDATA-2.")) {
+        if (data.startsWith("GDBLEGPRSSENDDATA-02.")) {
             tvStatus.setText("正在搜索无线信号");
             return;
         }
-        if (data.startsWith("GDBLEGPRSSENDDATA-3.")) {
+        if (data.startsWith("GDBLEGPRSSENDDATA-03.")) {
             tvStatus.setText("未安装SIM卡或SIM卡安装错误,请检查!");
             return;
         }
-        if (data.startsWith("GDBLEGPRSSENDDATA-4.")) {
+        if (data.startsWith("GDBLEGPRSSENDDATA-04.")) {
             tvStatus.setText("SIM卡正常,但无法找到无线信号. 请用手机或其它设备测试信号");
             return;
         }
-        if (data.startsWith("GDBLEGPRSSENDDATA-5.")) {
+        if (data.startsWith("GDBLEGPRSSENDDATA-05.")) {
             tvStatus.setText("已成功找到无线信号信号质量： " + getPercentage(data));
             return;
         }
-        if (data.startsWith("GDBLEGPRSSENDDATA-6.")) {
+        if (data.startsWith("GDBLEGPRSSENDDATA-06.")) {
             tvStatus.setText("正在登录 internet网络信号质量： " + getPercentage(data));
             return;
         }
-        if (data.startsWith("GDBLEGPRSSENDDATA-7.")) {
+        if (data.startsWith("GDBLEGPRSSENDDATA-07.")) {
             tvStatus.setText("无法登录 internet 网络");
             return;
         }
-        if (data.startsWith("GDBLEGPRSSENDDATA-8.")) {
+        if (data.startsWith("GDBLEGPRSSENDDATA-08.")) {
             tvStatus.setText("正在连接数据服务器信号质量： " + getPercentage(data));
             return;
         }
-        if (data.startsWith("GDBLEGPRSSENDDATA-9.")) {
+        if (data.startsWith("GDBLEGPRSSENDDATA-09.")) {
             tvStatus.setText("连接数据服务器失败");
             return;
         }

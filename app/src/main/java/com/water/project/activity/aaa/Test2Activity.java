@@ -23,6 +23,8 @@ import com.water.project.R;
 import com.water.project.activity.BaseActivity;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
+import com.water.project.bean.eventbus.EventStatus;
+import com.water.project.bean.eventbus.EventType;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.DialogUtils;
@@ -30,6 +32,10 @@ import com.water.project.utils.SPUtil;
 import com.water.project.utils.ToastUtil;
 import com.water.project.utils.ble.SendBleDataManager;
 import com.water.project.view.DialogView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,12 +57,13 @@ public class Test2Activity extends BaseActivity {
      * false：反之
      */
     private boolean isSend=false;
-    private List<String> list=new ArrayList<>();
     private boolean isNewDevice=true;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
+        //注册EventBus
+        EventBus.getDefault().register(this);
         initService();
         register();
 
@@ -124,6 +131,7 @@ public class Test2Activity extends BaseActivity {
             SendBleDataManager.getInstance().init(bleService);
             //判断蓝牙是否打开
             BleUtils.isEnabled(Test2Activity.this,mBtAdapter);
+
         }
 
         public void onServiceDisconnected(ComponentName classname) {
@@ -242,39 +250,39 @@ public class Test2Activity extends BaseActivity {
             tvStatus.setText(data);
             return;
         }
-        if(data.startsWith("GDBLEGPRSSENDDATA-1.")){
+        if(data.startsWith("GDBLEGPRSSENDDATA-01.")){
             tvStatus.setText("正在搜索无线信号");
             return;
         }
-        if(data.startsWith("GDBLEGPRSSENDDATA-2.")){
+        if(data.startsWith("GDBLEGPRSSENDDATA-02.")){
             tvStatus.setText("正在搜索无线信号");
             return;
         }
-        if(data.startsWith("GDBLEGPRSSENDDATA-3.")){
+        if(data.startsWith("GDBLEGPRSSENDDATA-03.")){
             tvStatus.setText("未安装SIM卡或SIM卡安装错误,请检查!");
             return;
         }
-        if(data.startsWith("GDBLEGPRSSENDDATA-4.")){
+        if(data.startsWith("GDBLEGPRSSENDDATA-04.")){
             tvStatus.setText("SIM卡正常,但无法找到无线信号. 请用手机或其它设备测试信号");
             return;
         }
-        if(data.startsWith("GDBLEGPRSSENDDATA-5.")){
+        if(data.startsWith("GDBLEGPRSSENDDATA-05.")){
             tvStatus.setText("已成功找到无线信号信号质量： "+getPercentage(data));
             return;
         }
-        if(data.startsWith("GDBLEGPRSSENDDATA-6.")){
+        if(data.startsWith("GDBLEGPRSSENDDATA-06.")){
             tvStatus.setText("正在登录 internet网络信号质量： "+getPercentage(data));
             return;
         }
-        if(data.startsWith("GDBLEGPRSSENDDATA-7.")){
+        if(data.startsWith("GDBLEGPRSSENDDATA-07.")){
             tvStatus.setText("无法登录 internet 网络");
             return;
         }
-        if(data.startsWith("GDBLEGPRSSENDDATA-8.")){
+        if(data.startsWith("GDBLEGPRSSENDDATA-08.")){
             tvStatus.setText("正在连接数据服务器信号质量： "+getPercentage(data));
             return;
         }
-        if(data.startsWith("GDBLEGPRSSENDDATA-9.")){
+        if(data.startsWith("GDBLEGPRSSENDDATA-09.")){
             tvStatus.setText("连接数据服务器失败");
             return;
         }
@@ -322,6 +330,19 @@ public class Test2Activity extends BaseActivity {
     }
 
 
+    /**
+     * EventBus注解
+     */
+    @Subscribe
+    public void onEvent(EventType eventType) {
+        switch (eventType.getStatus()) {
+            case EventStatus.SHOW_DEVICE_DATA:
+
+                 break;
+        }
+    }
+
+
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
             if(!isSend){
@@ -342,6 +363,7 @@ public class Test2Activity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         if(null!=bleService){
             bleService.disconnect();
         }

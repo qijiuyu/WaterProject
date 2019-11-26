@@ -1,6 +1,7 @@
 package com.water.project.bean.eventbus;
 
 public class EventStatus {
+    public static final int SHOW_DEVICE_DATA=9999;
 
     //新版参数设置中采集时间间隔
     public static final int NEW_SETTING_CJSJJG=10000;

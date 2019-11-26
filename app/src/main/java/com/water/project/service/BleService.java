@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.Build;
@@ -16,11 +17,23 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
+import android.view.View;
+
+import com.water.project.activity.aaa.Test2Activity;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
+import com.water.project.bean.eventbus.EventStatus;
+import com.water.project.bean.eventbus.EventType;
+import com.water.project.utils.DialogUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.TimerUtil;
+import com.water.project.utils.ToastUtil;
+import com.water.project.utils.ble.SendBleDataManager;
+import com.water.project.view.DialogView;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -108,6 +121,7 @@ public class BleService extends Service implements Serializable{
     //是否重新连接蓝牙
     private boolean isConnect = true;
     private Handler mHandler=new Handler();
+
     public class LocalBinder extends Binder {
         public BleService getService() {
             return BleService.this;
@@ -389,6 +403,7 @@ public class BleService extends Service implements Serializable{
         return false;
     }
 
+
     /**
      * 蓝牙连接交互回调
      */
@@ -450,32 +465,35 @@ public class BleService extends Service implements Serializable{
                 return;
             }
             LogUtils.e("接收到的数据是："+data);
-            if(data.startsWith("GDBLEGPRSSENDDATA")){
+            if(data.startsWith("GD")){
                 sb=new StringBuffer();
                 sb.append(data);
-                broadCastData();
-                return;
-            }
-            if(data.startsWith("GD")){
-                sb.append(data);
-                if(data.endsWith("OK")){
+                if(data.endsWith(">OK")){
                     broadCastData();
-                }else if(data.endsWith("ERROR")){
+                    return;
+                }
+                if(data.endsWith("ERROR")){
                     //广播错误数据
                     broadCastError();
+                    return;
                 }
                 return;
             }
 
             if(sb.length()>0){
                 sb.append(data);
-                if(sb.toString().endsWith("OK")){
+                if(sb.toString().endsWith(">OK")){
                     broadCastData();
-                }else if(sb.toString().startsWith("GDCURRENT") && data.endsWith(";")){
+                    return;
+                }
+                if(sb.toString().startsWith("GDCURRENT") && data.endsWith(";")){
                     broadCastData();
-                }else if(sb.toString().endsWith("ERROR")){
+                    return;
+                }
+                if(sb.toString().endsWith("ERROR")){
                     //广播错误数据
                     broadCastError();
+                    return;
                 }
             }
         }

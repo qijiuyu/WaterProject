@@ -38,6 +38,29 @@ public class BleUtils {
      *
      * @return
      */
+//    public static int getVersion(Context context) {
+//        String version = SPUtil.getInstance(context).getString(SPUtil.DEVICE_VERSION);
+//        if (TextUtils.isEmpty(version)) {
+//            return 1;
+//        }
+//        if(version.contains("V3.00")){
+//            return 3;
+//        }
+//        if (version.startsWith("GDBBRGDsender") || version.startsWith("GDBBRZKGD2000")) {
+//            return 1;
+//        }
+//        if (version.startsWith("GDBBRV")) {
+//            return 2;
+//        }
+//        return 1;
+//    }
+
+
+    /**
+     * 获取设备版本
+     *
+     * @return
+     */
     public static int getVersion(Context context) {
         String version = SPUtil.getInstance(context).getString(SPUtil.DEVICE_VERSION);
         if (TextUtils.isEmpty(version)) {
