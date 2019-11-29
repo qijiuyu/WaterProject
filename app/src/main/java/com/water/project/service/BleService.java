@@ -466,7 +466,6 @@ public class BleService extends Service implements Serializable{
             }
             LogUtils.e("接收到的数据是："+data);
             if(data.startsWith("GD")){
-                sb=new StringBuffer();
                 sb.append(data);
                 if(data.endsWith(">OK")){
                     broadCastData();
@@ -482,7 +481,7 @@ public class BleService extends Service implements Serializable{
 
             if(sb.length()>0){
                 sb.append(data);
-                if(sb.toString().endsWith(">OK")){
+                if(data.endsWith(">OK")){
                     broadCastData();
                     return;
                 }
@@ -490,7 +489,7 @@ public class BleService extends Service implements Serializable{
                     broadCastData();
                     return;
                 }
-                if(sb.toString().endsWith("ERROR")){
+                if(data.endsWith("ERROR")){
                     //广播错误数据
                     broadCastError();
                     return;
@@ -506,8 +505,9 @@ public class BleService extends Service implements Serializable{
     private void broadCastData(){
         //关闭超时计时器
         stopTimeOut();
-        LogUtils.e("回执的完整数据是："+sb.toString());
-        broadcastUpdate(ACTION_DATA_AVAILABLE, sb.toString().replace(">OK",""));
+        final String msg=sb.toString();
+        broadcastUpdate(ACTION_DATA_AVAILABLE, msg.replace(">OK",""));
+        sb=new StringBuffer();
     }
 
 
@@ -539,6 +539,7 @@ public class BleService extends Service implements Serializable{
         //关闭超时计时器
         stopTimeOut();
         broadcastUpdate(ACTION_GET_DATA_ERROR);
+        sb=new StringBuffer();
     }
 
 

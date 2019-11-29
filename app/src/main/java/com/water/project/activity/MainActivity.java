@@ -95,8 +95,7 @@ public class MainActivity extends BaseActivity{
                         break;
                     case "参数设置":
                         final int code = BleUtils.getVersion(MainActivity.this);
-                        if (code == 2) {
-//                        if (code == 2 || code==3) {
+                        if (code == 2 || code==3) {
                             setClass(New_SettingActivity.class);
                         } else {
                             setClass(SettingActivity.class);
@@ -145,7 +144,7 @@ public class MainActivity extends BaseActivity{
         switch (view.getId()) {
             //扫描蓝牙
             case R.id.tv_am_scan:
-                Intent intent = new Intent(this, SendDataActivity.class);
+                Intent intent = new Intent(this, SearchBleActivity.class);
                 startActivityForResult(intent, 0x001);
                 break;
             //关于我们

@@ -485,7 +485,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/view_as9"
                     android:layout_marginTop="10dp"
-                    android:divider="@null"></com.water.project.view.CustomListView>
+                    android:divider="@null">
+                </com.water.project.view.CustomListView>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -514,6 +515,48 @@
 
             </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_kuang"
+                android:layout_marginTop="10dp"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="设置设备当前时间"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_new_time"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@null"
+                    android:gravity="right|center"
+                    android:textColor="@color/color_1fc37f"
+                    android:textSize="15sp" />
+
+                <View
+                    android:id="@+id/view_as10"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_below="@id/tv_new_time"
+                    android:background="@color/color_888888" />
+
+                <com.water.project.view.ClickTextView
+                    android:id="@+id/tv_setting_five"
+                    android:layout_below="@id/view_as10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:background="@mipmap/setting_btn" />
+
+            </RelativeLayout>
 
         </LinearLayout>
 

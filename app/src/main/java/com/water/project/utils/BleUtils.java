@@ -38,29 +38,6 @@ public class BleUtils {
      *
      * @return
      */
-//    public static int getVersion(Context context) {
-//        String version = SPUtil.getInstance(context).getString(SPUtil.DEVICE_VERSION);
-//        if (TextUtils.isEmpty(version)) {
-//            return 1;
-//        }
-//        if(version.contains("V3.00")){
-//            return 3;
-//        }
-//        if (version.startsWith("GDBBRGDsender") || version.startsWith("GDBBRZKGD2000")) {
-//            return 1;
-//        }
-//        if (version.startsWith("GDBBRV")) {
-//            return 2;
-//        }
-//        return 1;
-//    }
-
-
-    /**
-     * 获取设备版本
-     *
-     * @return
-     */
     public static int getVersion(Context context) {
         String version = SPUtil.getInstance(context).getString(SPUtil.DEVICE_VERSION);
         if (TextUtils.isEmpty(version)) {
@@ -69,23 +46,46 @@ public class BleUtils {
         if(version.contains("V3.00")){
             return 3;
         }
-        String[] vs = version.split("-");
-        if (null == vs || vs.length == 0) {
+        if (version.startsWith("GDBBRGDsender") || version.startsWith("GDBBRZKGD2000")) {
             return 1;
         }
-        if (version.startsWith("GDBBRGDsender")) {
-            return 1;
-        }
-        if (version.startsWith("GDBBRZKGD2000")) {
-            if (vs.length == 2) {
-                return 1;
-            }
-            if (vs[2].contains("V1") || vs[2].contains("V2")) {
-                return 1;
-            }
+        if (version.startsWith("GDBBRV")) {
             return 2;
         }
         return 1;
     }
+
+
+    /**
+     * 获取设备版本
+     *
+     * @return
+     */
+//    public static int getVersion(Context context) {
+//        String version = SPUtil.getInstance(context).getString(SPUtil.DEVICE_VERSION);
+//        if (TextUtils.isEmpty(version)) {
+//            return 1;
+//        }
+//        if(version.contains("V3.00")){
+//            return 3;
+//        }
+//        String[] vs = version.split("-");
+//        if (null == vs || vs.length == 0) {
+//            return 1;
+//        }
+//        if (version.startsWith("GDBBRGDsender")) {
+//            return 1;
+//        }
+//        if (version.startsWith("GDBBRZKGD2000")) {
+//            if (vs.length == 2) {
+//                return 1;
+//            }
+//            if (vs[2].contains("V1") || vs[2].contains("V2")) {
+//                return 1;
+//            }
+//            return 2;
+//        }
+//        return 1;
+//    }
 
 }

@@ -29,7 +29,7 @@
                 android:id="@+id/wv_month"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_weight="1.1">
 
             </com.water.project.view.CycleWheelView>
 
@@ -37,7 +37,7 @@
                 android:id="@+id/wv_day"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_weight="1.1">
 
             </com.water.project.view.CycleWheelView>
 
@@ -45,15 +45,25 @@
                 android:id="@+id/wv_hour"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_weight="1.1">
 
             </com.water.project.view.CycleWheelView>
 
             <com.water.project.view.CycleWheelView
                 android:id="@+id/wv_minute"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_weight="1.1">
+
+             </com.water.project.view.CycleWheelView>
+
+            <com.water.project.view.CycleWheelView
+                android:id="@+id/wv_seconds"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.1">
 
             </com.water.project.view.CycleWheelView>
 

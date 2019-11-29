@@ -67,4 +67,7 @@ public class BleContant {
 
     //发送数据菜单：发送数据
     public static final int MENU_SEND_DATA=1018;
+
+    //设置设备时间
+    public static final int SEND_DEVICE_TIME=1019;
 }

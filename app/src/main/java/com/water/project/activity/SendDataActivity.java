@@ -43,12 +43,8 @@ import butterknife.OnClick;
 
 public class SendDataActivity extends BaseActivity {
 
-    @BindView(R.id.lin_back)
-    LinearLayout linBack;
     @BindView(R.id.tv_head)
     TextView tvHead;
-    @BindView(R.id.tv_send)
-    TextView tvSend;
     @BindView(R.id.tv_status)
     TextView tvStatus;
     //MVP对象
@@ -113,14 +109,12 @@ public class SendDataActivity extends BaseActivity {
     /**
      * 发送蓝牙命令
      */
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public void sendData(int status) {
         SEND_STATUS = status;
         //判断蓝牙是否打开
         if (!BleUtils.isEnabled(SendDataActivity.this, MainActivity.mBtAdapter)) {
             return;
         }
-        DialogUtils.showProgress(SendDataActivity.this, "正在发送数据...");
         //如果蓝牙连接断开，就扫描重连
         if (MainActivity.bleService.connectionState == MainActivity.bleService.STATE_DISCONNECTED) {
             //扫描并重连蓝牙
@@ -131,6 +125,7 @@ public class SendDataActivity extends BaseActivity {
             }
             return;
         }
+        DialogUtils.showProgress(SendDataActivity.this, "正在发送数据...");
         SendBleStr.sendBleData(status);
     }
 
@@ -254,11 +249,11 @@ public class SendDataActivity extends BaseActivity {
             return;
         }
         if (data.startsWith("GDBLEGPRSSENDDATA-05.")) {
-            tvStatus.setText("已成功找到无线信号信号质量： " + getPercentage(data));
+            tvStatus.setText("已成功找到无线信号信号质量： \n" + getPercentage(data));
             return;
         }
         if (data.startsWith("GDBLEGPRSSENDDATA-06.")) {
-            tvStatus.setText("正在登录 internet网络信号质量： " + getPercentage(data));
+            tvStatus.setText("正在登录 internet网络信号质量： \n" + getPercentage(data));
             return;
         }
         if (data.startsWith("GDBLEGPRSSENDDATA-07.")) {
@@ -266,7 +261,7 @@ public class SendDataActivity extends BaseActivity {
             return;
         }
         if (data.startsWith("GDBLEGPRSSENDDATA-08.")) {
-            tvStatus.setText("正在连接数据服务器信号质量： " + getPercentage(data));
+            tvStatus.setText("正在连接数据服务器信号质量： \n" + getPercentage(data));
             return;
         }
         if (data.startsWith("GDBLEGPRSSENDDATA-09.")) {

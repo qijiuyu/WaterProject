@@ -54,7 +54,7 @@ import java.util.List;
 
 public class New_SettingActivity extends BaseActivity implements View.OnClickListener,SelectTime{
     private EditText etCode,etPhone,etTanTou;
-    private TextView etCStime,etFStime,etCEtime,etFEtime,tvGprs,tvSendNum;
+    private TextView etCStime,etFStime,etCEtime,etFEtime,tvGprs,tvSendNum,tvNewTime;
     private ImageView imgClear1,imgClear2,imgClear3;
     private DialogView dialogView;
     private CustomListView listView;
@@ -83,8 +83,6 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
         initView();
         register();//注册广播
         sendData(BleContant.RED_NEW_GET_CODE,1); //发送蓝牙命令
-//        SEND_STATUS=BleContant.SEND_FA_SONG_PIN_LU;
-//        showData("GDSENDW20191112000100,0001,01,00");
     }
 
 
@@ -106,6 +104,7 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
         imgClear3=(ImageView)findViewById(R.id.img_clear3);
         tvGprs=(TextView)findViewById(R.id.tv_as_grps);
         tvSendNum=(TextView)findViewById(R.id.tv_send_num);
+        tvNewTime=findViewById(R.id.tv_new_time);
         listView=(CustomListView) findViewById(R.id.listView);
         etCStime.setOnClickListener(this);
         etFStime.setOnClickListener(this);
@@ -114,6 +113,7 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
         imgClear1.setOnClickListener(this);
         imgClear2.setOnClickListener(this);
         imgClear3.setOnClickListener(this);
+        tvNewTime.setOnClickListener(this);
         findViewById(R.id.tv_setting_code).setOnClickListener(this);
         findViewById(R.id.tv_setting_mobile).setOnClickListener(this);
         findViewById(R.id.tv_setting_two).setOnClickListener(this);
@@ -125,6 +125,7 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
         findViewById(R.id.tv_get_three).setOnClickListener(this);
         findViewById(R.id.tv_get_four).setOnClickListener(this);
         findViewById(R.id.lin_back).setOnClickListener(this);
+        findViewById(R.id.tv_setting_five).setOnClickListener(this);
         tvGprs.setOnClickListener(this);
         tvSendNum.setOnClickListener(this);
         etCode.addTextChangedListener(new TextWatcher() {
@@ -175,6 +176,10 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
                 }
             }
         });
+
+        //显示当前的时间
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        tvNewTime.setText(dateFormat.format(new Date()));
     }
 
 
@@ -268,7 +273,7 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
                 break;
             //选择采集时间
             case R.id.et_as_cstime:
-                 SelectTimeDialog selectTimeDialog=new SelectTimeDialog(New_SettingActivity.this,this,1);
+                 SelectTimeDialog selectTimeDialog=new SelectTimeDialog(New_SettingActivity.this,this,3);
                  selectTimeDialog.show();
                  break;
             //选择采集间隔时间
@@ -296,7 +301,7 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
                 break;
             //选择发送起始时间
             case R.id.et_as_fstime:
-                 SelectTimeDialog selectTimeDialog2=new SelectTimeDialog(New_SettingActivity.this,this,2);
+                 SelectTimeDialog selectTimeDialog2=new SelectTimeDialog(New_SettingActivity.this,this,4);
                  selectTimeDialog2.show();
                   break;
             //选择发送间隔小时
@@ -368,6 +373,16 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
                 SendBleStr.new_setFaSong(startTime,minute,grps,number,newSettingTimeAdapter==null ? null : newSettingTimeAdapter.map);
                 sendData(BleContant.SET_FA_SONG,2);
                 break;
+            //选择时间---设置设备时间用
+            case R.id.tv_new_time:
+                  SelectTimeDialog selectTimeDialog3=new SelectTimeDialog(New_SettingActivity.this,this,5);
+                  selectTimeDialog3.show();
+                  break;
+            //设置设备时间
+            case R.id.tv_setting_five:
+                  SendBleStr.sendDeviceTime(tvNewTime.getText().toString().trim());
+                  sendData(BleContant.SEND_DEVICE_TIME,2);
+                  break;
             //读取统一编码
             case R.id.tv_get_code:
                  sendData(BleContant.RED_NEW_GET_CODE,2);
@@ -611,14 +626,20 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
                   newSettingTimeAdapter=new NewSettingTimeAdapter(New_SettingActivity.this,Integer.parseInt(num),list);
                   listView.setAdapter(newSettingTimeAdapter);
                   break;
+            default:
+                break;
         }
     }
 
     public void getTime(String time,int type) {
-        if(type==1){
+        if(type==3){
             etCStime.setText(time+":00");
-        }else{
+        }
+        if(type==4){
             etFStime.setText(time+":00");
+        }
+        if(type==5){
+            tvNewTime.setText(time);
         }
     }
     protected void onDestroy() {

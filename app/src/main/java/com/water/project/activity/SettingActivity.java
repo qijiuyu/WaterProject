@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.water.project.R;
+import com.water.project.activity.new_version.New_SettingActivity;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
 import com.water.project.bean.SelectTime;
@@ -43,7 +44,7 @@ import java.util.Date;
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener,SelectTime{
     private EditText etCode,etPhone,etTanTou;
-    private TextView etCStime,etFStime,etCEtime,etFEtime;
+    private TextView etCStime,etFStime,etCEtime,etFEtime,tvNewTime;
     private ImageView imgClear1,imgClear2,imgClear3;
     private DialogView dialogView;
     private Handler mHandler=new Handler();
@@ -80,6 +81,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         etCEtime=(TextView)findViewById(R.id.tv_as_cetime);
         etFStime=(TextView)findViewById(R.id.et_as_fstime);
         etFEtime=(TextView)findViewById(R.id.et_as_fetime);
+        tvNewTime=findViewById(R.id.tv_new_time);
         imgClear1=(ImageView)findViewById(R.id.img_clear1);
         imgClear2=(ImageView)findViewById(R.id.img_clear2);
         imgClear3=(ImageView)findViewById(R.id.img_clear3);
@@ -90,6 +92,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         imgClear1.setOnClickListener(this);
         imgClear2.setOnClickListener(this);
         imgClear3.setOnClickListener(this);
+        tvNewTime.setOnClickListener(this);
         findViewById(R.id.tv_setting_one).setOnClickListener(this);
         findViewById(R.id.tv_setting_two).setOnClickListener(this);
         findViewById(R.id.tv_setting_three).setOnClickListener(this);
@@ -99,6 +102,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         findViewById(R.id.tv_get_three).setOnClickListener(this);
         findViewById(R.id.tv_get_four).setOnClickListener(this);
         findViewById(R.id.lin_back).setOnClickListener(this);
+        findViewById(R.id.tv_setting_five).setOnClickListener(this);
         etCode.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -147,6 +151,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 }
             }
         });
+
+        //显示当前的时间
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        tvNewTime.setText(dateFormat.format(new Date()));
     }
 
 
@@ -281,6 +289,16 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                      SendBleStr.setFaSong(startTime,fHour);
                      sendData(BleContant.SET_FA_SONG,2);
                  }
+                break;
+            //选择时间---设置设备时间用
+            case R.id.tv_new_time:
+                SelectTimeDialog selectTimeDialog3=new SelectTimeDialog(SettingActivity.this,this,5);
+                selectTimeDialog3.show();
+                break;
+            //设置设备时间
+            case R.id.tv_setting_five:
+                SendBleStr.sendDeviceTime(tvNewTime.getText().toString().trim());
+                sendData(BleContant.SEND_DEVICE_TIME,2);
                 break;
             //读取统一编码和SIM
             case R.id.tv_get_one:
@@ -505,8 +523,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     public void getTime(String time,int type) {
         if(type==1){
             etCStime.setText(time+":00");
-        }else{
+        }
+        if(type==2){
             etFStime.setText(time+":00");
+        }
+        if(type==5){
+            tvNewTime.setText(time);
         }
     }
     protected void onDestroy() {

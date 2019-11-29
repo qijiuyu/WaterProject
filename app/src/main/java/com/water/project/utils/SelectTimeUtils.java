@@ -94,6 +94,23 @@ public class SelectTimeUtils {
 
 
     /**
+     * 获取分钟
+     * @return
+     */
+    public static List<String> getSeconds(){
+        List<String> list=new ArrayList<>();
+        for (int i=0;i<60;i++){
+            if(i<10){
+                list.add("0"+i+"秒");
+            }else{
+                list.add(i+"秒");
+            }
+        }
+        return list;
+    }
+
+
+    /**
      * 获取gprs模式数据
      * @return
      */

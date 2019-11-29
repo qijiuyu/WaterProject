@@ -73,6 +73,9 @@ public class SendBleStr {
     //发送数据菜单：发送数据
     public static final String MENU_SEND_DATA="GDBLEGPRSSENDDATA";
 
+    //保存设置设备时间的数据命令
+    public static  String SET_DEVICE_TIME;
+
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
         StringBuffer stringBuffer=new StringBuffer();
@@ -166,6 +169,17 @@ public class SendBleStr {
         StringBuffer stringBuffer=new StringBuffer("GDREADW"+startTime+",");
         stringBuffer.append(append(4,totalMinute));
         SET_CAI_JI_PIN_LU=stringBuffer.toString();
+    }
+
+
+    /**
+     * 设置设备的时间
+     * @param time
+     */
+    public static void sendDeviceTime(String time){
+        StringBuffer stringBuffer=new StringBuffer("GDTIMEW");
+        stringBuffer.append(time.substring(2, time.length()).replace("-","").replace(" ","").replace(":",""));
+        SET_DEVICE_TIME=stringBuffer.toString();
     }
 
 
@@ -435,6 +449,10 @@ public class SendBleStr {
             //发送数据菜单：发送数据
             case BleContant.MENU_SEND_DATA:
                   SendBleDataManager.getInstance().sendData(MENU_SEND_DATA);
+                  break;
+            //设置设备时间
+            case BleContant.SEND_DEVICE_TIME:
+                  SendBleDataManager.getInstance().sendData(SET_DEVICE_TIME);
                   break;
              default:
                  break;
