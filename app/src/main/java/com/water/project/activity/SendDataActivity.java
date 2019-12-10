@@ -249,11 +249,11 @@ public class SendDataActivity extends BaseActivity {
             return;
         }
         if (data.startsWith("GDBLEGPRSSENDDATA-05.")) {
-            tvStatus.setText("已成功找到无线信号信号质量： \n" + getPercentage(data));
+            tvStatus.setText("已成功找到无线信号\n信号质量：" + getPercentage(data));
             return;
         }
         if (data.startsWith("GDBLEGPRSSENDDATA-06.")) {
-            tvStatus.setText("正在登录 internet网络信号质量： \n" + getPercentage(data));
+            tvStatus.setText("正在登录internet网络\n信号质量：" + getPercentage(data));
             return;
         }
         if (data.startsWith("GDBLEGPRSSENDDATA-07.")) {
@@ -261,7 +261,7 @@ public class SendDataActivity extends BaseActivity {
             return;
         }
         if (data.startsWith("GDBLEGPRSSENDDATA-08.")) {
-            tvStatus.setText("正在连接数据服务器信号质量： \n" + getPercentage(data));
+            tvStatus.setText("正在连接数据服务器\n信号质量：" + getPercentage(data));
             return;
         }
         if (data.startsWith("GDBLEGPRSSENDDATA-09.")) {

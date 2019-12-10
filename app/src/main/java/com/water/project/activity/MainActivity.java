@@ -164,9 +164,11 @@ public class MainActivity extends BaseActivity{
             final int code = BleUtils.getVersion(MainActivity.this);
             if (code==1) {
                 menuList.remove(menuList.get(4));
+                menuList.remove(menuList.get(5));
             }
             if(code==3){
                 menuList.remove(menuList.get(4));
+                menuList.remove(menuList.get(5));
                 mainMenuAdapter.setNoClickIndex(2);
                 mainMenuAdapter.notifyDataSetChanged();
             }
