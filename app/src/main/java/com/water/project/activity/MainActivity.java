@@ -170,9 +170,9 @@ public class MainActivity extends BaseActivity{
                 menuList.remove(menuList.get(4));
                 menuList.remove(menuList.get(5));
                 mainMenuAdapter.setNoClickIndex(2);
-                mainMenuAdapter.notifyDataSetChanged();
             }
             listView.setAdapter(mainMenuAdapter);
+            mainMenuAdapter.notifyDataSetChanged();
         }
     }
 
