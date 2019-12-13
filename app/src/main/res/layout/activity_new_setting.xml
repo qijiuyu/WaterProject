@@ -547,14 +547,31 @@
                     android:layout_below="@id/tv_new_time"
                     android:background="@color/color_888888" />
 
-                <com.water.project.view.ClickTextView
-                    android:id="@+id/tv_setting_five"
-                    android:layout_below="@id/view_as10"
+
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_centerHorizontal="true"
+                    android:layout_height="30dp"
+                    android:orientation="horizontal"
+                    android:layout_centerInParent="true"
                     android:layout_marginTop="10dp"
-                    android:background="@mipmap/setting_btn" />
+                    android:layout_below="@id/view_as10">
+
+                    <com.water.project.view.ClickTextView
+                        android:id="@+id/tv_setting_five"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_marginRight="20dp"
+                        android:background="@mipmap/setting_btn"/>
+
+                    <com.water.project.view.ClickTextView
+                        android:id="@+id/tv_get_five"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@mipmap/red_icon"
+                        android:layout_marginLeft="20dp"/>
+
+                </LinearLayout>
 
             </RelativeLayout>
 

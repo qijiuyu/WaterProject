@@ -103,6 +103,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         findViewById(R.id.tv_get_four).setOnClickListener(this);
         findViewById(R.id.lin_back).setOnClickListener(this);
         findViewById(R.id.tv_setting_five).setOnClickListener(this);
+        findViewById(R.id.tv_get_five).setOnClickListener(this);
         etCode.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -152,9 +153,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             }
         });
 
-        //显示当前的时间
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        tvNewTime.setText(dateFormat.format(new Date()));
     }
 
 
@@ -174,6 +172,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case BleContant.SEND_GET_TANTOU:
             case BleContant.SEND_CAI_JI_PIN_LU:
             case BleContant.SEND_FA_SONG_PIN_LU:
+            case BleContant.RED_DEVICE_TIME:
                 DialogUtils.showProgress(SettingActivity.this,"正在读取参数设置...");
                  break;
              default:
@@ -316,6 +315,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case R.id.tv_get_four:
                 sendData(BleContant.SEND_FA_SONG_PIN_LU,2);
                 break;
+            //读取设备时间
+            case R.id.tv_get_five:
+                  sendData(BleContant.RED_DEVICE_TIME,2);
+                  break;
             case R.id.img_clear1:
                  etCode.setText(null);
                  imgClear1.setVisibility(View.GONE);
@@ -382,6 +385,18 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                         etFEtime.setText(Util.delete_ling(strings[1]));
                     }
                     break;
+                //显示设备时间
+                case BleContant.RED_DEVICE_TIME:
+                      final String time=data.replace("GDTIMER","");
+                      StringBuffer sb2=new StringBuffer("20");
+                      sb2.append(time.substring(0, 2)+"-");
+                      sb2.append(time.substring(2,4)+"-");
+                      sb2.append(time.substring(4,6)+" ");
+                      sb2.append(time.substring(6,8)+":");
+                      sb2.append(time.substring(8,10)+":");
+                      sb2.append(time.substring(10,12));
+                      tvNewTime.setText(sb2.toString());
+                      break;
                 default:
                     break;
             }
@@ -465,9 +480,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                                 sendData(BleContant.SEND_FA_SONG_PIN_LU,1);
                                 break;
                             case BleContant.SEND_FA_SONG_PIN_LU:
-                               DialogUtils.closeProgress();
-                                SEND_STATUS=BleContant.NOT_SEND_DATA;
+                                sendData(BleContant.RED_DEVICE_TIME,1);
                                 break;
+                            case BleContant.RED_DEVICE_TIME:
+                                 DialogUtils.closeProgress();
+                                 SEND_STATUS=BleContant.NOT_SEND_DATA;
+                                 break;
                             default:
                                DialogUtils.closeProgress();
                                 break;
@@ -477,7 +495,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     //单独读取与设置等操作
                     if(SEND_TYPE==2){
                        DialogUtils.closeProgress();
-                        if(SEND_STATUS==BleContant.SEND_GET_CODE_PHONE || SEND_STATUS==BleContant.SEND_GET_TANTOU || SEND_STATUS==BleContant.SEND_CAI_JI_PIN_LU || SEND_STATUS==BleContant.SEND_FA_SONG_PIN_LU){
+                        if(SEND_STATUS==BleContant.SEND_GET_CODE_PHONE || SEND_STATUS==BleContant.SEND_GET_TANTOU || SEND_STATUS==BleContant.SEND_CAI_JI_PIN_LU || SEND_STATUS==BleContant.SEND_FA_SONG_PIN_LU || SEND_STATUS==BleContant.RED_DEVICE_TIME){
                             //解析并显示回执的数据
                             showData(data);
                         }else{

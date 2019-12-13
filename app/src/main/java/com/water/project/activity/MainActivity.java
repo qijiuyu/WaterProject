@@ -112,7 +112,6 @@ public class MainActivity extends BaseActivity{
                 }
             }
         });
-
     }
 
 
@@ -162,13 +161,15 @@ public class MainActivity extends BaseActivity{
         if (resultCode == 0x001) {
             //读取版本信息成功
             final int code = BleUtils.getVersion(MainActivity.this);
+            Menu menu4=menuList.get(4);
+            Menu menu5=menuList.get(5);
             if (code==1) {
-                menuList.remove(menuList.get(4));
-                menuList.remove(menuList.get(5));
+                menuList.remove(menu4);
+                menuList.remove(menu5);
             }
             if(code==3){
-                menuList.remove(menuList.get(4));
-                menuList.remove(menuList.get(5));
+                menuList.remove(menu4);
+                menuList.remove(menu5);
                 mainMenuAdapter.setNoClickIndex(2);
             }
             listView.setAdapter(mainMenuAdapter);

@@ -76,6 +76,8 @@ public class SendBleStr {
     //保存设置设备时间的数据命令
     public static  String SET_DEVICE_TIME;
 
+    public static String RED_DEVICE_TIME="GDTIMER";
+
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
         StringBuffer stringBuffer=new StringBuffer();
@@ -453,6 +455,10 @@ public class SendBleStr {
             //设置设备时间
             case BleContant.SEND_DEVICE_TIME:
                   SendBleDataManager.getInstance().sendData(SET_DEVICE_TIME);
+                  break;
+            //读取设备的时间
+            case BleContant.RED_DEVICE_TIME:
+                  SendBleDataManager.getInstance().sendData(RED_DEVICE_TIME);
                   break;
              default:
                  break;

@@ -70,4 +70,7 @@ public class BleContant {
 
     //设置设备时间
     public static final int SEND_DEVICE_TIME=1019;
+
+    //读取设备时间
+    public static final int RED_DEVICE_TIME=1020;
 }

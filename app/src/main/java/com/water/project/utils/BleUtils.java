@@ -46,13 +46,14 @@ public class BleUtils {
         if(version.contains("V3.00")){
             return 3;
         }
-        if (version.startsWith("GDBBRGDsender") || version.startsWith("GDBBRZKGD2000")) {
-            return 1;
-        }
+//        if (version.startsWith("GDBBRGDsender") || version.startsWith("GDBBRZKGD2000")) {
+//            return 1;
+//        }
         if (version.startsWith("GDBBRV")) {
             return 2;
+        }else{
+            return 1;
         }
-        return 1;
     }
 
 
