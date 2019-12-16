@@ -26,6 +26,8 @@ public class SPUtil {
     //电导率
     public final static String DIAN_DAO_LV="dian_dao_lv";
 
+    public final static String CMD_DATA="CMD_DATA";
+
     private static SPUtil sharUtil = null;
 
     @SuppressLint("WrongConstant")

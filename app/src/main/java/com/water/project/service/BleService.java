@@ -24,12 +24,14 @@ import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
 import com.water.project.bean.eventbus.EventStatus;
 import com.water.project.bean.eventbus.EventType;
+import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.TimerUtil;
 import com.water.project.utils.ToastUtil;
 import com.water.project.utils.ble.SendBleDataManager;
+import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -120,7 +122,6 @@ public class BleService extends Service implements Serializable{
     private StringBuffer sb;
     //是否重新连接蓝牙
     private boolean isConnect = true;
-    private Handler mHandler=new Handler();
 
     public class LocalBinder extends Binder {
         public BleService getService() {
@@ -339,8 +340,6 @@ public class BleService extends Service implements Serializable{
             //循环发送数据
             for (int i=0;i<list.size();i++){
                    RxChar.setValue(list.get(i).getBytes());
-                   //开启超时计时器
-                   startTimeOut();
                   //下发命令
                   boolean b=mBluetoothGatt.writeCharacteristic(RxChar);
                   if(!b){
@@ -349,6 +348,10 @@ public class BleService extends Service implements Serializable{
                   }
                   //延时5毫秒
                   new Thread().sleep(8);
+            }
+            if(isSuccess){
+                //开启超时计时器
+                startTimeOut();
             }
             return isSuccess;
         } catch (Exception e) {
@@ -481,15 +484,15 @@ public class BleService extends Service implements Serializable{
 
             if(sb.length()>0){
                 sb.append(data);
-                if(data.endsWith(">OK")){
+                if(sb.toString().endsWith(">OK")){
                     broadCastData();
                     return;
                 }
-                if(sb.toString().startsWith("GDCURRENT") && data.endsWith(";")){
+                if(sb.toString().startsWith("GDCURRENT") && sb.toString().endsWith(";")){
                     broadCastData();
                     return;
                 }
-                if(data.endsWith("ERROR")){
+                if(sb.toString().endsWith("ERROR")){
                     //广播错误数据
                     broadCastError();
                     return;
@@ -518,7 +521,7 @@ public class BleService extends Service implements Serializable{
     public void resumeConnect(int status){
         if(isConnect){
             isConnect=false;
-            mHandler.postDelayed(new Runnable() {
+            handler.postDelayed(new Runnable() {
                 public void run() {
                     LogUtils.e("重连一次蓝牙");
                     Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
