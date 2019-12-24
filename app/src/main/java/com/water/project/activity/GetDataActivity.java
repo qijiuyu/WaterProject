@@ -50,6 +50,7 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
         initView();
         register();//注册广播
         sendData(); //发送蓝牙命令
+//        showData("GDCURRENT>080808203500LFFFF.FFFT017.00B100V05.85CSQ00R999993E0098P0010.432B999999C0011.000;");
 //        showData("GDCURRENT>180812153625L0010.975T028.893B100V05.98CSQ31R-35.452E0098P0010.125B10.009C0011.000C001413.01B001413.00T001413.00R001413.00+0.0200;");
     }
 
@@ -259,6 +260,7 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
         if(length==93){
             YaLi=msg.substring(57,66).replace("P","");
         }
+
         if(YaLi.contains("99999999")){
             tvYaLi.setText(YaLi+"");
         }else{
@@ -272,7 +274,7 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
         }else{
             MaiShen=msg.substring(12,20).replace("L","");
         }
-        if(YaLi.contains("99999999")){
+        if(YaLi.contains("99999999") || MaiShen.equals("FFFF.FFF")){
             tvMaiShen.setText(MaiShen+"m");
         }else{
             tvMaiShen.setText(Util.setDouble(Double.parseDouble(MaiShen),3)+"m");
