@@ -480,7 +480,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener 
         }else{
             MaiShen=msg.substring(12,20).replace("L","");
         }
-        if(YaLi.contains("99999999")){
+        if(YaLi.contains("99999999") || MaiShen.equals("FFFF.FFF")){
             tvShuiWei.setText(MaiShen+"m");
         }else{
             tvShuiWei.setText(Util.setDouble(Double.parseDouble(MaiShen),3)+"m");

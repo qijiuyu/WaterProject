@@ -15,7 +15,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:text="读取设备状态数据"
+        android:text=" 读取设备GPRS发送数据过程记录"
         android:textColor="@android:color/white"
         android:textSize="15sp"
         android:background="@drawable/bg_setting_select"
