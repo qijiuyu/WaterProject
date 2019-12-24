@@ -190,7 +190,7 @@ public class MainActivity extends BaseActivity{
         menuList.add(menu3);
         Menu menu4=new Menu(R.mipmap.setting_icon,"参数设置");
         menuList.add(menu4);
-        Menu menu5=new Menu(R.mipmap.record_icon,"读取设备记录");
+        Menu menu5=new Menu(R.mipmap.record_icon,"读取设备数据和状态记录");
         menuList.add(menu5);
         Menu menu6=new Menu(R.mipmap.status_icon,"发送数据");
         menuList.add(menu6);

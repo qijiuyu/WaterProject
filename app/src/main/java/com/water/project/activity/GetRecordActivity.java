@@ -41,7 +41,7 @@ public class GetRecordActivity extends BaseActivity {
         register();//注册广播
 
         TextView tvHead=(TextView)findViewById(R.id.tv_head);
-        tvHead.setText("读取设备记录");
+        tvHead.setText("读取设备数据和状态记录");
         findViewById(R.id.tv_red).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 sendData();
