@@ -101,7 +101,7 @@ public class MainActivity extends BaseActivity{
                             setClass(SettingActivity.class);
                         }
                         break;
-                    case "读取设备记录":
+                    case "读取设备数据和状态记录":
                         setClass(GetRecordActivity.class);
                         break;
                     case "发送数据":
