@@ -113,7 +113,7 @@ public class BleService extends Service implements Serializable{
     //连接成功
     public static final int STATE_CONNECTED = 2;
     //timeOut：发送命令超时         scanTime:扫描蓝牙超时
-    private long timeOut = 1000 * 20, scanTime = 1000 * 15;
+    private long timeOut = 1000 * 25, scanTime = 1000 * 15;
     private TimerUtil timerUtil, startUtil;
     private Handler handler = new Handler();
     //蓝牙名称
