@@ -113,7 +113,7 @@ public class BleService extends Service implements Serializable{
     //连接成功
     public static final int STATE_CONNECTED = 2;
     //timeOut：发送命令超时         scanTime:扫描蓝牙超时
-    private long timeOut = 1000 * 25, scanTime = 1000 * 15;
+    public long timeOut = 1000 * 25, scanTime = 1000 * 15;
     private TimerUtil timerUtil, startUtil;
     private Handler handler = new Handler();
     //蓝牙名称
@@ -470,11 +470,15 @@ public class BleService extends Service implements Serializable{
             LogUtils.e("接收到的数据是："+data);
             if(data.startsWith("GD")){
                 sb.append(data);
-                if(data.endsWith(">OK")){
+                if(sb.toString().endsWith(">OK")){
                     broadCastData();
                     return;
                 }
-                if(data.endsWith("ERROR")){
+                if(sb.toString().startsWith("GDCURRENT") && sb.toString().endsWith(";")){
+                    broadCastData();
+                    return;
+                }
+                if(sb.toString().endsWith("ERROR")){
                     //广播错误数据
                     broadCastError();
                     return;
@@ -571,5 +575,9 @@ public class BleService extends Service implements Serializable{
 
     public int getConnectionState() {
         return connectionState;
+    }
+
+    public void setTimeOut(long time){
+        timeOut=time;
     }
 }
