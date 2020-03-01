@@ -64,8 +64,6 @@
         <activity android:name=".activity.GetRecordActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".activity.SendDataActivity"  android:screenOrientation="portrait"/>
 
-        <activity android:name=".activity.TestActivity" ></activity>
-
         <service
             android:name=".service.BleService"
             android:enabled="true" />

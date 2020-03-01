@@ -9,7 +9,6 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.Build;
@@ -17,30 +16,14 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
-import android.view.View;
-
-import com.water.project.activity.aaa.Test2Activity;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
-import com.water.project.bean.eventbus.EventStatus;
-import com.water.project.bean.eventbus.EventType;
-import com.water.project.utils.BuglyUtils;
-import com.water.project.utils.DialogUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
-import com.water.project.utils.TimerUtil;
-import com.water.project.utils.ToastUtil;
-import com.water.project.utils.ble.SendBleDataManager;
-import com.water.project.utils.ble.SendBleStr;
-import com.water.project.view.DialogView;
-
-import org.greenrobot.eventbus.EventBus;
-
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.UUID;
-
 /**
  * 蓝牙Service
  */
@@ -114,7 +97,6 @@ public class BleService extends Service implements Serializable{
     public static final int STATE_CONNECTED = 2;
     //timeOut：发送命令超时         scanTime:扫描蓝牙超时
     public long timeOut = 1000 * 25, scanTime = 1000 * 15;
-    private TimerUtil timerUtil, startUtil;
     private Handler handler = new Handler();
     //蓝牙名称
     private String bleName;
@@ -161,10 +143,10 @@ public class BleService extends Service implements Serializable{
         this.bleName=bleName;
         //先关闭扫描
         mBluetoothAdapter.stopLeScan(mLeScanCallback);
-        LogUtils.e("开始扫描蓝牙");
+        //开始扫描蓝牙
         mBluetoothAdapter.startLeScan(mLeScanCallback);
         //开启扫描蓝牙计时器
-        startUtil();
+        startScanListener();
     }
 
 
@@ -189,7 +171,7 @@ public class BleService extends Service implements Serializable{
                         //停止扫描
                         stopScan();
                         //关闭扫描计时器
-                        startUtil.stop();
+                        handler.removeCallbacks(scanRunnable);
                         //连接蓝牙
                         handler.post(new Runnable() {
                             public void run() {
@@ -214,30 +196,6 @@ public class BleService extends Service implements Serializable{
         }
     }
 
-    /**
-     * 扫描15秒钟
-     */
-    private void startUtil() {
-        //关闭扫描计时器
-        if(null!=startUtil){
-            startUtil.stop();
-        }
-        startUtil = new TimerUtil(scanTime, new TimerUtil.TimerCallBack() {
-            public void onFulfill() {
-                //停止扫描
-                stopScan();
-                //关闭扫描计时器
-                startUtil.stop();
-                //发送扫描不到该蓝牙设备的广播
-                if(!TextUtils.isEmpty(bleName)){
-                    broadcastUpdate(ACTION_NO_DISCOVERY_BLE);
-                }else{
-                    broadcastUpdate(ACTION_SCAM_DEVICE_END);
-                }
-            }
-        });
-        startUtil.start();
-    }
 
     /**
      * 连接指定蓝牙
@@ -332,11 +290,11 @@ public class BleService extends Service implements Serializable{
                 return false;
             }
 
-            StringBuffer stringBuffer=new StringBuffer();
-            for (int i=0;i<list.size();i++){
-                stringBuffer.append(list.get(i));
-            }
-            LogUtils.e("发送的命令是："+stringBuffer.toString());
+//            StringBuffer stringBuffer=new StringBuffer();
+//            for (int i=0;i<list.size();i++){
+//                stringBuffer.append(list.get(i));
+//            }
+//            LogUtils.e("发送的命令是："+stringBuffer.toString());
             //循环发送数据
             for (int i=0;i<list.size();i++){
                    RxChar.setValue(list.get(i).getBytes());
@@ -467,41 +425,62 @@ public class BleService extends Service implements Serializable{
             if(TextUtils.isEmpty(data)){
                 return;
             }
-            LogUtils.e("接收到的数据是："+data);
+
+            handler.removeCallbacks(runnable);
             if(data.startsWith("GD")){
                 sb.append(data);
-                if(sb.toString().endsWith(">OK")){
-                    broadCastData();
-                    return;
-                }
-                if(sb.toString().startsWith("GDCURRENT") && sb.toString().endsWith(";")){
-                    broadCastData();
-                    return;
-                }
-                if(sb.toString().endsWith("ERROR")){
-                    //广播错误数据
-                    broadCastError();
-                    return;
-                }
-                return;
+                handler.postDelayed(runnable,70);
+            }else{
+                sb.append(data);
+                handler.postDelayed(runnable,70);
             }
 
-            if(sb.length()>0){
-                sb.append(data);
-                if(sb.toString().endsWith(">OK")){
-                    broadCastData();
-                    return;
-                }
-                if(sb.toString().startsWith("GDCURRENT") && sb.toString().endsWith(";")){
-                    broadCastData();
-                    return;
-                }
-                if(sb.toString().endsWith("ERROR")){
-                    //广播错误数据
-                    broadCastError();
-                    return;
-                }
-            }
+
+//            if(data.startsWith("GD")){
+//                sb.append(data);
+//                if(sb.toString().endsWith(">OK")){
+//                    broadCastData();
+//                    return;
+//                }
+//                if(sb.toString().startsWith("GDCURRENT") && sb.toString().endsWith(";")){
+//                    broadCastData();
+//                    return;
+//                }
+//                if(sb.toString().endsWith("ERROR")){
+//                    //广播错误数据
+//                    broadCastError();
+//                    return;
+//                }
+//                return;
+//            }
+
+//            if(sb.length()>0){
+//                sb.append(data);
+//                if(sb.toString().endsWith(">OK")){
+//                    broadCastData();
+//                    return;
+//                }
+//                if(sb.toString().startsWith("GDCURRENT") && sb.toString().endsWith(";")){
+//                    broadCastData();
+//                    return;
+//                }
+//                if(sb.toString().endsWith("ERROR")){
+//                    //广播错误数据
+//                    broadCastError();
+//                    return;
+//                }
+//            }
+        }
+    };
+
+
+    /**
+     * 判断是否已接收到所有回执数据
+     */
+    private Runnable runnable=new Runnable() {
+        public void run() {
+            //已接收完毕，发给APP界面
+            broadCastData();
         }
     };
 
@@ -512,8 +491,7 @@ public class BleService extends Service implements Serializable{
     private void broadCastData(){
         //关闭超时计时器
         stopTimeOut();
-        final String msg=sb.toString();
-        broadcastUpdate(ACTION_DATA_AVAILABLE, msg.replace(">OK",""));
+        broadcastUpdate(ACTION_DATA_AVAILABLE, sb.toString());
         sb=new StringBuffer();
     }
 
@@ -554,24 +532,56 @@ public class BleService extends Service implements Serializable{
      * 开始计时超时时间
      **/
     private synchronized void startTimeOut() {
+        //关闭接收数据的超时计时器
         stopTimeOut();
-        timerUtil = new TimerUtil(timeOut, new TimerUtil.TimerCallBack() {
-            public void onFulfill() {
-                LogUtils.e("发送超时广播");
-                broadcastUpdate(ACTION_INTERACTION_TIMEOUT);
-            }
-        });
-        timerUtil.start();
+        //开启监听超时计时器
+        handler.postDelayed(dataRunnable,timeOut);
     }
 
     /**
-     * 发送命令超时计时
+     * 关闭接收数据的超时计时器
      **/
     public void stopTimeOut() {
-        if (timerUtil != null) {
-            timerUtil.stop();
-        }
+        handler.removeCallbacks(dataRunnable);
     }
+
+
+    /**
+     * 开启扫描蓝牙的超时监听
+     */
+    private void startScanListener() {
+        //关闭扫描计时器
+        handler.removeCallbacks(scanRunnable);
+        handler.postDelayed(scanRunnable,scanTime);
+    }
+
+
+    /**
+     * 扫描蓝牙超时监听
+     */
+    Runnable scanRunnable=new Runnable() {
+        public void run() {
+            //停止扫描
+            stopScan();
+            //发送扫描不到该蓝牙设备的广播
+            if(!TextUtils.isEmpty(bleName)){
+                broadcastUpdate(ACTION_NO_DISCOVERY_BLE);
+            }else{
+                broadcastUpdate(ACTION_SCAM_DEVICE_END);
+            }
+        }
+    };
+
+
+    /**
+     * 接收数据超时监听
+     */
+    Runnable dataRunnable=new Runnable() {
+        public void run() {
+            LogUtils.e("发送超时广播");
+            broadcastUpdate(ACTION_INTERACTION_TIMEOUT);
+        }
+    };
 
     public int getConnectionState() {
         return connectionState;

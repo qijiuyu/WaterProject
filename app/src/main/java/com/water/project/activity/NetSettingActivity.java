@@ -294,7 +294,7 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
                     DialogUtils.closeProgress();
-                    final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
+                    final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA).replace(">OK","");
                     if(SEND_STATUS==BleContant.SEND_GET_CODE_PHONE){
                         //解析并显示回执的数据
                         showData(data);

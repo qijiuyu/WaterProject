@@ -133,7 +133,6 @@ public class GetRecordActivity extends BaseActivity {
                 case BleService.ACTION_DATA_AVAILABLE:
                     DialogUtils.closeProgress();
                     String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
-                    data+=">OK";
                     Calendar calendar = Calendar.getInstance();
                     //年
                     int intYear = calendar.get(Calendar.YEAR);

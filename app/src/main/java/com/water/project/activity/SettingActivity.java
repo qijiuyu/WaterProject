@@ -462,7 +462,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     break;
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
-                    final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
+                    final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA).replace(">OK","");
 
                     //刚进入界面读取的操作
                     if(SEND_TYPE==1){

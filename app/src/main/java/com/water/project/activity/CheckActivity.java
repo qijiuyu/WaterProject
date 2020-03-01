@@ -296,7 +296,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener 
                     break;
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
-                     final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
+                     final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA).replace(">OK","");
                      switch (SEND_STATUS){
                          //查询数据回执
                          case BleContant.SEND_REAL_TIME_DATA:

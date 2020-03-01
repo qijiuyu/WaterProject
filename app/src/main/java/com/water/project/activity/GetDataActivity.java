@@ -186,8 +186,8 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
                     break;
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
-                    DialogUtils.closeProgress();
-                     final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
+                     DialogUtils.closeProgress();
+                     final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA).replace(">OK","");
                      //解析并显示回执的数据
                      showData(data);
                     break;

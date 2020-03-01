@@ -24,9 +24,14 @@ import com.water.project.activity.MainActivity;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.DialogUtils;
+import com.water.project.utils.LogUtils;
 import com.water.project.utils.ToastUtil;
 import com.water.project.utils.ble.SendBleDataManager;
 import com.water.project.view.DialogView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -65,6 +70,7 @@ public class Test3Activity extends BaseActivity {
         register();
     }
 
+
     /**
      * 初始化
      */
@@ -98,6 +104,11 @@ public class Test3Activity extends BaseActivity {
                 if(TextUtils.isEmpty(cmd)){
                     ToastUtil.showLong("请输入要发送的命令");
                 }else{
+                    if(bleService==null){
+                        initService();
+                        return;
+                    }
+                    tvShowData.setText(null);
                     if(bleService.connectionState==bleService.STATE_DISCONNECTED){
                         DialogUtils.showProgress(Test3Activity.this,"扫描并连接蓝牙设备...");
                         bleService.scanDevice("ZKGDBluetooth");
@@ -187,6 +198,7 @@ public class Test3Activity extends BaseActivity {
                     break;
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
+                    DialogUtils.closeProgress();
                     String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
                     tvShowData.setText(data);
                     break;
