@@ -42,7 +42,7 @@
 
 
         <activity
-            android:name=".activity.aaa.Test3Activity">
+            android:name=".activity.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -63,6 +63,7 @@
         <activity android:name=".activity.new_version.New_SettingActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".activity.GetRecordActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".activity.SendDataActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".activity.menu5.CopyDataActivity"  android:screenOrientation="portrait"/>
 
         <service
             android:name=".service.BleService"

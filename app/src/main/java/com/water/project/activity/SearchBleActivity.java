@@ -129,10 +129,10 @@ public class SearchBleActivity extends BaseActivity {
                 case BleService.ACTION_SCAN_SUCCESS:
                     final String bleName=intent.getStringExtra("bleName");
                     final String bleMac=intent.getStringExtra("bleMac");
-                    if(!TextUtils.isEmpty(bleMap.get(bleName))){
+                    if(!TextUtils.isEmpty(bleMap.get(bleMac))){
                         return;
                     }
-                    bleMap.put(bleName,bleName);
+                    bleMap.put(bleMac,bleMac);
                     ble=new Ble(bleName,bleMac);
                     if(bleName.contains("ZKGD")){
                         bleList.add(ble);

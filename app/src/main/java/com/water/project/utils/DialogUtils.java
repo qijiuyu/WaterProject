@@ -150,7 +150,7 @@ public class DialogUtils {
         Dialog dialog = new Dialog(context, R.style.ActionSheetDialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setTitle(null);
-        dialog.setCancelable(true);
+        dialog.setCancelable(false);
         dialog.setContentView(view);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.CENTER);  //此处可以设置dialog显示的位置

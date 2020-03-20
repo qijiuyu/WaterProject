@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 import com.water.project.R;
+import com.water.project.activity.menu5.CopyDataActivity;
 import com.water.project.activity.new_version.New_SettingActivity;
 import com.water.project.adapter.MainMenuAdapter;
 import com.water.project.application.MyApplication;
@@ -101,7 +102,7 @@ public class MainActivity extends BaseActivity{
                             setClass(SettingActivity.class);
                         }
                         break;
-                    case "读取设备数据和状态记录":
+                    case "数据记录和状态记录":
                         setClass(GetRecordActivity.class);
                         break;
                     case "发送数据":
@@ -148,7 +149,7 @@ public class MainActivity extends BaseActivity{
                 break;
             //关于我们
             case R.id.tv_about:
-                setClass(AboutActivity.class);
+                setClass(CopyDataActivity.class);
                 break;
             default:
                 break;
@@ -191,7 +192,7 @@ public class MainActivity extends BaseActivity{
         menuList.add(menu3);
         Menu menu4=new Menu(R.mipmap.setting_icon,"参数设置");
         menuList.add(menu4);
-        Menu menu5=new Menu(R.mipmap.record_icon,"读取设备数据和状态记录");
+        Menu menu5=new Menu(R.mipmap.record_icon,"数据记录和状态记录");
         menuList.add(menu5);
         Menu menu6=new Menu(R.mipmap.status_icon,"发送数据");
         menuList.add(menu6);

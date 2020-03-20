@@ -53,6 +53,10 @@ public class BleService extends Service implements Serializable{
      */
     public final static String ACTION_DATA_AVAILABLE = "net.zkgd.adminapp.ACTION_DATA_AVAILABLE";
     /**
+     * 接收到了数据
+     */
+    public final static String ACTION_DATA_AVAILABLE2 = "net.zkgd.adminapp.ACTION_DATA_AVAILABLE2";
+    /**
      * 发送接到的数据的KEY
      */
     public final static String ACTION_EXTRA_DATA = "net.zkgd.adminapp.EXTRA_DATA";
@@ -104,6 +108,11 @@ public class BleService extends Service implements Serializable{
     private StringBuffer sb;
     //是否重新连接蓝牙
     private boolean isConnect = true;
+    /**
+     * true：接收完毕后再回执
+     * false：每接收一条就回执
+     */
+    private boolean isTotalSend;
 
     public class LocalBinder extends Binder {
         public BleService getService() {
@@ -165,20 +174,17 @@ public class BleService extends Service implements Serializable{
                 intent.putExtra("bleMac",device.getAddress());
                 sendBroadcast(intent);
             }else{
-                final Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
-                if(null!=ble){
-                    if(ble.getBleName().equals(device.getName())){
-                        //停止扫描
-                        stopScan();
-                        //关闭扫描计时器
-                        handler.removeCallbacks(scanRunnable);
-                        //连接蓝牙
-                        handler.post(new Runnable() {
-                            public void run() {
-                                connect(device.getAddress());
-                            }
-                        });
-                    }
+                if(bleName.equals(device.getName())){
+                    //停止扫描
+                    stopScan();
+                    //关闭扫描计时器
+                    handler.removeCallbacks(scanRunnable);
+                    //连接蓝牙
+                    handler.post(new Runnable() {
+                        public void run() {
+                            connect(device.getAddress());
+                        }
+                    });
                 }
             }
 
@@ -275,7 +281,8 @@ public class BleService extends Service implements Serializable{
      * 传输数据
      */
     boolean isSuccess;
-    public boolean writeRXCharacteristic(List<String> list) {
+    public boolean writeRXCharacteristic(List<String> list,boolean isTotalSend) {
+        this.isTotalSend=isTotalSend;
         sb=new StringBuffer();
         isSuccess=true;
         try {
@@ -296,16 +303,26 @@ public class BleService extends Service implements Serializable{
 //            }
 //            LogUtils.e("发送的命令是："+stringBuffer.toString());
             //循环发送数据
-            for (int i=0;i<list.size();i++){
+            for (int i=0,len=list.size();i<len;i++){
                    RxChar.setValue(list.get(i).getBytes());
                   //下发命令
                   boolean b=mBluetoothGatt.writeCharacteristic(RxChar);
                   if(!b){
-                    isSuccess=false;
-                    break;
+                      //延时下发
+                      Thread.sleep(30);
+                      b=mBluetoothGatt.writeCharacteristic(RxChar);
                   }
-                  //延时5毫秒
-                  new Thread().sleep(8);
+                  if(!b){
+                      //延时下发
+                      Thread.sleep(30);
+                      b=mBluetoothGatt.writeCharacteristic(RxChar);
+                  }
+                  if(!b){
+                      isSuccess=false;
+                      break;
+                  }
+                  //延时下发
+                  Thread.sleep(30);
             }
             if(isSuccess){
                 //开启超时计时器
@@ -427,10 +444,20 @@ public class BleService extends Service implements Serializable{
             }
 
             handler.removeCallbacks(runnable);
+
+            //每接收一条数据就回执
+            if(!isTotalSend){
+                broadcastUpdate(ACTION_DATA_AVAILABLE2, data);
+                handler.postDelayed(runnable,70);
+                return;
+            }
+
             if(data.startsWith("GD")){
                 sb.append(data);
                 handler.postDelayed(runnable,70);
-            }else{
+                return;
+            }
+            if(sb.length()>0){
                 sb.append(data);
                 handler.postDelayed(runnable,70);
             }
@@ -480,7 +507,11 @@ public class BleService extends Service implements Serializable{
     private Runnable runnable=new Runnable() {
         public void run() {
             //已接收完毕，发给APP界面
-            broadCastData();
+            if(sb.toString().endsWith("ERROR")){
+                broadCastError();
+            }else{
+                broadCastData();
+            }
         }
     };
 

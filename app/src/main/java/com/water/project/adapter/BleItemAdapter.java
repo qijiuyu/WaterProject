@@ -46,34 +46,34 @@ public class BleItemAdapter extends BaseAdapter {
 			convertView = this.inflater.inflate(R.layout.ble_item, null);
 			holder.tvBleName=(TextView) convertView.findViewById(R.id.tv_bi_bleName);
 			holder.tvConnect=(TextView)convertView.findViewById(R.id.tv_bi_connect);
+			holder.tvMac=convertView.findViewById(R.id.tv_mac);
 			convertView.setTag(holder);
 		}else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		final String bleName=list.get(position).getBleName();
-		if(!TextUtils.isEmpty(bleName)){
-			holder.tvBleName.setText(bleName);
-			holder.tvConnect.setTag(list.get(position));
-			if(bleName.contains("ZKGD")){
-				holder.tvConnect.setVisibility(View.VISIBLE);
-			}else{
-				holder.tvConnect.setVisibility(View.GONE);
-			}
-			holder.tvConnect.setOnClickListener(new View.OnClickListener() {
-				public void onClick(View v) {
-					if(null==v.getTag()){
-						return;
-					}
-					//连接蓝牙
-					EventBus.getDefault().post(new EventType(EventStatus.CONNCATION_BLE,v.getTag()));
-				}
-			});
+		final Ble ble=list.get(position);
+		holder.tvBleName.setText("蓝牙名称："+ble.getBleName());
+//		holder.tvMac.setText(ble.getBleMac());
+		holder.tvConnect.setTag(list.get(position));
+		if(ble.getBleName().contains("ZKGD")){
+			holder.tvConnect.setVisibility(View.VISIBLE);
+		}else{
+			holder.tvConnect.setVisibility(View.GONE);
 		}
+		holder.tvConnect.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				if(null==v.getTag()){
+					return;
+				}
+				//连接蓝牙
+				EventBus.getDefault().post(new EventType(EventStatus.CONNCATION_BLE,v.getTag()));
+			}
+		});
 		return convertView;
 	}
 
 
 	private class ViewHolder {
-		TextView tvBleName,tvConnect;
+		TextView tvBleName,tvConnect,tvMac;
 	}
 }

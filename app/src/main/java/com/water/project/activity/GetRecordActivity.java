@@ -12,6 +12,7 @@ import android.view.Window;
 import android.widget.TextView;
 
 import com.water.project.R;
+import com.water.project.activity.menu5.CopyDataActivity;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
 import com.water.project.service.BleService;
@@ -25,6 +26,9 @@ import com.water.project.view.DialogView;
 
 import java.util.Calendar;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * 读取设备记录
  * Created by Administrator on 2019/10/10.
@@ -33,44 +37,52 @@ import java.util.Calendar;
 public class GetRecordActivity extends BaseActivity {
 
     private DialogView dialogView;
-    private Handler mHandler=new Handler();
+    private Handler mHandler = new Handler();
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_get_record);
+        ButterKnife.bind(this);
         register();//注册广播
 
-        TextView tvHead=(TextView)findViewById(R.id.tv_head);
-        tvHead.setText("读取设备数据和状态记录");
-        findViewById(R.id.tv_red).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+        TextView tvHead =findViewById(R.id.tv_head);
+        tvHead.setText("数据记录和状态记录");
+    }
+
+
+    @OnClick({R.id.lin_back, R.id.tv_red, R.id.tv_copy})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.lin_back:
+                 finish();
+                break;
+            case R.id.tv_red:
                 sendData();
-            }
-        });
-        findViewById(R.id.lin_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GetRecordActivity.this.finish();
-            }
-        });
+                break;
+            case R.id.tv_copy:
+                setClass(CopyDataActivity.class);
+                break;
+            default:
+                break;
+        }
     }
 
 
     /**
      * 发送蓝牙命令
      */
-    private void sendData(){
+    private void sendData() {
         //判断蓝牙是否打开
-        if(!BleUtils.isEnabled(GetRecordActivity.this,MainActivity.mBtAdapter)){
+        if (!BleUtils.isEnabled(GetRecordActivity.this, MainActivity.mBtAdapter)) {
             return;
         }
-        DialogUtils.showProgress(GetRecordActivity.this,"正在读取数据记录...");
+        DialogUtils.showProgress(GetRecordActivity.this, "正在读取数据记录...");
         //如果蓝牙连接断开，就扫描重连
-        if(MainActivity.bleService.connectionState==MainActivity.bleService.STATE_DISCONNECTED){
+        if (MainActivity.bleService.connectionState == MainActivity.bleService.STATE_DISCONNECTED) {
             //扫描并重连蓝牙
-            final Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
-            if(null!=ble){
-                DialogUtils.showProgress(GetRecordActivity.this,"扫描并连接蓝牙设备...");
+            final Ble ble = (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE, Ble.class);
+            if (null != ble) {
+                DialogUtils.showProgress(GetRecordActivity.this, "扫描并连接蓝牙设备...");
                 MainActivity.bleService.scanDevice(ble.getBleName());
             }
             return;
@@ -96,11 +108,11 @@ public class GetRecordActivity extends BaseActivity {
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
-            switch (intent.getAction()){
+            switch (intent.getAction()) {
                 //扫描不到指定蓝牙设备
                 case BleService.ACTION_NO_DISCOVERY_BLE:
                     DialogUtils.closeProgress();
-                    dialogView = new DialogView(mContext, "扫描不到该蓝牙设备，请靠近设备再进行扫描！", "重新扫描","取消", new View.OnClickListener() {
+                    dialogView = new DialogView(mContext, "扫描不到该蓝牙设备，请靠近设备再进行扫描！", "重新扫描", "取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
                             sendData();
@@ -111,16 +123,16 @@ public class GetRecordActivity extends BaseActivity {
                 //蓝牙断开连接
                 case BleService.ACTION_GATT_DISCONNECTED:
                     DialogUtils.closeProgress();
-                    dialogView = new DialogView(mContext, "蓝牙连接断开，请靠近设备进行连接!","重新连接", "取消", new View.OnClickListener() {
+                    dialogView = new DialogView(mContext, "蓝牙连接断开，请靠近设备进行连接!", "重新连接", "取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
-                            DialogUtils.showProgress(GetRecordActivity.this,"蓝牙连接中...");
+                            DialogUtils.showProgress(GetRecordActivity.this, "蓝牙连接中...");
                             mHandler.postDelayed(new Runnable() {
                                 public void run() {
-                                    Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
+                                    Ble ble = (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE, Ble.class);
                                     MainActivity.bleService.connect(ble.getBleMac());
                                 }
-                            },100);
+                            }, 100);
                         }
                     }, null);
                     dialogView.show();
@@ -132,24 +144,24 @@ public class GetRecordActivity extends BaseActivity {
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
                     DialogUtils.closeProgress();
-                    String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
+                    String data = intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
                     Calendar calendar = Calendar.getInstance();
                     //年
                     int intYear = calendar.get(Calendar.YEAR);
                     //月
-                    int intMonth = (calendar.get(Calendar.MONTH)+1);
+                    int intMonth = (calendar.get(Calendar.MONTH) + 1);
                     //日
                     int intDay = calendar.get(Calendar.DAY_OF_MONTH);
                     //小时
                     int intHour = calendar.get(Calendar.HOUR_OF_DAY);
                     //分钟
-                    int intMinute=calendar.get(Calendar.MINUTE);
+                    int intMinute = calendar.get(Calendar.MINUTE);
                     //秒钟
-                    int secound=calendar.get(Calendar.SECOND);
-                    final String fileName=data.substring(9,24)+"_"+intYear+intMonth+intDay+intHour+intMinute+secound+".txt";
-                    String filePath= FileUtils.createFile(fileName,data);
+                    int secound = calendar.get(Calendar.SECOND);
+                    final String fileName = data.substring(9, 24) + "_" + intYear + intMonth + intDay + intHour + intMinute + secound + ".txt";
+                    String filePath = FileUtils.createFile(fileName, data);
                     DialogUtils.closeProgress();
-                    dialogView = new DialogView(mContext, "数据.txt文件已创建成功，目录是："+filePath, "确定",null, new View.OnClickListener() {
+                    dialogView = new DialogView(mContext, "数据.txt文件已创建成功，目录是：" + filePath, "确定", null, new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
                         }
@@ -158,7 +170,7 @@ public class GetRecordActivity extends BaseActivity {
                     break;
                 case BleService.ACTION_INTERACTION_TIMEOUT:
                     DialogUtils.closeProgress();
-                    dialogView = new DialogView(mContext, "接收数据超时！", "重试","取消", new View.OnClickListener() {
+                    dialogView = new DialogView(mContext, "接收数据超时！", "重试", "取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
                             sendData();
@@ -168,7 +180,7 @@ public class GetRecordActivity extends BaseActivity {
                     break;
                 case BleService.ACTION_SEND_DATA_FAIL:
                     DialogUtils.closeProgress();
-                    dialogView = new DialogView(mContext, "下发命令失败！", "重试","取消", new View.OnClickListener() {
+                    dialogView = new DialogView(mContext, "下发命令失败！", "重试", "取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
                             sendData();

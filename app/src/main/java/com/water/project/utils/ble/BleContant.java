@@ -73,4 +73,16 @@ public class BleContant {
 
     //读取设备时间
     public static final int RED_DEVICE_TIME=1020;
+
+    //读取原始设备数据记录信息指令
+    public static final int COPY_DEVICE_DATA=1021;
+
+    //读取设备的统一编码
+    public static final int COPY_DEVICE_ID=1022;
+
+    //发送根据时间段读取设备里面的数据
+    public static final int RED_DEVICE_DATA_BY_TIME=1023;
+
+    //蓝牙APP启动拷贝数据记录命令
+    public static final int WRITE_NEW_DEVICE_CMD=1024;
 }

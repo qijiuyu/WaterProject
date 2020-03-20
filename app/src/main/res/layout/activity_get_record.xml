@@ -20,4 +20,19 @@
         android:textSize="15sp"
         android:background="@drawable/bg_setting_select"
         android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/tv_copy"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="数据记录拷贝"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        android:background="@drawable/bg_setting_select"
+        android:gravity="center"/>
+
 </LinearLayout>

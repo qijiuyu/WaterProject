@@ -571,6 +571,8 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener 
                   final int cmd= (int) eventType.getObject();
                   sendData(cmd);
                   break;
+            default:
+                break;
         }
     }
 

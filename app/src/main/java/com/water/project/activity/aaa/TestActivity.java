@@ -143,7 +143,7 @@ public class TestActivity extends BaseActivity {
                 //初始化通道成功
                 case BleService.ACTION_ENABLE_NOTIFICATION_SUCCES:
                     DialogUtils.showProgress(TestActivity.this,"发送命令中...");
-                    SendBleDataManager.getInstance().sendData("GDERRREAD");
+                    SendBleDataManager.getInstance().sendData("GDERRREAD",true);
                     break;
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
@@ -186,7 +186,7 @@ public class TestActivity extends BaseActivity {
                         public void onClick(View v) {
                             dialogView.dismiss();
                             DialogUtils.showProgress(TestActivity.this,"发送命令中...");
-                            SendBleDataManager.getInstance().sendData("GDERRREAD");
+                            SendBleDataManager.getInstance().sendData("GDERRREAD",true);
                         }
                     }, null);
                     dialogView.show();

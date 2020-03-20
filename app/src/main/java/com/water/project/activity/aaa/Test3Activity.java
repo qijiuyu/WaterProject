@@ -114,7 +114,7 @@ public class Test3Activity extends BaseActivity {
                         bleService.scanDevice("ZKGDBluetooth");
                     }else{
                         DialogUtils.showProgress(Test3Activity.this,"发送命令中...");
-                        SendBleDataManager.getInstance().sendData(cmd);
+                        SendBleDataManager.getInstance().sendData(cmd,true);
                     }
                 }
                 break;
@@ -194,7 +194,7 @@ public class Test3Activity extends BaseActivity {
                 //初始化通道成功
                 case BleService.ACTION_ENABLE_NOTIFICATION_SUCCES:
                     DialogUtils.showProgress(Test3Activity.this,"发送命令中...");
-                    SendBleDataManager.getInstance().sendData(cmd);
+                    SendBleDataManager.getInstance().sendData(cmd,true);
                     break;
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
@@ -217,7 +217,7 @@ public class Test3Activity extends BaseActivity {
                         public void onClick(View v) {
                             dialogView.dismiss();
                             DialogUtils.showProgress(Test3Activity.this,"发送命令中...");
-                            SendBleDataManager.getInstance().sendData(cmd);
+                            SendBleDataManager.getInstance().sendData(cmd,true);
                         }
                     }, null);
                     dialogView.show();
