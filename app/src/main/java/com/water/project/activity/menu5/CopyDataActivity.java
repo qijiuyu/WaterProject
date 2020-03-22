@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
@@ -49,6 +50,7 @@ public class CopyDataActivity extends BaseActivity {
     //蓝牙名称
     private String bleName="ZKGDBluetooth";
     private CopyDataPersenter copyDataPersenter;
+    private Handler handler=new Handler();
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_copy_data);
@@ -123,6 +125,12 @@ public class CopyDataActivity extends BaseActivity {
                 case BleContant.WRITE_NEW_DEVICE_CMD:
                       DialogUtils.showProgress(CopyDataActivity.this, "蓝牙APP启动拷贝数据记录命令");
                       break;
+                case BleContant.WIRTE_NEW_DEVICE_TIME:
+                      DialogUtils.showProgress(CopyDataActivity.this, "设备读取蓝牙APP数据记录信息指令");
+                      break;
+                case BleContant.WIRTE_NEW_DEVICE_CODE:
+                      DialogUtils.showProgress(CopyDataActivity.this, "设备读取蓝牙APP 原始设备的统一编码");
+                      break;
                 default:
                     break;
             }
@@ -162,7 +170,11 @@ public class CopyDataActivity extends BaseActivity {
                 //初始化通道成功
                 case BleService.ACTION_ENABLE_NOTIFICATION_SUCCES:
                     //发送蓝牙命令
-                    sendBleCmd();
+                    if(type==1){
+                        sendData(BleContant.COPY_DEVICE_DATA);
+                    }else{
+                        sendData(BleContant.WRITE_NEW_DEVICE_CMD);
+                    }
                     break;
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
@@ -205,17 +217,6 @@ public class CopyDataActivity extends BaseActivity {
     };
 
 
-    /**
-     * 发送蓝牙命令
-     */
-    private void sendBleCmd(){
-        if(type==1){
-            sendData(BleContant.COPY_DEVICE_DATA);
-        }else{
-
-        }
-    }
-
 
     /**
      * 处理设备回执的数据
@@ -256,8 +257,19 @@ public class CopyDataActivity extends BaseActivity {
             switch (SEND_STATUS){
                 case BleContant.WRITE_NEW_DEVICE_CMD:
                      if(data.endsWith(">OK")){
-                        DialogUtils.showProgress(this,"等待设备读取数据中...");
+                         DialogUtils.showProgress(this,"等待设备读取数据中...");
+                         return;
                      }
+                     if(data.equals("GDRECORDXXR")){
+                         SendBleStr.WIRTE_NEW_DEVICE_TIME=red1;
+                         sendData(BleContant.WIRTE_NEW_DEVICE_TIME);
+                     }
+                      break;
+                case BleContant.WIRTE_NEW_DEVICE_TIME:
+                      if(data.equals("GDIDR")){
+                          SendBleStr.WIRTE_NEW_DEVICE_CODE=red2;
+                          sendData(BleContant.WIRTE_NEW_DEVICE_CODE);
+                      }
                       break;
                 default:
                     break;

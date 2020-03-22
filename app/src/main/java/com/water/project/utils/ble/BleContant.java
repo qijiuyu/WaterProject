@@ -85,4 +85,10 @@ public class BleContant {
 
     //蓝牙APP启动拷贝数据记录命令
     public static final int WRITE_NEW_DEVICE_CMD=1024;
+
+    //给新设备写入时间数据
+    public static final int WIRTE_NEW_DEVICE_TIME=1025;
+
+    //给新设备写入统一编码数据
+    public static final int WIRTE_NEW_DEVICE_CODE=1026;
 }

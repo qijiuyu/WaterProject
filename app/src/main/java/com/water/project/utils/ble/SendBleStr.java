@@ -93,6 +93,12 @@ public class SendBleStr {
     //蓝牙APP启动拷贝数据记录命令
     public static String WRITE_NEW_DEVICE_CMD="GDRECORDBCOPY";
 
+    //给新设备写入时间数据
+    public static String WIRTE_NEW_DEVICE_TIME;
+
+    //给新设备写入统一编码数据
+    public static String WIRTE_NEW_DEVICE_CODE;
+
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
         StringBuffer stringBuffer=new StringBuffer();
@@ -394,7 +400,7 @@ public class SendBleStr {
             ToastUtil.showLong("读取的时间段有误");
             return;
         }
-        RED_DEVICE_DATA_BY_TIME="GDRECORDC"+startTime.substring(0,startTime.length()-2)+","+endTime.substring(0,endTime.length()-2);
+        RED_DEVICE_DATA_BY_TIME="GDRECORDC"+startTime.substring(2,startTime.length()-2)+","+endTime.substring(2,endTime.length()-2);
     }
 
     public static void sendBleData(int status){
@@ -502,6 +508,14 @@ public class SendBleStr {
             //蓝牙APP启动拷贝数据记录命令
             case BleContant.WRITE_NEW_DEVICE_CMD:
                   SendBleDataManager.getInstance().sendData(WRITE_NEW_DEVICE_CMD,true);
+                  break;
+            //给新设备写入时间数据
+            case BleContant.WIRTE_NEW_DEVICE_TIME:
+                  SendBleDataManager.getInstance().sendData(WIRTE_NEW_DEVICE_TIME,true);
+                  break;
+            //给新设备写入统一编码数据
+            case BleContant.WIRTE_NEW_DEVICE_CODE:
+                  SendBleDataManager.getInstance().sendData(WIRTE_NEW_DEVICE_CODE,true);
                   break;
              default:
                  break;

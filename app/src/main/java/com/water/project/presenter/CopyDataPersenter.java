@@ -18,6 +18,7 @@ import com.water.project.bean.eventbus.EventType;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
+import com.water.project.utils.ToastUtil;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
 
@@ -168,47 +169,56 @@ public class CopyDataPersenter {
      * @param red1
      * @return
      */
+    private long sLong,eLong;
     public boolean setRed3Cmd(String red1){
         try {
             String[] strings=red1.split(",");
-
+            if(strings==null || strings.length!=5){
+                ToastUtil.showLong("读取的时间数据有问题");
+                return false;
+            }
+            strings[1]="20"+strings[1];
+            strings[2]="20"+strings[2];
             //已经读取完毕
             if (!TextUtils.isEmpty(redEnd) && redEnd.equals(strings[2])){
                 return false;
             }
 
             //获取设备里的开始与结束时间
-            startTime="20"+strings[1].substring(0, 2)+"-"+strings[1].substring(2,4)+"-"+strings[1].substring(4,6)+" "+strings[1].substring(6,8)+":"+strings[1].substring(8,10)+":"+strings[1].substring(10,12);
-            endTime="20"+strings[2].substring(0, 2)+"-"+strings[2].substring(2,4)+"-"+strings[2].substring(4,6)+" "+strings[2].substring(6,8)+":"+strings[2].substring(8,10)+":"+strings[2].substring(10,12);
+            startTime=strings[1].substring(0, 4)+"年"+strings[1].substring(4,6)+"月"+strings[1].substring(6,8)+"日"+strings[1].substring(8,10)+"时"+strings[1].substring(10,12)+"分"+strings[1].substring(12,14);
+            endTime=strings[2].substring(0, 4)+"年"+strings[2].substring(4,6)+"月"+strings[2].substring(6,8)+"日"+strings[2].substring(8,10)+"时"+strings[2].substring(10,12)+"分"+strings[2].substring(12,14);
             //间隔分钟
             minutes=Integer.parseInt(strings[3]);
             //获取总条数
             totalNum=getGapMinutes(startTime,endTime)/minutes;
 
-            if(totalNum<=20){
-                redStart=strings[1];
-                redEnd=strings[2];
-            }else{
+            if(totalNum>20){
                 //这是第一次读
-                if(TextUtils.isEmpty(redStart) && TextUtils.isEmpty(redEnd)){
+                if(TextUtils.isEmpty(redStart)){
                     redStart=strings[1];
                 }else{
-                    redStart=redEnd;
+                    //在上次结束时间上加上一次间隔分钟
+                    eLong=eLong+(minutes*60*1000);
+                    redStart=df.format(new Date(eLong));
                 }
                 //获取long日期
-                long sLong=df.parse("20"+redStart).getTime();
-                long eLong=sLong+(20*minutes*60*1000);
+                sLong=df.parse(redStart).getTime();
+                eLong=sLong+(20*minutes*60*1000);
                 //判断是否超过结束时间
                 if(eLong<endLong){
-                    String time=df.format(new Date(eLong));
-                    redEnd=time.substring(2,time.length());
+                    redEnd=df.format(new Date(eLong));
                 }else{
                     redEnd=strings[2];
                 }
-
-                //设置根据时间段读取设备里面的数据
-                SendBleStr.redDeviceByTime(redStart,redEnd);
             }
+
+            if(totalNum<=20){
+                redStart=strings[1];
+                redEnd=strings[2];
+            }
+
+            //设置根据时间段读取设备里面的数据
+            SendBleStr.redDeviceByTime(redStart,redEnd);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -224,7 +234,7 @@ public class CopyDataPersenter {
      */
     public int getGapMinutes(String startDate, String endDate) {
         try {
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat df = new SimpleDateFormat("yyyy年MM月dd日HH时mm分ss");
             startLong = df.parse(startDate).getTime();
             endLong = df.parse(endDate).getTime();
         }catch (Exception e){
