@@ -91,4 +91,7 @@ public class BleContant {
 
     //给新设备写入统一编码数据
     public static final int WIRTE_NEW_DEVICE_CODE=1026;
+
+    //给新设备写入大量数据
+    public static final int  WRITE_NEW_DEVICE_LONG_DATA=1027;
 }

@@ -149,7 +149,7 @@ public class MainActivity extends BaseActivity{
                 break;
             //关于我们
             case R.id.tv_about:
-                setClass(CopyDataActivity.class);
+                setClass(AboutActivity.class);
                 break;
             default:
                 break;

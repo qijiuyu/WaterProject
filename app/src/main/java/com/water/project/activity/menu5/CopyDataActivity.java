@@ -44,7 +44,8 @@ public class CopyDataActivity extends BaseActivity {
      */
     private int type=1;
     //需要读取的三类数据
-    private String red1,red2,red3;
+    private String red1,red2;
+    private StringBuffer red3=new StringBuffer();
     //下发命令的编号
     private int SEND_STATUS;
     //蓝牙名称
@@ -55,7 +56,6 @@ public class CopyDataActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_copy_data);
         ButterKnife.bind(this);
-        copyDataPersenter=new CopyDataPersenter(this);
         //注册EventBus
         EventBus.getDefault().register(this);
         tvHead.setText("数据记录拷贝");
@@ -72,13 +72,11 @@ public class CopyDataActivity extends BaseActivity {
                 break;
             //读取数据
             case R.id.tv_red:
+                copyDataPersenter=new CopyDataPersenter(this);
                 type=1;
                 Ble ble = (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE, Ble.class);
                 bleName=ble.getBleName();
                 sendData(BleContant.COPY_DEVICE_DATA);
-//                copyDataPersenter.setRed3Cmd("GDRECORDXXR0064800,140808120300,140810120300,0030,140801122025");
-//                copyDataPersenter.showTripDialog("GDRECORDXXR0064800,140808120300,140810120300,0030,140801122025",null);
-//                copyDataPersenter.showRedComplete(null);
                 break;
             //写入数据
             case R.id.tv_wirte:
@@ -112,7 +110,8 @@ public class CopyDataActivity extends BaseActivity {
                     DialogUtils.showProgress(CopyDataActivity.this, "读取原始设备的统一编码");
                     break;
                 case BleContant.RED_DEVICE_DATA_BY_TIME:
-                     copyDataPersenter.showTripDialog(red3);
+                     DialogUtils.closeProgress();
+                     copyDataPersenter.showTripDialog(red3.toString());
                      break;
                 default:
                     break;
@@ -130,6 +129,10 @@ public class CopyDataActivity extends BaseActivity {
                       break;
                 case BleContant.WIRTE_NEW_DEVICE_CODE:
                       DialogUtils.showProgress(CopyDataActivity.this, "设备读取蓝牙APP 原始设备的统一编码");
+                      break;
+                case BleContant.WRITE_NEW_DEVICE_LONG_DATA:
+                     DialogUtils.closeProgress();
+                     copyDataPersenter.showCopyDialog();
                       break;
                 default:
                     break;
@@ -178,18 +181,11 @@ public class CopyDataActivity extends BaseActivity {
                     break;
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
-                    final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
                     //处理设备回执的数据
-                    getDeviceData(data);
+                    getDeviceData(intent.getStringExtra(BleService.ACTION_EXTRA_DATA));
                     break;
                 //接收到了实时回执的数据
                 case BleService.ACTION_DATA_AVAILABLE2:
-                      if(SEND_STATUS==BleContant.RED_DEVICE_DATA_BY_TIME){
-                          final String data2=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
-                          red3+=data2;
-                          //实时更新提示框内容
-                          copyDataPersenter.showTripDialog(red3);
-                      }
                     break;
                 //读取数据超时
                 case BleService.ACTION_INTERACTION_TIMEOUT:
@@ -224,7 +220,6 @@ public class CopyDataActivity extends BaseActivity {
      */
     private void getDeviceData(String data){
         if(type==1){
-            DialogUtils.closeProgress();
             switch (SEND_STATUS){
                 case BleContant.COPY_DEVICE_DATA:
                       red1=data;
@@ -239,11 +234,12 @@ public class CopyDataActivity extends BaseActivity {
                       break;
                 //读取设备数据结束了
                 case BleContant.RED_DEVICE_DATA_BY_TIME:
+                     red3.append(data);
                      boolean b=copyDataPersenter.setRed3Cmd(red1);
                      if(b){
                          sendData(BleContant.RED_DEVICE_DATA_BY_TIME);
                      }else{
-                         copyDataPersenter.showRedComplete(red3);
+                         copyDataPersenter.showRedComplete(red3.toString());
                          //断开蓝牙连接
                          MainActivity.bleService.disconnect();
                      }
@@ -251,13 +247,13 @@ public class CopyDataActivity extends BaseActivity {
                 default:
                       break;
             }
+            return;
         }
 
         if(type==2){
             switch (SEND_STATUS){
                 case BleContant.WRITE_NEW_DEVICE_CMD:
                      if(data.endsWith(">OK")){
-                         DialogUtils.showProgress(this,"等待设备读取数据中...");
                          return;
                      }
                      if(data.equals("GDRECORDXXR")){
@@ -269,6 +265,23 @@ public class CopyDataActivity extends BaseActivity {
                       if(data.equals("GDIDR")){
                           SendBleStr.WIRTE_NEW_DEVICE_CODE=red2;
                           sendData(BleContant.WIRTE_NEW_DEVICE_CODE);
+                      }
+                      break;
+                case BleContant.WIRTE_NEW_DEVICE_CODE:
+                      if(data.startsWith("GDRECORDC")){
+                          copyDataPersenter.setWriteData(red3.toString(),data);
+                          sendData(BleContant.WRITE_NEW_DEVICE_LONG_DATA);
+                      }
+                      break;
+                case BleContant.WRITE_NEW_DEVICE_LONG_DATA:
+                      //拷贝完成
+                      if(data.endsWith(">OK")){
+                          copyDataPersenter.showCopyComplete();
+                          return;
+                      }
+                      boolean b=copyDataPersenter.setWriteData(red3.toString(),data);
+                      if(b){
+                          sendData(BleContant.WRITE_NEW_DEVICE_LONG_DATA);
                       }
                       break;
                 default:

@@ -99,6 +99,9 @@ public class SendBleStr {
     //给新设备写入统一编码数据
     public static String WIRTE_NEW_DEVICE_CODE;
 
+    //给新设备写入大量数据
+    public static String WRITE_NEW_DEVICE_LONG_DATA;
+
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
         StringBuffer stringBuffer=new StringBuffer();
@@ -400,7 +403,7 @@ public class SendBleStr {
             ToastUtil.showLong("读取的时间段有误");
             return;
         }
-        RED_DEVICE_DATA_BY_TIME="GDRECORDC"+startTime.substring(2,startTime.length()-2)+","+endTime.substring(2,endTime.length()-2);
+        RED_DEVICE_DATA_BY_TIME="GDRECORDC"+startTime.substring(2,startTime.length())+","+endTime.substring(2,endTime.length());
     }
 
     public static void sendBleData(int status){
@@ -503,7 +506,7 @@ public class SendBleStr {
                   break;
             //根据时间段读取设备里面的数据
             case BleContant.RED_DEVICE_DATA_BY_TIME:
-                  SendBleDataManager.getInstance().sendData(RED_DEVICE_DATA_BY_TIME,false);
+                  SendBleDataManager.getInstance().sendData(RED_DEVICE_DATA_BY_TIME,true);
                   break;
             //蓝牙APP启动拷贝数据记录命令
             case BleContant.WRITE_NEW_DEVICE_CMD:
@@ -516,6 +519,10 @@ public class SendBleStr {
             //给新设备写入统一编码数据
             case BleContant.WIRTE_NEW_DEVICE_CODE:
                   SendBleDataManager.getInstance().sendData(WIRTE_NEW_DEVICE_CODE,true);
+                  break;
+            //给新设备写入大量数据
+            case BleContant.WRITE_NEW_DEVICE_LONG_DATA:
+                  SendBleDataManager.getInstance().sendData(WRITE_NEW_DEVICE_LONG_DATA,true);
                   break;
              default:
                  break;

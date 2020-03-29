@@ -13,9 +13,9 @@
         android:background="@android:color/white">
 
        <TextView
+           android:id="@+id/tv_title"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:text="读取数据记录已全部完成,可以将数据记录拷贝到新设备了"
            android:layout_marginTop="20dp"
            android:layout_marginRight="45dp"
            android:layout_marginLeft="45dp"

@@ -19,6 +19,7 @@ import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.FileUtils;
+import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
@@ -38,6 +39,8 @@ public class GetRecordActivity extends BaseActivity {
 
     private DialogView dialogView;
     private Handler mHandler = new Handler();
+    //当前页面是否在显示
+    private boolean isShowActivity=true;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -108,6 +111,9 @@ public class GetRecordActivity extends BaseActivity {
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
+            if(!isShowActivity){
+                return;
+            }
             switch (intent.getAction()) {
                 //扫描不到指定蓝牙设备
                 case BleService.ACTION_NO_DISCOVERY_BLE:
@@ -198,6 +204,18 @@ public class GetRecordActivity extends BaseActivity {
         }
     };
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isShowActivity=true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isShowActivity=false;
+    }
 
     @Override
     protected void onDestroy() {
