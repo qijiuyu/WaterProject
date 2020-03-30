@@ -23,6 +23,7 @@ public class DialogView extends Dialog implements View.OnClickListener {
 
     public DialogView(Context mContext, CharSequence  content, String confirm, String cancle, View.OnClickListener listenerYes, View.OnClickListener listenerNo){
         super(mContext);
+        dismiss();
         this.content=content;
         this.confirm=confirm;
         this.cancle=cancle;
@@ -32,7 +33,7 @@ public class DialogView extends Dialog implements View.OnClickListener {
 
     public DialogView(DialogView dialogView, Context mContext, CharSequence  content, String confirm, String cancle, View.OnClickListener listenerYes, View.OnClickListener listenerNo){
         super(mContext);
-        if(null!=dialogView){
+        if(dialogView!=null && dialogView.isShowing()){
             dialogView.dismiss();
         }
         this.content=content;
@@ -45,6 +46,7 @@ public class DialogView extends Dialog implements View.OnClickListener {
 
     public DialogView(Context mContext, CharSequence  content, String confirm, View.OnClickListener listenerYes){
         super(mContext);
+        dismiss();
         this.content=content;
         this.confirm=confirm;
         this.listener_yes=listenerYes;

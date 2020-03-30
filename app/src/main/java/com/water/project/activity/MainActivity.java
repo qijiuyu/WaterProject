@@ -30,6 +30,8 @@ import com.water.project.utils.BleUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ble.SendBleDataManager;
+import com.water.project.view.DialogView;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

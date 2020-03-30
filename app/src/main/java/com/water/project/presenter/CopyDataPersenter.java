@@ -91,24 +91,6 @@ public class CopyDataPersenter {
 
 
     /**
-     * 读取数据超时
-     */
-    public void timeOut(){
-        DialogUtils.closeProgress();
-        if(null!=dialogView){
-            dialogView.dismiss();
-        }
-        dialogView = new DialogView(activity, "接收数据超时！", "重试","取消", new View.OnClickListener() {
-            public void onClick(View v) {
-                dialogView.dismiss();
-                EventBus.getDefault().post(new EventType(EventStatus.SEND_CHECK_MCD));
-            }
-        }, null);
-        dialogView.show();
-    }
-
-
-    /**
      *组装第三条读取的命令
      * @param red1
      * @return

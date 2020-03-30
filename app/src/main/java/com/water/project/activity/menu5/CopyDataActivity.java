@@ -21,6 +21,7 @@ import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.SPUtil;
+import com.water.project.utils.ToastUtil;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
@@ -184,17 +185,36 @@ public class CopyDataActivity extends BaseActivity {
                     //处理设备回执的数据
                     getDeviceData(intent.getStringExtra(BleService.ACTION_EXTRA_DATA));
                     break;
-                //接收到了实时回执的数据
-                case BleService.ACTION_DATA_AVAILABLE2:
-                    break;
                 //读取数据超时
                 case BleService.ACTION_INTERACTION_TIMEOUT:
-                    copyDataPersenter.timeOut();
+                    DialogUtils.closeProgress();
+                    if(type==1){
+                        dialogView = new DialogView(dialogView,mContext, "读取数据超时", "好的", null, new View.OnClickListener() {
+                            public void onClick(View v) {
+                                dialogView.dismiss();
+                            }
+                        }, null);
+                        dialogView.show();
+                    }else{
+                        dialogView = new DialogView(dialogView,mContext, "拷贝数据超时", "好的", null, new View.OnClickListener() {
+                            public void onClick(View v) {
+                                dialogView.dismiss();
+                            }
+                        }, null);
+                        dialogView.show();
+                    }
                     break;
                 case BleService.ACTION_SEND_DATA_FAIL:
                     DialogUtils.closeProgress();
                     if(type==1){
-                        dialogView = new DialogView(mContext, "读取数据记录出现故障", "好的", null, new View.OnClickListener() {
+                        dialogView = new DialogView(dialogView,mContext, "读取数据记录出现故障", "好的", null, new View.OnClickListener() {
+                            public void onClick(View v) {
+                                dialogView.dismiss();
+                            }
+                        }, null);
+                        dialogView.show();
+                    }else{
+                        dialogView = new DialogView(dialogView,mContext, "拷贝数据出现故障", "好的", null, new View.OnClickListener() {
                             public void onClick(View v) {
                                 dialogView.dismiss();
                             }
@@ -239,9 +259,10 @@ public class CopyDataActivity extends BaseActivity {
                      if(b){
                          sendData(BleContant.RED_DEVICE_DATA_BY_TIME);
                      }else{
-                         copyDataPersenter.showRedComplete(red3.toString());
                          //断开蓝牙连接
                          MainActivity.bleService.disconnect();
+                         ToastUtil.showLong("蓝牙连接断开！");
+                         copyDataPersenter.showRedComplete(red3.toString());
                      }
                       break;
                 default:
@@ -276,6 +297,9 @@ public class CopyDataActivity extends BaseActivity {
                 case BleContant.WRITE_NEW_DEVICE_LONG_DATA:
                       //拷贝完成
                       if(data.endsWith(">OK")){
+                          //断开蓝牙连接
+                          MainActivity.bleService.disconnect();
+                          ToastUtil.showLong("蓝牙连接断开！");
                           copyDataPersenter.showCopyComplete();
                           return;
                       }
