@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 import com.water.project.R;
+import com.water.project.activity.menu3.SetSIMActivity;
 import com.water.project.activity.menu5.CopyDataActivity;
 import com.water.project.activity.new_version.New_SettingActivity;
 import com.water.project.adapter.MainMenuAdapter;
@@ -32,6 +33,7 @@ import com.water.project.utils.SPUtil;
 import com.water.project.utils.ble.SendBleDataManager;
 import com.water.project.view.DialogView;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -73,6 +75,7 @@ public class MainActivity extends BaseActivity{
         deleteCache();
         initService();//注册蓝牙服务
         setPush();
+
     }
 
 
@@ -151,7 +154,7 @@ public class MainActivity extends BaseActivity{
                 break;
             //关于我们
             case R.id.tv_about:
-                setClass(AboutActivity.class);
+                setClass(SetSIMActivity.class);
                 break;
             default:
                 break;

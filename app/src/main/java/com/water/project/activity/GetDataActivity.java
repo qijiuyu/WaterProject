@@ -52,6 +52,7 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
         sendData(); //发送蓝牙命令
 //        showData("GDCURRENT>080808203500LFFFF.FFFT017.00B100V05.85CSQ00R999993E0098P0010.432B999999C0011.000;");
 //        showData("GDCURRENT>180812153625L0010.975T028.893B100V05.98CSQ31R-35.452E0098P0010.125B10.009C0011.000C001413.01B001413.00T001413.00R001413.00+0.0200;");
+//         showData("GDCURRENT>180812153625L+0010.9758T+028.8967B100.00C001413.01V05.98CSQ31R-35.45E0098P0010.1256B10.0098A-0043.5000D01.00000C-0011.0000;");
     }
 
     /**
@@ -260,6 +261,9 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
         if(length==93){
             YaLi=msg.substring(57,66).replace("P","");
         }
+        if(length==133){
+            YaLi=msg.substring(74,83).replace("P","");
+        }
 
         if(YaLi.contains("99999999")){
             tvYaLi.setText(YaLi+"");
@@ -271,8 +275,12 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
         String MaiShen=null;
         if(length==91 || length==93 || length==140){
             MaiShen=msg.substring(12,21).replace("L","");
-        }else{
+        }
+        if(length==79 || length==88 || length==138){
             MaiShen=msg.substring(12,20).replace("L","");
+        }
+        if(length==133){
+            MaiShen=msg.substring(13,23).replace("L","");
         }
         if(YaLi.contains("99999999") || MaiShen.equals("FFFF.FFF")){
             tvMaiShen.setText(MaiShen+"m");
@@ -301,6 +309,9 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
                 QiYa=msg.substring(64,71).replace("B","");
             }
         }
+        if(length==133){
+            QiYa=msg.substring(33,40).replace("B","");
+        }
         if(YaLi.contains("99999999")){
             tvQiYa.setText(QiYa+"");
         }else{
@@ -325,10 +336,13 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
                 ShuiWen=msg.substring(21,28).replace("T","");
             }
         }
+        if(length==133){
+            ShuiWen=msg.substring(24,33).replace("T","");
+        }
         if(YaLi.contains("99999999")){
             tvShuiWen.setText(ShuiWen+"℃");
         }else{
-            tvShuiWen.setText(Util.setDouble(Double.parseDouble(ShuiWen),3)+"℃");
+            tvShuiWen.setText(Util.setDouble(Double.parseDouble(ShuiWen),4)+"℃");
         }
 
         //显示气温值
@@ -351,6 +365,9 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
             }else{
                 QiWen=msg.substring(43,50).replace("R","");
             }
+        }
+        if(length==133){
+            QiWen=msg.substring(61,68).replace("R","");
         }
         if(YaLi.contains("99999999")){
             tvQiWen.setText(QiWen+"℃");
@@ -379,6 +396,9 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
                 DianYa=msg.substring(32,38).replace("V","");
             }
         }
+        if(length==133){
+            DianYa=msg.substring(50,56).replace("V","");
+        }
         if(YaLi.contains("99999999")){
             tvDianYa.setText(DianYa+"V");
         }else{
@@ -387,7 +407,7 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
 
 
         //显示电导率
-        if(length==138 || length==140){
+        if(length==138 || length==140 || length==133){
             findViewById(R.id.rel_ddl).setVisibility(View.VISIBLE);
             String DianDaoLv=null;
             if(length==138){
@@ -399,6 +419,9 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
                 }else{
                     DianDaoLv=msg.substring(80,90).replace("C","");
                 }
+            }
+            if(length==133){
+                DianDaoLv=msg.substring(40,50).replace("C","");
             }
             tvDianDaoLv.setText(Util.setDouble(Double.parseDouble(DianDaoLv),2)+"uS/cm");
         }

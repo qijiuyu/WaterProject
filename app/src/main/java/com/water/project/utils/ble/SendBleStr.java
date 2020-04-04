@@ -102,6 +102,9 @@ public class SendBleStr {
     //给新设备写入大量数据
     public static String WRITE_NEW_DEVICE_LONG_DATA;
 
+    //设置北斗的中心号码
+    public static String SET_CENTER_MOBILE;
+
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
         StringBuffer stringBuffer=new StringBuffer();
@@ -252,17 +255,6 @@ public class SendBleStr {
 
 
     /**
-     * 数据不够，用0补齐
-     */
-    public static String append(int num,String data){
-        String str=data;
-        for (int i=0;i<num-data.length();i++){
-              str="0"+str;
-        }
-        return str;
-    }
-
-    /**
      * 设置水位埋深误差数据
      * @param data:偏移量
      */
@@ -360,7 +352,6 @@ public class SendBleStr {
             stringBuffer.append("0");
         }
         SEND_DATA_DIAN_DAO_LV=stringBuffer.toString();
-        LogUtils.e("_________"+SEND_DATA_DIAN_DAO_LV);
     }
 
 
@@ -404,6 +395,34 @@ public class SendBleStr {
             return;
         }
         RED_DEVICE_DATA_BY_TIME="GDRECORDC"+startTime.substring(2,startTime.length())+","+endTime.substring(2,endTime.length());
+    }
+
+
+    /**
+     * 设置中心号码的命令
+     * @param totalData
+     * @param mobile
+     */
+    public static void setCenterSIM(String totalData,String mobile,int startIndex,int endIndex){
+        StringBuffer stringBuffer=new StringBuffer(totalData);
+        if(mobile.length()<11){
+            //数据不够，用0补齐
+            mobile=append(11,mobile);
+        }
+        stringBuffer.replace(startIndex,startIndex+endIndex,"CEN"+mobile);
+        SET_CENTER_MOBILE=stringBuffer.toString();
+    }
+
+
+    /**
+     * 数据不够，用0补齐
+     */
+    public static String append(int num,String data){
+        String str=data;
+        for (int i=0;i<num-data.length();i++){
+            str="0"+str;
+        }
+        return str;
     }
 
     public static void sendBleData(int status){
@@ -523,6 +542,10 @@ public class SendBleStr {
             //给新设备写入大量数据
             case BleContant.WRITE_NEW_DEVICE_LONG_DATA:
                   SendBleDataManager.getInstance().sendData(WRITE_NEW_DEVICE_LONG_DATA,true);
+                  break;
+            //设置北斗的中心号码
+            case BleContant.SET_CENTER_MOBILE:
+                 SendBleDataManager.getInstance().sendData(SET_CENTER_MOBILE,true);
                   break;
              default:
                  break;

@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.water.project.R;
+import com.water.project.activity.menu3.SetSIMActivity;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
 import com.water.project.service.BleService;
@@ -50,6 +51,8 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
     private String strData;
     //密码存储
     private char[] arr;
+    //当前页面是否在显示
+    private boolean isShowActivity=true;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -254,6 +257,9 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
+            if(!isShowActivity){
+                return;
+            }
             switch (intent.getAction()){
                 //扫描不到指定蓝牙设备
                 case BleService.ACTION_NO_DISCOVERY_BLE:
@@ -296,8 +302,17 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
                     DialogUtils.closeProgress();
                     final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA).replace(">OK","");
                     if(SEND_STATUS==BleContant.SEND_GET_CODE_PHONE){
-                        //解析并显示回执的数据
-                        showData(data);
+                        if(data.startsWith("GDSETMAS")){
+                            //进入设置北斗中心号码的页面
+                            Intent intent1=new Intent(NetSettingActivity.this, SetSIMActivity.class);
+                            intent1.putExtra("data",data);
+                            startActivity(intent);
+                            finish();
+
+                        }else{
+                            //解析并显示回执的数据
+                            showData(data);
+                        }
                     }else{
                         showToastView("设置成功！");
                     }
@@ -736,6 +751,17 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isShowActivity=true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isShowActivity=false;
+    }
 
     @Override
     protected void onDestroy() {

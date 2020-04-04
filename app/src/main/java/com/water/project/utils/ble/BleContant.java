@@ -94,4 +94,7 @@ public class BleContant {
 
     //给新设备写入大量数据
     public static final int  WRITE_NEW_DEVICE_LONG_DATA=1027;
+
+    //设置北斗的中心号码
+    public static final int SET_CENTER_MOBILE=1028;
 }
