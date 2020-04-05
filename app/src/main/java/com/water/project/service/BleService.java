@@ -20,6 +20,8 @@ import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
+import com.water.project.utils.ble.ByteStringHexUtil;
+
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -304,12 +306,12 @@ public class BleService extends Service implements Serializable{
                   boolean b=mBluetoothGatt.writeCharacteristic(RxChar);
                   if(!b){
                       //延时下发
-                      Thread.sleep(30);
+                      Thread.sleep(10);
                       b=mBluetoothGatt.writeCharacteristic(RxChar);
                   }
                   if(!b){
                       //延时下发
-                      Thread.sleep(30);
+                      Thread.sleep(10);
                       b=mBluetoothGatt.writeCharacteristic(RxChar);
                   }
                   if(!b){
@@ -317,7 +319,7 @@ public class BleService extends Service implements Serializable{
                       break;
                   }
                   //延时下发
-                  Thread.sleep(30);
+                  Thread.sleep(10);
             }
             if(isSuccess){
                 //开启超时计时器
@@ -427,13 +429,15 @@ public class BleService extends Service implements Serializable{
         //接收数据
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt,BluetoothGattCharacteristic characteristic) {
-            if(null==characteristic){
+            if(null==characteristic || !TX_CHAR_UUID.equals(characteristic.getUuid())){
                 return;
             }
-            if (!TX_CHAR_UUID.equals(characteristic.getUuid())) {
+//            final String data=characteristic.getStringValue(0);
+            byte[] txValue = characteristic.getValue();
+            if(null==txValue){
                 return;
             }
-            final String data=characteristic.getStringValue(0);
+            final String data= ByteStringHexUtil.bytesToHexString(txValue);
             if(TextUtils.isEmpty(data)){
                 return;
             }

@@ -14,14 +14,14 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 import com.water.project.R;
 import com.water.project.activity.menu3.SetSIMActivity;
-import com.water.project.activity.menu5.CopyDataActivity;
+import com.water.project.activity.menu6.BActivity;
+import com.water.project.activity.menu6.SendDataActivity;
 import com.water.project.activity.new_version.New_SettingActivity;
 import com.water.project.adapter.MainMenuAdapter;
 import com.water.project.application.MyApplication;
@@ -29,11 +29,8 @@ import com.water.project.bean.Menu;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.LogUtils;
-import com.water.project.utils.SPUtil;
 import com.water.project.utils.ble.SendBleDataManager;
-import com.water.project.view.DialogView;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -154,7 +151,7 @@ public class MainActivity extends BaseActivity{
                 break;
             //关于我们
             case R.id.tv_about:
-                setClass(SetSIMActivity.class);
+                setClass(BActivity.class);
                 break;
             default:
                 break;

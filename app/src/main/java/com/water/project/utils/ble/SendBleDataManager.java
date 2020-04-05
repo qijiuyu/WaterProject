@@ -42,7 +42,7 @@ public class SendBleDataManager {
             return;
         }
         try {
-            Thread.sleep(200);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

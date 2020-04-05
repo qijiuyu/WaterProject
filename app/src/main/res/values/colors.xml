@@ -20,4 +20,5 @@
     <color name="half_transparent">#b0000000</color>
     <color name="transparent">#00000000</color>
     <color name="color_FFECECEC">#FFECECEC</color>
+    <color name="color_DADADA">#DADADA</color>
 </resources>

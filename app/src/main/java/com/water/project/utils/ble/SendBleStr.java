@@ -105,6 +105,15 @@ public class SendBleStr {
     //设置北斗的中心号码
     public static String SET_CENTER_MOBILE;
 
+    //获取设备型号
+    public static String GET_DEVICE_MODEL="GDXHR";
+
+    //让设备通过北斗方式发送实时数据
+    public static String BEI_DOU_FANG_SHI_SEND_DATA="GDBLEBDSENDDATA";
+
+    //读取设备北斗信号强度
+    public static String RED_BEI_DOU_XIN_HAO_QIANG_DU="GDBDSQ";
+
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
         StringBuffer stringBuffer=new StringBuffer();
@@ -546,6 +555,18 @@ public class SendBleStr {
             //设置北斗的中心号码
             case BleContant.SET_CENTER_MOBILE:
                  SendBleDataManager.getInstance().sendData(SET_CENTER_MOBILE,true);
+                  break;
+            //获取设备型号
+            case BleContant.GET_DEVICE_MODEL:
+                  SendBleDataManager.getInstance().sendData(GET_DEVICE_MODEL,true);
+                  break;
+            //让设备通过北斗方式发送实时数据
+            case BleContant.BEI_DOU_FANG_SHI_SEND_DATA:
+                  SendBleDataManager.getInstance().sendData(BEI_DOU_FANG_SHI_SEND_DATA,true);
+                  break;
+            //读取设备北斗信号强度
+            case BleContant.RED_BEI_DOU_XIN_HAO_QIANG_DU:
+                  SendBleDataManager.getInstance().sendData(RED_BEI_DOU_XIN_HAO_QIANG_DU,true);
                   break;
              default:
                  break;

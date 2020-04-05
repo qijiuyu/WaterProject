@@ -97,4 +97,13 @@ public class BleContant {
 
     //设置北斗的中心号码
     public static final int SET_CENTER_MOBILE=1028;
+
+    //获取设备型号
+    public static final int GET_DEVICE_MODEL=1029;
+
+    //让设备通过北斗方式发送实时数据
+    public static final int BEI_DOU_FANG_SHI_SEND_DATA=1030;
+
+    //读取设备北斗信号强度
+    public static final int RED_BEI_DOU_XIN_HAO_QIANG_DU=1031;
 }
