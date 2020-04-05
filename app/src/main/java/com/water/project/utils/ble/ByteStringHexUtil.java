@@ -47,4 +47,22 @@ public class ByteStringHexUtil {
         return b;
     }
 
+
+    /**
+     * 普通的字符串转换为16进制的字符串
+     * @param str
+     * @return
+     */
+    public static String toHex(String str) {
+        String hexString="0123456789ABCDEF";
+        byte[] bytes=str.getBytes();
+        StringBuilder hex=new StringBuilder(bytes.length * 2);
+        for(int i=0;i<bytes.length;i++) {
+            hex.append(hexString.charAt((bytes[i] & 0xf0) >> 4));  // 作用同 n / 16
+            hex.append(hexString.charAt((bytes[i] & 0x0f) >> 0));  // 作用同 n
+//            hex.append(' ');  //中间用空格隔开
+        }
+        return hex.toString();
+    }
+
 }

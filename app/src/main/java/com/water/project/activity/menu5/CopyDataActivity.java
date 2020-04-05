@@ -112,7 +112,11 @@ public class CopyDataActivity extends BaseActivity {
                     break;
                 case BleContant.RED_DEVICE_DATA_BY_TIME:
                      DialogUtils.closeProgress();
-                     copyDataPersenter.showTripDialog(red3.toString());
+                     handler.post(new Runnable() {
+                         public void run() {
+                             copyDataPersenter.showTripDialog(red3.toString());
+                         }
+                     });
                      break;
                 default:
                     break;
@@ -133,7 +137,11 @@ public class CopyDataActivity extends BaseActivity {
                       break;
                 case BleContant.WRITE_NEW_DEVICE_LONG_DATA:
                      DialogUtils.closeProgress();
-                     copyDataPersenter.showCopyDialog();
+                     handler.post(new Runnable() {
+                        public void run() {
+                            copyDataPersenter.showCopyDialog();
+                        }
+                    });
                       break;
                 default:
                     break;

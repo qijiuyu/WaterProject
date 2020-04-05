@@ -15,6 +15,7 @@ import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
 import com.water.project.bean.eventbus.EventStatus;
 import com.water.project.bean.eventbus.EventType;
+import com.water.project.utils.BleUtils;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
@@ -28,6 +29,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2020/3/18.
@@ -148,14 +150,10 @@ public class CopyDataPersenter {
     private TextView tvContent;
     private NumberFormat numberFormat = NumberFormat.getInstance();
     public void showTripDialog(String red3){
-        if(red3.endsWith(">OK")){
-            red3=red3.replace(">OK","");
-        }
-        int newNum=0;//当前第几条
-        if(!TextUtils.isEmpty(red3)){
-            String[] strings=red3.split(";");
-            newNum=strings.length;
-        }
+        //去掉数据的开头与结尾
+        red3=red3.replace("47445245434F524441","").replace("3E4F4B","");
+        //已读取了几条
+        int newNum= BleUtils.getSendData(red3,256).size();
 
         //获取百分比
         numberFormat.setMaximumFractionDigits(2);
@@ -185,14 +183,10 @@ public class CopyDataPersenter {
             redDialog.dismiss();
             redDialog=null;
         }
-        if(red3.endsWith(">OK")){
-            red3=red3.replace(">OK","");
-        }
-        int newNum=0;//当前第几条
-        if(!TextUtils.isEmpty(red3)){
-            String[] strings=red3.split(";");
-            newNum=strings.length;
-        }
+        //去掉数据的开头与结尾
+        red3=red3.replace("47445245434F524441","").replace("3E4F4B","");
+        //已读取了几条
+        int newNum= BleUtils.getSendData(red3,256).size();
         String startTime=strings[1].substring(0, 4)+"年"+strings[1].substring(4,6)+"月"+strings[1].substring(6,8)+"日"+strings[1].substring(8,10)+"时"+strings[1].substring(10,12)+"分";
         String endTime=strings[2].substring(0, 4)+"年"+strings[2].substring(4,6)+"月"+strings[2].substring(6,8)+"日"+strings[2].substring(8,10)+"时"+strings[2].substring(10,12)+"分";
 
@@ -216,47 +210,42 @@ public class CopyDataPersenter {
      * 组装写入新设备的数据
      * @param red3
      */
-    private String[] writeArray;
+    private List<String> writeArray;
     //已经拷贝了几条了
     private int writeNum=0;
     public boolean setWriteData(String red3,String cmd){
-        if(!red3.startsWith("GDRECORDC") || !red3.endsWith(">OK")){
-            DialogUtils.closeProgress();
-            ToastUtil.showLong("要拷贝的数据有误！");
-            return false;
-        }
-
         if(writeArray==null){
-            writeArray=red3.replace("GDRECORDC","").replace(">OK","").split(";");
+            //去掉数据的开头与结尾
+            red3=red3.replace("47445245434F524441","").replace("3E4F4B","");
+            writeArray=BleUtils.getSendData(red3,256);
         }
 
         //获取设备回执的开始与结束时间
-        String[] strings=cmd.replace("GDRECORDC","").split(",");
+        String[] strings=cmd.replace("GDRECORDA","").split(",");
         String writeStartTime=strings[0];
         String writeEndTime=strings[1];
 
         //计算并组装数据
         StringBuilder stringBuilder=new StringBuilder();
-        if(writeArray[0].startsWith(writeStartTime)){
+        if(writeArray.get(0).startsWith(writeStartTime)){
             stringBuilder.append("GDRECORDC");
         }
 
-        for (int i=0,len=writeArray.length;i<len;i++){
-             String item=writeArray[i].substring(0,10);
+        for (int i=0,len=writeArray.size();i<len;i++){
+             String item=writeArray.get(i).substring(0,10);
              if(Integer.parseInt(item)>=Integer.parseInt(writeStartTime)){
-                 stringBuilder.append(writeArray[i]+";");
+                 stringBuilder.append(writeArray.get(i));
+                 //叠加条数
+                 ++writeNum;
              }
              if(Integer.parseInt(item)==Integer.parseInt(writeEndTime)){
                 break;
             }
         }
 
-        if(red3.indexOf(writeEndTime)==-1 || writeArray[writeArray.length-1].startsWith(writeEndTime)){
-            stringBuilder.append(">OK");
+        if(red3.indexOf(writeEndTime)==-1 || writeArray.get(writeArray.size()-1).startsWith(writeEndTime)){
+            stringBuilder.append("3E4F4B");
         }
-
-        //获取拷贝的条数
-        writeNum+=stringBuilder.toString().length() - stringBuilder.toString().replace(",", "").length();
 
         //设置给新设备写入大量数据
         SendBleStr.WRITE_NEW_DEVICE_LONG_DATA=stringBuilder.toString();

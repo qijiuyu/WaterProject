@@ -20,6 +20,7 @@ import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
+import com.water.project.utils.ToastUtil;
 import com.water.project.utils.ble.ByteStringHexUtil;
 
 import java.io.Serializable;
@@ -107,7 +108,7 @@ public class BleService extends Service implements Serializable{
     //蓝牙名称
     private String bleName;
     //接收回执的数据，进行拼接
-    private StringBuffer sb;
+    private StringBuffer sb=new StringBuffer();
     //是否重新连接蓝牙
     private boolean isConnect = true;
     /**
@@ -115,6 +116,11 @@ public class BleService extends Service implements Serializable{
      * false：每接收一条就回执
      */
     private boolean isTotalSend;
+    /**
+     * 1：接收字符串，
+     * 2：接收byte[]数组
+     */
+    private int receiveType;
 
     public class LocalBinder extends Binder {
         public BleService getService() {
@@ -280,13 +286,16 @@ public class BleService extends Service implements Serializable{
     }
 
     /**
-     * 传输数据
+     *
+     * @param list：下发的命令
+     * @param isTotalSend：是否接收完所有数据再回执
+     * @param receiveType：1：接收字符串，   2：接收byte[]数组
+     * @return
      */
-    boolean isSuccess;
-    public boolean writeRXCharacteristic(List<String> list,boolean isTotalSend) {
+    public boolean writeRXCharacteristic(List<String> list,boolean isTotalSend,int receiveType) {
         this.isTotalSend=isTotalSend;
-        sb=new StringBuffer();
-        isSuccess=true;
+        this.receiveType=receiveType;
+        boolean isSuccess=true;
         try {
             BluetoothGattService RxService = mBluetoothGatt.getService(RX_SERVICE_UUID);
             if (RxService == null) {
@@ -306,12 +315,7 @@ public class BleService extends Service implements Serializable{
                   boolean b=mBluetoothGatt.writeCharacteristic(RxChar);
                   if(!b){
                       //延时下发
-                      Thread.sleep(10);
-                      b=mBluetoothGatt.writeCharacteristic(RxChar);
-                  }
-                  if(!b){
-                      //延时下发
-                      Thread.sleep(10);
+                      Thread.sleep(20);
                       b=mBluetoothGatt.writeCharacteristic(RxChar);
                   }
                   if(!b){
@@ -384,7 +388,6 @@ public class BleService extends Service implements Serializable{
      */
     private final BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
-            LogUtils.e("status="+status+"___________");
             if (newState == BluetoothProfile.STATE_CONNECTED) {
                 LogUtils.e("蓝牙连接成功");
                 connectionState = STATE_CONNECTED;
@@ -432,69 +435,38 @@ public class BleService extends Service implements Serializable{
             if(null==characteristic || !TX_CHAR_UUID.equals(characteristic.getUuid())){
                 return;
             }
-//            final String data=characteristic.getStringValue(0);
-            byte[] txValue = characteristic.getValue();
-            if(null==txValue){
-                return;
-            }
-            final String data= ByteStringHexUtil.bytesToHexString(txValue);
-            if(TextUtils.isEmpty(data)){
-                return;
-            }
-
             handler.removeCallbacks(runnable);
 
-            //每接收一条数据就回执
-            if(!isTotalSend){
-                broadcastUpdate(ACTION_DATA_AVAILABLE2, data);
+            if(receiveType==2){
+                byte[] txValue = characteristic.getValue();
+                if(null==txValue){
+                    ToastUtil.showLong("byte数组是空的");
+                    return;
+                }
+                sb.append(ByteStringHexUtil.bytesToHexString(txValue));
                 handler.postDelayed(runnable,70);
                 return;
             }
 
-            if(data.startsWith("GD")){
-                sb.append(data);
-                handler.postDelayed(runnable,70);
-                return;
-            }
-            if(sb.length()>0){
-                sb.append(data);
-                handler.postDelayed(runnable,70);
+            if(receiveType==1){
+                String data=characteristic.getStringValue(0);
+                if(data.startsWith("GD")){
+                    sb.append(data);
+                    handler.postDelayed(runnable,70);
+                    return;
+                }
+                if(sb.length()>0){
+                    sb.append(data);
+                    handler.postDelayed(runnable,70);
+                }
             }
 
 
-//            if(data.startsWith("GD")){
-//                sb.append(data);
-//                if(sb.toString().endsWith(">OK")){
-//                    broadCastData();
-//                    return;
-//                }
-//                if(sb.toString().startsWith("GDCURRENT") && sb.toString().endsWith(";")){
-//                    broadCastData();
-//                    return;
-//                }
-//                if(sb.toString().endsWith("ERROR")){
-//                    //广播错误数据
-//                    broadCastError();
-//                    return;
-//                }
+//            //每接收一条数据就回执
+//            if(!isTotalSend){
+//                broadcastUpdate(ACTION_DATA_AVAILABLE2, data);
+//                handler.postDelayed(runnable,70);
 //                return;
-//            }
-
-//            if(sb.length()>0){
-//                sb.append(data);
-//                if(sb.toString().endsWith(">OK")){
-//                    broadCastData();
-//                    return;
-//                }
-//                if(sb.toString().startsWith("GDCURRENT") && sb.toString().endsWith(";")){
-//                    broadCastData();
-//                    return;
-//                }
-//                if(sb.toString().endsWith("ERROR")){
-//                    //广播错误数据
-//                    broadCastError();
-//                    return;
-//                }
 //            }
         }
     };
@@ -522,7 +494,7 @@ public class BleService extends Service implements Serializable{
         //关闭超时计时器
         stopTimeOut();
         broadcastUpdate(ACTION_DATA_AVAILABLE, sb.toString());
-        sb=new StringBuffer();
+        sb.delete(0,sb.length());
     }
 
 
@@ -554,7 +526,7 @@ public class BleService extends Service implements Serializable{
         //关闭超时计时器
         stopTimeOut();
         broadcastUpdate(ACTION_GET_DATA_ERROR);
-        sb=new StringBuffer();
+        sb.delete(0,sb.length());
     }
 
 

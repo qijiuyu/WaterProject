@@ -403,7 +403,7 @@ public class SendBleStr {
             ToastUtil.showLong("读取的时间段有误");
             return;
         }
-        RED_DEVICE_DATA_BY_TIME="GDRECORDC"+startTime.substring(2,startTime.length())+","+endTime.substring(2,endTime.length());
+        RED_DEVICE_DATA_BY_TIME="GDRECORDA"+startTime.substring(2,startTime.length())+","+endTime.substring(2,endTime.length());
     }
 
 
@@ -438,135 +438,135 @@ public class SendBleStr {
         switch (status){
             //读取设备版本号
             case BleContant.RED_DEVICE_VERSION:
-                SendBleDataManager.getInstance().sendData(RED_VERSION,true);
+                SendBleDataManager.getInstance().sendData(RED_VERSION,true,1);
                 break;
             //读取统一编码，SIM卡号
             case BleContant.SEND_GET_CODE_PHONE:
-                 SendBleDataManager.getInstance().sendData(GET_CODE_PHONE,true);
+                 SendBleDataManager.getInstance().sendData(GET_CODE_PHONE,true,1);
                  break;
             //读取探头埋深
             case BleContant.SEND_GET_TANTOU:
-                 SendBleDataManager.getInstance().sendData(GET_TANTOU,true);
+                 SendBleDataManager.getInstance().sendData(GET_TANTOU,true,1);
                  break;
             //读取采集频率
             case BleContant.SEND_CAI_JI_PIN_LU:
-                 SendBleDataManager.getInstance().sendData(GET_CAI_JI_PIN_LU,true);
+                 SendBleDataManager.getInstance().sendData(GET_CAI_JI_PIN_LU,true,1);
                  break;
             //读取发送频率
             case BleContant.SEND_FA_SONG_PIN_LU:
-                 SendBleDataManager.getInstance().sendData(GET_FA_SONG_PIN_LU,true);
+                 SendBleDataManager.getInstance().sendData(GET_FA_SONG_PIN_LU,true,1);
                  break;
             //设置统一编码，SIM卡号
             case BleContant.SET_CODE_PHONE:
-                 SendBleDataManager.getInstance().sendData(SET_CODE_PHONE,true);
+                 SendBleDataManager.getInstance().sendData(SET_CODE_PHONE,true,1);
                  break;
             //设置探头埋深
             case BleContant.SET_TANTOU:
-                 SendBleDataManager.getInstance().sendData(SET_TANTOU,true);
+                 SendBleDataManager.getInstance().sendData(SET_TANTOU,true,1);
                  break;
             //设置采集频率
             case BleContant.SET_CAI_JI_PIN_LU:
-                 SendBleDataManager.getInstance().sendData(SET_CAI_JI_PIN_LU,true);
+                 SendBleDataManager.getInstance().sendData(SET_CAI_JI_PIN_LU,true,1);
                  break;
              //设置发送频率
             case BleContant.SET_FA_SONG:
-                 SendBleDataManager.getInstance().sendData(SET_FA_SONG_PIN_LU,true);
+                 SendBleDataManager.getInstance().sendData(SET_FA_SONG_PIN_LU,true,1);
                  break;
             //设置误差数据
             case BleContant.SET_DATA_CHECK:
-                 SendBleDataManager.getInstance().sendData(SET_DATA_CHECK,true);
+                 SendBleDataManager.getInstance().sendData(SET_DATA_CHECK,true,1);
                  break;
             //查询实时数据
             case BleContant.SEND_REAL_TIME_DATA:
-                 SendBleDataManager.getInstance().sendData(SEND_REAL_TIME_DATA,true);
+                 SendBleDataManager.getInstance().sendData(SEND_REAL_TIME_DATA,true,1);
                  break;
             //设置网络数据
             case BleContant.SET_IP_PORT:
-                 SendBleDataManager.getInstance().sendData(SET_IP_PORT,true);
+                 SendBleDataManager.getInstance().sendData(SET_IP_PORT,true,1);
                  break;
             //校测前先读取水位偏移量
             case BleContant.SEND_CHECK_ERROR:
-                 SendBleDataManager.getInstance().sendData(SEND_CHECK_ERROR,true);
+                 SendBleDataManager.getInstance().sendData(SEND_CHECK_ERROR,true,1);
                  break;
             //校测前先读取水温偏移量
             case BleContant.RED_SHUI_WEN_PYL:
-                  SendBleDataManager.getInstance().sendData(RED_SHUI_WEN_PYL,true);
+                  SendBleDataManager.getInstance().sendData(RED_SHUI_WEN_PYL,true,1);
                   break;
             //设置水温误差数据
             case BleContant.SEND_DATA_SHUI_WEN:
-                  SendBleDataManager.getInstance().sendData(SEND_DATA_SHUI_WEN,true);
+                  SendBleDataManager.getInstance().sendData(SEND_DATA_SHUI_WEN,true,1);
                   break;
             //校测前先读取电导率偏移量
             case BleContant.RED_DIAN_DAO_LV_PYL:
-                  SendBleDataManager.getInstance().sendData(RED_DIAN_DAO_LV_PYL,true);
+                  SendBleDataManager.getInstance().sendData(RED_DIAN_DAO_LV_PYL,true,1);
                   break;
             //设置水温电导率数据
             case BleContant.SEND_DATA_DIAN_DAO_LV:
-                 SendBleDataManager.getInstance().sendData(SEND_DATA_DIAN_DAO_LV,true);
+                 SendBleDataManager.getInstance().sendData(SEND_DATA_DIAN_DAO_LV,true,1);
                  break;
             //读取设备记录
             case BleContant.RED_DEVICE_RECOFD:
-                  SendBleDataManager.getInstance().sendData(RED_DEVOCE_RECORD,true);
+                  SendBleDataManager.getInstance().sendData(RED_DEVOCE_RECORD,true,1);
                   break;
             //新设备读取统一编码
             case BleContant.RED_NEW_GET_CODE:
-                  SendBleDataManager.getInstance().sendData(RED_NEW_GET_CODE,true);
+                  SendBleDataManager.getInstance().sendData(RED_NEW_GET_CODE,true,1);
                   break;
             //发送数据菜单：发送数据
             case BleContant.MENU_SEND_DATA:
-                  SendBleDataManager.getInstance().sendData(MENU_SEND_DATA,true);
+                  SendBleDataManager.getInstance().sendData(MENU_SEND_DATA,true,1);
                   break;
             //设置设备时间
             case BleContant.SEND_DEVICE_TIME:
-                  SendBleDataManager.getInstance().sendData(SET_DEVICE_TIME,true);
+                  SendBleDataManager.getInstance().sendData(SET_DEVICE_TIME,true,1);
                   break;
             //读取设备的时间
             case BleContant.RED_DEVICE_TIME:
-                  SendBleDataManager.getInstance().sendData(RED_DEVICE_TIME,true);
+                  SendBleDataManager.getInstance().sendData(RED_DEVICE_TIME,true,1);
                   break;
             //读取原始设备数据记录信息指令
             case BleContant.COPY_DEVICE_DATA:
-                  SendBleDataManager.getInstance().sendData(COPY_DEVICE_DATA,true);
+                  SendBleDataManager.getInstance().sendData(COPY_DEVICE_DATA,true,1);
                   break;
             //读取设备的统一编码
             case BleContant.COPY_DEVICE_ID:
-                  SendBleDataManager.getInstance().sendData(COPY_DEVICE_ID,true);
+                  SendBleDataManager.getInstance().sendData(COPY_DEVICE_ID,true,1);
                   break;
             //根据时间段读取设备里面的数据
             case BleContant.RED_DEVICE_DATA_BY_TIME:
-                  SendBleDataManager.getInstance().sendData(RED_DEVICE_DATA_BY_TIME,true);
+                  SendBleDataManager.getInstance().sendData(RED_DEVICE_DATA_BY_TIME,true,2);
                   break;
             //蓝牙APP启动拷贝数据记录命令
             case BleContant.WRITE_NEW_DEVICE_CMD:
-                  SendBleDataManager.getInstance().sendData(WRITE_NEW_DEVICE_CMD,true);
+                  SendBleDataManager.getInstance().sendData(WRITE_NEW_DEVICE_CMD,true,1);
                   break;
             //给新设备写入时间数据
             case BleContant.WIRTE_NEW_DEVICE_TIME:
-                  SendBleDataManager.getInstance().sendData(WIRTE_NEW_DEVICE_TIME,true);
+                  SendBleDataManager.getInstance().sendData(WIRTE_NEW_DEVICE_TIME,true,1);
                   break;
             //给新设备写入统一编码数据
             case BleContant.WIRTE_NEW_DEVICE_CODE:
-                  SendBleDataManager.getInstance().sendData(WIRTE_NEW_DEVICE_CODE,true);
+                  SendBleDataManager.getInstance().sendData(WIRTE_NEW_DEVICE_CODE,true,1);
                   break;
             //给新设备写入大量数据
             case BleContant.WRITE_NEW_DEVICE_LONG_DATA:
-                  SendBleDataManager.getInstance().sendData(WRITE_NEW_DEVICE_LONG_DATA,true);
+                  SendBleDataManager.getInstance().sendData(WRITE_NEW_DEVICE_LONG_DATA,true,1);
                   break;
             //设置北斗的中心号码
             case BleContant.SET_CENTER_MOBILE:
-                 SendBleDataManager.getInstance().sendData(SET_CENTER_MOBILE,true);
+                 SendBleDataManager.getInstance().sendData(SET_CENTER_MOBILE,true,1);
                   break;
             //获取设备型号
             case BleContant.GET_DEVICE_MODEL:
-                  SendBleDataManager.getInstance().sendData(GET_DEVICE_MODEL,true);
+                  SendBleDataManager.getInstance().sendData(GET_DEVICE_MODEL,true,1);
                   break;
             //让设备通过北斗方式发送实时数据
             case BleContant.BEI_DOU_FANG_SHI_SEND_DATA:
-                  SendBleDataManager.getInstance().sendData(BEI_DOU_FANG_SHI_SEND_DATA,true);
+                  SendBleDataManager.getInstance().sendData(BEI_DOU_FANG_SHI_SEND_DATA,true,1);
                   break;
             //读取设备北斗信号强度
             case BleContant.RED_BEI_DOU_XIN_HAO_QIANG_DU:
-                  SendBleDataManager.getInstance().sendData(RED_BEI_DOU_XIN_HAO_QIANG_DU,true);
+                  SendBleDataManager.getInstance().sendData(RED_BEI_DOU_XIN_HAO_QIANG_DU,true,1);
                   break;
              default:
                  break;

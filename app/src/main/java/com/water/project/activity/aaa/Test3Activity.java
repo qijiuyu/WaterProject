@@ -114,7 +114,11 @@ public class Test3Activity extends BaseActivity {
                         bleService.scanDevice("ZKGDBluetooth");
                     }else{
                         DialogUtils.showProgress(Test3Activity.this,"发送命令中...");
-                        SendBleDataManager.getInstance().sendData(cmd,true);
+                        if(cmd.startsWith("GDRECORDA")){
+                            SendBleDataManager.getInstance().sendData(cmd,true,2);
+                        }else{
+                            SendBleDataManager.getInstance().sendData(cmd,true,1);
+                        }
                     }
                 }
                 break;
@@ -170,7 +174,7 @@ public class Test3Activity extends BaseActivity {
                 //扫描不到指定蓝牙设备
                 case BleService.ACTION_NO_DISCOVERY_BLE:
                     DialogUtils.closeProgress();
-                    dialogView = new DialogView(mContext, "扫描不到该蓝牙设备，请靠近设备再进行扫描！", "重新扫描","取消", new View.OnClickListener() {
+                    dialogView = new DialogView(Test3Activity.this, "扫描不到该蓝牙设备，请靠近设备再进行扫描！", "重新扫描","取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
                             DialogUtils.showProgress(Test3Activity.this,"扫描并连接蓝牙设备...");
@@ -182,7 +186,7 @@ public class Test3Activity extends BaseActivity {
                 //蓝牙断开连接
                 case BleService.ACTION_GATT_DISCONNECTED:
                     DialogUtils.closeProgress();
-                    dialogView = new DialogView(mContext, "蓝牙连接断开，请靠近设备进行连接!","重新连接", "取消", new View.OnClickListener() {
+                    dialogView = new DialogView(Test3Activity.this, "蓝牙连接断开，请靠近设备进行连接!","重新连接", "取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
                             DialogUtils.showProgress(Test3Activity.this,"扫描并连接蓝牙设备...");
@@ -194,7 +198,11 @@ public class Test3Activity extends BaseActivity {
                 //初始化通道成功
                 case BleService.ACTION_ENABLE_NOTIFICATION_SUCCES:
                     DialogUtils.showProgress(Test3Activity.this,"发送命令中...");
-                    SendBleDataManager.getInstance().sendData(cmd,true);
+                    if(cmd.startsWith("GDRECORDA")){
+                        SendBleDataManager.getInstance().sendData(cmd,true,2);
+                    }else{
+                        SendBleDataManager.getInstance().sendData(cmd,true,1);
+                    }
                     break;
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
@@ -204,7 +212,7 @@ public class Test3Activity extends BaseActivity {
                     break;
                 case BleService.ACTION_INTERACTION_TIMEOUT:
                     DialogUtils.closeProgress();
-                    dialogView = new DialogView(mContext, "接收数据超时！", "确定",null, new View.OnClickListener() {
+                    dialogView = new DialogView(Test3Activity.this, "接收数据超时！", "确定",null, new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
                         }
@@ -213,11 +221,15 @@ public class Test3Activity extends BaseActivity {
                     break;
                 case BleService.ACTION_SEND_DATA_FAIL:
                     DialogUtils.closeProgress();
-                    dialogView = new DialogView(mContext, "下发命令失败！", "重试","取消", new View.OnClickListener() {
+                    dialogView = new DialogView(Test3Activity.this, "下发命令失败！", "重试","取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
                             DialogUtils.showProgress(Test3Activity.this,"发送命令中...");
-                            SendBleDataManager.getInstance().sendData(cmd,true);
+                            if(cmd.startsWith("GDRECORDA")){
+                                SendBleDataManager.getInstance().sendData(cmd,true,2);
+                            }else{
+                                SendBleDataManager.getInstance().sendData(cmd,true,1);
+                            }
                         }
                     }, null);
                     dialogView.show();
