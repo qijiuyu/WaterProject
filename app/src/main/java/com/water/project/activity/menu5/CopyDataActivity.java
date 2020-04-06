@@ -55,14 +55,14 @@ public class CopyDataActivity extends BaseActivity {
     private Handler handler=new Handler();
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_copy_data);
-        ButterKnife.bind(this);
-        //注册EventBus
-        EventBus.getDefault().register(this);
-        tvHead.setText("数据记录拷贝");
-
-        //注册广播
-        register();
+//        setContentView(R.layout.activity_copy_data);
+//        ButterKnife.bind(this);
+//        //注册EventBus
+//        EventBus.getDefault().register(this);
+//        tvHead.setText("数据记录拷贝");
+//
+//        //注册广播
+//        register();
     }
 
     @OnClick({R.id.lin_back, R.id.tv_red, R.id.tv_wirte})

@@ -226,7 +226,7 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
      * 展示数据
      */
     private void showData(String msg){
-//        BuglyUtils.uploadBleMsg("实时数据界面读取的数据是："+msg);
+        BuglyUtils.uploadBleMsg("实时数据界面读取的数据是："+msg);
 
         final int length=msg.length();
         //显示采集时间
@@ -310,7 +310,7 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
             }
         }
         if(length==133){
-            QiYa=msg.substring(33,40).replace("B","");
+            QiYa=msg.substring(103,110).replace("B","");
         }
         if(YaLi.contains("99999999")){
             tvQiYa.setText(QiYa+"");
@@ -423,7 +423,7 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
             if(length==133){
                 DianDaoLv=msg.substring(40,50).replace("C","");
             }
-            tvDianDaoLv.setText(Util.setDouble(Double.parseDouble(DianDaoLv),2)+"uS/cm");
+            tvDianDaoLv.setText(DianDaoLv+"uS/cm");
         }
 
 

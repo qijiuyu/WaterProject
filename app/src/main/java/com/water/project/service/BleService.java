@@ -296,6 +296,7 @@ public class BleService extends Service implements Serializable{
         this.isTotalSend=isTotalSend;
         this.receiveType=receiveType;
         boolean isSuccess=true;
+        sb.delete(0,sb.length());
         try {
             BluetoothGattService RxService = mBluetoothGatt.getService(RX_SERVICE_UUID);
             if (RxService == null) {

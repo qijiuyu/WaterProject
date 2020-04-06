@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.water.project.R;
 import com.water.project.activity.menu3.SetSIMActivity;
 import com.water.project.activity.menu6.BActivity;
+import com.water.project.activity.menu6.GActivity;
 import com.water.project.activity.menu6.SendDataActivity;
 import com.water.project.activity.new_version.New_SettingActivity;
 import com.water.project.adapter.MainMenuAdapter;
@@ -108,7 +109,7 @@ public class MainActivity extends BaseActivity{
                         setClass(GetRecordActivity.class);
                         break;
                     case "发送数据":
-                        setClass(SendDataActivity.class);
+                        setClass(GActivity.class);
                         break;
                     default:
                         break;
