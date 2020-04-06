@@ -20,6 +20,7 @@ import com.water.project.presenter.CopyDataPersenter;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.DialogUtils;
+import com.water.project.utils.FileUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ToastUtil;
 import com.water.project.utils.ble.BleContant;
@@ -320,6 +321,20 @@ public class CopyDataActivity extends BaseActivity {
                     break;
             }
         }
+    }
+
+
+    /**
+     * 将读取的数据存储在本地
+     */
+    public void saveSDCard(){
+        String filePath = FileUtils.createFile(red2, red1+"\n\n\n\n"+red2+"\n\n\n\n"+red3);
+        dialogView = new DialogView(dialogView,CopyDataActivity.this, "读取的数据.txt文件已创建成功，目录是：" + filePath, "确定", null, new View.OnClickListener() {
+            public void onClick(View v) {
+                dialogView.dismiss();
+            }
+        }, null);
+        dialogView.show();
     }
 
 

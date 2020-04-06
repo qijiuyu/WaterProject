@@ -434,7 +434,10 @@ public class SendBleStr {
         return str;
     }
 
+
+    public static int bleCmdStatus;
     public static void sendBleData(int status){
+        bleCmdStatus=status;
         switch (status){
             //读取设备版本号
             case BleContant.RED_DEVICE_VERSION:

@@ -201,9 +201,13 @@ public class CopyDataPersenter {
         tvComplete.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 dialog.dismiss();
+
+                //将读取的数据存储在本地
+                activity.saveSDCard();
             }
         });
     }
+
 
 
     /**
@@ -243,7 +247,7 @@ public class CopyDataPersenter {
             }
         }
 
-        if(red3.indexOf(writeEndTime)==-1 || writeArray.get(writeArray.size()-1).startsWith(writeEndTime)){
+        if(writeNum<=20){
             stringBuilder.append("3E4F4B");
         }
 

@@ -29,6 +29,7 @@ import com.water.project.application.MyApplication;
 import com.water.project.bean.Menu;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
+import com.water.project.utils.FileUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.ble.SendBleDataManager;
 
@@ -58,6 +59,7 @@ public class MainActivity extends BaseActivity{
     //存储菜单
     private List<Menu> menuList = new ArrayList<>();
     private MainMenuAdapter mainMenuAdapter;
+    private String str="1122334455";
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -73,7 +75,6 @@ public class MainActivity extends BaseActivity{
         deleteCache();
         initService();//注册蓝牙服务
         setPush();
-
     }
 
 

@@ -21,7 +21,9 @@ import com.water.project.bean.Ble;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ToastUtil;
+import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.ByteStringHexUtil;
+import com.water.project.utils.ble.SendBleStr;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -311,7 +313,14 @@ public class BleService extends Service implements Serializable{
 
             //循环发送数据
             for (int i=0,len=list.size();i<len;i++){
-                   RxChar.setValue(list.get(i).getBytes());
+                
+                   if(SendBleStr.bleCmdStatus== BleContant.WRITE_NEW_DEVICE_LONG_DATA){
+                       //将16进制字符串转换为16进制的byte数组
+                       RxChar.setValue(ByteStringHexUtil.hexStringToByte(list.get(i)));
+                   }else{
+                       RxChar.setValue(list.get(i).getBytes());
+                   }
+
                   //下发命令
                   boolean b=mBluetoothGatt.writeCharacteristic(RxChar);
                   if(!b){

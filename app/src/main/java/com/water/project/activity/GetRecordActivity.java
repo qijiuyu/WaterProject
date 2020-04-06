@@ -166,7 +166,6 @@ public class GetRecordActivity extends BaseActivity {
                     int secound = calendar.get(Calendar.SECOND);
                     final String fileName = data.substring(9, 24) + "_" + intYear + intMonth + intDay + intHour + intMinute + secound + ".txt";
                     String filePath = FileUtils.createFile(fileName, data);
-                    DialogUtils.closeProgress();
                     dialogView = new DialogView(mContext, "数据.txt文件已创建成功，目录是：" + filePath, "确定", null, new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
