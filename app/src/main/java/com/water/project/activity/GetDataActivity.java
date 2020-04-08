@@ -262,7 +262,7 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
             YaLi=msg.substring(57,66).replace("P","");
         }
         if(length==133){
-            YaLi=msg.substring(74,83).replace("P","");
+            YaLi=msg.substring(93,103).replace("P","");
         }
 
         if(YaLi.contains("99999999")){

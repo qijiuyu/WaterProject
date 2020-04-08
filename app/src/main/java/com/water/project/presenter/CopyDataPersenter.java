@@ -232,7 +232,7 @@ public class CopyDataPersenter {
         //计算并组装数据
         StringBuilder stringBuilder=new StringBuilder();
         if(writeArray.get(0).startsWith(writeStartTime)){
-            stringBuilder.append("GDRECORDC");
+            stringBuilder.append("47445245434F524441");
         }
 
         for (int i=0,len=writeArray.size();i<len;i++){

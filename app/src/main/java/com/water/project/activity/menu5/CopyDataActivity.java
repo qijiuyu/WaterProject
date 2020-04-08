@@ -56,14 +56,14 @@ public class CopyDataActivity extends BaseActivity {
     private Handler handler=new Handler();
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_copy_data);
-//        ButterKnife.bind(this);
-//        //注册EventBus
-//        EventBus.getDefault().register(this);
-//        tvHead.setText("数据记录拷贝");
-//
-//        //注册广播
-//        register();
+        setContentView(R.layout.activity_copy_data);
+        ButterKnife.bind(this);
+        //注册EventBus
+        EventBus.getDefault().register(this);
+        tvHead.setText("数据记录拷贝");
+
+        //注册广播
+        register();
     }
 
     @OnClick({R.id.lin_back, R.id.tv_red, R.id.tv_wirte})
@@ -112,9 +112,9 @@ public class CopyDataActivity extends BaseActivity {
                     DialogUtils.showProgress(CopyDataActivity.this, "读取原始设备的统一编码");
                     break;
                 case BleContant.RED_DEVICE_DATA_BY_TIME:
-                     DialogUtils.closeProgress();
                      handler.post(new Runnable() {
                          public void run() {
+                             DialogUtils.closeProgress();
                              copyDataPersenter.showTripDialog(red3.toString());
                          }
                      });
@@ -137,9 +137,9 @@ public class CopyDataActivity extends BaseActivity {
                       DialogUtils.showProgress(CopyDataActivity.this, "设备读取蓝牙APP 原始设备的统一编码");
                       break;
                 case BleContant.WRITE_NEW_DEVICE_LONG_DATA:
-                     DialogUtils.closeProgress();
                      handler.post(new Runnable() {
                         public void run() {
+                            DialogUtils.closeProgress();
                             copyDataPersenter.showCopyDialog();
                         }
                     });
@@ -298,7 +298,7 @@ public class CopyDataActivity extends BaseActivity {
                       }
                       break;
                 case BleContant.WIRTE_NEW_DEVICE_CODE:
-                      if(data.startsWith("GDRECORDC")){
+                      if(data.startsWith("GDRECORDA")){
                           copyDataPersenter.setWriteData(red3.toString(),data);
                           sendData(BleContant.WRITE_NEW_DEVICE_LONG_DATA);
                       }
