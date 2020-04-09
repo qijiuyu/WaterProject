@@ -37,7 +37,7 @@ public class SendBleDataManager {
      *
      * @param data  发送的蓝牙命令
      */
-    public void sendData(final String data, final boolean isTotalSend, final int receiveType) {
+    public void sendData(final String data) {
         if (mService == null || mService.getConnectionState() == BleService.STATE_DISCONNECTED) {
             ToastUtil.showLong("蓝牙没有连接成功，不能发送数据");
             return;
@@ -52,7 +52,7 @@ public class SendBleDataManager {
                 //将字符串进行200字节的截取
                 final List<String> sendList= BleUtils.getSendData(data,200);
                 //下发蓝牙命令
-                boolean b = mService.writeRXCharacteristic(sendList,isTotalSend,receiveType);
+                boolean b = mService.writeRXCharacteristic(sendList);
                 if (!b) {
                     mService.stopTimeOut();
                     Intent intent = new Intent(mService.ACTION_SEND_DATA_FAIL);

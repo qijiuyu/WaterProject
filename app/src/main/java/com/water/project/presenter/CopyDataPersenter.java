@@ -16,10 +16,12 @@ import com.water.project.bean.Ble;
 import com.water.project.bean.eventbus.EventStatus;
 import com.water.project.bean.eventbus.EventType;
 import com.water.project.utils.BleUtils;
+import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ToastUtil;
+import com.water.project.utils.ble.ByteUtil;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
 import com.water.project.view.LinearGradientTextView;
@@ -99,12 +101,20 @@ public class CopyDataPersenter {
      */
     private long sLong,eLong;
     private String[] strings=null;
+    public StringBuffer stringBuffer=new StringBuffer();
     public boolean setRed3Cmd(String red1){
         try {
             if(strings==null){
                 strings=red1.split(",");
                 strings[1]="20"+strings[1].substring(0,strings[1].length()-2);
                 strings[2]="20"+strings[2].substring(0,strings[2].length()-2);
+
+                //间隔分钟
+                minutes=Integer.parseInt(strings[3]);
+                //获取总条数
+                totalNum=getGapMinutes(strings[1],strings[2])/minutes;
+
+                BuglyUtils.uploadBleMsg("获取到的总时间差："+strings[1]+"__________"+strings[2]+"__________"+minutes+"________"+totalNum);
             }
 
             //已经读取完毕
@@ -112,10 +122,6 @@ public class CopyDataPersenter {
                 return false;
             }
 
-            //间隔分钟
-            minutes=Integer.parseInt(strings[3]);
-            //获取总条数
-            totalNum=getGapMinutes(strings[1],strings[2])/minutes;
 
             //这是第一次读
             if(TextUtils.isEmpty(redStart)){
@@ -137,6 +143,8 @@ public class CopyDataPersenter {
 
             //设置根据时间段读取设备里面的数据
             SendBleStr.redDeviceByTime(redStart,redEnd);
+
+            stringBuffer.append(SendBleStr.RED_DEVICE_DATA_BY_TIME+"\n\n");
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -150,8 +158,6 @@ public class CopyDataPersenter {
     private TextView tvContent;
     private NumberFormat numberFormat = NumberFormat.getInstance();
     public void showTripDialog(String red3){
-        //去掉数据的开头与结尾
-        red3=red3.replace("47445245434F524441","").replace("3E4F4B","");
         //已读取了几条
         int newNum= BleUtils.getSendData(red3,256).size();
 
@@ -183,8 +189,6 @@ public class CopyDataPersenter {
             redDialog.dismiss();
             redDialog=null;
         }
-        //去掉数据的开头与结尾
-        red3=red3.replace("47445245434F524441","").replace("3E4F4B","");
         //已读取了几条
         int newNum= BleUtils.getSendData(red3,256).size();
         String startTime=strings[1].substring(0, 4)+"年"+strings[1].substring(4,6)+"月"+strings[1].substring(6,8)+"日"+strings[1].substring(8,10)+"时"+strings[1].substring(10,12)+"分";
@@ -219,8 +223,6 @@ public class CopyDataPersenter {
     private int writeNum=0;
     public boolean setWriteData(String red3,String cmd){
         if(writeArray==null){
-            //去掉数据的开头与结尾
-            red3=red3.replace("47445245434F524441","").replace("3E4F4B","");
             writeArray=BleUtils.getSendData(red3,256);
         }
 
@@ -231,9 +233,6 @@ public class CopyDataPersenter {
 
         //计算并组装数据
         StringBuilder stringBuilder=new StringBuilder();
-        if(writeArray.get(0).startsWith(writeStartTime)){
-            stringBuilder.append("47445245434F524441");
-        }
 
         for (int i=0,len=writeArray.size();i<len;i++){
              String item=writeArray.get(i).substring(0,10);
@@ -247,12 +246,12 @@ public class CopyDataPersenter {
             }
         }
 
-        if(writeNum<=20){
-            stringBuilder.append("3E4F4B");
-        }
+        String head="47445245434F524441";   //头部命令
+        String total= ByteUtil.cumulative(stringBuilder.toString());  //16进制累加总和
+        String end="3E4F4B";       //结尾命令
 
         //设置给新设备写入大量数据
-        SendBleStr.WRITE_NEW_DEVICE_LONG_DATA=stringBuilder.toString();
+        SendBleStr.WRITE_NEW_DEVICE_LONG_DATA=head+stringBuilder.toString()+total+end;
         return true;
     }
 

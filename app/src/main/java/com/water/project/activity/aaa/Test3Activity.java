@@ -115,9 +115,9 @@ public class Test3Activity extends BaseActivity {
                     }else{
                         DialogUtils.showProgress(Test3Activity.this,"发送命令中...");
                         if(cmd.startsWith("GDRECORDA")){
-                            SendBleDataManager.getInstance().sendData(cmd,true,2);
+                            SendBleDataManager.getInstance().sendData(cmd);
                         }else{
-                            SendBleDataManager.getInstance().sendData(cmd,true,1);
+                            SendBleDataManager.getInstance().sendData(cmd);
                         }
                     }
                 }
@@ -199,9 +199,9 @@ public class Test3Activity extends BaseActivity {
                 case BleService.ACTION_ENABLE_NOTIFICATION_SUCCES:
                     DialogUtils.showProgress(Test3Activity.this,"发送命令中...");
                     if(cmd.startsWith("GDRECORDA")){
-                        SendBleDataManager.getInstance().sendData(cmd,true,2);
+                        SendBleDataManager.getInstance().sendData(cmd);
                     }else{
-                        SendBleDataManager.getInstance().sendData(cmd,true,1);
+                        SendBleDataManager.getInstance().sendData(cmd);
                     }
                     break;
                 //接收到了回执的数据
@@ -226,9 +226,9 @@ public class Test3Activity extends BaseActivity {
                             dialogView.dismiss();
                             DialogUtils.showProgress(Test3Activity.this,"发送命令中...");
                             if(cmd.startsWith("GDRECORDA")){
-                                SendBleDataManager.getInstance().sendData(cmd,true,2);
+                                SendBleDataManager.getInstance().sendData(cmd);
                             }else{
-                                SendBleDataManager.getInstance().sendData(cmd,true,1);
+                                SendBleDataManager.getInstance().sendData(cmd);
                             }
                         }
                     }, null);

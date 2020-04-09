@@ -84,7 +84,7 @@ public class CopyDataActivity extends BaseActivity {
             case R.id.tv_wirte:
                 type=2;
                 bleName="ZKGDBluetooth";
-                sendData(BleContant.WRITE_NEW_DEVICE_CMD);
+//                sendData(BleContant.WRITE_NEW_DEVICE_CMD);
                 break;
             default:
                 break;
@@ -178,7 +178,7 @@ public class CopyDataActivity extends BaseActivity {
                     break;
                 //蓝牙断开连接
                 case BleService.ACTION_GATT_DISCONNECTED:
-                    copyDataPersenter.bleDisConnect();
+//                    copyDataPersenter.bleDisConnect();
                     break;
                 //初始化通道成功
                 case BleService.ACTION_ENABLE_NOTIFICATION_SUCCES:
@@ -263,7 +263,7 @@ public class CopyDataActivity extends BaseActivity {
                       break;
                 //读取设备数据结束了
                 case BleContant.RED_DEVICE_DATA_BY_TIME:
-                     red3.append(data);
+                     red3.append(data.substring(18,data.length()-8));
                      boolean b=copyDataPersenter.setRed3Cmd(red1);
                      if(b){
                          sendData(BleContant.RED_DEVICE_DATA_BY_TIME);
@@ -272,6 +272,9 @@ public class CopyDataActivity extends BaseActivity {
                          MainActivity.bleService.disconnect();
                          ToastUtil.showLong("蓝牙连接断开！");
                          copyDataPersenter.showRedComplete(red3.toString());
+
+                         //存储读取数据多命令
+                         FileUtils.createFile("aaaaa.txt", copyDataPersenter.stringBuffer.toString());
                      }
                       break;
                 default:
@@ -328,7 +331,7 @@ public class CopyDataActivity extends BaseActivity {
      * 将读取的数据存储在本地
      */
     public void saveSDCard(){
-        String filePath = FileUtils.createFile(red2, red1+"\n\n\n\n"+red2+"\n\n\n\n"+red3);
+        String filePath = FileUtils.createFile(red2+".txt", red1+"\n\n\n\n"+red2+"\n\n\n\n"+red3);
         dialogView = new DialogView(dialogView,CopyDataActivity.this, "读取的数据.txt文件已创建成功，目录是：" + filePath, "确定", null, new View.OnClickListener() {
             public void onClick(View v) {
                 dialogView.dismiss();

@@ -193,7 +193,7 @@ public class Test2Activity extends BaseActivity {
                 //初始化通道成功
                 case BleService.ACTION_ENABLE_NOTIFICATION_SUCCES:
                     DialogUtils.showProgress(Test2Activity.this,"发送命令中...");
-                    SendBleDataManager.getInstance().sendData("GDBLEGPRSSENDDATA",true,1);
+                    SendBleDataManager.getInstance().sendData("GDBLEGPRSSENDDATA");
                     break;
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
@@ -219,7 +219,7 @@ public class Test2Activity extends BaseActivity {
                             dialogView.dismiss();
                             isSend=false;
                             DialogUtils.showProgress(Test2Activity.this,"发送命令中...");
-                            SendBleDataManager.getInstance().sendData("GDBLEGPRSSENDDATA",true,1);
+                            SendBleDataManager.getInstance().sendData("GDBLEGPRSSENDDATA");
                         }
                     }, null);
                     dialogView.show();

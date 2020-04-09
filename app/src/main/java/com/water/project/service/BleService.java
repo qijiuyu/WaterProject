@@ -113,16 +113,6 @@ public class BleService extends Service implements Serializable{
     private StringBuffer sb=new StringBuffer();
     //是否重新连接蓝牙
     private boolean isConnect = true;
-    /**
-     * true：接收完毕后再回执
-     * false：每接收一条就回执
-     */
-    private boolean isTotalSend;
-    /**
-     * 1：接收字符串，
-     * 2：接收byte[]数组
-     */
-    private int receiveType;
 
     public class LocalBinder extends Binder {
         public BleService getService() {
@@ -290,13 +280,9 @@ public class BleService extends Service implements Serializable{
     /**
      *
      * @param list：下发的命令
-     * @param isTotalSend：是否接收完所有数据再回执
-     * @param receiveType：1：接收字符串，   2：接收byte[]数组
      * @return
      */
-    public boolean writeRXCharacteristic(List<String> list,boolean isTotalSend,int receiveType) {
-        this.isTotalSend=isTotalSend;
-        this.receiveType=receiveType;
+    public boolean writeRXCharacteristic(List<String> list) {
         boolean isSuccess=true;
         sb.delete(0,sb.length());
         try {
@@ -447,7 +433,7 @@ public class BleService extends Service implements Serializable{
             }
             handler.removeCallbacks(runnable);
 
-            if(receiveType==2){
+            if(SendBleStr.bleCmdStatus==BleContant.RED_DEVICE_DATA_BY_TIME){
                 byte[] txValue = characteristic.getValue();
                 if(null==txValue){
                     ToastUtil.showLong("byte数组是空的");
@@ -458,19 +444,18 @@ public class BleService extends Service implements Serializable{
                 return;
             }
 
-            if(receiveType==1){
-                String data=characteristic.getStringValue(0);
-                if(data.startsWith("GD")){
-                    sb.append(data);
-                    handler.postDelayed(runnable,70);
-                    return;
-                }
-                if(sb.length()>0){
-                    sb.append(data);
-                    handler.postDelayed(runnable,70);
-                }
-            }
 
+
+            String data=characteristic.getStringValue(0);
+            if(data.startsWith("GD")){
+                sb.append(data);
+                handler.postDelayed(runnable,70);
+                return;
+            }
+            if(sb.length()>0){
+                sb.append(data);
+                handler.postDelayed(runnable,70);
+            }
 
 //            //每接收一条数据就回执
 //            if(!isTotalSend){

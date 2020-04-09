@@ -63,4 +63,30 @@ public class ByteUtil {
     public static int byteToInt(byte hex) {
         return bytesToInt2(new byte[]{0, 0, 0, hex}, 0);
     }
+
+
+    /**
+     * 将16进制的byte数据进行累加
+     * @param data
+     * @return
+     */
+    public static String cumulative(String data){
+        int total = 0;
+        int len = data.length();
+        int num = 0;
+        while (num < len) {
+            String s = data.substring(num, num + 2);
+            total += Integer.parseInt(s, 16);
+            num = num + 2;
+        }
+
+        int mod = total % 256;
+        String hex = Integer.toHexString(mod);
+        len = hex.length();
+        // 如果不够校验位的长度，补0,这里用的是两位校验
+        if (len < 2) {
+            hex = "0" + hex;
+        }
+        return hex;
+    }
 }
