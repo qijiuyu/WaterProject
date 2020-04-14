@@ -18,6 +18,7 @@ import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
+import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ToastUtil;
@@ -311,7 +312,7 @@ public class BleService extends Service implements Serializable{
                   boolean b=mBluetoothGatt.writeCharacteristic(RxChar);
                   if(!b){
                       //延时下发
-                      Thread.sleep(20);
+                      Thread.sleep(10);
                       b=mBluetoothGatt.writeCharacteristic(RxChar);
                   }
                   if(!b){

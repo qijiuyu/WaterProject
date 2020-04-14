@@ -206,6 +206,9 @@ public class FileUtils {
      */
     public static String createFile(String fileName,String message) {
         File file = new File(getSdcardPath() + fileName);
+        if(file.isFile()){
+            file.delete();
+        }
         if (fileName.indexOf(".") != -1) {
             // 说明包含，即使创建文件, 返回值为-1就说明不包含.,即使文件
             try {

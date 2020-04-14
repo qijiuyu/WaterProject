@@ -28,6 +28,9 @@ public class SPUtil {
 
     public final static String CMD_DATA="CMD_DATA";
 
+    //拷贝时的开始时间
+    public final static String COPY_TIME="COPY_TIME";
+
     private static SPUtil sharUtil = null;
 
     @SuppressLint("WrongConstant")

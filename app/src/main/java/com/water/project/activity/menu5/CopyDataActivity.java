@@ -48,6 +48,7 @@ public class CopyDataActivity extends BaseActivity {
     //需要读取的三类数据
     private String red1,red2;
     private StringBuffer red3=new StringBuffer();
+    private StringBuffer saveSD=new StringBuffer();
     //下发命令的编号
     private int SEND_STATUS;
     //蓝牙名称
@@ -75,6 +76,8 @@ public class CopyDataActivity extends BaseActivity {
             //读取数据
             case R.id.tv_red:
                 copyDataPersenter=new CopyDataPersenter(this);
+                red3.delete(0,red3.length());
+                saveSD.delete(0,saveSD.length());
                 type=1;
                 Ble ble = (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE, Ble.class);
                 bleName=ble.getBleName();
@@ -82,9 +85,12 @@ public class CopyDataActivity extends BaseActivity {
                 break;
             //写入数据
             case R.id.tv_wirte:
+                copyDataPersenter.writeArray=null;
+                copyDataPersenter.writeNum=0;
+                SPUtil.getInstance(this).removeMessage(SPUtil.COPY_TIME);
                 type=2;
                 bleName="ZKGDBluetooth";
-//                sendData(BleContant.WRITE_NEW_DEVICE_CMD);
+                sendData(BleContant.WRITE_NEW_DEVICE_CMD);
                 break;
             default:
                 break;
@@ -247,6 +253,10 @@ public class CopyDataActivity extends BaseActivity {
      * 处理设备回执的数据
      * @param data
      */
+    //true：表示读取的命令还没完毕， false：表示读取的命令已发送完全部
+    private boolean redIsSend=true;
+    //true：表示可以重发上条读取的命令
+    private boolean isResumeRed=true;
     private void getDeviceData(String data){
         if(type==1){
             switch (SEND_STATUS){
@@ -258,23 +268,42 @@ public class CopyDataActivity extends BaseActivity {
                 case BleContant.COPY_DEVICE_ID:
                       red2=data;
                       //发送设置根据时间段读取设备里面的数据
-                      copyDataPersenter.setRed3Cmd(red1);
+                      redIsSend=copyDataPersenter.setRed3Cmd(red1);
                       sendData(BleContant.RED_DEVICE_DATA_BY_TIME);
                       break;
                 //读取设备数据结束了
                 case BleContant.RED_DEVICE_DATA_BY_TIME:
-                     red3.append(data.substring(18,data.length()-8));
-                     boolean b=copyDataPersenter.setRed3Cmd(red1);
-                     if(b){
+                     saveSD.append(data);
+                     data=data.substring(18,data.length()-8);
+
+                     //如果长度不够就重新发送
+                     if(data.length()%256!=0){
+                         if(isResumeRed){
+                             isResumeRed=false;
+                             sendData(BleContant.RED_DEVICE_DATA_BY_TIME);
+                         }else{
+                             //关闭读取时的进度框
+                             copyDataPersenter.closeTripDialog();
+                             dialogView = new DialogView(dialogView,CopyDataActivity.this, "读取到的数据长度不是128的倍数","知道了",null, new View.OnClickListener() {
+                                 public void onClick(View v) {
+                                     isResumeRed=true;
+                                     dialogView.dismiss();
+                                 }
+                             }, null);
+                             dialogView.show();
+                         }
+                         return;
+                     }
+                     red3.append(data);
+                     if(redIsSend){
+                         isResumeRed=true;
+                         redIsSend=copyDataPersenter.setRed3Cmd(red1);
                          sendData(BleContant.RED_DEVICE_DATA_BY_TIME);
                      }else{
                          //断开蓝牙连接
                          MainActivity.bleService.disconnect();
                          ToastUtil.showLong("蓝牙连接断开！");
                          copyDataPersenter.showRedComplete(red3.toString());
-
-                         //存储读取数据多命令
-                         FileUtils.createFile("aaaaa.txt", copyDataPersenter.stringBuffer.toString());
                      }
                       break;
                 default:
@@ -331,7 +360,7 @@ public class CopyDataActivity extends BaseActivity {
      * 将读取的数据存储在本地
      */
     public void saveSDCard(){
-        String filePath = FileUtils.createFile(red2+".txt", red1+"\n\n\n\n"+red2+"\n\n\n\n"+red3);
+        String filePath = FileUtils.createFile(red2+".txt", "\n\n\n\n"+red1+"\n\n\n\n"+red2+"\n\n\n\n"+saveSD.toString());
         dialogView = new DialogView(dialogView,CopyDataActivity.this, "读取的数据.txt文件已创建成功，目录是：" + filePath, "确定", null, new View.OnClickListener() {
             public void onClick(View v) {
                 dialogView.dismiss();

@@ -14,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -31,6 +32,7 @@ import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.FileUtils;
 import com.water.project.utils.LogUtils;
+import com.water.project.utils.SPUtil;
 import com.water.project.utils.ble.SendBleDataManager;
 
 import java.util.ArrayList;

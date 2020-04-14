@@ -420,6 +420,8 @@ public class SendBleStr {
         }
         stringBuffer.replace(startIndex,startIndex+endIndex,"CEN"+mobile);
         SET_CENTER_MOBILE=stringBuffer.toString();
+
+        BuglyUtils.uploadBleMsg("设置的北斗中心号码是："+SET_CENTER_MOBILE);
     }
 
 

@@ -304,11 +304,10 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
                     if(SEND_STATUS==BleContant.SEND_GET_CODE_PHONE){
                         if(data.startsWith("GDSETMAS")){
                             //进入设置北斗中心号码的页面
-//                            Intent intent1=new Intent(NetSettingActivity.this, SetSIMActivity.class);
-//                            intent1.putExtra("data",data);
-//                            startActivity(intent);
-//                            finish();
-
+                            Intent intent1=new Intent(NetSettingActivity.this, SetSIMActivity.class);
+                            intent1.putExtra("data",data);
+                            startActivity(intent);
+                            finish();
                         }else{
                             //解析并显示回执的数据
                             showData(data);

@@ -18,6 +18,7 @@ import com.water.project.bean.eventbus.EventType;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.DialogUtils;
+import com.water.project.utils.FileUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ToastUtil;
@@ -55,6 +56,7 @@ public class CopyDataPersenter {
     //读取数据时的弹框
     public Dialog redDialog;
 
+    private Handler handler=new Handler();
     public CopyDataPersenter(CopyDataActivity activity){
         this.activity=activity;
     }
@@ -64,10 +66,7 @@ public class CopyDataPersenter {
      */
     public void resumeScan(){
         DialogUtils.closeProgress();
-        if(null!=dialogView){
-            dialogView.dismiss();
-        }
-        dialogView = new DialogView(activity, "扫描不到该蓝牙设备，请靠近设备再进行扫描！", "重新扫描","取消", new View.OnClickListener() {
+        dialogView = new DialogView(dialogView,activity, "扫描不到该蓝牙设备，请靠近设备再进行扫描！", "重新扫描","取消", new View.OnClickListener() {
             public void onClick(View v) {
                 dialogView.dismiss();
                 EventBus.getDefault().post(new EventType(EventStatus.SEND_CHECK_MCD));
@@ -81,10 +80,7 @@ public class CopyDataPersenter {
      */
     public void bleDisConnect(){
         DialogUtils.closeProgress();
-        if(null!=dialogView){
-            dialogView.dismiss();
-        }
-        dialogView = new DialogView(activity, "蓝牙连接断开，请靠近设备进行连接!","重新连接", "取消", new View.OnClickListener() {
+        dialogView = new DialogView(dialogView,activity, "蓝牙连接断开，请靠近设备进行连接!","重新连接", "取消", new View.OnClickListener() {
             public void onClick(View v) {
                 dialogView.dismiss();
                 EventBus.getDefault().post(new EventType(EventStatus.SEND_CHECK_MCD));
@@ -101,8 +97,8 @@ public class CopyDataPersenter {
      */
     private long sLong,eLong;
     private String[] strings=null;
-    public StringBuffer stringBuffer=new StringBuffer();
     public boolean setRed3Cmd(String red1){
+        boolean isSend=true;
         try {
             if(strings==null){
                 strings=red1.split(",");
@@ -112,16 +108,8 @@ public class CopyDataPersenter {
                 //间隔分钟
                 minutes=Integer.parseInt(strings[3]);
                 //获取总条数
-                totalNum=getGapMinutes(strings[1],strings[2])/minutes;
-
-                BuglyUtils.uploadBleMsg("获取到的总时间差："+strings[1]+"__________"+strings[2]+"__________"+minutes+"________"+totalNum);
+                totalNum=(getGapMinutes(strings[1],strings[2])/minutes)+1;
             }
-
-            //已经读取完毕
-            if (!TextUtils.isEmpty(redEnd) && redEnd.equals(strings[2])){
-                return false;
-            }
-
 
             //这是第一次读
             if(TextUtils.isEmpty(redStart)){
@@ -133,22 +121,22 @@ public class CopyDataPersenter {
             }
             //计算结束时间
             sLong=df.parse(redStart).getTime();
-            eLong=sLong+(20*minutes*60*1000);
+            eLong=sLong+(19*minutes*60*1000);
             //判断是否超过结束时间
             if(eLong<endLong){
                 redEnd=df.format(new Date(eLong));
+                isSend=true;
             }else{
                 redEnd=strings[2];
+                isSend=false;
             }
 
             //设置根据时间段读取设备里面的数据
             SendBleStr.redDeviceByTime(redStart,redEnd);
-
-            stringBuffer.append(SendBleStr.RED_DEVICE_DATA_BY_TIME+"\n\n");
         }catch (Exception e){
             e.printStackTrace();
         }
-        return true;
+        return isSend;
     }
 
 
@@ -182,13 +170,22 @@ public class CopyDataPersenter {
 
 
     /**
-     * 显示读取完成的弹框
+     * 关闭读取时的进度框
      */
-    public void showRedComplete(String red3){
+    public void closeTripDialog(){
         if(redDialog!=null && redDialog.isShowing()){
             redDialog.dismiss();
             redDialog=null;
         }
+    }
+
+    /**
+     * 显示读取完成的弹框
+     */
+    public void showRedComplete(String red3){
+        //关闭读取时的进度框
+        closeTripDialog();
+
         //已读取了几条
         int newNum= BleUtils.getSendData(red3,256).size();
         String startTime=strings[1].substring(0, 4)+"年"+strings[1].substring(4,6)+"月"+strings[1].substring(6,8)+"日"+strings[1].substring(8,10)+"时"+strings[1].substring(10,12)+"分";
@@ -218,12 +215,14 @@ public class CopyDataPersenter {
      * 组装写入新设备的数据
      * @param red3
      */
-    private List<String> writeArray;
+    public List<String> writeArray;
     //已经拷贝了几条了
-    private int writeNum=0;
+    public int writeNum=0;
     public boolean setWriteData(String red3,String cmd){
         if(writeArray==null){
             writeArray=BleUtils.getSendData(red3,256);
+
+            FileUtils.createFile("abcd.txt", red3);
         }
 
         //获取设备回执的开始与结束时间
@@ -233,25 +232,33 @@ public class CopyDataPersenter {
 
         //计算并组装数据
         StringBuilder stringBuilder=new StringBuilder();
-
         for (int i=0,len=writeArray.size();i<len;i++){
              String item=writeArray.get(i).substring(0,10);
              if(Integer.parseInt(item)>=Integer.parseInt(writeStartTime)){
                  stringBuilder.append(writeArray.get(i));
-                 //叠加条数
-                 ++writeNum;
              }
              if(Integer.parseInt(item)==Integer.parseInt(writeEndTime)){
                 break;
             }
         }
 
+        //判断这次的拷贝时间，是否跟上次一样
+        String cacheTime=SPUtil.getInstance(activity).getString(SPUtil.COPY_TIME);
+        if(TextUtils.isEmpty(cacheTime) || !cacheTime.equals(writeStartTime)){
+            SPUtil.getInstance(activity).addString(SPUtil.COPY_TIME,writeStartTime);
+            //叠加条数
+            writeNum=writeNum+(BleUtils.getSendData(stringBuilder.toString(),256).size());
+        }
+
         String head="47445245434F524441";   //头部命令
-        String total= ByteUtil.cumulative(stringBuilder.toString());  //16进制累加总和
+        String total= ByteUtil.cumulative(head+stringBuilder.toString());  //16进制累加总和
         String end="3E4F4B";       //结尾命令
 
         //设置给新设备写入大量数据
         SendBleStr.WRITE_NEW_DEVICE_LONG_DATA=head+stringBuilder.toString()+total+end;
+
+        //保存每次拷贝的数据
+        FileUtils.createFile(writeStartTime+".txt", SendBleStr.WRITE_NEW_DEVICE_LONG_DATA);
         return true;
     }
 
