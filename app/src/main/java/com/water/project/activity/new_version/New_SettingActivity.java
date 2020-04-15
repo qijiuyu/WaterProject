@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
@@ -30,6 +31,7 @@ import com.water.project.presenter.new_device.New_SettingPresenter;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.BuglyUtils;
+import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.Util;
 import com.water.project.utils.ble.BleContant;
@@ -251,23 +253,54 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
                   break;
             //设置探头埋深
             case R.id.tv_setting_two:
+                  final int tag=(int)etTanTou.getTag();
                   final String tantou=etTanTou.getText().toString().trim();
                   final int qIndex=tantou.indexOf(".");
                   final int hIndex=tantou.length()-qIndex-1;
                   etTanTou.setTextColor(getResources().getColor(R.color.color_EC191B));
                   if(TextUtils.isEmpty(tantou)){
                       showToastView("请输入探头埋深！");
-                  }else if(tantou.indexOf(".")==-1 && tantou.length()>4){
-                      showToastView("探头埋深最多只能输入4位整数！");
-                  }else if(qIndex>4){
-                      showToastView("探头埋深的小数点前面最多只能是4位数");
-                  }else if(hIndex>3){
-                      showToastView("探头埋深的小数点后面最多只能是3位数");
-                  }else{
-                      etTanTou.setTextColor(getResources().getColor(R.color.color_1fc37f));
-                      SendBleStr.sendSetTanTou(tantou);
-                      sendData(BleContant.SET_TANTOU,2);
+                      return;
                   }
+                  if(tag==8){
+                      if(tantou.indexOf(".")==-1 && tantou.length()>4){
+                          showToastView("探头埋深最多只能输入4位整数！");
+                          return;
+                      }
+                      if(qIndex>4){
+                          showToastView("探头埋深的小数点前面最多只能是4位数");
+                          return;
+                      }
+                      if(hIndex>3){
+                          showToastView("探头埋深的小数点后面最多只能是3位数");
+                          return;
+                      }
+                      //设置要修改的命令
+                      SendBleStr.sendSetTanTou(tantou);
+                  }
+
+                  if(tag==10){
+                      if(!tantou.startsWith("+") && !tantou.startsWith("-")){
+                          showToastView("请在开头输入+或-符号");
+                          return;
+                      }
+                      if(tantou.indexOf(".")==-1 && tantou.length()>5){
+                          showToastView("探头埋深最多只能输入4位整数！");
+                          return;
+                      }
+                      if(qIndex>5){
+                          showToastView("探头埋深的小数点前面最多只能是4位数");
+                          return;
+                      }
+                      if(tantou.indexOf(".")!=-1 && hIndex>4){
+                          showToastView("探头埋深的小数点后面最多只能是4位数");
+                          return;
+                      }
+                      //设置要修改的命令
+                      SendBleStr.sendSetTanTou2(tantou);
+                  }
+                etTanTou.setTextColor(getResources().getColor(R.color.color_1fc37f));
+                sendData(BleContant.SET_TANTOU,2);
                 break;
             //选择采集时间
             case R.id.et_as_cstime:
@@ -447,8 +480,19 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
                     break;
                 //显示探头埋深
                 case BleContant.SEND_GET_TANTOU:
-                    final String strTanTou=data.replace("GDLINER","");
-                    etTanTou.setText(Util.setDouble(Double.parseDouble(strTanTou),3));
+                     String strTanTou=data.replace("GDLINER","");
+                    //通过判断符号+/-来兼容
+                    if(strTanTou.startsWith("+") || strTanTou.startsWith("-")){
+                        etTanTou.append(strTanTou.substring(0,1));
+                        strTanTou=strTanTou.replace("+","").replace("-","");
+                        etTanTou.append(Util.setDouble(Double.parseDouble(strTanTou),4));
+                        etTanTou.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
+                        etTanTou.setTag(10);
+                    }else{
+                        etTanTou.setText(Util.setDouble(Double.parseDouble(strTanTou),3));
+                        etTanTou.setFilters(new InputFilter[]{new InputFilter.LengthFilter(8)});
+                        etTanTou.setTag(8);
+                    }
                     break;
                 //显示采集频率
                 case BleContant.SEND_CAI_JI_PIN_LU:

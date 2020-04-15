@@ -184,10 +184,9 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="45dp"
                     android:background="@null"
-                    android:digits="0123456789."
+                    android:digits="0123456789.+-"
                     android:gravity="right|center"
                     android:hint="请输入探头埋深"
-                    android:maxLength="8"
                     android:textColor="@color/color_1fc37f"
                     android:textSize="15sp" />
 

@@ -306,7 +306,7 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
                             //进入设置北斗中心号码的页面
                             Intent intent1=new Intent(NetSettingActivity.this, SetSIMActivity.class);
                             intent1.putExtra("data",data);
-                            startActivity(intent);
+                            startActivity(intent1);
                             finish();
                         }else{
                             //解析并显示回执的数据

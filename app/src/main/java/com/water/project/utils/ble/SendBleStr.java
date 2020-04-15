@@ -182,6 +182,36 @@ public class SendBleStr {
 
 
     /**
+     * 设置探头埋深2
+     * @param data
+     */
+    public static void sendSetTanTou2(String data){
+        StringBuffer stringBuffer=new StringBuffer("GDLINEW");
+        stringBuffer.append(data.substring(0,1));
+
+        data=data.replace("+","").replace("-","");
+        int position=data.indexOf(".");
+        if(position==-1) {
+            for (int i=0;i<4-data.length();i++){
+                stringBuffer.append("0");
+            }
+            stringBuffer.append(data+".0000");
+        }else{
+            final int hou=data.length() - position - 1;
+            final int qian=data.length()-hou-1;
+            for (int i=0;i<4-qian;i++){
+                stringBuffer.append("0");
+            }
+            stringBuffer.append(data);
+            for (int i=0;i<4-hou;i++){
+                stringBuffer.append("0");
+            }
+        }
+        SET_TANTOU=stringBuffer.toString();
+    }
+
+
+    /**
      * 设置采集频率
      * @param startTime
      * @param hour
