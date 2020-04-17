@@ -168,8 +168,15 @@ public class MainActivity extends BaseActivity{
         if (resultCode == 0x001) {
             //读取版本信息成功
             final int code = BleUtils.getVersion(MainActivity.this);
-            Menu menu4=menuList.get(4);
-            Menu menu5=menuList.get(5);
+            Menu menu4 = null,menu5=null;
+            for (int i=0;i<menuList.size();i++){
+                  if(menuList.get(i).getName().equals("数据记录和状态记录")){
+                      menu4=menuList.get(i);
+                  }
+                if(menuList.get(i).getName().equals("发送数据")){
+                    menu5=menuList.get(i);
+                }
+            }
             if (code==1) {
                 menuList.remove(menu4);
                 menuList.remove(menu5);

@@ -139,7 +139,7 @@ public class SetSIMActivity extends BaseActivity {
                 //扫描不到指定蓝牙设备
                 case BleService.ACTION_NO_DISCOVERY_BLE:
                     DialogUtils.closeProgress();
-                    dialogView = new DialogView(mContext, "扫描不到该蓝牙设备，请靠近设备再进行扫描！", "重新扫描", "取消", new View.OnClickListener() {
+                    dialogView = new DialogView(dialogView,mContext, "扫描不到该蓝牙设备，请靠近设备再进行扫描！", "重新扫描", "取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
                             sendData(SEND_STATUS);
@@ -150,7 +150,7 @@ public class SetSIMActivity extends BaseActivity {
                 //蓝牙断开连接
                 case BleService.ACTION_GATT_DISCONNECTED:
                     DialogUtils.closeProgress();
-                    dialogView = new DialogView(mContext, "蓝牙连接断开，请靠近设备进行连接!", "重新连接", "取消", new View.OnClickListener() {
+                    dialogView = new DialogView(dialogView,mContext, "蓝牙连接断开，请靠近设备进行连接!", "重新连接", "取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
                             DialogUtils.showProgress(SetSIMActivity.this, "蓝牙连接中...");
@@ -170,20 +170,29 @@ public class SetSIMActivity extends BaseActivity {
                     break;
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
+                    DialogUtils.closeProgress();
+                    totalData=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
                     if(SEND_STATUS==BleContant.SET_CENTER_MOBILE){
-                        ToastUtil.showLong("中心号码设置成功");
-                        //重新读取中心号码
-                        sendData(BleContant.SEND_GET_CODE_PHONE);
+                        if(totalData.endsWith(">OK")){
+                            ToastUtil.showLong("中心号码设置成功");
+                            //重新读取中心号码
+                            sendData(BleContant.SEND_GET_CODE_PHONE);
+                        }else{
+                            dialogView = new DialogView(dialogView,mContext, "北斗通讯部分出现故障，请联系维护人员", "好的", null, new View.OnClickListener() {
+                                public void onClick(View v) {
+                                    dialogView.dismiss();
+                                }
+                            }, null);
+                            dialogView.show();
+                        }
                     }else{
-                        DialogUtils.closeProgress();
-                        totalData=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
                         //显示中心号码数据
                         showMobile();
                     }
                     break;
                 case BleService.ACTION_INTERACTION_TIMEOUT:
                     DialogUtils.closeProgress();
-                    dialogView = new DialogView(mContext, "接收数据超时！", "重试", "取消", new View.OnClickListener() {
+                    dialogView = new DialogView(dialogView,mContext, "接收数据超时！", "重试", "取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
                             sendData(SEND_STATUS);
@@ -193,7 +202,7 @@ public class SetSIMActivity extends BaseActivity {
                     break;
                 case BleService.ACTION_SEND_DATA_FAIL:
                     DialogUtils.closeProgress();
-                    dialogView = new DialogView(mContext, "下发命令失败！", "重试", "取消", new View.OnClickListener() {
+                    dialogView = new DialogView(dialogView,mContext, "下发命令失败！", "重试", "取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
                             sendData(SEND_STATUS);
