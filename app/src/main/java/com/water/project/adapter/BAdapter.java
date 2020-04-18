@@ -52,7 +52,11 @@ public class BAdapter extends BaseAdapter {
         }
         holder.tvName.setText("通道"+(position+1)+"：");
         //设置信号强度
-        setSignal(Integer.parseInt(str[position]));
+        String data=str[position];
+        if(data.indexOf("V")!=-1){
+            data=data.substring(0,1);
+        }
+        setSignal(Integer.parseInt(data));
         return view;
     }
 

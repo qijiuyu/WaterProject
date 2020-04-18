@@ -173,18 +173,9 @@ public class SetSIMActivity extends BaseActivity {
                     DialogUtils.closeProgress();
                     totalData=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
                     if(SEND_STATUS==BleContant.SET_CENTER_MOBILE){
-                        if(totalData.endsWith(">OK")){
-                            ToastUtil.showLong("中心号码设置成功");
-                            //重新读取中心号码
-                            sendData(BleContant.SEND_GET_CODE_PHONE);
-                        }else{
-                            dialogView = new DialogView(dialogView,mContext, "北斗通讯部分出现故障，请联系维护人员", "好的", null, new View.OnClickListener() {
-                                public void onClick(View v) {
-                                    dialogView.dismiss();
-                                }
-                            }, null);
-                            dialogView.show();
-                        }
+                        ToastUtil.showLong("中心号码设置成功");
+                        //重新读取中心号码
+                        sendData(BleContant.SEND_GET_CODE_PHONE);
                     }else{
                         //显示中心号码数据
                         showMobile();

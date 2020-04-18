@@ -112,7 +112,7 @@ public class MainActivity extends BaseActivity{
                         setClass(GetRecordActivity.class);
                         break;
                     case "发送数据":
-                        setClass(GActivity.class);
+                        setClass(SendDataActivity.class);
                         break;
                     default:
                         break;
