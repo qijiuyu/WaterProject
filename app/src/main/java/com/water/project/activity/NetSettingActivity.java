@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.water.project.R;
+import com.water.project.activity.menu3.SetSIM2Activity;
 import com.water.project.activity.menu3.SetSIMActivity;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
@@ -303,6 +304,12 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
                     final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA).replace(">OK","");
                     if(SEND_STATUS==BleContant.SEND_GET_CODE_PHONE){
                         if(data.startsWith("GDSETMAS")){
+                            //进入设置北斗中心号码的页面
+                            Intent intent1=new Intent(NetSettingActivity.this, SetSIM2Activity.class);
+                            intent1.putExtra("data",data);
+                            startActivity(intent1);
+                            finish();
+                        }else if(data.startsWith("GDBDCEN")){
                             //进入设置北斗中心号码的页面
                             Intent intent1=new Intent(NetSettingActivity.this, SetSIMActivity.class);
                             intent1.putExtra("data",data);

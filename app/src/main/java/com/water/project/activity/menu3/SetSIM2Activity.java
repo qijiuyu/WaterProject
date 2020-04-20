@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.water.project.R;
 import com.water.project.activity.BaseActivity;
 import com.water.project.activity.MainActivity;
@@ -23,6 +24,7 @@ import com.water.project.utils.ToastUtil;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -31,20 +33,26 @@ import butterknife.OnClick;
  * 网络设置页面，如果返回北斗信息就进入新的页面
  * Created by Administrator on 2020/4/4.
  */
-public class SetSIMActivity extends BaseActivity {
+public class SetSIM2Activity extends BaseActivity {
 
     @BindView(R.id.tv_head)
     TextView tvHead;
-    @BindView(R.id.et_sim)
-    EditText etSim;
+    @BindView(R.id.et_sim1)
+    EditText etSim1;
+    @BindView(R.id.et_sim2)
+    EditText etSim2;
+    @BindView(R.id.et_sim3)
+    EditText etSim3;
     private String totalData;
+    //旧的CEN中心号码数据
+    private String oldEditData;
     private DialogView dialogView;
     private Handler mHandler = new Handler();
     //下发命令的编号
     private int SEND_STATUS;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_set_sim);
+        setContentView(R.layout.activity_set_sim_two);
         ButterKnife.bind(this);
 
         tvHead.setText("数据接收中心号码");
@@ -60,7 +68,16 @@ public class SetSIMActivity extends BaseActivity {
      * 显示中心号码数据
      */
     private void showMobile(){
-        etSim.setText(totalData.replace("GDBDCEN",""));
+        totalData=totalData.replace(" ","");
+        int CENPosition=totalData.indexOf("CEN");                         //CEN的位置
+        int endPotison=totalData.indexOf(";",totalData.indexOf(";")+1); //第二个分号的位置
+        oldEditData=totalData.substring(CENPosition,endPotison);
+
+        //显示三个中心号码数据
+        String[] strs=oldEditData.split(",");
+        etSim1.setText(strs[0].replace("CEN",""));
+        etSim2.setText(strs[1]);
+        etSim3.setText(strs[2]);
     }
 
     @OnClick({R.id.lin_back, R.id.tv_update})
@@ -71,8 +88,22 @@ public class SetSIMActivity extends BaseActivity {
                 break;
             //修改
             case R.id.tv_update:
-                String mobile=etSim.getText().toString().trim();
-                SendBleStr.setCenterSIM(mobile);
+                String mobile1=etSim1.getText().toString().trim();
+                String mobile2=etSim2.getText().toString().trim();
+                String mobile3=etSim3.getText().toString().trim();
+                if(mobile1.length()==12){
+                    ToastUtil.showLong("数据接收中心号码1长度只支持11位，或者13位");
+                    return;
+                }
+                if(mobile2.length()==12){
+                    ToastUtil.showLong("数据接收中心号码2长度只支持11位，或者13位");
+                    return;
+                }
+                if(mobile3.length()==12){
+                    ToastUtil.showLong("数据接收中心号码3长度只支持11位，或者13位");
+                    return;
+                }
+                SendBleStr.setCenterSIM2(totalData,oldEditData,mobile1,mobile2,mobile3);
                 sendData(BleContant.SET_CENTER_MOBILE);
                 break;
             default:
@@ -87,20 +118,20 @@ public class SetSIMActivity extends BaseActivity {
     private void sendData(int SEND_STATUS) {
         this.SEND_STATUS=SEND_STATUS;
         //判断蓝牙是否打开
-        if (!BleUtils.isEnabled(SetSIMActivity.this, MainActivity.mBtAdapter)) {
+        if (!BleUtils.isEnabled(SetSIM2Activity.this, MainActivity.mBtAdapter)) {
             return;
         }
         if(SEND_STATUS==BleContant.SET_CENTER_MOBILE){
-            DialogUtils.showProgress(SetSIMActivity.this, "正在设置中心号码");
+            DialogUtils.showProgress(SetSIM2Activity.this, "正在设置中心号码");
         }else{
-            DialogUtils.showProgress(SetSIMActivity.this, "正在读取中心号码...");
+            DialogUtils.showProgress(SetSIM2Activity.this, "正在读取中心号码...");
         }
         //如果蓝牙连接断开，就扫描重连
         if (MainActivity.bleService.connectionState == MainActivity.bleService.STATE_DISCONNECTED) {
             //扫描并重连蓝牙
             final Ble ble = (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE, Ble.class);
             if (null != ble) {
-                DialogUtils.showProgress(SetSIMActivity.this, "扫描并连接蓝牙设备...");
+                DialogUtils.showProgress(SetSIM2Activity.this, "扫描并连接蓝牙设备...");
                 MainActivity.bleService.scanDevice(ble.getBleName());
             }
             return;
@@ -145,7 +176,7 @@ public class SetSIMActivity extends BaseActivity {
                     dialogView = new DialogView(dialogView,mContext, "蓝牙连接断开，请靠近设备进行连接!", "重新连接", "取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
-                            DialogUtils.showProgress(SetSIMActivity.this, "蓝牙连接中...");
+                            DialogUtils.showProgress(SetSIM2Activity.this, "蓝牙连接中...");
                             mHandler.postDelayed(new Runnable() {
                                 public void run() {
                                     Ble ble = (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE, Ble.class);
@@ -163,7 +194,7 @@ public class SetSIMActivity extends BaseActivity {
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
                     DialogUtils.closeProgress();
-                    totalData=intent.getStringExtra(BleService.ACTION_EXTRA_DATA).replace(">OK","");
+                    totalData=intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
                     if(SEND_STATUS==BleContant.SET_CENTER_MOBILE){
                         ToastUtil.showLong("中心号码设置成功");
                         //重新读取中心号码

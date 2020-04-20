@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/head"/>
+
+    <RelativeLayout
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="数据接收中心号码1"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"/>
+
+        <EditText
+            android:id="@+id/et_sim1"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:hint="请输入中心号码1"
+            android:digits="0123456789"
+            android:maxLength="13"
+            android:textColor="@color/color_1fc37f"
+            android:textSize="15sp"
+            android:layout_alignParentRight="true"
+            android:gravity="right|center"
+            android:layout_marginRight="15dp"
+            android:background="@null"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/color_888888"
+            android:layout_below="@id/et_sim1"/>
+
+     </RelativeLayout>
+
+    <RelativeLayout
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="数据接收中心号码2"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"/>
+
+        <EditText
+            android:id="@+id/et_sim2"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:hint="请输入中心号码2"
+            android:digits="0123456789"
+            android:maxLength="13"
+            android:textColor="@color/color_1fc37f"
+            android:textSize="15sp"
+            android:layout_alignParentRight="true"
+            android:gravity="right|center"
+            android:layout_marginRight="15dp"
+            android:background="@null"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/color_888888"
+            android:layout_below="@id/et_sim2"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="数据接收中心号码3"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"/>
+
+        <EditText
+            android:id="@+id/et_sim3"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:hint="请输入中心号码3"
+            android:digits="0123456789"
+            android:maxLength="13"
+            android:textColor="@color/color_1fc37f"
+            android:textSize="15sp"
+            android:layout_alignParentRight="true"
+            android:gravity="right|center"
+            android:layout_marginRight="15dp"
+            android:background="@null"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/color_888888"
+            android:layout_below="@id/et_sim3"/>
+
+    </RelativeLayout>
+
+    <com.water.project.view.ClickTextView
+        android:id="@+id/tv_update"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/color_1fc37f"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="修改中心号码"
+        android:textSize="15sp"
+        android:textColor="@android:color/white"
+        android:gravity="center"/>
+
+</LinearLayout>

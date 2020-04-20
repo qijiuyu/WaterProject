@@ -436,20 +436,40 @@ public class SendBleStr {
         RED_DEVICE_DATA_BY_TIME="GDRECORDA"+startTime.substring(2,startTime.length())+","+endTime.substring(2,endTime.length());
     }
 
+    /**
+     * 设置中心号码的命令
+     */
+    public static void setCenterSIM(String mobile){
+        StringBuffer stringBuffer=new StringBuffer("GDBDCEN");
+        //数据不够，用0补齐
+        if(mobile.length()<7){
+            mobile=append(7,mobile);
+        }
+        stringBuffer.append(mobile);
+        SET_CENTER_MOBILE=stringBuffer.toString();
+        LogUtils.e(SET_CENTER_MOBILE+"+++++++++++++=");
+
+        BuglyUtils.uploadBleMsg("设置的北斗中心号码是："+SET_CENTER_MOBILE);
+    }
+
 
     /**
      * 设置中心号码的命令
-     * @param totalData
-     * @param mobile
      */
-    public static void setCenterSIM(String totalData,String mobile,int startIndex,int endIndex){
+    public static void setCenterSIM2(String totalData,String oldEditData,String mobile1,String mobile2,String mobile3){
         StringBuffer stringBuffer=new StringBuffer(totalData);
-        if(mobile.length()<11){
-            //数据不够，用0补齐
-            mobile=append(11,mobile);
+        //数据不够，用0补齐
+        if(mobile1.length()<11){
+            mobile1=append(11,mobile1);
         }
-        stringBuffer.replace(startIndex,startIndex+endIndex,"CEN"+mobile);
-        SET_CENTER_MOBILE=stringBuffer.toString();
+        if(mobile2.length()<11){
+            mobile2=append(11,mobile2);
+        }
+        if(mobile3.length()<11){
+            mobile3=append(11,mobile3);
+        }
+        SET_CENTER_MOBILE=stringBuffer.toString().replace(oldEditData,"CEN"+mobile1+","+mobile2+","+mobile3);
+        LogUtils.e(SET_CENTER_MOBILE+"+++++++++++++=");
 
         BuglyUtils.uploadBleMsg("设置的北斗中心号码是："+SET_CENTER_MOBILE);
     }

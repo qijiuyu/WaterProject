@@ -62,6 +62,7 @@
         <activity android:name=".activity.menu6.SendDataActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".activity.menu5.CopyDataActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".activity.menu3.SetSIMActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".activity.menu3.SetSIM2Activity"  android:screenOrientation="portrait"/>
         <activity android:name=".activity.menu6.GActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".activity.menu6.BActivity"  android:screenOrientation="portrait"/>
 

@@ -175,6 +175,12 @@ public class BActivity extends BaseActivity {
                 case BleService.ACTION_DATA_AVAILABLE:
                     DialogUtils.closeProgress();
                     String data = intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
+
+                    //延时60秒后
+                    if(SEND_STATUS==BleContant.BEI_DOU_FANG_SHI_SEND_DATA){
+                        startTime();
+                    }
+
                     if(data.endsWith(">ERR")){
                         dialogView = new DialogView(dialogView,BActivity.this, "北斗通讯部分出现故障，请联系维护人员!","好的", null, null, null);
                         dialogView.show();
@@ -190,11 +196,6 @@ public class BActivity extends BaseActivity {
                         if(strDy.indexOf("V")!=-1){
                             String[] dianya=strDy.split("V");
                             tvDianYa.setText("北斗通讯电压值："+dianya[1]+"V");
-                        }
-
-                        if(SEND_STATUS==BleContant.BEI_DOU_FANG_SHI_SEND_DATA){
-                            //动态改变秒数
-                            startTime();
                         }
                     }
                     break;

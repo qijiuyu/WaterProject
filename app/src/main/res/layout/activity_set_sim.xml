@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:gravity="center"
-            android:text="中心号码"
+            android:text="数据接收中心号码"
             android:textColor="@android:color/black"
             android:textSize="15sp"/>
 
@@ -27,7 +27,7 @@
             android:layout_height="40dp"
             android:hint="请输入中心号码"
             android:digits="0123456789"
-            android:maxLength="13"
+            android:maxLength="7"
             android:textColor="@color/color_1fc37f"
             android:textSize="15sp"
             android:layout_alignParentRight="true"
