@@ -16,8 +16,10 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.water.project.R;
 import com.water.project.activity.menu3.SetSIMActivity;
@@ -53,6 +55,8 @@ public class MainActivity extends BaseActivity{
     RecyclerView listView;
     @BindView(R.id.tv_about)
     TextView tvAbout;
+    @BindView(R.id.lin)
+    LinearLayout lin;
     // 按两次退出
     protected long exitTime = 0;
     //蓝牙参数

@@ -65,6 +65,9 @@ public class BAdapter extends BaseAdapter {
      * @param index
      */
     private void setSignal(int index){
+        if(index>4){
+            index=0;
+        }
         list.clear();
         list.add(holder.tv1);
         list.add(holder.tv2);

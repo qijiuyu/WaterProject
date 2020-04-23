@@ -57,6 +57,8 @@ public class BActivity extends BaseActivity {
     MeasureListView listView;
     @BindView(R.id.tv_dian_ya)
     TextView tvDianYa;
+    @BindView(R.id.tv_list)
+    TextView tvList;
     //MVP对象
     private SendDataPersenter sendDataPersenter;
     //下发命令的编号
@@ -187,6 +189,7 @@ public class BActivity extends BaseActivity {
                     }else{
                         data=data.replace("GDBDSQ","").replace(">OK", "");
                         //显示信号列表
+                        tvList.setVisibility(View.VISIBLE);
                         String[] strs=data.split(",");
                         BAdapter bAdapter=new BAdapter(BActivity.this,strs);
                         listView.setAdapter(bAdapter);
@@ -195,7 +198,7 @@ public class BActivity extends BaseActivity {
                         String strDy=strs[strs.length-1];
                         if(strDy.indexOf("V")!=-1){
                             String[] dianya=strDy.split("V");
-                            tvDianYa.setText("北斗通讯电压值："+dianya[1]+"V");
+                            tvDianYa.setText("发送数据成功，北斗通讯部分电压值："+dianya[1]+"V\n请联系接收中心查看数据");
                         }
                     }
                     break;
