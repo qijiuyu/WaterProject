@@ -203,7 +203,11 @@ public class BActivity extends BaseActivity {
                             String[] dianya=strDy.split("V");
                             tvDianYa.setText("发送数据成功，北斗通讯部分电压值："+dianya[1]+"V\n请联系接收中心查看数据");
                         }
-                        scrollView.scrollTo(0,0);
+                        handler.postDelayed(new Runnable() {
+                            public void run() {
+                                scrollView.scrollTo(0,0);
+                            }
+                        },500);
                     }
                     break;
                 case BleService.ACTION_INTERACTION_TIMEOUT:
