@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.view.Window;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.water.project.R;
@@ -59,6 +60,8 @@ public class BActivity extends BaseActivity {
     TextView tvDianYa;
     @BindView(R.id.tv_list)
     TextView tvList;
+    @BindView(R.id.scrollView)
+    ScrollView scrollView;
     //MVP对象
     private SendDataPersenter sendDataPersenter;
     //下发命令的编号
@@ -200,6 +203,7 @@ public class BActivity extends BaseActivity {
                             String[] dianya=strDy.split("V");
                             tvDianYa.setText("发送数据成功，北斗通讯部分电压值："+dianya[1]+"V\n请联系接收中心查看数据");
                         }
+                        scrollView.scrollTo(0,0);
                     }
                     break;
                 case BleService.ACTION_INTERACTION_TIMEOUT:
