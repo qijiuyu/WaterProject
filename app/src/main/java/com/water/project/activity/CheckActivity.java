@@ -63,7 +63,6 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener 
         initView();
         register();//注册广播
         sendData(BleContant.SEND_REAL_TIME_DATA);
-//        showData("GDCURRENT>180812153625L0010.975T028.893B100V05.98CSQ31R-35.452E0098P0010.125B10.009C0011.000C001413.01B001413.00T001413.00R001413.00+0.0200;");
     }
 
     /**
@@ -477,6 +476,9 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener 
             }else{
                 TanTou=msg.substring(71,80).replace("C","");
             }
+        }
+        if(length==133){
+            TanTou=msg.substring(121,132).replace("C","");
         }
         if(YaLi.contains("99999999")){
             tvTanTou.setText(TanTou+"m");
