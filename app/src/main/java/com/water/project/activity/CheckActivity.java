@@ -15,6 +15,7 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.water.project.R;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
@@ -23,6 +24,7 @@ import com.water.project.bean.eventbus.EventType;
 import com.water.project.presenter.check.CheckPresenterImpl;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
+import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.Util;
@@ -351,7 +353,8 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener 
      * 显示数据
      */
     private void showData(String msg){
-//        BuglyUtils.uploadBleMsg("数据校测界面读取的数据是："+msg);
+        BuglyUtils.uploadBleMsg("数据校测界面读取的数据是："+msg);
+        BuglyUtils.uploadBleMsg("数据校测界面读取的长度是："+msg.length());
 
         final int length=msg.length();
         //显示采集时间
@@ -386,6 +389,9 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener 
         if(length==93){
             YaLi=msg.substring(57,66).replace("P","");
         }
+        if(length==133){
+            YaLi=msg.substring(93,103).replace("P","");
+        }
         if(YaLi.contains("99999999")){
             tvYaLi.setText(YaLi+"");
         }else{
@@ -414,6 +420,9 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener 
                 QiYa=msg.substring(64,71).replace("B","");
             }
         }
+        if(length==133){
+            QiYa=msg.substring(103,110).replace("B","");
+        }
         if(YaLi.contains("99999999")){
             tvQiYa.setText(QiYa+"");
         }else{
@@ -437,6 +446,9 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener 
             }else{
                 ShuiWen=msg.substring(21,28).replace("T","");
             }
+        }
+        if(length==133){
+            ShuiWen=msg.substring(24,33).replace("T","");
         }
         if(YaLi.contains("99999999")){
             tvShuiWen.setText(ShuiWen+"℃");
@@ -477,8 +489,12 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener 
         String MaiShen=null;
         if(length==91 || length==93 || length==140){
             MaiShen=msg.substring(12,21).replace("L","");
-        }else{
+        }
+        if(length==79 || length==88 || length==138){
             MaiShen=msg.substring(12,20).replace("L","");
+        }
+        if(length==133){
+            MaiShen=msg.substring(13,23).replace("L","");
         }
         if(YaLi.contains("99999999") || MaiShen.equals("FFFF.FFF")){
             tvShuiWei.setText(MaiShen+"m");
@@ -488,7 +504,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener 
 
 
         //显示电导率
-        if(length==138 || length==140){
+        if(length==138 || length==140 || length==133){
             findViewById(R.id.rel_ddl).setVisibility(View.VISIBLE);
             String DianDaoLv=null;
             if(length==138){
@@ -500,6 +516,9 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener 
                 }else{
                     DianDaoLv=msg.substring(80,90).replace("C","");
                 }
+            }
+            if(length==133){
+                DianDaoLv=msg.substring(40,50).replace("C","");
             }
             tvDianDaoLv.setText(Util.setDouble(Double.parseDouble(DianDaoLv),2)+"uS/cm");
         }

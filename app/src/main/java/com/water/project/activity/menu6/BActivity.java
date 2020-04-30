@@ -292,6 +292,7 @@ public class BActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
         unregisterReceiver(mBroadcastReceiver);
         if(mTimer!=null){
+            mTimer.cancel();
             mTimer.purge();
             mTimer=null;
         }
