@@ -478,7 +478,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener 
             }
         }
         if(length==133){
-            TanTou=msg.substring(121,132).replace("C","");
+            TanTou=msg.substring(111,122).replace("C","");
         }
         if(YaLi.contains("99999999")){
             tvTanTou.setText(TanTou+"m");
