@@ -19,7 +19,6 @@ import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.FileUtils;
-import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
@@ -166,7 +165,7 @@ public class GetRecordActivity extends BaseActivity {
                     int secound = calendar.get(Calendar.SECOND);
                     final String fileName = data.substring(9, 24) + "_" + intYear + intMonth + intDay + intHour + intMinute + secound + ".txt";
                     String filePath = FileUtils.createFile(fileName, data);
-                    dialogView = new DialogView(mContext, "数据.txt文件已创建成功，目录是：" + filePath, "确定", null, new View.OnClickListener() {
+                    dialogView = new DialogView(dialogView,mContext, "数据.txt文件已创建成功，目录是：" + filePath, "确定", null, new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
                         }
@@ -175,7 +174,7 @@ public class GetRecordActivity extends BaseActivity {
                     break;
                 case BleService.ACTION_INTERACTION_TIMEOUT:
                     DialogUtils.closeProgress();
-                    dialogView = new DialogView(mContext, "接收数据超时！", "重试", "取消", new View.OnClickListener() {
+                    dialogView = new DialogView(dialogView,mContext, "接收数据超时！", "重试", "取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
                             sendData();

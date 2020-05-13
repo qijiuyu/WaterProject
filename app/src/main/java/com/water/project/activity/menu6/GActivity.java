@@ -83,7 +83,7 @@ public class GActivity extends BaseActivity {
                 break;
             //发送命令
             case R.id.tv_send:
-                dialogView = new DialogView(this, "确定发送数据吗！", "确定", "取消", new View.OnClickListener() {
+                dialogView = new DialogView(dialogView,this, "确定发送数据吗！", "确定", "取消", new View.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
                     public void onClick(View v) {
                         dialogView.dismiss();
