@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.view.KeyEvent;
@@ -28,8 +29,10 @@ import com.water.project.utils.SPUtil;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -54,6 +57,7 @@ public class GActivity extends BaseActivity {
     //下发命令的编号
     private int SEND_STATUS;
     private DialogView dialogView;
+    private Handler handler=new Handler();
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -166,6 +170,11 @@ public class GActivity extends BaseActivity {
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
                     DialogUtils.closeProgress();
+                    //关掉一分钟的计时
+                    handler.removeCallbacks(runnable);
+                    //开启一分钟计时器
+                    handler.postDelayed(runnable,60*1000);
+
                     final String data = intent.getStringExtra(BleService.ACTION_EXTRA_DATA).replace(">OK","");
                     showData(data);
                     break;
@@ -185,6 +194,16 @@ public class GActivity extends BaseActivity {
                 default:
                     break;
             }
+        }
+    };
+
+
+    /**
+     * 判断是否超时
+     */
+    private Runnable runnable=new Runnable() {
+        public void run() {
+            isSend = false;
         }
     };
 

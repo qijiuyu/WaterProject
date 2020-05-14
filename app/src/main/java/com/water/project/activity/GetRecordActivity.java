@@ -40,6 +40,7 @@ public class GetRecordActivity extends BaseActivity {
     private Handler mHandler = new Handler();
     //当前页面是否在显示
     private boolean isShowActivity=true;
+    private StringBuffer sb;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -59,6 +60,7 @@ public class GetRecordActivity extends BaseActivity {
                  finish();
                 break;
             case R.id.tv_red:
+                sb=new StringBuffer();
                 sendData();
                 break;
             case R.id.tv_copy:
@@ -148,8 +150,12 @@ public class GetRecordActivity extends BaseActivity {
                     break;
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
-                    DialogUtils.closeProgress();
                     String data = intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
+                    sb.append(data);
+                    if(!data.endsWith(">OK")){
+                        return;
+                    }
+                    DialogUtils.closeProgress();
                     Calendar calendar = Calendar.getInstance();
                     //年
                     int intYear = calendar.get(Calendar.YEAR);
@@ -164,7 +170,7 @@ public class GetRecordActivity extends BaseActivity {
                     //秒钟
                     int secound = calendar.get(Calendar.SECOND);
                     final String fileName = data.substring(9, 24) + "_" + intYear + intMonth + intDay + intHour + intMinute + secound + ".txt";
-                    String filePath = FileUtils.createFile(fileName, data);
+                    String filePath = FileUtils.createFile(fileName, sb.toString());
                     dialogView = new DialogView(dialogView,mContext, "数据.txt文件已创建成功，目录是：" + filePath, "确定", null, new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
