@@ -63,6 +63,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener 
         initView();
         register();//注册广播
         sendData(BleContant.SEND_REAL_TIME_DATA);
+//        showData("GDCURRENT>180812153625L+0010.9758T+028.8967B100.00C001413.01V05.98CSQ31R+35.45E0098A+0043.5000D01.00000P0010.1256B10.0098C+0011.0000;");
     }
 
     /**
@@ -313,13 +314,11 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener 
                               break;
                          //读取水温偏移量回执
                          case BleContant.RED_SHUI_WEN_PYL:
-//                             BuglyUtils.uploadBleMsg("水温偏移量回执："+data);
                               SendBleStr.setSW_check(SW_wucha,data);
                               sendData(BleContant.SEND_DATA_SHUI_WEN);
                               break;
                          //读取电导率偏移量回执
                          case BleContant.RED_DIAN_DAO_LV_PYL:
-//                             BuglyUtils.uploadBleMsg("电导率偏移量回执："+data);
                               SendBleStr.setDDL_check(DDL_wucha,data);
                               sendData(BleContant.SEND_DATA_DIAN_DAO_LV);
                               break;

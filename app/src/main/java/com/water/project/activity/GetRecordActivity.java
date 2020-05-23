@@ -24,7 +24,8 @@ import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
 
-import java.util.Calendar;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -156,20 +157,8 @@ public class GetRecordActivity extends BaseActivity {
                         return;
                     }
                     DialogUtils.closeProgress();
-                    Calendar calendar = Calendar.getInstance();
-                    //年
-                    int intYear = calendar.get(Calendar.YEAR);
-                    //月
-                    int intMonth = (calendar.get(Calendar.MONTH) + 1);
-                    //日
-                    int intDay = calendar.get(Calendar.DAY_OF_MONTH);
-                    //小时
-                    int intHour = calendar.get(Calendar.HOUR_OF_DAY);
-                    //分钟
-                    int intMinute = calendar.get(Calendar.MINUTE);
-                    //秒钟
-                    int secound = calendar.get(Calendar.SECOND);
-                    final String fileName = data.substring(9, 24) + "_" + intYear + intMonth + intDay + intHour + intMinute + secound + ".txt";
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    final String fileName = data.substring(9, 24) + "_" + sdf.format(new Date()) + ".txt";
                     String filePath = FileUtils.createFile(fileName, sb.toString());
                     dialogView = new DialogView(dialogView,mContext, "数据.txt文件已创建成功，目录是：" + filePath, "确定", null, new View.OnClickListener() {
                         public void onClick(View v) {

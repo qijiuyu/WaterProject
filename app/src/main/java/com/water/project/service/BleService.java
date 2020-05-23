@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
+
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
 import com.water.project.utils.BuglyUtils;
@@ -310,6 +311,22 @@ public class BleService extends Service implements Serializable{
 
                   //下发命令
                   boolean b=mBluetoothGatt.writeCharacteristic(RxChar);
+
+
+                   if(b){
+                       //注释
+                       if(SendBleStr.bleCmdStatus== BleContant.SET_DATA_CHECK){
+                           BuglyUtils.uploadBleMsg("水位校测发送成功："+list.get(i));
+                       }
+                       if(SendBleStr.bleCmdStatus== BleContant.SEND_DATA_SHUI_WEN){
+                           BuglyUtils.uploadBleMsg("水温校测发送成功："+list.get(i));
+                       }
+                       if(SendBleStr.bleCmdStatus== BleContant.SEND_DATA_DIAN_DAO_LV){
+                           BuglyUtils.uploadBleMsg("电导率校测发送成功："+list.get(i));
+                       }
+                   }
+
+
                   if(!b){
                       //延时下发
                       Thread.sleep(10);

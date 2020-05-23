@@ -324,6 +324,8 @@ public class SendBleStr {
             stringBuffer.append("0");
         }
         SET_DATA_CHECK=stringBuffer.toString();
+
+        BuglyUtils.uploadBleMsg("水位校测后发的命令："+SET_DATA_CHECK);
     }
 
 
@@ -357,7 +359,8 @@ public class SendBleStr {
             stringBuffer.append("0");
         }
         SEND_DATA_SHUI_WEN=stringBuffer.toString();
-        LogUtils.e("_____"+SEND_DATA_SHUI_WEN);
+
+        BuglyUtils.uploadBleMsg("水温校测后发的命令："+SEND_DATA_SHUI_WEN);
     }
 
 
@@ -391,6 +394,8 @@ public class SendBleStr {
             stringBuffer.append("0");
         }
         SEND_DATA_DIAN_DAO_LV=stringBuffer.toString();
+
+        BuglyUtils.uploadBleMsg("电导率校测后发的命令："+SEND_DATA_DIAN_DAO_LV);
     }
 
 
@@ -469,7 +474,6 @@ public class SendBleStr {
             mobile3=append(11,mobile3);
         }
         SET_CENTER_MOBILE=stringBuffer.toString().replace(oldEditData,"CEN"+mobile1+","+mobile2+","+mobile3);
-        LogUtils.e(SET_CENTER_MOBILE+"+++++++++++++=");
 
         BuglyUtils.uploadBleMsg("设置的北斗中心号码是："+SET_CENTER_MOBILE);
     }
