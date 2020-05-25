@@ -309,25 +309,45 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener 
                               break;
                          //读取水位偏移量回执
                          case BleContant.SEND_CHECK_ERROR:
-                              SendBleStr.setMS_check(MS_wucha,data);
-                              sendData(BleContant.SET_DATA_CHECK);
+                              new Handler().postDelayed(new Runnable() {
+                                  @Override
+                                  public void run() {
+                                      SendBleStr.setMS_check(MS_wucha,data);
+                                      sendData(BleContant.SET_DATA_CHECK);
+                                  }
+                              },1000);
                               break;
                          //读取水温偏移量回执
                          case BleContant.RED_SHUI_WEN_PYL:
-                              SendBleStr.setSW_check(SW_wucha,data);
-                              sendData(BleContant.SEND_DATA_SHUI_WEN);
+                             new Handler().postDelayed(new Runnable() {
+                                 @Override
+                                 public void run() {
+                                     SendBleStr.setSW_check(SW_wucha,data);
+                                     sendData(BleContant.SEND_DATA_SHUI_WEN);
+                                 }
+                             },1000);
                               break;
                          //读取电导率偏移量回执
                          case BleContant.RED_DIAN_DAO_LV_PYL:
-                              SendBleStr.setDDL_check(DDL_wucha,data);
-                              sendData(BleContant.SEND_DATA_DIAN_DAO_LV);
+                             new Handler().postDelayed(new Runnable() {
+                                 @Override
+                                 public void run() {
+                                     SendBleStr.setDDL_check(DDL_wucha,data);
+                                     sendData(BleContant.SEND_DATA_DIAN_DAO_LV);
+                                 }
+                             },1000);
                               break;
                          //校测成功回执
                          case BleContant.SEND_DATA_SHUI_WEN:
                          case BleContant.SET_DATA_CHECK:
                          case BleContant.SEND_DATA_DIAN_DAO_LV:
                               isCheck=true;
-                              sendData(BleContant.SEND_REAL_TIME_DATA);
+                              new Handler().postDelayed(new Runnable() {
+                                 @Override
+                                 public void run() {
+                                     sendData(BleContant.SEND_REAL_TIME_DATA);
+                                 }
+                             },1000);
                               break;
                      }
                     break;
