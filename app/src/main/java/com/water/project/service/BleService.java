@@ -19,7 +19,6 @@ import android.text.TextUtils;
 
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
-import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ToastUtil;
@@ -301,7 +300,6 @@ public class BleService extends Service implements Serializable{
 
             //循环发送数据
             for (int i=0,len=list.size();i<len;i++){
-
                    if(SendBleStr.bleCmdStatus== BleContant.WRITE_NEW_DEVICE_LONG_DATA){
                        //将16进制字符串转换为16进制的byte数组
                        RxChar.setValue(ByteStringHexUtil.hexStringToByte(list.get(i)));
@@ -311,21 +309,6 @@ public class BleService extends Service implements Serializable{
 
                   //下发命令
                   boolean b=mBluetoothGatt.writeCharacteristic(RxChar);
-
-
-                   if(b){
-                       //注释
-                       if(SendBleStr.bleCmdStatus== BleContant.SET_DATA_CHECK){
-                           BuglyUtils.uploadBleMsg("水位校测发送成功："+list.get(i));
-                       }
-                       if(SendBleStr.bleCmdStatus== BleContant.SEND_DATA_SHUI_WEN){
-                           BuglyUtils.uploadBleMsg("水温校测发送成功："+list.get(i));
-                       }
-                       if(SendBleStr.bleCmdStatus== BleContant.SEND_DATA_DIAN_DAO_LV){
-                           BuglyUtils.uploadBleMsg("电导率校测发送成功："+list.get(i));
-                       }
-                   }
-
 
                   if(!b){
                       //延时下发
@@ -467,12 +450,12 @@ public class BleService extends Service implements Serializable{
             String data=characteristic.getStringValue(0);
             if(data.startsWith("GD")){
                 sb.append(data);
-                handler.postDelayed(runnable,70);
+                handler.postDelayed(runnable,50);
                 return;
             }
             if(sb.length()>0){
                 sb.append(data);
-                handler.postDelayed(runnable,70);
+                handler.postDelayed(runnable,50);
             }
 
 //            //每接收一条数据就回执

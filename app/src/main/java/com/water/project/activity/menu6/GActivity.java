@@ -24,6 +24,7 @@ import com.water.project.bean.eventbus.EventType;
 import com.water.project.presenter.SendDataPersenter;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
+import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ble.BleContant;
@@ -305,25 +306,32 @@ public class GActivity extends BaseActivity {
      * @param data
      */
     private String getPercentage(String data) {
+        BuglyUtils.uploadBleMsg("设备当前的数据是："+data);
         String[] strs = data.split("\\.");
-        if (strs == null && strs.length == 1) {
-            return null;
-        }
-        final int num = Integer.parseInt(strs[1]);
-        if (num >= 0 && num <= 20) {
-            return strs[1] + "%(很弱)";
-        }
-        if (num >= 21 && num <= 31) {
-            return strs[1] + "%(较弱)";
-        }
-        if (num >= 32 && num <= 45) {
-            return strs[1] + "%(偏弱)";
-        }
-        if (num >= 46 && num <= 58) {
-            return strs[1] + "%(一般)";
-        }
-        if (num >= 59 && num <= 69) {
-            return strs[1] + "%(良好)";
+        try {
+            if (strs == null && strs.length == 1) {
+                return null;
+            }
+            final int num = Integer.parseInt(strs[1]);
+            if (num >= 0 && num <= 20) {
+                return strs[1] + "%(很弱)";
+            }
+            if (num >= 21 && num <= 31) {
+                return strs[1] + "%(较弱)";
+            }
+            if (num >= 32 && num <= 45) {
+                return strs[1] + "%(偏弱)";
+            }
+            if (num >= 46 && num <= 58) {
+                return strs[1] + "%(一般)";
+            }
+            if (num >= 59 && num <= 69) {
+                return strs[1] + "%(良好)";
+            }
+        }catch (Exception e){
+            BuglyUtils.uploadBleMsg("崩溃的数据是："+data);
+            e.printStackTrace();
+
         }
         return strs[1] + "%(较好)";
     }
