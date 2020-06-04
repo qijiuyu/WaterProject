@@ -114,6 +114,9 @@ public class SendBleStr {
     //读取设备北斗信号强度
     public static String RED_BEI_DOU_XIN_HAO_QIANG_DU="GDBDSQ";
 
+    //读取本地的txt文档数据，下发给设备
+    public static String SEND_TXT_CONTENT;
+
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
         StringBuffer stringBuffer=new StringBuffer();
@@ -480,6 +483,15 @@ public class SendBleStr {
 
 
     /**
+     * 读取本地的txt文档内容发送设备
+     */
+    public static void sendTxtContent(String head,String content){
+        SEND_TXT_CONTENT=head+content;
+        LogUtils.e(SEND_TXT_CONTENT+"+++++++++++++++++++a");
+    }
+
+
+    /**
      * 数据不够，用0补齐
      */
     public static String append(int num,String data){
@@ -627,6 +639,10 @@ public class SendBleStr {
             case BleContant.RED_BEI_DOU_XIN_HAO_QIANG_DU:
                   SendBleDataManager.getInstance().sendData(RED_BEI_DOU_XIN_HAO_QIANG_DU);
                   break;
+            //读取本地的txt文档数据，下发给设备
+            case BleContant.SEND_TXT_CONTENT:
+                SendBleDataManager.getInstance().sendData(SEND_TXT_CONTENT);
+                break;
              default:
                  break;
 

@@ -60,7 +60,6 @@ public class MainActivity extends BaseActivity{
     //存储菜单
     private List<Menu> menuList = new ArrayList<>();
     private MainMenuAdapter mainMenuAdapter;
-    private String str="1122334455";
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);

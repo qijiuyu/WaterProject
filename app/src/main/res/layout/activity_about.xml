@@ -85,4 +85,18 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"/>
 
+    <com.water.project.view.ClickTextView
+        android:id="@+id/tv_write"
+        android:layout_width="150dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center"
+        android:text="更新字库信息"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:background="@color/color_1fc37f"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"/>
+
 </LinearLayout>

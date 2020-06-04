@@ -14,7 +14,6 @@ import com.water.project.bean.eventbus.EventStatus;
 import com.water.project.bean.eventbus.EventType;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.DialogUtils;
-import com.water.project.utils.FileUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ble.ByteUtil;
 import com.water.project.utils.ble.SendBleStr;
@@ -201,8 +200,6 @@ public class CopyDataPersenter {
     public boolean setWriteData(String red3,String cmd){
         if(writeArray==null){
             writeArray=BleUtils.getSendData(red3,256);
-
-            FileUtils.createFile("abcd.txt", red3);
         }
 
         //获取设备回执的开始与结束时间
@@ -236,9 +233,6 @@ public class CopyDataPersenter {
 
         //设置给新设备写入大量数据
         SendBleStr.WRITE_NEW_DEVICE_LONG_DATA=head+stringBuilder.toString()+total+end;
-
-        //保存每次拷贝的数据
-        FileUtils.createFile(writeStartTime+".txt", SendBleStr.WRITE_NEW_DEVICE_LONG_DATA);
         return true;
     }
 
