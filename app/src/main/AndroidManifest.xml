@@ -65,6 +65,7 @@
         <activity android:name=".activity.menu3.SetSIM2Activity"  android:screenOrientation="portrait"/>
         <activity android:name=".activity.menu6.GActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".activity.menu6.BActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SearchFileActivity"  android:screenOrientation="portrait"  android:windowSoftInputMode="stateHidden|adjustPan"/>
 
         <service
             android:name=".service.BleService"

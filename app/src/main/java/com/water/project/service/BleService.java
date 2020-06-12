@@ -300,12 +300,16 @@ public class BleService extends Service implements Serializable{
 
             //循环发送数据
             for (int i=0,len=list.size();i<len;i++){
-                   if(SendBleStr.bleCmdStatus== BleContant.WRITE_NEW_DEVICE_LONG_DATA){
-                       //将16进制字符串转换为16进制的byte数组
-                       RxChar.setValue(ByteStringHexUtil.hexStringToByte(list.get(i)));
-                   }else{
-                       RxChar.setValue(list.get(i).getBytes());
-                   }
+                switch (SendBleStr.bleCmdStatus){
+                    //将16进制字符串转换为16进制的byte数组
+                    case BleContant.WRITE_NEW_DEVICE_LONG_DATA:
+                    case BleContant.SEND_TXT_CONTENT:
+                         RxChar.setValue(ByteStringHexUtil.hexStringToByte(list.get(i)));
+                         break;
+                    default:
+                        RxChar.setValue(list.get(i).getBytes());
+                        break;
+                }
 
                   //下发命令
                   boolean b=mBluetoothGatt.writeCharacteristic(RxChar);

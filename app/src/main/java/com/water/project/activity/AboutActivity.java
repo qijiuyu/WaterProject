@@ -68,10 +68,7 @@ public class AboutActivity extends BaseActivity {
                 break;
             //更新字库信息
             case R.id.tv_write:
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("text/plain");
-                startActivityForResult(intent, 100);
+                aboutPersenter.showDialog();
                 break;
             default:
                 break;
@@ -183,18 +180,27 @@ public class AboutActivity extends BaseActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && resultCode == Activity.RESULT_OK && data!=null) {
-            final File file= FileUtils.uriToFile(mContext,data.getData());
-            if(!file.isFile()){
-                ToastUtil.showLong("文件路径有误");
-                return;
-            }
-            String str= FileUtils.readTxt(file.getPath()).replace("0x","").replace(",","");
-            if(str.length()==9602 || str.length()==66 || str.length()==34){
-                aboutPersenter.parsingData(str);
-            }else{
-                ToastUtil.showLong("文件内容错误,不予执行");
-            }
+        if(data==null){
+            return;
+        }
+        File file = null;
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK ) {
+            file= FileUtils.uriToFile(mContext,data.getData());
+        }
+        if(resultCode==200){
+            String path=data.getStringExtra("path");
+            file=new File(path);
+        }
+
+        if(!file.isFile()){
+            ToastUtil.showLong("文件路径有误");
+            return;
+        }
+        String str= FileUtils.readTxt(file.getPath()).replace("0x","").replace(",","");
+        if(str.length()==9602 || str.length()==66 || str.length()==34){
+            aboutPersenter.parsingData(str);
+        }else{
+            ToastUtil.showLong("文件内容错误,不予执行");
         }
     }
 
