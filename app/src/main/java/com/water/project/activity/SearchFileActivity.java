@@ -114,8 +114,8 @@ public class SearchFileActivity extends BaseActivity {
             }
         }
 
-        DialogUtils.closeProgress();
         listView.setAdapter(new SearchTxtAdapter(this,txtList));
+        DialogUtils.closeProgress();
     }
 
 
