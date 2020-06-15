@@ -39,8 +39,6 @@ public class GetRecordPersenter {
         strings[2] = "20"+strings[2].substring(0,2)+"-"+strings[2].substring(2,4)+"-"+strings[2].substring(4,6)+" "+strings[2].substring(6,8)+":"+strings[2].substring(8,10);
         //间隔分钟
         minutes = Integer.parseInt(strings[3]);
-        //获取总条数
-        totalNum = (getGapMinutes(strings[1], strings[2]) / minutes) + 1;
 
         View view= LayoutInflater.from(activity).inflate(R.layout.dialog_set_red_time,null);
         final Dialog dialog= DialogUtils.dialogPop(view,activity);
@@ -54,7 +52,7 @@ public class GetRecordPersenter {
                 new SelectTimeDialog(activity, new SelectTime() {
                     public void getTime(String time, int type) {
                         if(Util.compare(time,strings[1])){
-                            ToastUtil.showLong("选择的开始日期不能小于设备最早的日期");
+                            ToastUtil.showLong("设备数据记录的起始时间是"+strings[1]);
                             return;
                         }
                         tvStart.setText(time);
@@ -68,12 +66,27 @@ public class GetRecordPersenter {
                 new SelectTimeDialog(activity, new SelectTime() {
                     public void getTime(String time, int type) {
                         if(!time.equals(strings[2]) && !Util.compare(time,strings[2])){
-                            ToastUtil.showLong("选择的结束日期不能大于设备最晚的日期");
+                            ToastUtil.showLong("设备数据记录的最新时间是"+strings[2]);
                             return;
                         }
                         tvEnd.setText(time);
                     }
                 },4).show();
+            }
+        });
+
+        //确定
+        view.findViewById(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String startTime=tvStart.getText().toString().trim();
+                String endTime=tvEnd.getText().toString().trim();
+                if(startTime.equals(endTime)){
+                    ToastUtil.showLong("开始时间与结束时间不能一致");
+                    return;
+                }
+                //获取总条数
+                totalNum = (getGapMinutes(startTime, endTime) / minutes) + 1;
+                dialog.dismiss();
             }
         });
     }

@@ -44,6 +44,18 @@ public class SearchFileActivity extends BaseActivity {
         setContentView(R.layout.activity_search_file);
         ButterKnife.bind(this);
         initView();
+        //开始搜索txt文件
+        DialogUtils.showProgress(SearchFileActivity.this,"正在搜索txt文件，请稍等");
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                File path= Environment.getExternalStorageDirectory();
+                File[] files=path.listFiles();
+                getFileName(files);
+                listView.setAdapter(new SearchTxtAdapter(SearchFileActivity.this,txtList));
+                DialogUtils.closeProgress();
+            }
+        },2000);
     }
 
     @OnClick(R.id.lin_back)
@@ -78,20 +90,6 @@ public class SearchFileActivity extends BaseActivity {
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //开始搜索txt文件
-        DialogUtils.showProgress(SearchFileActivity.this,"正在搜索txt文件，请稍等");
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                File path= Environment.getExternalStorageDirectory();
-                File[] files=path.listFiles();
-                getFileName(files);
-            }
-        },2000);
-    }
 
     /**
      * 搜索本地.txt文件
@@ -102,20 +100,16 @@ public class SearchFileActivity extends BaseActivity {
             ToastUtil.showLong("文件夹是空的");
             return;
         }
-        for(File file:files){
-            //如果是目录则继续
-            if(file.isDirectory()){
-                getFileName(file.listFiles());
+        for (int i=0,len=files.length;i<len;i++){
+            if(files[i].isDirectory()){
+                getFileName(files[i].listFiles());
             }else{
-                String fileName=file.getName();
-                if(fileName.endsWith(".txt")){
-                    txtList.add(file);
+                String fileName=files[i].getName();
+                if(fileName.endsWith(".txt") && files[i].length()!=0){
+                    txtList.add(files[i]);
                 }
             }
         }
-
-        listView.setAdapter(new SearchTxtAdapter(this,txtList));
-        DialogUtils.closeProgress();
     }
 
 
@@ -125,6 +119,9 @@ public class SearchFileActivity extends BaseActivity {
      * @param keys
      */
     private void getFileByKey(String keys) {
+        if(txtList.size()==0){
+            return;
+        }
         if(TextUtils.isEmpty(keys)){
             listView.setAdapter(new SearchTxtAdapter(this,txtList));
             return;

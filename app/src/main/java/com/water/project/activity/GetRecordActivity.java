@@ -192,6 +192,7 @@ public class GetRecordActivity extends BaseActivity {
                                 sendData(BleContant.COPY_DEVICE_ID);
                                 break;
                             case BleContant.COPY_DEVICE_ID:
+                                 DialogUtils.closeProgress();//此处关闭loding框
                                  red2=data;
                                  persenter.showDialogRed3(red1);
                                  break;
