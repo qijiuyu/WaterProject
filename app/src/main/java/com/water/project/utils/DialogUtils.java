@@ -180,6 +180,22 @@ public class DialogUtils {
 
 
     /**
+     * loding弹框
+     */
+    public static void showProgress2(Activity activity, String message) {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.setMessage(message);
+            return;
+        }
+        progressDialog = new ProgressDialog(activity);
+        progressDialog.setMessage(message);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+    }
+
+
+    /**
      * 取消进度条
      */
     public static void closeProgress() {

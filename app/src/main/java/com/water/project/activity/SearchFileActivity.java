@@ -45,7 +45,7 @@ public class SearchFileActivity extends BaseActivity {
         ButterKnife.bind(this);
         initView();
         //开始搜索txt文件
-        DialogUtils.showProgress(SearchFileActivity.this,"正在搜索txt文件，请稍等");
+        DialogUtils.showProgress2(SearchFileActivity.this,"正在搜索txt文件，请稍等");
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

@@ -47,7 +47,7 @@ public class GetRecordActivity extends BaseActivity {
     private int SEND_STATUS;
     //需要读取的三类数据
     private String red1,red2;
-    private StringBuffer red3=new StringBuffer();
+    public StringBuffer red3=new StringBuffer();
     private GetRecordPersenter persenter;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +92,7 @@ public class GetRecordActivity extends BaseActivity {
     /**
      * 发送蓝牙命令
      */
-    private void sendData(int status) {
+    public void sendData(int status) {
         SEND_STATUS=status;
         //判断蓝牙是否打开
         if (!BleUtils.isEnabled(GetRecordActivity.this, MainActivity.mBtAdapter)) {
