@@ -54,7 +54,6 @@ public class GetRecordActivity extends BaseActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_get_record);
         ButterKnife.bind(this);
-        persenter=new GetRecordPersenter(this);
         register();//注册广播
 
         TextView tvHead =findViewById(R.id.tv_head);
@@ -79,6 +78,7 @@ public class GetRecordActivity extends BaseActivity {
                 break;
             //读取设备数据记录
             case R.id.tv_red_record:
+                 persenter=new GetRecordPersenter(this);
                  red3=new StringBuffer();
 //                 sendData(BleContant.COPY_DEVICE_DATA);
                 persenter.showDialogRed3("GDRECORDXXR0064800,140801120300, 140801121800, 0003, 140801122025");
@@ -128,6 +128,9 @@ public class GetRecordActivity extends BaseActivity {
         registerReceiver(mBroadcastReceiver, myIntentFilter);
     }
 
+
+    //true：表示可以重发上条读取的命令
+    private boolean isResumeRed=true;
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             if(!isShowActivity){
@@ -168,7 +171,7 @@ public class GetRecordActivity extends BaseActivity {
                     break;
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
-                    final String data = intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
+                    String data = intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
                     if(SEND_STATUS==BleContant.RED_DEVICE_RECOFD){
                         sb.append(data);
                         if(!data.endsWith(">OK")){
@@ -195,6 +198,41 @@ public class GetRecordActivity extends BaseActivity {
                                  DialogUtils.closeProgress();//此处关闭loding框
                                  red2=data;
                                  persenter.showDialogRed3(red1);
+                                 break;
+                            case BleContant.RED_DEVICE_DATA_BY_TIME:
+                                 if(data.length()>256){
+                                    data=data.substring(18,data.length()-8);
+                                 }
+                                //如果长度不够就重新发送
+                                if(data.length()%256!=0){
+                                    if(isResumeRed){
+                                        isResumeRed=false;
+                                        sendData(BleContant.RED_DEVICE_DATA_BY_TIME);
+                                    }else{
+                                        //关闭读取时的进度框
+                                        persenter.closeTripDialog();
+                                        dialogView = new DialogView(dialogView,GetRecordActivity.this, "读取到的数据长度不是128的倍数","知道了",null, new View.OnClickListener() {
+                                            public void onClick(View v) {
+                                                isResumeRed=true;
+                                                dialogView.dismiss();
+                                            }
+                                        }, null);
+                                        dialogView.show();
+                                    }
+                                    return;
+                                }
+
+                                //追加第三条结果数据
+                                red3.append(data);
+
+                                if(persenter.setRed3Cmd()){
+                                    sendData(BleContant.RED_DEVICE_DATA_BY_TIME);
+                                }else{
+                                    DialogUtils.closeProgress();
+                                    persenter.showRedComplete(red3.toString());
+                                }
+                                 break;
+                             default:
                                  break;
                         }
                     }

@@ -1,10 +1,12 @@
 package com.water.project.presenter;
 
 import android.app.Dialog;
+import android.graphics.Paint;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.water.project.R;
@@ -14,6 +16,7 @@ import com.water.project.utils.BleUtils;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.ToastUtil;
 import com.water.project.utils.Util;
+import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.LinearGradientTextView;
 import com.water.project.view.SelectTimeDialog;
@@ -94,15 +97,16 @@ public class GetRecordPersenter {
                     return;
                 }
                 dialog.dismiss();
+
+
                 //获取总条数
                 totalNum = (getGapMinutes(startTime, endTime) / minutes) + 1;
-
                 /**
                  * 组装第三条命令，并下发
                  */
-//                setRed3Cmd();
-//                activity.sendData(BleContant.RED_DEVICE_DATA_BY_TIME);
-
+                setRed3Cmd();
+                activity.sendData(BleContant.RED_DEVICE_DATA_BY_TIME);
+                //展示读取数据时的提示框
                 showTripDialog();
             }
         });
@@ -115,8 +119,11 @@ public class GetRecordPersenter {
     private String redStart,redEnd; //记录上次读取的时间段
     private long sLong,eLong;
     public boolean setRed3Cmd(){
-        boolean isSend=true;
         try {
+            if(redEnd.equals(endTime)){
+                return false;
+            }
+
             //这是第一次读
             if(TextUtils.isEmpty(redStart)){
                 redStart=startTime;
@@ -131,10 +138,8 @@ public class GetRecordPersenter {
             //判断是否超过结束时间
             if(eLong<df.parse(endTime).getTime()){
                 redEnd=df.format(new Date(eLong));
-                isSend=true;
             }else{
                 redEnd=endTime;
-                isSend=false;
             }
 
             //设置根据时间段读取设备里面的数据
@@ -142,7 +147,7 @@ public class GetRecordPersenter {
         }catch (Exception e){
             e.printStackTrace();
         }
-        return isSend;
+        return true;
     }
 
 
@@ -178,6 +183,55 @@ public class GetRecordPersenter {
             handler.postDelayed(runnable,3000);
         }
     };
+
+
+    /**
+     * 关闭读取时的进度框
+     */
+    public void closeTripDialog(){
+        handler.removeCallbacks(runnable);
+        if(redDialog!=null && redDialog.isShowing()){
+            redDialog.dismiss();
+            redDialog=null;
+        }
+    }
+
+
+    /**
+     * 显示读取完成的弹框
+     */
+    public void showRedComplete(String red3){
+        //关闭读取时的进度框
+        closeTripDialog();
+
+        //已读取了几条
+        int newNum= BleUtils.getSendData(red3,256).size();
+        String start=startTime.substring(0, 4)+"年"+startTime.substring(4,6)+"月"+startTime.substring(6,8)+"日"+startTime.substring(8,10)+"时"+startTime.substring(10,12)+"分";
+        String end=endTime.substring(0, 4)+"年"+endTime.substring(4,6)+"月"+endTime.substring(6,8)+"日"+endTime.substring(8,10)+"时"+endTime.substring(10,12)+"分";
+
+        View view= LayoutInflater.from(activity).inflate(R.layout.dialog_red_complete,null);
+        final Dialog dialog=DialogUtils.dialogPop(view,activity);
+        TextView tvTitle=view.findViewById(R.id.tv_title);
+        tvTitle.setText("读取数据记录已全部完成,共读取数据记录"+newNum+"条");
+        TextView tvContent=view.findViewById(R.id.tv_content);
+        TextView tvComplete=view.findViewById(R.id.tv_complete);
+        tvComplete.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        tvContent.setText("最早数据记录时间："+start+"\n\n最新数据记录时间："+end+"\n\n数据记录间隔时间："+minutes+"分钟");
+
+        final EditText etName=view.findViewById(R.id.et_name);
+        tvComplete.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                final String name=etName.getText().toString().trim();
+                if(TextUtils.isEmpty(name)){
+                    ToastUtil.showLong("请输入名称");
+                    return;
+                }
+                dialog.dismiss();
+
+            }
+        });
+    }
+
 
 
     /**
