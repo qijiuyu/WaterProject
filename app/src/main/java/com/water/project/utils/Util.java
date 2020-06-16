@@ -13,7 +13,9 @@ import com.water.project.R;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -226,5 +228,32 @@ public class Util extends ClassLoader {
         window.setGravity(Gravity.CENTER);  //此处可以设置dialog显示的位置
         baseDialog.show();
         return baseDialog;
+    }
+
+
+    /**
+     * 判断两个时间大小
+     * @param time1
+     * @param time2
+     * @return
+     */
+    public static boolean compare(String time1,String time2) {
+        //如果想比较日期则写成"yyyy-MM-dd"就可以了
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date a = null,b= null;
+        try {
+            //将字符串形式的时间转化为Date类型的时间
+            a=sdf.parse(time1);
+            b=sdf.parse(time2);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        //Date类的一个方法，如果a早于b返回true，否则返回false
+        if(a.before(b)){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

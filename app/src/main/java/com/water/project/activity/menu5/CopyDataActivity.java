@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
+
 import com.water.project.R;
 import com.water.project.activity.BaseActivity;
 import com.water.project.activity.MainActivity;
@@ -18,7 +19,6 @@ import com.water.project.bean.eventbus.EventStatus;
 import com.water.project.bean.eventbus.EventType;
 import com.water.project.presenter.CopyDataPersenter;
 import com.water.project.service.BleService;
-import com.water.project.utils.BleUtils;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.FileUtils;
 import com.water.project.utils.SPUtil;
@@ -26,8 +26,10 @@ import com.water.project.utils.ToastUtil;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -274,7 +276,9 @@ public class CopyDataActivity extends BaseActivity {
                 //读取设备数据结束了
                 case BleContant.RED_DEVICE_DATA_BY_TIME:
                      saveSD.append(data);
-                     data=data.substring(18,data.length()-8);
+                     if(data.length()>256){
+                         data=data.substring(18,data.length()-8);
+                     }
 
                      //如果长度不够就重新发送
                      if(data.length()%256!=0){

@@ -11,6 +11,7 @@ import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
+
 import com.water.project.R;
 import com.water.project.activity.BaseActivity;
 import com.water.project.activity.MainActivity;
@@ -25,9 +26,10 @@ import com.water.project.utils.DialogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
-import com.water.project.view.DialogView;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 /**
@@ -141,23 +143,27 @@ public class SendDataActivity extends BaseActivity {
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
                     DialogUtils.closeProgress();
-                    final String data = intent.getStringExtra(BleService.ACTION_EXTRA_DATA).replace(">OK","");
-                    //解析数据
-                    String[] strs=data.split("-");
-                    if(strs!=null && strs.length>0){
-                        String model=strs[strs.length-1];
-                        Intent gotoIntent=new Intent();
-                        if(model.startsWith("G")){
-                            gotoIntent.setClass(SendDataActivity.this,GActivity.class);
+                    try {
+                        final String data = intent.getStringExtra(BleService.ACTION_EXTRA_DATA).replace(">OK","");
+                        //解析数据
+                        String[] strs=data.split("-");
+                        if(strs!=null && strs.length>0){
+                            String model=strs[strs.length-1];
+                            Intent gotoIntent=new Intent();
+                            if(model.startsWith("G")){
+                                gotoIntent.setClass(SendDataActivity.this,GActivity.class);
+                            }
+                            if(model.startsWith("B")){
+                                gotoIntent.setClass(SendDataActivity.this,BActivity.class);
+                            }
+                            if(model.startsWith("S")){
+                                return;
+                            }
+                            startActivity(gotoIntent);
+                            finish();
                         }
-                        if(model.startsWith("B")){
-                            gotoIntent.setClass(SendDataActivity.this,BActivity.class);
-                        }
-                        if(model.startsWith("S")){
-                            return;
-                        }
-                        startActivity(gotoIntent);
-                        finish();
+                    }catch (Exception e){
+                        e.printStackTrace();
                     }
                     break;
                 case BleService.ACTION_INTERACTION_TIMEOUT:

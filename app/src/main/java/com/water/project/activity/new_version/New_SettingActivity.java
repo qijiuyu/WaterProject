@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.water.project.R;
@@ -30,13 +28,11 @@ import com.water.project.bean.eventbus.EventType;
 import com.water.project.presenter.new_device.New_SettingPresenter;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
-import com.water.project.utils.BuglyUtils;
-import com.water.project.utils.LogUtils;
+import com.water.project.utils.DialogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.Util;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
-import com.water.project.utils.DialogUtils;
 import com.water.project.view.CustomListView;
 import com.water.project.view.DialogView;
 import com.water.project.view.SelectTimeDialog;
@@ -44,9 +40,7 @@ import com.water.project.view.SelectTimeDialog;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -402,6 +396,7 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
                  }
                  //设置并发送命令
                 SendBleStr.new_setFaSong(startTime,minute,grps,number,newSettingTimeAdapter==null ? null : newSettingTimeAdapter.map);
+//                   SendBleStr.new_setFaSong(startTime,minute,"03","00",newSettingTimeAdapter==null ? null : newSettingTimeAdapter.map);
                 sendData(BleContant.SET_FA_SONG,2);
                 break;
             //选择时间---设置设备时间用
@@ -480,6 +475,7 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
                     break;
                 //显示探头埋深
                 case BleContant.SEND_GET_TANTOU:
+                    etTanTou.setText(null);
                      String strTanTou=data.replace("GDLINER","");
                     //通过判断符号+/-来兼容
                     if(strTanTou.startsWith("+") || strTanTou.startsWith("-")){
@@ -550,7 +546,6 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
         }catch (Exception e){
             e.printStackTrace();
         }
-
     }
 
 

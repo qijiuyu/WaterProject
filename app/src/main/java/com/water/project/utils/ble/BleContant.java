@@ -106,4 +106,7 @@ public class BleContant {
 
     //读取设备北斗信号强度
     public static final int RED_BEI_DOU_XIN_HAO_QIANG_DU=1031;
+
+    //读取本地的txt文档数据，下发给设备
+    public static final int SEND_TXT_CONTENT=1032;
 }

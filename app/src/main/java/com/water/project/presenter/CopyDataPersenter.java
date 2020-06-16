@@ -9,19 +9,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.water.project.R;
-import com.water.project.activity.MainActivity;
 import com.water.project.activity.menu5.CopyDataActivity;
-import com.water.project.application.MyApplication;
-import com.water.project.bean.Ble;
 import com.water.project.bean.eventbus.EventStatus;
 import com.water.project.bean.eventbus.EventType;
 import com.water.project.utils.BleUtils;
-import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.DialogUtils;
-import com.water.project.utils.FileUtils;
-import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
-import com.water.project.utils.ToastUtil;
 import com.water.project.utils.ble.ByteUtil;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
@@ -75,20 +68,6 @@ public class CopyDataPersenter {
         dialogView.show();
     }
 
-    /**
-     * 蓝牙连接断开
-     */
-    public void bleDisConnect(){
-        DialogUtils.closeProgress();
-        dialogView = new DialogView(dialogView,activity, "蓝牙连接断开，请靠近设备进行连接!","重新连接", "取消", new View.OnClickListener() {
-            public void onClick(View v) {
-                dialogView.dismiss();
-                EventBus.getDefault().post(new EventType(EventStatus.SEND_CHECK_MCD));
-            }
-        }, null);
-        dialogView.show();
-    }
-
 
     /**
      *组装第三条读取的命令
@@ -121,7 +100,7 @@ public class CopyDataPersenter {
             }
             //计算结束时间
             sLong=df.parse(redStart).getTime();
-            eLong=sLong+(19*minutes*60*1000);
+            eLong=sLong+(4*minutes*60*1000);
             //判断是否超过结束时间
             if(eLong<endLong){
                 redEnd=df.format(new Date(eLong));
@@ -221,8 +200,6 @@ public class CopyDataPersenter {
     public boolean setWriteData(String red3,String cmd){
         if(writeArray==null){
             writeArray=BleUtils.getSendData(red3,256);
-
-            FileUtils.createFile("abcd.txt", red3);
         }
 
         //获取设备回执的开始与结束时间
@@ -256,9 +233,6 @@ public class CopyDataPersenter {
 
         //设置给新设备写入大量数据
         SendBleStr.WRITE_NEW_DEVICE_LONG_DATA=head+stringBuilder.toString()+total+end;
-
-        //保存每次拷贝的数据
-        FileUtils.createFile(writeStartTime+".txt", SendBleStr.WRITE_NEW_DEVICE_LONG_DATA);
         return true;
     }
 

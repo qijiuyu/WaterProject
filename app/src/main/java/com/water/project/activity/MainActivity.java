@@ -14,17 +14,13 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.water.project.R;
-import com.water.project.activity.menu3.SetSIMActivity;
-import com.water.project.activity.menu6.BActivity;
-import com.water.project.activity.menu6.GActivity;
 import com.water.project.activity.menu6.SendDataActivity;
 import com.water.project.activity.new_version.New_SettingActivity;
 import com.water.project.adapter.MainMenuAdapter;
@@ -32,15 +28,14 @@ import com.water.project.application.MyApplication;
 import com.water.project.bean.Menu;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
-import com.water.project.utils.FileUtils;
 import com.water.project.utils.LogUtils;
-import com.water.project.utils.SPUtil;
 import com.water.project.utils.ble.SendBleDataManager;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -65,7 +60,6 @@ public class MainActivity extends BaseActivity{
     //存储菜单
     private List<Menu> menuList = new ArrayList<>();
     private MainMenuAdapter mainMenuAdapter;
-    private String str="1122334455";
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -149,6 +143,7 @@ public class MainActivity extends BaseActivity{
     };
 
 
+    int i=0;
     @OnClick({R.id.tv_am_scan, R.id.tv_about})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -159,7 +154,8 @@ public class MainActivity extends BaseActivity{
                 break;
             //关于我们
             case R.id.tv_about:
-                setClass(AboutActivity.class);
+//                setClass(AboutActivity.class);
+                setClass(GetRecordActivity.class);
                 break;
             default:
                 break;

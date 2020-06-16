@@ -26,18 +26,12 @@ import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
-import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.DialogUtils;
-import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
-import com.water.project.utils.StatusBarUtils;
-import com.water.project.utils.SystemBarTintManager;
 import com.water.project.utils.Util;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
-
-import java.util.List;
 
 public class NetSettingActivity extends BaseActivity implements View.OnClickListener{
 
@@ -358,56 +352,58 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
      * 解析并显示数据
      */
     private  void showData(String msg){
-        BuglyUtils.uploadBleMsg("网络连接设置界面读取的数据是："+msg);
+       try {
+           strData=msg;
+           String[] strings=msg.split(";");
+           if(null==strings || strings.length==0){
+               return;
+           }
+           final String strAddress=strings[0];
+           etAddress1.setText(strAddress.substring(3,5));
+           etAddress2.setText(strAddress.substring(5,7));
+           etAddress3.setText(strAddress.substring(7,9));
 
-        strData=msg;
-        String[] strings=msg.split(";");
-        if(null==strings || strings.length==0){
-            return;
-        }
-        final String strAddress=strings[0];
-        etAddress1.setText(strAddress.substring(3,5));
-        etAddress2.setText(strAddress.substring(5,7));
-        etAddress3.setText(strAddress.substring(7,9));
+           if(etAddress1.getText().toString().trim().equals("00")){
+               close1(img1);
+           }else{
+               open1(img1);
+           }
 
-        if(etAddress1.getText().toString().trim().equals("00")){
-            close1(img1);
-        }else{
-            open1(img1);
-        }
+           if(etAddress2.getText().toString().trim().equals("00")){
+               close2(img2);
+           }else{
+               open2(img2);
+           }
 
-        if(etAddress2.getText().toString().trim().equals("00")){
-            close2(img2);
-        }else{
-            open2(img2);
-        }
+           if(etAddress3.getText().toString().trim().equals("00")){
+               close3(img3);
+           }else{
+               open3(img3);
+           }
 
-        if(etAddress3.getText().toString().trim().equals("00")){
-            close3(img3);
-        }else{
-            open3(img3);
-        }
+           //展示ip及端口号
+           String strIp;
+           String[] ips;
+           strIp=strings[2];
+           ips=strIp.split(",");
+           etIp1.setText(ips[0]);
+           etPort1.setText(ips[1]);
 
-        //展示ip及端口号
-        String strIp;
-        String[] ips;
-        strIp=strings[2];
-        ips=strIp.split(",");
-        etIp1.setText(ips[0]);
-        etPort1.setText(ips[1]);
+           strIp=strings[3];
+           ips=strIp.split(",");
+           etIp2.setText(ips[0]);
+           etPort2.setText(ips[1]);
 
-        strIp=strings[3];
-        ips=strIp.split(",");
-        etIp2.setText(ips[0]);
-        etPort2.setText(ips[1]);
+           strIp=strings[4];
+           ips=strIp.split(",");
+           etIp3.setText(ips[0]);
+           etPort3.setText(ips[1]);
 
-        strIp=strings[4];
-        ips=strIp.split(",");
-        etIp3.setText(ips[0]);
-        etPort3.setText(ips[1]);
-
-        //显示APN
-        etApn.setText(strings[5]);
+           //显示APN
+           etApn.setText(strings[5]);
+       }catch (Exception e){
+           e.printStackTrace();
+       }
     }
 
     @Override

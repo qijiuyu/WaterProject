@@ -15,6 +15,7 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.water.project.R;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
@@ -61,7 +62,7 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener 
         initView();
         register();//注册广播
         sendData(BleContant.SEND_REAL_TIME_DATA);
-//        showData("GDCURRENT>180812153625L0010.975T028.893B100V05.98CSQ31R-35.452E0098P0010.125B10.009C0011.000C001413.01B001413.00T001413.00R001413.00+0.0200;");
+//        showData("GDCURRENT>180812153625L+0010.9758T+028.8967B100.00C001413.01V05.98CSQ31R+35.45E0098A+0043.5000D01.00000P0010.1256B10.0098C+0011.0000;");
     }
 
     /**
@@ -307,27 +308,45 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener 
                               break;
                          //读取水位偏移量回执
                          case BleContant.SEND_CHECK_ERROR:
-                              SendBleStr.setMS_check(MS_wucha,data);
-                              sendData(BleContant.SET_DATA_CHECK);
+                              new Handler().postDelayed(new Runnable() {
+                                  @Override
+                                  public void run() {
+                                      SendBleStr.setMS_check(MS_wucha,data);
+                                      sendData(BleContant.SET_DATA_CHECK);
+                                  }
+                              },1000);
                               break;
                          //读取水温偏移量回执
                          case BleContant.RED_SHUI_WEN_PYL:
-//                             BuglyUtils.uploadBleMsg("水温偏移量回执："+data);
-                              SendBleStr.setSW_check(SW_wucha,data);
-                              sendData(BleContant.SEND_DATA_SHUI_WEN);
+                             new Handler().postDelayed(new Runnable() {
+                                 @Override
+                                 public void run() {
+                                     SendBleStr.setSW_check(SW_wucha,data);
+                                     sendData(BleContant.SEND_DATA_SHUI_WEN);
+                                 }
+                             },1000);
                               break;
                          //读取电导率偏移量回执
                          case BleContant.RED_DIAN_DAO_LV_PYL:
-//                             BuglyUtils.uploadBleMsg("电导率偏移量回执："+data);
-                              SendBleStr.setDDL_check(DDL_wucha,data);
-                              sendData(BleContant.SEND_DATA_DIAN_DAO_LV);
+                             new Handler().postDelayed(new Runnable() {
+                                 @Override
+                                 public void run() {
+                                     SendBleStr.setDDL_check(DDL_wucha,data);
+                                     sendData(BleContant.SEND_DATA_DIAN_DAO_LV);
+                                 }
+                             },1000);
                               break;
                          //校测成功回执
                          case BleContant.SEND_DATA_SHUI_WEN:
                          case BleContant.SET_DATA_CHECK:
                          case BleContant.SEND_DATA_DIAN_DAO_LV:
                               isCheck=true;
-                              sendData(BleContant.SEND_REAL_TIME_DATA);
+                              new Handler().postDelayed(new Runnable() {
+                                 @Override
+                                 public void run() {
+                                     sendData(BleContant.SEND_REAL_TIME_DATA);
+                                 }
+                             },1000);
                               break;
                      }
                     break;
@@ -351,211 +370,232 @@ public class CheckActivity extends BaseActivity implements View.OnClickListener 
      * 显示数据
      */
     private void showData(String msg){
-//        BuglyUtils.uploadBleMsg("数据校测界面读取的数据是："+msg);
+        try {
+            final int length=msg.length();
+            //显示采集时间
+            msg=msg.replace("GDCURRENT>","");
+            StringBuffer stringBuffer=new StringBuffer("20");
+            stringBuffer.append(msg.substring(0,2)+"-");
+            stringBuffer.append(msg.substring(2,4)+"-");
+            stringBuffer.append(msg.substring(4,6)+" ");
+            stringBuffer.append(msg.substring(6,8)+":");
+            stringBuffer.append(msg.substring(8,10)+":");
+            stringBuffer.append(msg.substring(10,12));
+            tvTime.setText(stringBuffer.toString());
 
-        final int length=msg.length();
-        //显示采集时间
-        msg=msg.replace("GDCURRENT>","");
-        StringBuffer stringBuffer=new StringBuffer("20");
-        stringBuffer.append(msg.substring(0,2)+"-");
-        stringBuffer.append(msg.substring(2,4)+"-");
-        stringBuffer.append(msg.substring(4,6)+" ");
-        stringBuffer.append(msg.substring(6,8)+":");
-        stringBuffer.append(msg.substring(8,10)+":");
-        stringBuffer.append(msg.substring(10,12));
-        tvTime.setText(stringBuffer.toString());
-
-        //显示压力值
-        String YaLi = null;
-        if(length==79){
-            YaLi=msg.substring(43,52).replace("P","");
-        }
-        if(length==88 || length==138){
-            YaLi=msg.substring(52,61).replace("P","");
-        }
-        if(length==91){
-            YaLi=msg.substring(55,64).replace("P","");
-        }
-        if(length==140){
-            if(Util.isInteger(msg.substring(28,29))){
-                YaLi=msg.substring(57,66).replace("P","");
-            }else{
+            //显示压力值
+            String YaLi = null;
+            if(length==79){
+                YaLi=msg.substring(43,52).replace("P","");
+            }
+            if(length==88 || length==138){
+                YaLi=msg.substring(52,61).replace("P","");
+            }
+            if(length==91){
                 YaLi=msg.substring(55,64).replace("P","");
-            }
-        }
-        if(length==93){
-            YaLi=msg.substring(57,66).replace("P","");
-        }
-        if(YaLi.contains("99999999")){
-            tvYaLi.setText(YaLi+"");
-        }else{
-            tvYaLi.setText(Util.setDouble(Double.parseDouble(YaLi),3)+"");
-        }
-
-
-        //显示气压值
-        String QiYa = null;
-        if(length==79){
-            QiYa=msg.substring(52,59).replace("B","");
-        }
-        if(length==88 || length==138){
-            QiYa=msg.substring(61,68).replace("B","");
-        }
-        if(length==91){
-            QiYa=msg.substring(64,71).replace("B","");
-        }
-        if(length==93){
-            QiYa=msg.substring(66,73).replace("B","");
-        }
-        if(length==140){
-            if(Util.isInteger(msg.substring(28,29))){
-                QiYa=msg.substring(66,73).replace("B","");
-            }else{
-                QiYa=msg.substring(64,71).replace("B","");
-            }
-        }
-        if(YaLi.contains("99999999")){
-            tvQiYa.setText(QiYa+"");
-        }else{
-            tvQiYa.setText(Util.setDouble(Double.parseDouble(QiYa),3)+"");
-        }
-
-        //显示水温值
-        String ShuiWen=null;
-        if(length==79 || length==88 || length==138){
-            ShuiWen=msg.substring(20,26).replace("T","");
-        }
-        if(length==91){
-            ShuiWen=msg.substring(21,28).replace("T","");
-        }
-        if(length==93){
-            ShuiWen=msg.substring(21,29).replace("T","");
-        }
-        if(length==140){
-            if(Util.isInteger(msg.substring(28,29))){
-                ShuiWen=msg.substring(21,29).replace("T","");
-            }else{
-                ShuiWen=msg.substring(21,28).replace("T","");
-            }
-        }
-        if(YaLi.contains("99999999")){
-            tvShuiWen.setText(ShuiWen+"℃");
-        }else{
-            tvShuiWen.setText(Util.setDouble(Double.parseDouble(ShuiWen),3)+"℃");
-        }
-
-
-        //显示探头埋深
-        String TanTou=null;
-        if(length==79){
-            TanTou=msg.substring(59,68).replace("C","");
-        }
-        if(length==88 || length==138){
-            TanTou=msg.substring(68,77).replace("C","");
-        }
-        if(length==91){
-            TanTou=msg.substring(71,80).replace("C","");
-        }
-        if(length==93){
-            TanTou=msg.substring(73,82).replace("C","");
-        }
-        if(length==140){
-            if(Util.isInteger(msg.substring(28,29))){
-                TanTou=msg.substring(73,82).replace("C","");
-            }else{
-                TanTou=msg.substring(71,80).replace("C","");
-            }
-        }
-        if(YaLi.contains("99999999")){
-            tvTanTou.setText(TanTou+"m");
-        }else{
-            tvTanTou.setText(Util.setDouble(Double.parseDouble(TanTou),3)+"m");
-        }
-
-
-        //显示水位埋深
-        String MaiShen=null;
-        if(length==91 || length==93 || length==140){
-            MaiShen=msg.substring(12,21).replace("L","");
-        }else{
-            MaiShen=msg.substring(12,20).replace("L","");
-        }
-        if(YaLi.contains("99999999") || MaiShen.equals("FFFF.FFF")){
-            tvShuiWei.setText(MaiShen+"m");
-        }else{
-            tvShuiWei.setText(Util.setDouble(Double.parseDouble(MaiShen),3)+"m");
-        }
-
-
-        //显示电导率
-        if(length==138 || length==140){
-            findViewById(R.id.rel_ddl).setVisibility(View.VISIBLE);
-            String DianDaoLv=null;
-            if(length==138){
-                DianDaoLv=msg.substring(77,87).replace("C","");
             }
             if(length==140){
                 if(Util.isInteger(msg.substring(28,29))){
-                    DianDaoLv=msg.substring(82,92).replace("C","");
+                    YaLi=msg.substring(57,66).replace("P","");
                 }else{
-                    DianDaoLv=msg.substring(80,90).replace("C","");
+                    YaLi=msg.substring(55,64).replace("P","");
                 }
             }
-            tvDianDaoLv.setText(Util.setDouble(Double.parseDouble(DianDaoLv),2)+"uS/cm");
-        }
-
-        //判断是否是数据校验完成
-        if(isCheck){
-            //重新计算水位埋深误差
-            final String etMS= et_MS_check.getText().toString().trim();
-            if(!TextUtils.isEmpty(etMS)){
-                final String strMS=tvShuiWei.getText().toString().trim().replace("m","");
-                //显示误差
-                MS_wucha =Util.sub(Double.parseDouble(strMS),Double.parseDouble(etMS))+"";
-                if(Double.parseDouble(MS_wucha)==0){
-                    tv_MS_wucha.setText("0");
-                }else{
-                    tv_MS_wucha.setText(MS_wucha);
-                }
+            if(length==93){
+                YaLi=msg.substring(57,66).replace("P","");
+            }
+            if(length==133){
+                YaLi=msg.substring(93,103).replace("P","");
+            }
+            if(YaLi.contains("99999999")){
+                tvYaLi.setText(YaLi+"");
+            }else{
+                tvYaLi.setText(Util.setDouble(Double.parseDouble(YaLi),3)+"");
             }
 
 
-            //重新计算水温误差
-            final String etSW= et_SW_check.getText().toString().trim();
-            if(!TextUtils.isEmpty(etSW)){
-                final String strSW=tvShuiWen.getText().toString().trim().replace("℃","");
-                //显示误差
-                SW_wucha =Util.sub(Double.parseDouble(strSW),Double.parseDouble(etSW))+"";
-                if(Double.parseDouble(SW_wucha)==0){
-                    tv_SW_wucha.setText("0");
+            //显示气压值
+            String QiYa = null;
+            if(length==79){
+                QiYa=msg.substring(52,59).replace("B","");
+            }
+            if(length==88 || length==138){
+                QiYa=msg.substring(61,68).replace("B","");
+            }
+            if(length==91){
+                QiYa=msg.substring(64,71).replace("B","");
+            }
+            if(length==93){
+                QiYa=msg.substring(66,73).replace("B","");
+            }
+            if(length==140){
+                if(Util.isInteger(msg.substring(28,29))){
+                    QiYa=msg.substring(66,73).replace("B","");
                 }else{
-                    tv_SW_wucha.setText(SW_wucha);
+                    QiYa=msg.substring(64,71).replace("B","");
                 }
+            }
+            if(length==133){
+                QiYa=msg.substring(103,110).replace("B","");
+            }
+            if(YaLi.contains("99999999")){
+                tvQiYa.setText(QiYa+"");
+            }else{
+                tvQiYa.setText(Util.setDouble(Double.parseDouble(QiYa),3)+"");
+            }
+
+            //显示水温值
+            String ShuiWen=null;
+            if(length==79 || length==88 || length==138){
+                ShuiWen=msg.substring(20,26).replace("T","");
+            }
+            if(length==91){
+                ShuiWen=msg.substring(21,28).replace("T","");
+            }
+            if(length==93){
+                ShuiWen=msg.substring(21,29).replace("T","");
+            }
+            if(length==140){
+                if(Util.isInteger(msg.substring(28,29))){
+                    ShuiWen=msg.substring(21,29).replace("T","");
+                }else{
+                    ShuiWen=msg.substring(21,28).replace("T","");
+                }
+            }
+            if(length==133){
+                ShuiWen=msg.substring(24,33).replace("T","");
+            }
+            if(YaLi.contains("99999999")){
+                tvShuiWen.setText(ShuiWen+"℃");
+            }else{
+                tvShuiWen.setText(Util.setDouble(Double.parseDouble(ShuiWen),3)+"℃");
             }
 
 
-
-            //重新计算电导率误差
-            final String etDDL= et_DDL_check.getText().toString().trim();
-            if(!TextUtils.isEmpty(etDDL)){
-                final String strDDL=tvDianDaoLv.getText().toString().trim().replace("uS/cm","");
-                //显示误差
-                DDL_wucha =Util.sub(Double.parseDouble(strDDL),Double.parseDouble(etDDL))+"";
-                if(Double.parseDouble(DDL_wucha)==0){
-                    tv_DDL_wucha.setText("0");
+            //显示探头埋深
+            String TanTou=null;
+            if(length==79){
+                TanTou=msg.substring(59,68).replace("C","");
+            }
+            if(length==88 || length==138){
+                TanTou=msg.substring(68,77).replace("C","");
+            }
+            if(length==91){
+                TanTou=msg.substring(71,80).replace("C","");
+            }
+            if(length==93){
+                TanTou=msg.substring(73,82).replace("C","");
+            }
+            if(length==140){
+                if(Util.isInteger(msg.substring(28,29))){
+                    TanTou=msg.substring(73,82).replace("C","");
                 }else{
-                    tv_DDL_wucha.setText(DDL_wucha);
+                    TanTou=msg.substring(71,80).replace("C","");
                 }
+            }
+            if(length==133){
+                TanTou=msg.substring(111,122).replace("C","");
+            }
+            if(YaLi.contains("99999999")){
+                tvTanTou.setText(TanTou+"m");
+            }else{
+                tvTanTou.setText(Util.setDouble(Double.parseDouble(TanTou),3)+"m");
             }
 
 
-            dialogView = new DialogView(mContext, "数据校验完成！", "确认",null, new View.OnClickListener() {
-                public void onClick(View v) {
-                    dialogView.dismiss();
-                }
-            }, null);
-            dialogView.show();
+            //显示水位埋深
+            String MaiShen=null;
+            if(length==91 || length==93 || length==140){
+                MaiShen=msg.substring(12,21).replace("L","");
+            }
+            if(length==79 || length==88 || length==138){
+                MaiShen=msg.substring(12,20).replace("L","");
+            }
+            if(length==133){
+                MaiShen=msg.substring(13,23).replace("L","");
+            }
+            if(YaLi.contains("99999999") || MaiShen.equals("FFFF.FFF")){
+                tvShuiWei.setText(MaiShen+"m");
+            }else{
+                tvShuiWei.setText(Util.setDouble(Double.parseDouble(MaiShen),3)+"m");
+            }
 
+
+            //显示电导率
+            if(length==138 || length==140 || length==133){
+                findViewById(R.id.rel_ddl).setVisibility(View.VISIBLE);
+                String DianDaoLv=null;
+                if(length==138){
+                    DianDaoLv=msg.substring(77,87).replace("C","");
+                }
+                if(length==140){
+                    if(Util.isInteger(msg.substring(28,29))){
+                        DianDaoLv=msg.substring(82,92).replace("C","");
+                    }else{
+                        DianDaoLv=msg.substring(80,90).replace("C","");
+                    }
+                }
+                if(length==133){
+                    DianDaoLv=msg.substring(40,50).replace("C","");
+                }
+                tvDianDaoLv.setText(Util.setDouble(Double.parseDouble(DianDaoLv),2)+"uS/cm");
+            }
+
+            //判断是否是数据校验完成
+            if(isCheck){
+                //重新计算水位埋深误差
+                final String etMS= et_MS_check.getText().toString().trim();
+                if(!TextUtils.isEmpty(etMS)){
+                    final String strMS=tvShuiWei.getText().toString().trim().replace("m","");
+                    //显示误差
+                    MS_wucha =Util.sub(Double.parseDouble(strMS),Double.parseDouble(etMS))+"";
+                    if(Double.parseDouble(MS_wucha)==0){
+                        tv_MS_wucha.setText("0");
+                    }else{
+                        tv_MS_wucha.setText(MS_wucha);
+                    }
+                }
+
+
+                //重新计算水温误差
+                final String etSW= et_SW_check.getText().toString().trim();
+                if(!TextUtils.isEmpty(etSW)){
+                    final String strSW=tvShuiWen.getText().toString().trim().replace("℃","");
+                    //显示误差
+                    SW_wucha =Util.sub(Double.parseDouble(strSW),Double.parseDouble(etSW))+"";
+                    if(Double.parseDouble(SW_wucha)==0){
+                        tv_SW_wucha.setText("0");
+                    }else{
+                        tv_SW_wucha.setText(SW_wucha);
+                    }
+                }
+
+
+
+                //重新计算电导率误差
+                final String etDDL= et_DDL_check.getText().toString().trim();
+                if(!TextUtils.isEmpty(etDDL)){
+                    final String strDDL=tvDianDaoLv.getText().toString().trim().replace("uS/cm","");
+                    //显示误差
+                    DDL_wucha =Util.sub(Double.parseDouble(strDDL),Double.parseDouble(etDDL))+"";
+                    if(Double.parseDouble(DDL_wucha)==0){
+                        tv_DDL_wucha.setText("0");
+                    }else{
+                        tv_DDL_wucha.setText(DDL_wucha);
+                    }
+                }
+
+
+                dialogView = new DialogView(mContext, "数据校验完成！", "确认",null, new View.OnClickListener() {
+                    public void onClick(View v) {
+                        dialogView.dismiss();
+                    }
+                }, null);
+                dialogView.show();
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

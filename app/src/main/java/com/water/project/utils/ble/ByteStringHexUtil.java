@@ -28,18 +28,21 @@ public class ByteStringHexUtil {
     /**
      * 16进制字符串转16进制byte[]
      *
-     * @param hex
      * @return
      */
-    public static byte[] hexStringToByte(String hex) {
-        int len = (hex.length() / 2);
-        byte[] result = new byte[len];
-        char[] achar = hex.toCharArray();
-        for (int i = 0; i < len; i++) {
-            int pos = i * 2;
-            result[i] = (byte) (toByte(achar[pos]) << 4 | toByte(achar[pos + 1]));
+    public static byte[] hexStringToByte(String hexString) {
+        if (hexString == null || hexString.equals("")) {
+            return null;
         }
-        return result;
+        hexString = hexString.toUpperCase();
+        int length = hexString.length() / 2;
+        char[] hexChars = hexString.toCharArray();
+        byte[] d = new byte[length];
+        for (int i = 0; i < length; i++) {
+            int pos = i * 2;
+            d[i] = (byte) (toByte(hexChars[pos]) << 4 | toByte(hexChars[pos + 1]));
+        }
+        return d;
     }
 
     private static int toByte(char c) {

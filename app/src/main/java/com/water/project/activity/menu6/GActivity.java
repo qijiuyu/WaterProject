@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.view.KeyEvent;
@@ -23,13 +24,16 @@ import com.water.project.bean.eventbus.EventType;
 import com.water.project.presenter.SendDataPersenter;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
+import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -54,6 +58,7 @@ public class GActivity extends BaseActivity {
     //下发命令的编号
     private int SEND_STATUS;
     private DialogView dialogView;
+    private Handler handler=new Handler();
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -83,7 +88,7 @@ public class GActivity extends BaseActivity {
                 break;
             //发送命令
             case R.id.tv_send:
-                dialogView = new DialogView(this, "确定发送数据吗！", "确定", "取消", new View.OnClickListener() {
+                dialogView = new DialogView(dialogView,this, "确定发送数据吗！", "确定", "取消", new View.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
                     public void onClick(View v) {
                         dialogView.dismiss();
@@ -166,6 +171,11 @@ public class GActivity extends BaseActivity {
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
                     DialogUtils.closeProgress();
+                    //关掉一分钟的计时
+                    handler.removeCallbacks(runnable);
+                    //开启一分钟计时器
+                    handler.postDelayed(runnable,60*1000);
+
                     final String data = intent.getStringExtra(BleService.ACTION_EXTRA_DATA).replace(">OK","");
                     showData(data);
                     break;
@@ -185,6 +195,16 @@ public class GActivity extends BaseActivity {
                 default:
                     break;
             }
+        }
+    };
+
+
+    /**
+     * 判断是否超时
+     */
+    private Runnable runnable=new Runnable() {
+        public void run() {
+            isSend = false;
         }
     };
 
@@ -286,25 +306,32 @@ public class GActivity extends BaseActivity {
      * @param data
      */
     private String getPercentage(String data) {
+        BuglyUtils.uploadBleMsg("设备当前的数据是："+data);
         String[] strs = data.split("\\.");
-        if (strs == null && strs.length == 1) {
-            return null;
-        }
-        final int num = Integer.parseInt(strs[1]);
-        if (num >= 0 && num <= 20) {
-            return strs[1] + "%(很弱)";
-        }
-        if (num >= 21 && num <= 31) {
-            return strs[1] + "%(较弱)";
-        }
-        if (num >= 32 && num <= 45) {
-            return strs[1] + "%(偏弱)";
-        }
-        if (num >= 46 && num <= 58) {
-            return strs[1] + "%(一般)";
-        }
-        if (num >= 59 && num <= 69) {
-            return strs[1] + "%(良好)";
+        try {
+            if (strs == null && strs.length == 1) {
+                return null;
+            }
+            final int num = Integer.parseInt(strs[1]);
+            if (num >= 0 && num <= 20) {
+                return strs[1] + "%(很弱)";
+            }
+            if (num >= 21 && num <= 31) {
+                return strs[1] + "%(较弱)";
+            }
+            if (num >= 32 && num <= 45) {
+                return strs[1] + "%(偏弱)";
+            }
+            if (num >= 46 && num <= 58) {
+                return strs[1] + "%(一般)";
+            }
+            if (num >= 59 && num <= 69) {
+                return strs[1] + "%(良好)";
+            }
+        }catch (Exception e){
+            BuglyUtils.uploadBleMsg("崩溃的数据是："+data);
+            e.printStackTrace();
+
         }
         return strs[1] + "%(较好)";
     }

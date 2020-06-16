@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -20,12 +19,8 @@ import com.water.project.presenter.GetDataPresenter;
 import com.water.project.presenter.GetDataPresenterImpl;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
-import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.DialogUtils;
-import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
-import com.water.project.utils.StatusBarUtils;
-import com.water.project.utils.SystemBarTintManager;
 import com.water.project.utils.Util;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
@@ -226,210 +221,212 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
      * 展示数据
      */
     private void showData(String msg){
-        BuglyUtils.uploadBleMsg("实时数据界面读取的数据是："+msg);
+       try {
+           final int length=msg.length();
+           //显示采集时间
+           msg=msg.replace("GDCURRENT>","");
+           StringBuffer stringBuffer=new StringBuffer("20");
+           stringBuffer.append(msg.substring(0,2)+"-");
+           stringBuffer.append(msg.substring(2,4)+"-");
+           stringBuffer.append(msg.substring(4,6)+" ");
+           stringBuffer.append(msg.substring(6,8)+":");
+           stringBuffer.append(msg.substring(8,10)+":");
+           stringBuffer.append(msg.substring(10,12));
+           tvCJTime.setText(stringBuffer.toString());
 
-        final int length=msg.length();
-        //显示采集时间
-        msg=msg.replace("GDCURRENT>","");
-        StringBuffer stringBuffer=new StringBuffer("20");
-        stringBuffer.append(msg.substring(0,2)+"-");
-        stringBuffer.append(msg.substring(2,4)+"-");
-        stringBuffer.append(msg.substring(4,6)+" ");
-        stringBuffer.append(msg.substring(6,8)+":");
-        stringBuffer.append(msg.substring(8,10)+":");
-        stringBuffer.append(msg.substring(10,12));
-        tvCJTime.setText(stringBuffer.toString());
+           //显示压力值
+           String YaLi = null;
+           if(length==79){
+               YaLi=msg.substring(43,52).replace("P","");
+           }
+           if(length==88 || length==138){
+               YaLi=msg.substring(52,61).replace("P","");
+           }
+           if(length==91){
+               YaLi=msg.substring(55,64).replace("P","");
+           }
+           if(length==140){
+               if(Util.isInteger(msg.substring(28,29))){
+                   YaLi=msg.substring(57,66).replace("P","");
+               }else{
+                   YaLi=msg.substring(55,64).replace("P","");
+               }
+           }
+           if(length==93){
+               YaLi=msg.substring(57,66).replace("P","");
+           }
+           if(length==133){
+               YaLi=msg.substring(93,103).replace("P","");
+           }
 
-        //显示压力值
-        String YaLi = null;
-        if(length==79){
-            YaLi=msg.substring(43,52).replace("P","");
-        }
-        if(length==88 || length==138){
-            YaLi=msg.substring(52,61).replace("P","");
-        }
-        if(length==91){
-            YaLi=msg.substring(55,64).replace("P","");
-        }
-        if(length==140){
-            if(Util.isInteger(msg.substring(28,29))){
-                YaLi=msg.substring(57,66).replace("P","");
-            }else{
-                YaLi=msg.substring(55,64).replace("P","");
-            }
-        }
-        if(length==93){
-            YaLi=msg.substring(57,66).replace("P","");
-        }
-        if(length==133){
-            YaLi=msg.substring(93,103).replace("P","");
-        }
+           if(YaLi.contains("99999999")){
+               tvYaLi.setText(YaLi+"");
+           }else{
+               tvYaLi.setText(Util.setDouble(Double.parseDouble(YaLi),3)+"");
+           }
 
-        if(YaLi.contains("99999999")){
-            tvYaLi.setText(YaLi+"");
-        }else{
-            tvYaLi.setText(Util.setDouble(Double.parseDouble(YaLi),3)+"");
-        }
+           //显示水位埋深
+           String MaiShen=null;
+           if(length==91 || length==93 || length==140){
+               MaiShen=msg.substring(12,21).replace("L","");
+           }
+           if(length==79 || length==88 || length==138){
+               MaiShen=msg.substring(12,20).replace("L","");
+           }
+           if(length==133){
+               MaiShen=msg.substring(13,23).replace("L","");
+           }
+           if(YaLi.contains("99999999") || MaiShen.equals("FFFF.FFF")){
+               tvMaiShen.setText(MaiShen+"m");
+           }else{
+               tvMaiShen.setText(Util.setDouble(Double.parseDouble(MaiShen),3)+"m");
+           }
 
-        //显示水位埋深
-        String MaiShen=null;
-        if(length==91 || length==93 || length==140){
-            MaiShen=msg.substring(12,21).replace("L","");
-        }
-        if(length==79 || length==88 || length==138){
-            MaiShen=msg.substring(12,20).replace("L","");
-        }
-        if(length==133){
-            MaiShen=msg.substring(13,23).replace("L","");
-        }
-        if(YaLi.contains("99999999") || MaiShen.equals("FFFF.FFF")){
-            tvMaiShen.setText(MaiShen+"m");
-        }else{
-            tvMaiShen.setText(Util.setDouble(Double.parseDouble(MaiShen),3)+"m");
-        }
+           //显示气压值
+           String QiYa = null;
+           if(length==79){
+               QiYa=msg.substring(52,59).replace("B","");
+           }
+           if(length==88 || length==138){
+               QiYa=msg.substring(61,68).replace("B","");
+           }
+           if(length==91){
+               QiYa=msg.substring(64,71).replace("B","");
+           }
+           if(length==93){
+               QiYa=msg.substring(66,73).replace("B","");
+           }
+           if(length==140){
+               if(Util.isInteger(msg.substring(28,29))){
+                   QiYa=msg.substring(66,73).replace("B","");
+               }else{
+                   QiYa=msg.substring(64,71).replace("B","");
+               }
+           }
+           if(length==133){
+               QiYa=msg.substring(103,110).replace("B","");
+           }
+           if(YaLi.contains("99999999")){
+               tvQiYa.setText(QiYa+"");
+           }else{
+               tvQiYa.setText(Util.setDouble(Double.parseDouble(QiYa),3)+"");
+           }
 
-        //显示气压值
-        String QiYa = null;
-        if(length==79){
-            QiYa=msg.substring(52,59).replace("B","");
-        }
-        if(length==88 || length==138){
-            QiYa=msg.substring(61,68).replace("B","");
-        }
-        if(length==91){
-            QiYa=msg.substring(64,71).replace("B","");
-        }
-        if(length==93){
-            QiYa=msg.substring(66,73).replace("B","");
-        }
-        if(length==140){
-            if(Util.isInteger(msg.substring(28,29))){
-                QiYa=msg.substring(66,73).replace("B","");
-            }else{
-                QiYa=msg.substring(64,71).replace("B","");
-            }
-        }
-        if(length==133){
-            QiYa=msg.substring(103,110).replace("B","");
-        }
-        if(YaLi.contains("99999999")){
-            tvQiYa.setText(QiYa+"");
-        }else{
-            tvQiYa.setText(Util.setDouble(Double.parseDouble(QiYa),3)+"");
-        }
+           //显示水温值
+           String ShuiWen=null;
+           if(length==79 || length==88 || length==138){
+               ShuiWen=msg.substring(20,26).replace("T","");
+           }
+           if(length==91){
+               ShuiWen=msg.substring(21,28).replace("T","");
+           }
+           if(length==93){
+               ShuiWen=msg.substring(21,29).replace("T","");
+           }
+           if(length==140){
+               if(Util.isInteger(msg.substring(28,29))){
+                   ShuiWen=msg.substring(21,29).replace("T","");
+               }else{
+                   ShuiWen=msg.substring(21,28).replace("T","");
+               }
+           }
+           if(length==133){
+               ShuiWen=msg.substring(24,33).replace("T","");
+           }
+           if(YaLi.contains("99999999")){
+               tvShuiWen.setText(ShuiWen+"℃");
+           }else{
+               tvShuiWen.setText(Util.setDouble(Double.parseDouble(ShuiWen),4)+"℃");
+           }
 
-        //显示水温值
-        String ShuiWen=null;
-        if(length==79 || length==88 || length==138){
-            ShuiWen=msg.substring(20,26).replace("T","");
-        }
-        if(length==91){
-            ShuiWen=msg.substring(21,28).replace("T","");
-        }
-        if(length==93){
-            ShuiWen=msg.substring(21,29).replace("T","");
-        }
-        if(length==140){
-            if(Util.isInteger(msg.substring(28,29))){
-                ShuiWen=msg.substring(21,29).replace("T","");
-            }else{
-                ShuiWen=msg.substring(21,28).replace("T","");
-            }
-        }
-        if(length==133){
-            ShuiWen=msg.substring(24,33).replace("T","");
-        }
-        if(YaLi.contains("99999999")){
-            tvShuiWen.setText(ShuiWen+"℃");
-        }else{
-            tvShuiWen.setText(Util.setDouble(Double.parseDouble(ShuiWen),4)+"℃");
-        }
+           //显示气温值
+           String QiWen=null;
+           if(length==79){
+               QiWen=msg.substring(37,43).replace("R","");
+           }
+           if(length==88 || length==138){
+               QiWen=msg.substring(41,47).replace("R","");
+           }
+           if(length==91){
+               QiWen=msg.substring(43,50).replace("R","");
+           }
+           if(length==93){
+               QiWen=msg.substring(44,52).replace("R","");
+           }
+           if(length==140){
+               if(Util.isInteger(msg.substring(28,29))){
+                   QiWen=msg.substring(44,52).replace("R","");
+               }else{
+                   QiWen=msg.substring(43,50).replace("R","");
+               }
+           }
+           if(length==133){
+               QiWen=msg.substring(61,68).replace("R","");
+           }
+           if(YaLi.contains("99999999")){
+               tvQiWen.setText(QiWen+"℃");
+           }else{
+               tvQiWen.setText(Util.setDouble(Double.parseDouble(QiWen),3)+"℃");
+           }
 
-        //显示气温值
-        String QiWen=null;
-        if(length==79){
-            QiWen=msg.substring(37,43).replace("R","");
-        }
-        if(length==88 || length==138){
-            QiWen=msg.substring(41,47).replace("R","");
-        }
-        if(length==91){
-            QiWen=msg.substring(43,50).replace("R","");
-        }
-        if(length==93){
-            QiWen=msg.substring(44,52).replace("R","");
-        }
-        if(length==140){
-            if(Util.isInteger(msg.substring(28,29))){
-                QiWen=msg.substring(44,52).replace("R","");
-            }else{
-                QiWen=msg.substring(43,50).replace("R","");
-            }
-        }
-        if(length==133){
-            QiWen=msg.substring(61,68).replace("R","");
-        }
-        if(YaLi.contains("99999999")){
-            tvQiWen.setText(QiWen+"℃");
-        }else{
-            tvQiWen.setText(Util.setDouble(Double.parseDouble(QiWen),3)+"℃");
-        }
-
-        //显示电压值
-        String DianYa=null;
-        if(length==79){
-            DianYa=msg.substring(26,32).replace("V","");
-        }
-        if(length==88 || length==138){
-            DianYa=msg.substring(30,36).replace("V","");
-        }
-        if(length==91){
-            DianYa=msg.substring(32,38).replace("V","");
-        }
-        if(length==93){
-            DianYa=msg.substring(33,39).replace("V","");
-        }
-        if(length==140){
-            if(Util.isInteger(msg.substring(28,29))){
-                DianYa=msg.substring(33,39).replace("V","");
-            }else{
-                DianYa=msg.substring(32,38).replace("V","");
-            }
-        }
-        if(length==133){
-            DianYa=msg.substring(50,56).replace("V","");
-        }
-        if(YaLi.contains("99999999")){
-            tvDianYa.setText(DianYa+"V");
-        }else{
-            tvDianYa.setText(Util.setDouble(Double.parseDouble(DianYa),1)+"V");
-        }
-
-
-        //显示电导率
-        if(length==138 || length==140 || length==133){
-            findViewById(R.id.rel_ddl).setVisibility(View.VISIBLE);
-            String DianDaoLv=null;
-            if(length==138){
-                DianDaoLv=msg.substring(77,87).replace("C","");
-            }
-            if(length==140){
-                if(Util.isInteger(msg.substring(28,29))){
-                    DianDaoLv=msg.substring(82,92).replace("C","");
-                }else{
-                    DianDaoLv=msg.substring(80,90).replace("C","");
-                }
-            }
-            if(length==133){
-                DianDaoLv=msg.substring(40,50).replace("C","");
-            }
-            tvDianDaoLv.setText(DianDaoLv+"uS/cm");
-        }
+           //显示电压值
+           String DianYa=null;
+           if(length==79){
+               DianYa=msg.substring(26,32).replace("V","");
+           }
+           if(length==88 || length==138){
+               DianYa=msg.substring(30,36).replace("V","");
+           }
+           if(length==91){
+               DianYa=msg.substring(32,38).replace("V","");
+           }
+           if(length==93){
+               DianYa=msg.substring(33,39).replace("V","");
+           }
+           if(length==140){
+               if(Util.isInteger(msg.substring(28,29))){
+                   DianYa=msg.substring(33,39).replace("V","");
+               }else{
+                   DianYa=msg.substring(32,38).replace("V","");
+               }
+           }
+           if(length==133){
+               DianYa=msg.substring(50,56).replace("V","");
+           }
+           if(YaLi.contains("99999999")){
+               tvDianYa.setText(DianYa+"V");
+           }else{
+               tvDianYa.setText(Util.setDouble(Double.parseDouble(DianYa),1)+"V");
+           }
 
 
-        updateData(1);
-        updateData(2);
-        updateData(3);
+           //显示电导率
+           if(length==138 || length==140 || length==133){
+               findViewById(R.id.rel_ddl).setVisibility(View.VISIBLE);
+               String DianDaoLv=null;
+               if(length==138){
+                   DianDaoLv=msg.substring(77,87).replace("C","");
+               }
+               if(length==140){
+                   if(Util.isInteger(msg.substring(28,29))){
+                       DianDaoLv=msg.substring(82,92).replace("C","");
+                   }else{
+                       DianDaoLv=msg.substring(80,90).replace("C","");
+                   }
+               }
+               if(length==133){
+                   DianDaoLv=msg.substring(40,50).replace("C","");
+               }
+               tvDianDaoLv.setText(DianDaoLv+"uS/cm");
+           }
+
+
+           updateData(1);
+           updateData(2);
+           updateData(3);
+       }catch (Exception e){
+           e.printStackTrace();
+       }
     }
 
 

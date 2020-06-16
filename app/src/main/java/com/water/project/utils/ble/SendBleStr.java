@@ -114,6 +114,9 @@ public class SendBleStr {
     //读取设备北斗信号强度
     public static String RED_BEI_DOU_XIN_HAO_QIANG_DU="GDBDSQ";
 
+    //读取本地的txt文档数据，下发给设备
+    public static String SEND_TXT_CONTENT;
+
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
         StringBuffer stringBuffer=new StringBuffer();
@@ -324,6 +327,8 @@ public class SendBleStr {
             stringBuffer.append("0");
         }
         SET_DATA_CHECK=stringBuffer.toString();
+
+        BuglyUtils.uploadBleMsg("水位校测后发的命令："+SET_DATA_CHECK);
     }
 
 
@@ -347,7 +352,7 @@ public class SendBleStr {
         result=result.replace("-","");
         final int index=result.indexOf(".");
         //判断小数点前面几位
-        for(int i=0;i<2-index;i++){
+        for(int i=0;i<3-index;i++){
             stringBuffer.append("0");
         }
         stringBuffer.append(result);
@@ -357,7 +362,8 @@ public class SendBleStr {
             stringBuffer.append("0");
         }
         SEND_DATA_SHUI_WEN=stringBuffer.toString();
-        LogUtils.e("_____"+SEND_DATA_SHUI_WEN);
+
+        BuglyUtils.uploadBleMsg("水温校测后发的命令："+SEND_DATA_SHUI_WEN);
     }
 
 
@@ -391,6 +397,8 @@ public class SendBleStr {
             stringBuffer.append("0");
         }
         SEND_DATA_DIAN_DAO_LV=stringBuffer.toString();
+
+        BuglyUtils.uploadBleMsg("电导率校测后发的命令："+SEND_DATA_DIAN_DAO_LV);
     }
 
 
@@ -469,9 +477,17 @@ public class SendBleStr {
             mobile3=append(11,mobile3);
         }
         SET_CENTER_MOBILE=stringBuffer.toString().replace(oldEditData,"CEN"+mobile1+","+mobile2+","+mobile3);
-        LogUtils.e(SET_CENTER_MOBILE+"+++++++++++++=");
 
         BuglyUtils.uploadBleMsg("设置的北斗中心号码是："+SET_CENTER_MOBILE);
+    }
+
+
+    /**
+     * 读取本地的txt文档内容发送设备
+     */
+    public static void sendTxtContent(String head,String content){
+        SEND_TXT_CONTENT=head+content;
+        LogUtils.e(SEND_TXT_CONTENT+"+++++++++++++++++++a");
     }
 
 
@@ -623,6 +639,10 @@ public class SendBleStr {
             case BleContant.RED_BEI_DOU_XIN_HAO_QIANG_DU:
                   SendBleDataManager.getInstance().sendData(RED_BEI_DOU_XIN_HAO_QIANG_DU);
                   break;
+            //读取本地的txt文档数据，下发给设备
+            case BleContant.SEND_TXT_CONTENT:
+                SendBleDataManager.getInstance().sendData(SEND_TXT_CONTENT);
+                break;
              default:
                  break;
 

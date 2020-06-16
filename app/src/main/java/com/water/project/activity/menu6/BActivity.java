@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.view.Window;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.water.project.R;
@@ -59,6 +60,8 @@ public class BActivity extends BaseActivity {
     TextView tvDianYa;
     @BindView(R.id.tv_list)
     TextView tvList;
+    @BindView(R.id.scrollView)
+    ScrollView scrollView;
     //MVP对象
     private SendDataPersenter sendDataPersenter;
     //下发命令的编号
@@ -178,28 +181,37 @@ public class BActivity extends BaseActivity {
                     DialogUtils.closeProgress();
                     String data = intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
 
-                    //延时60秒后
-                    if(SEND_STATUS==BleContant.BEI_DOU_FANG_SHI_SEND_DATA){
-                        startTime();
-                    }
-
-                    if(data.endsWith(">ERR")){
-                        dialogView = new DialogView(dialogView,BActivity.this, "北斗通讯部分出现故障，请联系维护人员!","好的", null, null, null);
-                        dialogView.show();
-                    }else{
-                        data=data.replace("GDBDSQ","").replace(">OK", "");
-                        //显示信号列表
-                        tvList.setVisibility(View.VISIBLE);
-                        String[] strs=data.split(",");
-                        BAdapter bAdapter=new BAdapter(BActivity.this,strs);
-                        listView.setAdapter(bAdapter);
-                        //显示电压值
-
-                        String strDy=strs[strs.length-1];
-                        if(strDy.indexOf("V")!=-1){
-                            String[] dianya=strDy.split("V");
-                            tvDianYa.setText("发送数据成功，北斗通讯部分电压值："+dianya[1]+"V\n请联系接收中心查看数据");
+                    try {
+                        //延时60秒后
+                        if(SEND_STATUS==BleContant.BEI_DOU_FANG_SHI_SEND_DATA){
+                            startTime();
                         }
+
+                        if(data.endsWith(">ERR")){
+                            dialogView = new DialogView(dialogView,BActivity.this, "北斗通讯部分出现故障，请联系维护人员!","好的", null, null, null);
+                            dialogView.show();
+                        }else{
+                            data=data.replace("GDBDSQ","").replace(">OK", "");
+                            //显示信号列表
+                            tvList.setVisibility(View.VISIBLE);
+                            String[] strs=data.split(",");
+                            BAdapter bAdapter=new BAdapter(BActivity.this,strs);
+                            listView.setAdapter(bAdapter);
+                            //显示电压值
+
+                            String strDy=strs[strs.length-1];
+                            if(strDy.indexOf("V")!=-1){
+                                String[] dianya=strDy.split("V");
+                                tvDianYa.setText("发送数据成功，北斗通讯部分电压值："+dianya[1]+"V\n请联系接收中心查看数据");
+                            }
+                            handler.postDelayed(new Runnable() {
+                                public void run() {
+                                    scrollView.scrollTo(0,0);
+                                }
+                            },500);
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
                     }
                     break;
                 case BleService.ACTION_INTERACTION_TIMEOUT:
@@ -284,6 +296,7 @@ public class BActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
         unregisterReceiver(mBroadcastReceiver);
         if(mTimer!=null){
+            mTimer.cancel();
             mTimer.purge();
             mTimer=null;
         }

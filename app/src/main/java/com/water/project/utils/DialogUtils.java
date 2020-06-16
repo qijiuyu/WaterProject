@@ -1,21 +1,25 @@
 package com.water.project.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.water.project.R;
 import com.water.project.bean.eventbus.EventStatus;
 import com.water.project.bean.eventbus.EventType;
-import com.water.project.utils.SelectTimeUtils;
 import com.water.project.view.CycleWheelView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -176,12 +180,48 @@ public class DialogUtils {
 
 
     /**
+     * loding弹框
+     */
+    public static void showProgress2(Activity activity, String message) {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.setMessage(message);
+            return;
+        }
+        progressDialog = new ProgressDialog(activity);
+        progressDialog.setMessage(message);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+    }
+
+
+    /**
      * 取消进度条
      */
     public static void closeProgress() {
         if (progressDialog != null && progressDialog.isShowing()){
             progressDialog.dismiss();
         }
+    }
+
+
+    /**
+     * 屏幕底部弹框
+     */
+    @SuppressLint("WrongConstant")
+    public static PopupWindow showPopWindow(View view){
+        PopupWindow mPopuwindow = new PopupWindow(view,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        ColorDrawable cd = new ColorDrawable();
+        mPopuwindow.setBackgroundDrawable(cd);
+        mPopuwindow.setOutsideTouchable(true);
+        mPopuwindow.setFocusable(true);
+        mPopuwindow.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);
+        mPopuwindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        //mPopuwindow.showAtLocation(activity.getWindow().getDecorView(), Gravity.BOTTOM, 0,0);
+        //mPopuwindow.showAsDropDown(view2);
+        return mPopuwindow;
     }
 
 }
