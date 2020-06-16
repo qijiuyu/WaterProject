@@ -200,18 +200,17 @@ public class GetRecordActivity extends BaseActivity {
                                  persenter.showDialogRed3(red1);
                                  break;
                             case BleContant.RED_DEVICE_DATA_BY_TIME:
-                                 if(data.length()>256){
-                                    data=data.substring(18,data.length()-8);
-                                 }
+                                 data=data.replace("GDRECORDC","").replace(">OK","");
+
                                 //如果长度不够就重新发送
-                                if(data.length()%256!=0){
+                                if(data.length()%123!=0){
                                     if(isResumeRed){
                                         isResumeRed=false;
                                         sendData(BleContant.RED_DEVICE_DATA_BY_TIME);
                                     }else{
                                         //关闭读取时的进度框
                                         persenter.closeTripDialog();
-                                        dialogView = new DialogView(dialogView,GetRecordActivity.this, "读取到的数据长度不是128的倍数","知道了",null, new View.OnClickListener() {
+                                        dialogView = new DialogView(dialogView,GetRecordActivity.this, "读取到的数据长度不是123的倍数","知道了",null, new View.OnClickListener() {
                                             public void onClick(View v) {
                                                 isResumeRed=true;
                                                 dialogView.dismiss();
@@ -226,7 +225,7 @@ public class GetRecordActivity extends BaseActivity {
                                 red3.append(data);
 
                                 if(persenter.setRed3Cmd()){
-                                    sendData(BleContant.RED_DEVICE_DATA_BY_TIME);
+                                    isResumeRed=true;
                                 }else{
                                     DialogUtils.closeProgress();
                                     persenter.showRedComplete(red3.toString());

@@ -117,6 +117,9 @@ public class SendBleStr {
     //读取本地的txt文档数据，下发给设备
     public static String SEND_TXT_CONTENT;
 
+    //根据时间段读取设备里面的数据
+    public static String RED_DEVICE_DATA_BY_TIME2;
+
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
         StringBuffer stringBuffer=new StringBuffer();
@@ -492,6 +495,18 @@ public class SendBleStr {
 
 
     /**
+     *设置根据时间段读取设备里面的数据
+     */
+    public static void redDeviceByTime2(String startTime,String endTime){
+        if(TextUtils.isEmpty(startTime) || TextUtils.isEmpty(endTime)){
+            ToastUtil.showLong("读取的时间段有误");
+            return;
+        }
+        RED_DEVICE_DATA_BY_TIME2="GDRECORDC"+startTime.substring(2,startTime.length())+","+endTime.substring(2,endTime.length());
+    }
+
+
+    /**
      * 数据不够，用0补齐
      */
     public static String append(int num,String data){
@@ -643,6 +658,9 @@ public class SendBleStr {
             case BleContant.SEND_TXT_CONTENT:
                 SendBleDataManager.getInstance().sendData(SEND_TXT_CONTENT);
                 break;
+            case BleContant.RED_DEVICE_DATA_BY_TIME2:
+                 SendBleDataManager.getInstance().sendData(RED_DEVICE_DATA_BY_TIME2);
+                 break;
              default:
                  break;
 

@@ -109,4 +109,7 @@ public class BleContant {
 
     //读取本地的txt文档数据，下发给设备
     public static final int SEND_TXT_CONTENT=1032;
+
+    //发送根据时间段读取设备里面的数据
+    public static final int RED_DEVICE_DATA_BY_TIME2=1033;
 }

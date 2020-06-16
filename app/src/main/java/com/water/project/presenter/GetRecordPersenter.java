@@ -105,7 +105,7 @@ public class GetRecordPersenter {
                  * 组装第三条命令，并下发
                  */
                 setRed3Cmd();
-                activity.sendData(BleContant.RED_DEVICE_DATA_BY_TIME);
+
                 //展示读取数据时的提示框
                 showTripDialog();
             }
@@ -143,10 +143,13 @@ public class GetRecordPersenter {
             }
 
             //设置根据时间段读取设备里面的数据
-            SendBleStr.redDeviceByTime(redStart,redEnd);
+            SendBleStr.redDeviceByTime2(redStart,redEnd);
         }catch (Exception e){
             e.printStackTrace();
         }
+
+        //下发命令
+        activity.sendData(BleContant.RED_DEVICE_DATA_BY_TIME2);
         return true;
     }
 
