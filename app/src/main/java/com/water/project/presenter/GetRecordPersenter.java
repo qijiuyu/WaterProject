@@ -90,8 +90,8 @@ public class GetRecordPersenter {
         //确定
         view.findViewById(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startTime=tvStart.getText().toString().trim().replace("-","").replace(":","");
-                endTime=tvEnd.getText().toString().trim().replace("-","").replace(":","");
+                startTime=tvStart.getText().toString().trim().replace("-","").replace(":","").replace(" ","");
+                endTime=tvEnd.getText().toString().trim().replace("-","").replace(":","").replace(" ","");
                 if(startTime.equals(endTime)){
                     ToastUtil.showLong("开始时间与结束时间不能一致");
                     return;
@@ -101,13 +101,14 @@ public class GetRecordPersenter {
 
                 //获取总条数
                 totalNum = (getGapMinutes(startTime, endTime) / minutes) + 1;
+
+                //展示读取数据时的提示框
+                showTripDialog();
+
                 /**
                  * 组装第三条命令，并下发
                  */
                 setRed3Cmd();
-
-                //展示读取数据时的提示框
-                showTripDialog();
             }
         });
     }
@@ -116,8 +117,8 @@ public class GetRecordPersenter {
     /**
      * 组装第三条读取命令
      */
-    private String redStart,redEnd; //记录上次读取的时间段
-    private long sLong,eLong;
+    private String redStart="",redEnd=""; //记录上次读取的时间段
+    private long eLong;
     public boolean setRed3Cmd(){
         try {
             if(redEnd.equals(endTime)){
@@ -133,7 +134,7 @@ public class GetRecordPersenter {
                 redStart=df.format(new Date(eLong));
             }
             //计算结束时间
-            sLong=df.parse(redStart).getTime();
+            long sLong=df.parse(redStart).getTime();
             eLong=sLong+(4*minutes*60*1000);
             //判断是否超过结束时间
             if(eLong<df.parse(endTime).getTime()){
@@ -144,12 +145,11 @@ public class GetRecordPersenter {
 
             //设置根据时间段读取设备里面的数据
             SendBleStr.redDeviceByTime2(redStart,redEnd);
+            //下发命令
+            activity.sendData(BleContant.RED_DEVICE_DATA_BY_TIME2);
         }catch (Exception e){
             e.printStackTrace();
         }
-
-        //下发命令
-        activity.sendData(BleContant.RED_DEVICE_DATA_BY_TIME2);
         return true;
     }
 
@@ -172,7 +172,7 @@ public class GetRecordPersenter {
     Runnable runnable=new Runnable() {
         public void run() {
             //已读取了几条
-            int newNum= BleUtils.getSendData(activity.red3.toString(),256).size();
+            int newNum= BleUtils.getSendData(activity.red3.toString(),123).size();
             //获取百分比
             NumberFormat numberFormat = NumberFormat.getInstance();
             numberFormat.setMaximumFractionDigits(2);
@@ -208,7 +208,7 @@ public class GetRecordPersenter {
         closeTripDialog();
 
         //已读取了几条
-        int newNum= BleUtils.getSendData(red3,256).size();
+        int newNum= BleUtils.getSendData(red3,123).size();
         String start=startTime.substring(0, 4)+"年"+startTime.substring(4,6)+"月"+startTime.substring(6,8)+"日"+startTime.substring(8,10)+"时"+startTime.substring(10,12)+"分";
         String end=endTime.substring(0, 4)+"年"+endTime.substring(4,6)+"月"+endTime.substring(6,8)+"日"+endTime.substring(8,10)+"时"+endTime.substring(10,12)+"分";
 
@@ -245,7 +245,6 @@ public class GetRecordPersenter {
      */
     public int getGapMinutes(String startDate, String endDate) {
         try {
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             long startLong = df.parse(startDate).getTime();
             long endLong = df.parse(endDate).getTime();
             int minutes = (int) ((endLong - startLong) / (1000 * 60));

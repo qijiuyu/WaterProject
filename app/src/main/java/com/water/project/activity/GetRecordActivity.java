@@ -21,6 +21,7 @@ import com.water.project.utils.BleUtils;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.FileUtils;
 import com.water.project.utils.SPUtil;
+import com.water.project.utils.SaveExcel;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
@@ -58,6 +59,8 @@ public class GetRecordActivity extends BaseActivity {
 
         TextView tvHead =findViewById(R.id.tv_head);
         tvHead.setText("数据记录和状态记录");
+
+        SaveExcel.saveDataByExcel("abc","");
     }
 
 
@@ -98,7 +101,11 @@ public class GetRecordActivity extends BaseActivity {
         if (!BleUtils.isEnabled(GetRecordActivity.this, MainActivity.mBtAdapter)) {
             return;
         }
-        DialogUtils.showProgress(GetRecordActivity.this, "正在读取数据记录...");
+
+        if(SEND_STATUS!=BleContant.RED_DEVICE_DATA_BY_TIME2){
+            DialogUtils.showProgress(GetRecordActivity.this, "正在读取数据记录...");
+        }
+
         //如果蓝牙连接断开，就扫描重连
         if (MainActivity.bleService.connectionState == MainActivity.bleService.STATE_DISCONNECTED) {
             //扫描并重连蓝牙
@@ -199,14 +206,14 @@ public class GetRecordActivity extends BaseActivity {
                                  red2=data;
                                  persenter.showDialogRed3(red1);
                                  break;
-                            case BleContant.RED_DEVICE_DATA_BY_TIME:
+                            case BleContant.RED_DEVICE_DATA_BY_TIME2:
                                  data=data.replace("GDRECORDC","").replace(">OK","");
 
                                 //如果长度不够就重新发送
                                 if(data.length()%123!=0){
                                     if(isResumeRed){
                                         isResumeRed=false;
-                                        sendData(BleContant.RED_DEVICE_DATA_BY_TIME);
+                                        sendData(BleContant.RED_DEVICE_DATA_BY_TIME2);
                                     }else{
                                         //关闭读取时的进度框
                                         persenter.closeTripDialog();
@@ -227,7 +234,6 @@ public class GetRecordActivity extends BaseActivity {
                                 if(persenter.setRed3Cmd()){
                                     isResumeRed=true;
                                 }else{
-                                    DialogUtils.closeProgress();
                                     persenter.showRedComplete(red3.toString());
                                 }
                                  break;

@@ -208,6 +208,29 @@ public class FileUtils {
   }
 
 
+    /**
+     * 创建文件或文件夹
+     *
+     */
+    public static String createFile2(String fileName) {
+        File file = new File(getSdcardPath() + fileName);
+        if(file.isFile()){
+            file.delete();
+        }
+        if (fileName.indexOf(".") != -1) {
+            // 说明包含，即使创建文件, 返回值为-1就说明不包含.,即使文件
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            file.mkdir();
+        }
+        return file.getPath();
+    }
+
+
     public static File uriToFile(Context context,Uri uri) {
         String path = null;
         if ("file".equals(uri.getScheme())) {
