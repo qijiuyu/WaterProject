@@ -81,6 +81,5 @@ dependencies {
     compile "com.android.support:recyclerview-v7:" + BUILDTOLLS_VERSION
     compile 'com.jakewharton:butterknife:8.2.1'
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
-    compile files('libs/commons-codec-1.10.jar')
     compile files('libs/poi-3.15.jar')
 }

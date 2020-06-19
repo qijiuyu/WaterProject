@@ -21,7 +21,6 @@ import com.water.project.utils.BleUtils;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.FileUtils;
 import com.water.project.utils.SPUtil;
-import com.water.project.utils.SaveExcel;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
@@ -59,8 +58,6 @@ public class GetRecordActivity extends BaseActivity {
 
         TextView tvHead =findViewById(R.id.tv_head);
         tvHead.setText("数据记录和状态记录");
-
-        SaveExcel.saveDataByExcel("abc","");
     }
 
 

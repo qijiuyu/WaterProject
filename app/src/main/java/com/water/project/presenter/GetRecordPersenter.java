@@ -14,6 +14,7 @@ import com.water.project.activity.GetRecordActivity;
 import com.water.project.bean.SelectTime;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.DialogUtils;
+import com.water.project.utils.SaveExcel;
 import com.water.project.utils.ToastUtil;
 import com.water.project.utils.Util;
 import com.water.project.utils.ble.BleContant;
@@ -203,7 +204,7 @@ public class GetRecordPersenter {
     /**
      * 显示读取完成的弹框
      */
-    public void showRedComplete(String red3){
+    public void showRedComplete(final String red3){
         //关闭读取时的进度框
         closeTripDialog();
 
@@ -231,6 +232,8 @@ public class GetRecordPersenter {
                 }
                 dialog.dismiss();
 
+                DialogUtils.showProgress(activity,"保存中");
+                SaveExcel.saveDataByExcel(activity,name,red3);
             }
         });
     }

@@ -1,10 +1,9 @@
 package com.water.project.application;
 
 import android.app.Application;
-
+import android.content.Context;
 import com.google.gson.Gson;
 import com.tencent.bugly.crashreport.CrashReport;
-import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 
 import java.text.SimpleDateFormat;
