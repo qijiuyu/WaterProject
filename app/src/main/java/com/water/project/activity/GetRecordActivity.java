@@ -80,8 +80,7 @@ public class GetRecordActivity extends BaseActivity {
             case R.id.tv_red_record:
                  persenter=new GetRecordPersenter(this);
                  red3=new StringBuffer();
-//                 sendData(BleContant.COPY_DEVICE_DATA);
-                persenter.showDialogRed3("GDRECORDXXR0064800,140801120300, 140801121800, 0003, 140801122025");
+                 sendData(BleContant.COPY_DEVICE_DATA);
                  break;
             default:
                 break;
@@ -231,7 +230,7 @@ public class GetRecordActivity extends BaseActivity {
                                 if(persenter.setRed3Cmd()){
                                     isResumeRed=true;
                                 }else{
-                                    persenter.showRedComplete(red3.toString());
+                                    persenter.showRedComplete(red2,red3.toString());
                                 }
                                  break;
                              default:

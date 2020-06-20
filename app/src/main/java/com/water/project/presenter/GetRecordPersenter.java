@@ -204,7 +204,7 @@ public class GetRecordPersenter {
     /**
      * 显示读取完成的弹框
      */
-    public void showRedComplete(final String red3){
+    public void showRedComplete(final String red2,final String red3){
         //关闭读取时的进度框
         closeTripDialog();
 
@@ -233,7 +233,7 @@ public class GetRecordPersenter {
                 dialog.dismiss();
 
                 DialogUtils.showProgress(activity,"保存中");
-                SaveExcel.saveDataByExcel(activity,name,red3);
+                SaveExcel.saveDataByExcel(activity,red2,name,red3);
             }
         });
     }

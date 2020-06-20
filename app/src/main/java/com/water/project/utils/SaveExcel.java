@@ -41,7 +41,7 @@ public class SaveExcel {
      * 将数据存储在excel中
      * @param fileName
      */
-    public static void saveDataByExcel(Context context,String fileName, String totalMsg){
+    public static void saveDataByExcel(Context context,String red2,String fileName, String totalMsg){
         final String templateXLS=FileUtils.getSdcardPath()+"zkgd_temp.xls";
         final File file=new File(templateXLS);
         if(!file.isFile()){
@@ -223,7 +223,7 @@ public class SaveExcel {
                 }
             }
 
-            fos = new FileOutputStream(FileUtils.getSdcardPath()+fileName+".xls");
+            fos = new FileOutputStream(FileUtils.getSdcardPath()+red2+"_"+fileName+".xls");
             // 写入
             workBook.write(fos);
 
