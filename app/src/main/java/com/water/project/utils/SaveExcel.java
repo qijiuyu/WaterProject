@@ -1,6 +1,9 @@
 package com.water.project.utils;
 
 import android.content.Context;
+import android.view.View;
+
+import com.water.project.view.DialogView;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -20,6 +23,7 @@ import java.util.List;
 
 public class SaveExcel {
 
+    private static   DialogView dialogView;
 
     public static CellStyle setFount(Workbook workBook){
         // 创建字体
@@ -42,6 +46,7 @@ public class SaveExcel {
      * @param fileName
      */
     public static void saveDataByExcel(Context context,String red2,String fileName, String totalMsg){
+        red2=red2.replace("GDIDR","").replace(">OK","");
         final String templateXLS=FileUtils.getSdcardPath()+"zkgd_temp.xls";
         final File file=new File(templateXLS);
         if(!file.isFile()){
@@ -266,5 +271,11 @@ public class SaveExcel {
         }
 
         DialogUtils.closeProgress();
+        dialogView = new DialogView(dialogView,context, "数据.xls文件已创建成功，目录是：" + FileUtils.getSdcardPath()+red2+"_"+fileName+".xls", "确定", null, new View.OnClickListener() {
+            public void onClick(View v) {
+                dialogView.dismiss();
+            }
+        }, null);
+        dialogView.show();
     }
 }
