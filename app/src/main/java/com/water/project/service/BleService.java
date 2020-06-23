@@ -454,12 +454,12 @@ public class BleService extends Service implements Serializable{
             String data=characteristic.getStringValue(0);
             if(data.startsWith("GD")){
                 sb.append(data);
-                handler.postDelayed(runnable,50);
+                handler.postDelayed(runnable,120);
                 return;
             }
             if(sb.length()>0){
                 sb.append(data);
-                handler.postDelayed(runnable,50);
+                handler.postDelayed(runnable,120);
             }
 
 //            //每接收一条数据就回执

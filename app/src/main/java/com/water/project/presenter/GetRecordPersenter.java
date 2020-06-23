@@ -163,16 +163,20 @@ public class GetRecordPersenter {
     public void showTripDialog(){
         View view= LayoutInflater.from(activity).inflate(R.layout.dialog_copy,null);
         redDialog=DialogUtils.dialogPop(view,activity);
-        redDialog.setCancelable(false);
         LinearGradientTextView tvTitle=view.findViewById(R.id.tv_title);
         tvTitle.setText("正在读取数据记录...");
         tvContent=view.findViewById(R.id.tv_content);
 
+        handler.removeCallbacks(runnable);
         handler.postDelayed(runnable,100);
     }
 
     Runnable runnable=new Runnable() {
         public void run() {
+            if(redDialog==null || !redDialog.isShowing()){
+                showTripDialog();
+                return;
+            }
             //已读取了几条
             int newNum= BleUtils.getSendData(activity.red3.toString(),123).size();
             //获取百分比
@@ -185,7 +189,7 @@ public class GetRecordPersenter {
 
             tvContent.setText("需读取数据记录"+totalNum+"条\n\n已读取数据记录"+newNum+"条\n\n已读取数据记录百分比："+status+"\n\n最早数据记录时间："+start+"\n\n最新数据记录时间："+end+"\n\n数据记录间隔时间："+minutes+"分钟");
 
-            handler.postDelayed(runnable,3000);
+            handler.postDelayed(runnable,2000);
         }
     };
 

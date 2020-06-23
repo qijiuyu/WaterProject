@@ -49,6 +49,10 @@ public class GetRecordActivity extends BaseActivity {
     private String red1,red2;
     public StringBuffer red3=new StringBuffer();
     private GetRecordPersenter persenter;
+
+
+    private int totalNum;
+    private StringBuffer totalData=new StringBuffer();
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -83,10 +87,22 @@ public class GetRecordActivity extends BaseActivity {
                 break;
             //数据拷贝
             case R.id.tv_copy:
-                setClass(CopyDataActivity.class);
+//                setClass(CopyDataActivity.class);
+
+                dialogView = new DialogView(dialogView,GetRecordActivity.this, "不是123倍数的次数有"+totalNum+"次","知道了",null, new View.OnClickListener() {
+                    public void onClick(View v) {
+                        dialogView.dismiss();
+                        FileUtils.createFile("读取到的数据.txt", totalData.toString());
+                    }
+                }, null);
+                dialogView.show();
                 break;
             //读取设备数据记录
             case R.id.tv_red_record:
+                totalNum=0;
+                totalData=new StringBuffer();
+
+
                  persenter=new GetRecordPersenter(this);
                  red3=new StringBuffer();
                  sendData(BleContant.COPY_DEVICE_DATA);
@@ -212,13 +228,21 @@ public class GetRecordActivity extends BaseActivity {
                                  persenter.showDialogRed3(red1);
                                  break;
                             case BleContant.RED_DEVICE_DATA_BY_TIME2:
-                                 data=data.replace("GDRECORDC","").replace(">OK","");
+                                 String msg=data.replace("GDRECORDC","").replace(">OK","");
 
                                 //如果长度不够就重新发送
-                                if(data.length()%123!=0){
-                                    if(repeatNum<3){
+                                if(msg.length()%123!=0){
+                                    if(repeatNum<2){
+                                        mHandler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                sendData(BleContant.RED_DEVICE_DATA_BY_TIME2);
+
+                                            }
+                                        },100);
                                         repeatNum++;
-                                        sendData(BleContant.RED_DEVICE_DATA_BY_TIME2);
+                                        totalNum++;
+                                        totalData.append(data+"\n\n\n\n\n\n\n\n\n\n\n&&&&&\n\n\n\n\n\n\n\n\n\n\n");
                                     }else{
                                         //关闭读取时的进度框
                                         persenter.closeTripDialog();
@@ -235,7 +259,7 @@ public class GetRecordActivity extends BaseActivity {
 
                                 repeatNum=0;
                                 //追加第三条结果数据
-                                red3.append(data);
+                                red3.append(msg);
 
                                 if(!persenter.setRed3Cmd()){
                                     persenter.showRedComplete(red2,red3.toString());
@@ -305,6 +329,10 @@ public class GetRecordActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        //关闭读取时的进度框
+        if(persenter!=null){
+            persenter.closeTripDialog();
+        }
         unregisterReceiver(mBroadcastReceiver);
     }
 }
