@@ -161,35 +161,43 @@ public class GetRecordPersenter {
     public Dialog redDialog;
     private TextView tvContent;
     public void showTripDialog(){
-        View view= LayoutInflater.from(activity).inflate(R.layout.dialog_copy,null);
-        redDialog=DialogUtils.dialogPop(view,activity);
-        LinearGradientTextView tvTitle=view.findViewById(R.id.tv_title);
-        tvTitle.setText("正在读取数据记录...");
-        tvContent=view.findViewById(R.id.tv_content);
+        try {
+            View view= LayoutInflater.from(activity).inflate(R.layout.dialog_copy,null);
+            redDialog=DialogUtils.dialogPop(view,activity);
+            LinearGradientTextView tvTitle=view.findViewById(R.id.tv_title);
+            tvTitle.setText("正在读取数据记录...");
+            tvContent=view.findViewById(R.id.tv_content);
 
-        handler.removeCallbacks(runnable);
-        handler.postDelayed(runnable,100);
+            handler.removeCallbacks(runnable);
+            handler.postDelayed(runnable,100);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     Runnable runnable=new Runnable() {
         public void run() {
-            if(redDialog==null || !redDialog.isShowing()){
-                showTripDialog();
-                return;
+            try {
+                if(redDialog==null || !redDialog.isShowing()){
+                    showTripDialog();
+                    return;
+                }
+                //已读取了几条
+                int newNum= BleUtils.getSendData(activity.red3.toString(),123).size();
+                //获取百分比
+                NumberFormat numberFormat = NumberFormat.getInstance();
+                numberFormat.setMaximumFractionDigits(2);
+                String status= (numberFormat.format((float) newNum / (float) totalNum * 100))+"%";
+
+                String start=startTime.substring(0, 4)+"年"+startTime.substring(4,6)+"月"+startTime.substring(6,8)+"日"+startTime.substring(8,10)+"时"+startTime.substring(10,12)+"分";
+                String end=endTime.substring(0, 4)+"年"+endTime.substring(4,6)+"月"+endTime.substring(6,8)+"日"+endTime.substring(8,10)+"时"+endTime.substring(10,12)+"分";
+
+                tvContent.setText("需读取数据记录"+totalNum+"条\n\n已读取数据记录"+newNum+"条\n\n已读取数据记录百分比："+status+"\n\n最早数据记录时间："+start+"\n\n最新数据记录时间："+end+"\n\n数据记录间隔时间："+minutes+"分钟");
+
+                handler.postDelayed(runnable,2000);
+            }catch (Exception e){
+                e.printStackTrace();
             }
-            //已读取了几条
-            int newNum= BleUtils.getSendData(activity.red3.toString(),123).size();
-            //获取百分比
-            NumberFormat numberFormat = NumberFormat.getInstance();
-            numberFormat.setMaximumFractionDigits(2);
-            String status= (numberFormat.format((float) newNum / (float) totalNum * 100))+"%";
-
-            String start=startTime.substring(0, 4)+"年"+startTime.substring(4,6)+"月"+startTime.substring(6,8)+"日"+startTime.substring(8,10)+"时"+startTime.substring(10,12)+"分";
-            String end=endTime.substring(0, 4)+"年"+endTime.substring(4,6)+"月"+endTime.substring(6,8)+"日"+endTime.substring(8,10)+"时"+endTime.substring(10,12)+"分";
-
-            tvContent.setText("需读取数据记录"+totalNum+"条\n\n已读取数据记录"+newNum+"条\n\n已读取数据记录百分比："+status+"\n\n最早数据记录时间："+start+"\n\n最新数据记录时间："+end+"\n\n数据记录间隔时间："+minutes+"分钟");
-
-            handler.postDelayed(runnable,2000);
         }
     };
 

@@ -27,6 +27,7 @@ import com.water.project.activity.menu6.SendDataActivity;
 import com.water.project.activity.new_version.New_SettingActivity;
 import com.water.project.adapter.MainMenuAdapter;
 import com.water.project.application.MyApplication;
+import com.water.project.bean.Ble;
 import com.water.project.bean.Menu;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;

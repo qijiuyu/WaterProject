@@ -273,7 +273,7 @@ public class GetRecordActivity extends BaseActivity {
                     break;
                 case BleService.ACTION_INTERACTION_TIMEOUT:
                     DialogUtils.closeProgress();
-                    if(SEND_STATUS!=BleContant.RED_DEVICE_RECOFD){
+                    if(persenter!=null){
                         //关闭读取时的进度框
                         persenter.closeTripDialog();
                     }
@@ -287,7 +287,7 @@ public class GetRecordActivity extends BaseActivity {
                     break;
                 case BleService.ACTION_SEND_DATA_FAIL:
                     DialogUtils.closeProgress();
-                    if(SEND_STATUS!=BleContant.RED_DEVICE_RECOFD){
+                    if(persenter!=null){
                         //关闭读取时的进度框
                         persenter.closeTripDialog();
                     }
@@ -301,7 +301,7 @@ public class GetRecordActivity extends BaseActivity {
                     break;
                 case BleService.ACTION_GET_DATA_ERROR:
                     DialogUtils.closeProgress();
-                    if(SEND_STATUS!=BleContant.RED_DEVICE_RECOFD){
+                    if(persenter!=null){
                         //关闭读取时的进度框
                         persenter.closeTripDialog();
                     }
