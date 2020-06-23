@@ -1,5 +1,6 @@
 package com.water.project.activity;
 
+import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
 import android.content.Context;
@@ -15,6 +16,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -28,6 +30,7 @@ import com.water.project.application.MyApplication;
 import com.water.project.bean.Menu;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
+import com.water.project.utils.DialogUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.ble.SendBleDataManager;
 

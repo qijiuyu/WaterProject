@@ -163,6 +163,7 @@ public class GetRecordPersenter {
     public void showTripDialog(){
         View view= LayoutInflater.from(activity).inflate(R.layout.dialog_copy,null);
         redDialog=DialogUtils.dialogPop(view,activity);
+        redDialog.setCancelable(false);
         LinearGradientTextView tvTitle=view.findViewById(R.id.tv_title);
         tvTitle.setText("正在读取数据记录...");
         tvContent=view.findViewById(R.id.tv_content);

@@ -142,7 +142,7 @@ public class GetRecordActivity extends BaseActivity {
 
 
     //true：表示可以重发上条读取的命令
-    private boolean isResumeRed=true;
+    private int repeatNum=0;
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             if(!isShowActivity){
@@ -216,15 +216,15 @@ public class GetRecordActivity extends BaseActivity {
 
                                 //如果长度不够就重新发送
                                 if(data.length()%123!=0){
-                                    if(isResumeRed){
-                                        isResumeRed=false;
+                                    if(repeatNum<3){
+                                        repeatNum++;
                                         sendData(BleContant.RED_DEVICE_DATA_BY_TIME2);
                                     }else{
                                         //关闭读取时的进度框
                                         persenter.closeTripDialog();
-                                        dialogView = new DialogView(dialogView,GetRecordActivity.this, "读取到的数据长度不是123的倍数","知道了",null, new View.OnClickListener() {
+                                        dialogView = new DialogView(dialogView,GetRecordActivity.this, "读取到的数据长度不是123的倍数,已停止读取","知道了",null, new View.OnClickListener() {
                                             public void onClick(View v) {
-                                                isResumeRed=true;
+                                                repeatNum=0;
                                                 dialogView.dismiss();
                                             }
                                         }, null);
@@ -233,12 +233,11 @@ public class GetRecordActivity extends BaseActivity {
                                     return;
                                 }
 
+                                repeatNum=0;
                                 //追加第三条结果数据
                                 red3.append(data);
 
-                                if(persenter.setRed3Cmd()){
-                                    isResumeRed=true;
-                                }else{
+                                if(!persenter.setRed3Cmd()){
                                     persenter.showRedComplete(red2,red3.toString());
                                 }
                                  break;
@@ -250,6 +249,10 @@ public class GetRecordActivity extends BaseActivity {
                     break;
                 case BleService.ACTION_INTERACTION_TIMEOUT:
                     DialogUtils.closeProgress();
+                    if(SEND_STATUS!=BleContant.RED_DEVICE_RECOFD){
+                        //关闭读取时的进度框
+                        persenter.closeTripDialog();
+                    }
                     dialogView = new DialogView(dialogView,mContext, "接收数据超时！", "重试", "取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
@@ -260,6 +263,10 @@ public class GetRecordActivity extends BaseActivity {
                     break;
                 case BleService.ACTION_SEND_DATA_FAIL:
                     DialogUtils.closeProgress();
+                    if(SEND_STATUS!=BleContant.RED_DEVICE_RECOFD){
+                        //关闭读取时的进度框
+                        persenter.closeTripDialog();
+                    }
                     dialogView = new DialogView(dialogView,mContext, "下发命令失败！", "重试", "取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
@@ -270,6 +277,10 @@ public class GetRecordActivity extends BaseActivity {
                     break;
                 case BleService.ACTION_GET_DATA_ERROR:
                     DialogUtils.closeProgress();
+                    if(SEND_STATUS!=BleContant.RED_DEVICE_RECOFD){
+                        //关闭读取时的进度框
+                        persenter.closeTripDialog();
+                    }
                     showToastView("设备回执数据异常");
                     break;
                 default:
