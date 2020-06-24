@@ -257,11 +257,12 @@ public class GetRecordActivity extends BaseActivity {
                                     return;
                                 }
 
-                                repeatNum=0;
                                 //追加第三条结果数据
                                 red3.append(msg);
 
-                                if(!persenter.setRed3Cmd()){
+                                if(persenter.setRed3Cmd()){
+                                    repeatNum=0;
+                                }else{
                                     persenter.showRedComplete(red2,red3.toString());
                                 }
                                  break;

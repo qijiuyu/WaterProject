@@ -1,6 +1,7 @@
 package com.water.project.presenter;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Paint;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -13,6 +14,7 @@ import com.water.project.R;
 import com.water.project.activity.GetRecordActivity;
 import com.water.project.bean.SelectTime;
 import com.water.project.utils.BleUtils;
+import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.SaveExcel;
 import com.water.project.utils.ToastUtil;
@@ -31,6 +33,8 @@ public class GetRecordPersenter {
     private GetRecordActivity activity;
     private SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
     private Handler handler=new Handler();
+
+    private boolean isRedEnd=false;
 
     public GetRecordPersenter(GetRecordActivity activity){
         this.activity=activity;
@@ -149,6 +153,7 @@ public class GetRecordPersenter {
             //下发命令
             activity.sendData(BleContant.RED_DEVICE_DATA_BY_TIME2);
         }catch (Exception e){
+            BuglyUtils.uploadBleMsg("读取数据时的错误："+e.getMessage());
             e.printStackTrace();
         }
         return true;
@@ -171,6 +176,7 @@ public class GetRecordPersenter {
             handler.removeCallbacks(runnable);
             handler.postDelayed(runnable,100);
         }catch (Exception e){
+            BuglyUtils.uploadBleMsg("读取数据时的错误："+e.getMessage());
             e.printStackTrace();
         }
     }
@@ -178,7 +184,7 @@ public class GetRecordPersenter {
     Runnable runnable=new Runnable() {
         public void run() {
             try {
-                if(redDialog==null || !redDialog.isShowing()){
+                if((redDialog==null || !redDialog.isShowing()) && !isRedEnd){
                     showTripDialog();
                     return;
                 }
@@ -196,6 +202,7 @@ public class GetRecordPersenter {
 
                 handler.postDelayed(runnable,2000);
             }catch (Exception e){
+                BuglyUtils.uploadBleMsg("读取数据时的错误："+e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -206,6 +213,7 @@ public class GetRecordPersenter {
      * 关闭读取时的进度框
      */
     public void closeTripDialog(){
+        isRedEnd=true;
         handler.removeCallbacks(runnable);
         if(redDialog!=null && redDialog.isShowing()){
             redDialog.dismiss();

@@ -500,6 +500,7 @@ public class SendBleStr {
     public static void redDeviceByTime2(String startTime,String endTime){
         if(TextUtils.isEmpty(startTime) || TextUtils.isEmpty(endTime)){
             ToastUtil.showLong("读取的时间段有误");
+            BuglyUtils.uploadBleMsg("读取的时间段有误：");
             return;
         }
         RED_DEVICE_DATA_BY_TIME2="GDRECORDC"+startTime.substring(2,startTime.length())+","+endTime.substring(2,endTime.length());
