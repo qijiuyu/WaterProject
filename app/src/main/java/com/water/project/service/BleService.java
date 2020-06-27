@@ -388,10 +388,18 @@ public class BleService extends Service implements Serializable{
      * 蓝牙连接交互回调
      */
     private final BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
+        @Override
+        public void onMtuChanged(BluetoothGatt gatt, int mtu, int status) {
+            super.onMtuChanged(gatt, mtu, status);
+        }
+
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             if (newState == BluetoothProfile.STATE_CONNECTED) {
                 LogUtils.e("蓝牙连接成功");
                 connectionState = STATE_CONNECTED;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    LogUtils.e(mBluetoothGatt.requestMtu(185)+"+++++++++++++++++");
+                }
                 //去发现服务
                 handler.postDelayed(new Runnable() {
                     public void run() {
@@ -445,7 +453,7 @@ public class BleService extends Service implements Serializable{
                     return;
                 }
                 sb.append(ByteStringHexUtil.bytesToHexString(txValue));
-                handler.postDelayed(runnable,70);
+                handler.postDelayed(runnable,80);
                 return;
             }
 
@@ -454,12 +462,12 @@ public class BleService extends Service implements Serializable{
             String data=characteristic.getStringValue(0);
             if(data.startsWith("GD")){
                 sb.append(data);
-                handler.postDelayed(runnable,50);
+                handler.postDelayed(runnable,80);
                 return;
             }
             if(sb.length()>0){
                 sb.append(data);
-                handler.postDelayed(runnable,50);
+                handler.postDelayed(runnable,80);
             }
 
 //            //每接收一条数据就回执

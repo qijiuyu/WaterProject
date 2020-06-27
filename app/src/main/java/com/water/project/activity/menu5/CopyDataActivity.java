@@ -186,7 +186,7 @@ public class CopyDataActivity extends BaseActivity {
                     break;
                 //蓝牙断开连接
                 case BleService.ACTION_GATT_DISCONNECTED:
-//                    copyDataPersenter.bleDisConnect();
+                    DialogUtils.closeProgress();
                     break;
                 //初始化通道成功
                 case BleService.ACTION_ENABLE_NOTIFICATION_SUCCES:
@@ -258,7 +258,7 @@ public class CopyDataActivity extends BaseActivity {
     //true：表示读取的命令还没完毕， false：表示读取的命令已发送完全部
     private boolean redIsSend=true;
     //true：表示可以重发上条读取的命令
-    private boolean isResumeRed=true;
+    private int repeatNum=0;
     private void getDeviceData(String data){
         if(type==1){
             switch (SEND_STATUS){
@@ -282,25 +282,33 @@ public class CopyDataActivity extends BaseActivity {
 
                      //如果长度不够就重新发送
                      if(data.length()%256!=0){
-                         if(isResumeRed){
-                             isResumeRed=false;
-                             sendData(BleContant.RED_DEVICE_DATA_BY_TIME);
+                         if(repeatNum<2){
+                             handler.postDelayed(new Runnable() {
+                                 @Override
+                                 public void run() {
+                                     sendData(BleContant.RED_DEVICE_DATA_BY_TIME);
+                                 }
+                             },50);
+                             repeatNum++;
                          }else{
                              //关闭读取时的进度框
                              copyDataPersenter.closeTripDialog();
                              dialogView = new DialogView(dialogView,CopyDataActivity.this, "读取到的数据长度不是128的倍数","知道了",null, new View.OnClickListener() {
                                  public void onClick(View v) {
-                                     isResumeRed=true;
+                                     repeatNum=0;
                                      dialogView.dismiss();
                                  }
                              }, null);
                              dialogView.show();
                          }
-                         return;
                      }
+                     //表示重读了几次都不是128的倍数
+                    if(repeatNum>=2){
+                        return;
+                    }
                      red3.append(data);
                      if(redIsSend){
-                         isResumeRed=true;
+                         repeatNum=0;
                          redIsSend=copyDataPersenter.setRed3Cmd(red1);
                          sendData(BleContant.RED_DEVICE_DATA_BY_TIME);
                      }else{

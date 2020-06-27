@@ -208,6 +208,29 @@ public class FileUtils {
   }
 
 
+    /**
+     * 创建文件或文件夹
+     *
+     */
+    public static String createFile2(String fileName) {
+        File file = new File(getSdcardPath() + fileName);
+        if(file.isFile()){
+            file.delete();
+        }
+        if (fileName.indexOf(".") != -1) {
+            // 说明包含，即使创建文件, 返回值为-1就说明不包含.,即使文件
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            file.mkdir();
+        }
+        return file.getPath();
+    }
+
+
     public static File uriToFile(Context context,Uri uri) {
         String path = null;
         if ("file".equals(uri.getScheme())) {
@@ -295,6 +318,19 @@ public class FileUtils {
             fileSizeString = df.format((double) fileS / 1073741824) + "G";
         }
         return fileSizeString;
+    }
+
+
+    /**
+     * 将xls模板拷贝到SD卡中
+     */
+    public static void copyXlsToSd(Context context){
+        final String templateXLS=FileUtils.getSdcardPath()+"zkgd_temp.xls";
+        final File file=new File(templateXLS);
+        if(!file.isFile()){
+            //将项目assets下的xls模块拷贝到SD卡中
+            CopyToSDUtils.doCopy(context,"zkgd_temp.xls",FileUtils.getSdcardPath()+"zkgd_temp.xls");
+        }
     }
 
 }

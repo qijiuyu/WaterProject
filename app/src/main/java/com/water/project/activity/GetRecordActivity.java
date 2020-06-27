@@ -20,7 +20,9 @@ import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.FileUtils;
+import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
+import com.water.project.utils.ToastUtil;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
@@ -49,6 +51,8 @@ public class GetRecordActivity extends BaseActivity {
     private String red1,red2;
     public StringBuffer red3=new StringBuffer();
     private GetRecordPersenter persenter;
+
+    private int totalNum;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -58,6 +62,15 @@ public class GetRecordActivity extends BaseActivity {
 
         TextView tvHead =findViewById(R.id.tv_head);
         tvHead.setText("数据记录和状态记录");
+
+        /**
+         * 将xls模板拷贝到SD卡中
+         */
+        FileUtils.copyXlsToSd(this);
+
+//        String str="190812150005L+0010.9758T+028.8967B100.00C001413.01V05.98CSQ31R-35.45E0098A+0043.5000D01.00000P0010.1256B10.0098C+0011.0000;190812150005L+0010.9758T+028.8967B100.00C001413.01V05.98CSQ31R-35.45E0098A+0043.5000D01.00000P0010.1256B10.0098C+0011.0000;190812150005L+0010.9758T+028.8967B100.00C001413.01V05.98CSQ31R-35.45E0098A+0043.5000D01.00000P0010.1256B10.0098C+0011.0000;190812150005L+0010.9758T+028.8967B100.00C001413.01V05.98CSQ31R-35.45E0098A+0043.5000D01.00000P0010.1256B10.0098C+0011.0000;190812150005L+0010.9758T+028.8967B100.00C001413.01V05.98CSQ31R-35.45E0098A+0043.5000D01.00000P0010.1256B10.0098C+0011.0000;190812150005L+0010.9758T+028.8967B100.00C001413.01V05.98CSQ31R-35.45E0098A+0043.5000D01.00000P0010.1256B10.0098C+0011.0000;190812150005L+0010.9758T+028.8967B100.00C001413.01V05.98CSQ31R-35.45E0098A+0043.5000D01.00000P0010.1256B10.0098C+0011.0000;190812150005L+0010.9758T+028.8967B100.00C001413.01V05.98CSQ31R-35.45E0098A+0043.5000D01.00000P0010.1256B10.0098C+0011.0000;190812150005L+0010.9758T+028.8967B100.00C001413.01V05.98CSQ31R-35.45E0098A+0043.5000D01.00000P0010.1256B10.0098C+0011.0000;190812150005L+0010.9758T+028.8967B100.00C001413.01V05.98CSQ31R-35.45E0098A+0043.5000D01.00000P0010.1256B10.0098C+0011.0000;190812150005L+0010.9758T+028.8967B100.00C001413.01V05.98CSQ31R-35.45E0098A+0043.5000D01.00000P0010.1256B10.0098C+0011.0000;190812150005L+0010.9758T+028.8967B100.00C001413.01V05.98CSQ31R-35.45E0098A+0043.5000D01.00000P0010.1256B10.0098C+0011.0000;190812150005L+0010.9758T+028.8967B100.00C001413.01V05.98CSQ31R-35.45E0098A+0043.5000D01.00000P0010.1256B10.0098C+0011.0000;190812150005L+0010.9758T+028.8967B100.00C001413.01V05.98CSQ31R-35.45E0098A+0043.5000D01.00000P0010.1256B10.0098C+0011.0000;190812150005L+0010.9758T+028.8967B100.00C001413.01V05.98CSQ31R-35.45E0098A+0043.5000D01.00000P0010.1256B10.0098C+0011.0000;190812150005L+0010.9758T+028.8967B100.00C001413.01V05.98CSQ31R-35.45E0098A+0043.5000D01.00000P0010.1256B10.0098C+0011.0000;190812150005L+0010.9758T+028.8967B100.00C001413.01V05.98CSQ31R-35.45E0098A+0043.5000D01.00000P0010.1256B10.0098C+0011.0000;";
+//
+//        SaveExcel.saveDataByExcel(this,"miisrd2werwddfsf1232432423432","aaaaaa",str);
     }
 
 
@@ -80,8 +93,7 @@ public class GetRecordActivity extends BaseActivity {
             case R.id.tv_red_record:
                  persenter=new GetRecordPersenter(this);
                  red3=new StringBuffer();
-//                 sendData(BleContant.COPY_DEVICE_DATA);
-                persenter.showDialogRed3("GDRECORDXXR0064800,140801120300, 140801121800, 0003, 140801122025");
+                 sendData(BleContant.COPY_DEVICE_DATA);
                  break;
             default:
                 break;
@@ -98,7 +110,11 @@ public class GetRecordActivity extends BaseActivity {
         if (!BleUtils.isEnabled(GetRecordActivity.this, MainActivity.mBtAdapter)) {
             return;
         }
-        DialogUtils.showProgress(GetRecordActivity.this, "正在读取数据记录...");
+
+        if(SEND_STATUS!=BleContant.RED_DEVICE_DATA_BY_TIME2){
+            DialogUtils.showProgress(GetRecordActivity.this, "正在读取数据记录...");
+        }
+
         //如果蓝牙连接断开，就扫描重连
         if (MainActivity.bleService.connectionState == MainActivity.bleService.STATE_DISCONNECTED) {
             //扫描并重连蓝牙
@@ -130,7 +146,7 @@ public class GetRecordActivity extends BaseActivity {
 
 
     //true：表示可以重发上条读取的命令
-    private boolean isResumeRed=true;
+    private int repeatNum=0;
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             if(!isShowActivity){
@@ -199,20 +215,25 @@ public class GetRecordActivity extends BaseActivity {
                                  red2=data;
                                  persenter.showDialogRed3(red1);
                                  break;
-                            case BleContant.RED_DEVICE_DATA_BY_TIME:
-                                 data=data.replace("GDRECORDC","").replace(">OK","");
+                            case BleContant.RED_DEVICE_DATA_BY_TIME2:
+                                data=data.replace("GDRECORDC","").replace(">OK","");
 
                                 //如果长度不够就重新发送
                                 if(data.length()%123!=0){
-                                    if(isResumeRed){
-                                        isResumeRed=false;
-                                        sendData(BleContant.RED_DEVICE_DATA_BY_TIME);
+                                    if(repeatNum<2){
+                                        mHandler.postDelayed(new Runnable() {
+                                            public void run() {
+                                                sendData(BleContant.RED_DEVICE_DATA_BY_TIME2);
+                                            }
+                                        },50);
+                                        repeatNum++;
+                                        totalNum++;
                                     }else{
                                         //关闭读取时的进度框
                                         persenter.closeTripDialog();
-                                        dialogView = new DialogView(dialogView,GetRecordActivity.this, "读取到的数据长度不是123的倍数","知道了",null, new View.OnClickListener() {
+                                        dialogView = new DialogView(dialogView,GetRecordActivity.this, "读取到的数据长度不是123的倍数,已停止读取","知道了",null, new View.OnClickListener() {
                                             public void onClick(View v) {
-                                                isResumeRed=true;
+                                                repeatNum=0;
                                                 dialogView.dismiss();
                                             }
                                         }, null);
@@ -225,10 +246,9 @@ public class GetRecordActivity extends BaseActivity {
                                 red3.append(data);
 
                                 if(persenter.setRed3Cmd()){
-                                    isResumeRed=true;
+                                    repeatNum=0;
                                 }else{
-                                    DialogUtils.closeProgress();
-                                    persenter.showRedComplete(red3.toString());
+                                    persenter.showRedComplete(red2,red3.toString());
                                 }
                                  break;
                              default:
@@ -239,6 +259,10 @@ public class GetRecordActivity extends BaseActivity {
                     break;
                 case BleService.ACTION_INTERACTION_TIMEOUT:
                     DialogUtils.closeProgress();
+                    if(persenter!=null){
+                        //关闭读取时的进度框
+                        persenter.closeTripDialog();
+                    }
                     dialogView = new DialogView(dialogView,mContext, "接收数据超时！", "重试", "取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
@@ -249,6 +273,10 @@ public class GetRecordActivity extends BaseActivity {
                     break;
                 case BleService.ACTION_SEND_DATA_FAIL:
                     DialogUtils.closeProgress();
+                    if(persenter!=null){
+                        //关闭读取时的进度框
+                        persenter.closeTripDialog();
+                    }
                     dialogView = new DialogView(dialogView,mContext, "下发命令失败！", "重试", "取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
@@ -259,6 +287,10 @@ public class GetRecordActivity extends BaseActivity {
                     break;
                 case BleService.ACTION_GET_DATA_ERROR:
                     DialogUtils.closeProgress();
+                    if(persenter!=null){
+                        //关闭读取时的进度框
+                        persenter.closeTripDialog();
+                    }
                     showToastView("设备回执数据异常");
                     break;
                 default:
@@ -283,6 +315,10 @@ public class GetRecordActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        //关闭读取时的进度框
+        if(persenter!=null){
+            persenter.closeTripDialog();
+        }
         unregisterReceiver(mBroadcastReceiver);
     }
 }
