@@ -87,6 +87,7 @@ public class GetRecordActivity extends BaseActivity {
                 break;
             //数据拷贝
             case R.id.tv_copy:
+                isShowActivity=false;
                 setClass(CopyDataActivity.class);
                 break;
             //读取设备数据记录
@@ -239,8 +240,13 @@ public class GetRecordActivity extends BaseActivity {
                                         }, null);
                                         dialogView.show();
                                     }
+                                }
+
+                                //表示重读了几次都不是123的倍数
+                                if(repeatNum>=2){
                                     return;
                                 }
+
 
                                 //追加第三条结果数据
                                 red3.append(data);
@@ -248,6 +254,7 @@ public class GetRecordActivity extends BaseActivity {
                                 if(persenter.setRed3Cmd()){
                                     repeatNum=0;
                                 }else{
+                                    repeatNum=0;
                                     persenter.showRedComplete(red2,red3.toString());
                                 }
                                  break;
@@ -304,12 +311,6 @@ public class GetRecordActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         isShowActivity=true;
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        isShowActivity=false;
     }
 
     @Override
