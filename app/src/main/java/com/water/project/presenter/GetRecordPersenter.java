@@ -16,6 +16,7 @@ import com.water.project.bean.SelectTime;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.DialogUtils;
+import com.water.project.utils.FileUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SaveExcel;
 import com.water.project.utils.ToastUtil;
@@ -34,6 +35,8 @@ public class GetRecordPersenter {
     private GetRecordActivity activity;
     private SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
     private Handler handler=new Handler();
+
+    StringBuffer saveSB=new StringBuffer();
 
     private boolean isRedEnd=false;
 
@@ -155,6 +158,8 @@ public class GetRecordPersenter {
             LogUtils.e(SendBleStr.RED_DEVICE_DATA_BY_TIME2+"+++++++++++++++++++++++++++++++");
             //下发命令
             activity.sendData(BleContant.RED_DEVICE_DATA_BY_TIME2);
+
+            saveSB.append(BleContant.RED_DEVICE_DATA_BY_TIME2+"\r");
         }catch (Exception e){
             BuglyUtils.uploadBleMsg("读取数据时的错误："+e.getMessage());
             e.printStackTrace();
@@ -229,6 +234,9 @@ public class GetRecordPersenter {
      * 显示读取完成的弹框
      */
     public void showRedComplete(final String red2,final String red3){
+        final String fileName = "读取的命令.txt";
+        String filePath = FileUtils.createFile(fileName, saveSB.toString());
+
         //关闭读取时的进度框
         closeTripDialog();
 
