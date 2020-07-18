@@ -51,8 +51,6 @@ public class GetRecordActivity extends BaseActivity {
     private String red1,red2;
     public StringBuffer red3=new StringBuffer();
     private GetRecordPersenter persenter;
-
-    private int totalNum;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -148,6 +146,7 @@ public class GetRecordActivity extends BaseActivity {
 
     //true：表示可以重发上条读取的命令
     private int repeatNum=0;
+    private int redNum=1;
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             if(!isShowActivity){
@@ -219,16 +218,13 @@ public class GetRecordActivity extends BaseActivity {
                             case BleContant.RED_DEVICE_DATA_BY_TIME2:
                                 data=data.replace("GDRECORDC","").replace(">OK","");
 
+                                LogUtils.e(data.length()+"++++++++++++++++++++++++++++++++++++++aaa");
+
                                 //如果长度不够就重新发送
-                                if(data.length()%123!=0){
-                                    if(repeatNum<2){
-                                        mHandler.postDelayed(new Runnable() {
-                                            public void run() {
-                                                sendData(BleContant.RED_DEVICE_DATA_BY_TIME2);
-                                            }
-                                        },50);
+                                if(data.length()!=615 && !persenter.redEnd.equals(persenter.endTime)){
+                                    if(repeatNum<3){
+                                        sendData(BleContant.RED_DEVICE_DATA_BY_TIME2);
                                         repeatNum++;
-                                        totalNum++;
                                     }else{
                                         //关闭读取时的进度框
                                         persenter.closeTripDialog();
@@ -240,18 +236,14 @@ public class GetRecordActivity extends BaseActivity {
                                         }, null);
                                         dialogView.show();
                                     }
-                                }
-
-                                //表示重读了几次都不是123的倍数
-                                if(repeatNum>=2){
                                     return;
                                 }
-
 
                                 //追加第三条结果数据
                                 red3.append(data);
 
                                 if(persenter.setRed3Cmd()){
+                                    redNum++;
                                     repeatNum=0;
                                 }else{
                                     repeatNum=0;

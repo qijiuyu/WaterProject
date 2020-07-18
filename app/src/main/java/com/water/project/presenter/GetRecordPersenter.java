@@ -53,7 +53,7 @@ public class GetRecordPersenter {
     //总条数
     private int totalNum;
     //读取内容的时间段
-    private String startTime,endTime;
+    public String startTime,endTime;
     public void showDialogRed3(String red1){
         final String[] strings = red1.replace(" ","").split(",");
         strings[1] = "20"+strings[1].substring(0,2)+"-"+strings[1].substring(2,4)+"-"+strings[1].substring(4,6)+" "+strings[1].substring(6,8)+":"+strings[1].substring(8,10);
@@ -126,7 +126,7 @@ public class GetRecordPersenter {
     /**
      * 组装第三条读取命令
      */
-    private String redStart="",redEnd=""; //记录上次读取的时间段
+    public String redStart="",redEnd=""; //记录上次读取的时间段
     private long eLong;
     public boolean setRed3Cmd(){
         try {
@@ -155,11 +155,11 @@ public class GetRecordPersenter {
             //设置根据时间段读取设备里面的数据
             SendBleStr.redDeviceByTime2(redStart,redEnd);
 
-            LogUtils.e(SendBleStr.RED_DEVICE_DATA_BY_TIME2+"+++++++++++++++++++++++++++++++");
+//            LogUtils.e(SendBleStr.RED_DEVICE_DATA_BY_TIME2+"+++++++++++++++++++++++++++++++");
             //下发命令
             activity.sendData(BleContant.RED_DEVICE_DATA_BY_TIME2);
 
-            saveSB.append(BleContant.RED_DEVICE_DATA_BY_TIME2+"\r");
+            saveSB.append(SendBleStr.RED_DEVICE_DATA_BY_TIME2+"\r");
         }catch (Exception e){
             BuglyUtils.uploadBleMsg("读取数据时的错误："+e.getMessage());
             e.printStackTrace();
