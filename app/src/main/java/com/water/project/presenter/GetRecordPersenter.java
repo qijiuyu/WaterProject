@@ -159,7 +159,7 @@ public class GetRecordPersenter {
             //下发命令
             activity.sendData(BleContant.RED_DEVICE_DATA_BY_TIME2);
 
-            saveSB.append(BleContant.RED_DEVICE_DATA_BY_TIME2+"\r");
+            saveSB.append(SendBleStr.RED_DEVICE_DATA_BY_TIME2+"\r");
         }catch (Exception e){
             BuglyUtils.uploadBleMsg("读取数据时的错误："+e.getMessage());
             e.printStackTrace();
