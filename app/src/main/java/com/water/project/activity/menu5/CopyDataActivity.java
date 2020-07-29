@@ -281,14 +281,9 @@ public class CopyDataActivity extends BaseActivity {
                      }
 
                      //如果长度不够就重新发送
-                     if(data.length()%256!=0){
-                         if(repeatNum<2){
-                             handler.postDelayed(new Runnable() {
-                                 @Override
-                                 public void run() {
-                                     sendData(BleContant.RED_DEVICE_DATA_BY_TIME);
-                                 }
-                             },50);
+                     if(data.length()!=1280 && redIsSend){
+                         if(repeatNum<3){
+                             sendData(BleContant.RED_DEVICE_DATA_BY_TIME);
                              repeatNum++;
                          }else{
                              //关闭读取时的进度框
@@ -301,12 +296,13 @@ public class CopyDataActivity extends BaseActivity {
                              }, null);
                              dialogView.show();
                          }
+
+                         return;
                      }
-                     //表示重读了几次都不是128的倍数
-                    if(repeatNum>=2){
-                        return;
-                    }
+
+
                      red3.append(data);
+
                      if(redIsSend){
                          repeatNum=0;
                          redIsSend=copyDataPersenter.setRed3Cmd(red1);
