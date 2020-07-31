@@ -20,7 +20,7 @@ public class BleObject {
     private Activity activity;
     private static BleObject bleObject;
     public BleService bleService;
-    private BindService bindService;
+    public BindService bindService;
 
     public static BleObject getInstance(){
         if(bleObject==null){

@@ -43,11 +43,11 @@ public class SendBleDataManager {
                         //将字符串进行200字节的截取
                         final List<String> sendList= BleUtils.getSendData(data,200);
                         //下发蓝牙命令
-                        boolean b = BleObject.getInstance().getBleService(activity).writeRXCharacteristic(sendList);
+                        boolean b = BleObject.getInstance().bleService.writeRXCharacteristic(sendList);
                         if (!b) {
-                            BleObject.getInstance().getBleService(activity).stopTimeOut();
-                            Intent intent = new Intent(BleObject.getInstance().getBleService(activity).ACTION_SEND_DATA_FAIL);
-                            BleObject.getInstance().getBleService(activity).sendBroadcast(intent);
+                            BleObject.getInstance().bleService.stopTimeOut();
+                            Intent intent = new Intent(BleObject.getInstance().bleService.ACTION_SEND_DATA_FAIL);
+                            BleObject.getInstance().bleService.sendBroadcast(intent);
                         }
                     }
                 },100);
