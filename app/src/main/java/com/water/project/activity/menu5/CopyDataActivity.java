@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.water.project.R;
 import com.water.project.activity.BaseActivity;
 import com.water.project.application.MyApplication;
+import com.water.project.bean.BindService;
 import com.water.project.bean.Ble;
 import com.water.project.bean.eventbus.EventStatus;
 import com.water.project.bean.eventbus.EventType;
@@ -76,8 +77,8 @@ public class CopyDataActivity extends BaseActivity {
             //读取数据
             case R.id.tv_red:
                 copyDataPersenter=new CopyDataPersenter(this);
-                red3.delete(0,red3.length());
-                saveSD.delete(0,saveSD.length());
+                red3.setLength(0);
+                saveSD.setLength(0);
                 type=1;
                 Ble ble = (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE, Ble.class);
                 bleName=ble.getBleName();
@@ -102,11 +103,15 @@ public class CopyDataActivity extends BaseActivity {
      * 发送蓝牙命令
      */
     private BleService bleService;
-    private void sendData(int SEND_STATUS) {
+    private void sendData(final int SEND_STATUS) {
         this.SEND_STATUS=SEND_STATUS;
-        bleService= BleObject.getInstance().getBleService(this);
+        bleService= BleObject.getInstance().getBleService(this, new BindService() {
+            @Override
+            public void onSuccess() {
+                sendData(SEND_STATUS);
+            }
+        });
         if(bleService==null){
-            ToastUtil.showLong("蓝牙服务刚启动，请再试一次");
             return;
         }
 

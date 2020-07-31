@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.water.project.R;
 import com.water.project.application.MyApplication;
+import com.water.project.bean.BindService;
 import com.water.project.bean.Ble;
 import com.water.project.bean.SelectTime;
 import com.water.project.service.BleService;
@@ -157,12 +158,16 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
      * @param SEND_STATUS
      */
     private BleService bleService;
-    private void sendData(int SEND_STATUS,int type){
+    private void sendData(final int SEND_STATUS, final int type){
         this.SEND_STATUS=SEND_STATUS;
         SEND_TYPE=type;
-        bleService= BleObject.getInstance().getBleService(this);
+        bleService= BleObject.getInstance().getBleService(this, new BindService() {
+            @Override
+            public void onSuccess() {
+                sendData(SEND_STATUS,type);
+            }
+        });
         if(bleService==null){
-            ToastUtil.showLong("蓝牙服务刚启动，请再试一次");
             return;
         }
         switch (SEND_STATUS){

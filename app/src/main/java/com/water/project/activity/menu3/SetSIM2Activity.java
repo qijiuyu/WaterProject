@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.water.project.R;
 import com.water.project.activity.BaseActivity;
 import com.water.project.application.MyApplication;
+import com.water.project.bean.BindService;
 import com.water.project.bean.Ble;
 import com.water.project.service.BleService;
 import com.water.project.utils.DialogUtils;
@@ -113,11 +114,15 @@ public class SetSIM2Activity extends BaseActivity {
      * 发送蓝牙命令
      */
     private BleService bleService;
-    private void sendData(int SEND_STATUS) {
+    private void sendData(final int SEND_STATUS) {
         this.SEND_STATUS=SEND_STATUS;
-        bleService= BleObject.getInstance().getBleService(this);
+        bleService= BleObject.getInstance().getBleService(this, new BindService() {
+            @Override
+            public void onSuccess() {
+                sendData(SEND_STATUS);
+            }
+        });
         if(bleService==null){
-            ToastUtil.showLong("蓝牙服务刚启动，请再试一次");
             return;
         }
         if(SEND_STATUS==BleContant.SET_CENTER_MOBILE){

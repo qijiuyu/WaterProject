@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.water.project.R;
 import com.water.project.application.MyApplication;
+import com.water.project.bean.BindService;
 import com.water.project.bean.Ble;
 import com.water.project.presenter.GetDataPresenter;
 import com.water.project.presenter.GetDataPresenterImpl;
@@ -114,9 +115,13 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
      */
     private BleService bleService;
     private void sendData() {
-        bleService= BleObject.getInstance().getBleService(this);
+        bleService= BleObject.getInstance().getBleService(this, new BindService() {
+            @Override
+            public void onSuccess() {
+                sendData();
+            }
+        });
         if(bleService==null){
-            ToastUtil.showLong("蓝牙服务刚启动，请再试一次");
             return;
         }
         DialogUtils.showProgress(GetDataActivity.this,"正在读取实时数据...");

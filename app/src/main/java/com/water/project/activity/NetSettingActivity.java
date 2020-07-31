@@ -23,6 +23,7 @@ import com.water.project.R;
 import com.water.project.activity.menu3.SetSIM2Activity;
 import com.water.project.activity.menu3.SetSIMActivity;
 import com.water.project.application.MyApplication;
+import com.water.project.bean.BindService;
 import com.water.project.bean.Ble;
 import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
@@ -213,11 +214,15 @@ public class NetSettingActivity extends BaseActivity implements View.OnClickList
      * 发送蓝牙命令
      */
     private BleService bleService;
-    private void sendData(int SEND_STATUS) {
+    private void sendData(final int SEND_STATUS) {
         this.SEND_STATUS=SEND_STATUS;
-        bleService= BleObject.getInstance().getBleService(this);
+        bleService= BleObject.getInstance().getBleService(this, new BindService() {
+            @Override
+            public void onSuccess() {
+                sendData(SEND_STATUS);
+            }
+        });
         if(bleService==null){
-            ToastUtil.showLong("蓝牙服务刚启动，请再试一次");
             return;
         }
         if(SEND_STATUS==BleContant.SEND_GET_CODE_PHONE){

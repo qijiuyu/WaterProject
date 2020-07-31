@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.water.project.R;
 import com.water.project.adapter.BleItemAdapter;
 import com.water.project.application.MyApplication;
+import com.water.project.bean.BindService;
 import com.water.project.bean.Ble;
 import com.water.project.bean.eventbus.EventStatus;
 import com.water.project.bean.eventbus.EventType;
@@ -96,9 +97,13 @@ public class SearchBleActivity extends BaseActivity {
      */
     private BleService bleService;
     private void scanBle(){
-        bleService= BleObject.getInstance().getBleService(this);
+        bleService= BleObject.getInstance().getBleService(this, new BindService() {
+            @Override
+            public void onSuccess() {
+                scanBle();
+            }
+        });
         if(bleService==null){
-            ToastUtil.showLong("蓝牙服务刚启动，请再试一次");
             return;
         }
         rippleBackground.startRippleAnimation();
