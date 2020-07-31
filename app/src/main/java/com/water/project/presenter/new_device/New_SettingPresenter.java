@@ -9,6 +9,7 @@ import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
 import com.water.project.bean.eventbus.EventStatus;
 import com.water.project.bean.eventbus.EventType;
+import com.water.project.service.BleService;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.view.DialogView;
@@ -47,7 +48,7 @@ public class New_SettingPresenter {
     /**
      * 蓝牙连接断开
      */
-    public void bleConncation(){
+    public void bleConncation(final BleService bleService){
         DialogUtils.closeProgress();
         dialogView = new DialogView(activity, "蓝牙连接断开，请靠近设备进行连接!","重新连接", "取消", new View.OnClickListener() {
             public void onClick(View v) {
@@ -56,7 +57,7 @@ public class New_SettingPresenter {
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
-                        MainActivity.bleService.connect(ble.getBleMac());
+                        bleService.connect(ble.getBleMac());
                     }
                 },100);
             }

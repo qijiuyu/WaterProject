@@ -1,53 +1,32 @@
 package com.water.project.activity;
 
-import android.app.Dialog;
-import android.bluetooth.BluetoothAdapter;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.water.project.R;
 import com.water.project.activity.menu6.SendDataActivity;
 import com.water.project.activity.new_version.New_SettingActivity;
 import com.water.project.adapter.MainMenuAdapter;
 import com.water.project.application.MyApplication;
-import com.water.project.bean.Ble;
 import com.water.project.bean.Menu;
-import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
-import com.water.project.utils.DialogUtils;
-import com.water.project.utils.FileUtils;
-import com.water.project.utils.LogUtils;
-import com.water.project.utils.ble.SendBleDataManager;
-
+import com.water.project.utils.DataCleanManager;
+import com.water.project.utils.ble.BleObject;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.jpush.android.api.JPushInterface;
-import cn.jpush.android.api.TagAliasCallback;
-
 public class MainActivity extends BaseActivity{
 
     @BindView(R.id.tv_am_scan)
@@ -60,18 +39,12 @@ public class MainActivity extends BaseActivity{
     LinearLayout lin;
     // 按两次退出
     protected long exitTime = 0;
-    //蓝牙参数
-    public static BleService bleService = null;
-    public static BluetoothAdapter mBtAdapter = null;
     //存储菜单
     private List<Menu> menuList = new ArrayList<>();
     private MainMenuAdapter mainMenuAdapter;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        if (MyApplication.spUtil.getString("stopAPP").equals("12345water54321")) {
-            System.exit(0);
-        }
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initView();
@@ -79,8 +52,8 @@ public class MainActivity extends BaseActivity{
         setMenuList();
         //删除缓存
         deleteCache();
-        initService();//注册蓝牙服务
-        setPush();
+        //注册蓝牙服务
+        BleObject.getInstance().getBleService(this);
     }
 
 
@@ -126,30 +99,6 @@ public class MainActivity extends BaseActivity{
     }
 
 
-    /**
-     * 打开蓝牙service
-     */
-    private void initService() {
-        Intent bindIntent = new Intent(this, BleService.class);
-        bindService(bindIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
-    }
-
-    private ServiceConnection mServiceConnection = new ServiceConnection() {
-        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-        public void onServiceConnected(ComponentName className, IBinder rawBinder) {
-            bleService = ((BleService.LocalBinder) rawBinder).getService();
-            mBtAdapter = bleService.createBluetoothAdapter();
-            SendBleDataManager.getInstance().init(bleService);
-            //判断蓝牙是否打开
-            BleUtils.isEnabled(MainActivity.this, mBtAdapter);
-        }
-
-        public void onServiceDisconnected(ComponentName classname) {
-        }
-    };
-
-
-    int i=0;
     @OnClick({R.id.tv_am_scan, R.id.tv_about})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -222,6 +171,8 @@ public class MainActivity extends BaseActivity{
      */
     private void deleteCache() {
         MyApplication.spUtil.removeAll();
+        //清理缓存
+        DataCleanManager.clearAllCache(MainActivity.this);
     }
 
     // 按两次退出
@@ -232,17 +183,8 @@ public class MainActivity extends BaseActivity{
                 showToastView("再按一次退出程序！");
                 exitTime = System.currentTimeMillis();
             } else {
-                bleService.disconnect();
-                try {
-                    unbindService(mServiceConnection);
-                } catch (Exception e) {
-
-                }
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-                        finish();
-                    }
-                }, 200);
+                BleObject.getInstance().disconnect();
+                finish();
             }
             return true;
         }
@@ -250,44 +192,8 @@ public class MainActivity extends BaseActivity{
     }
 
 
-    /**
-     * 设置推送
-     */
-    private void setPush() {
-        //设置极光推送的别名
-        Set<String> tags = new HashSet<>();
-        tags.add("com.water.project");
-        JPushInterface.setAliasAndTags(getApplicationContext(), "com.water.project", tags, mAliasCallback);
-    }
-
-
-    private final TagAliasCallback mAliasCallback = new TagAliasCallback() {
-        public void gotResult(int code, String alias, Set<String> tags) {
-            switch (code) {
-                //设置别名成功
-                case 0:
-                    LogUtils.e("推送设置成功");
-                    break;
-                //设置别名失败
-                case 6002:
-                    LogUtils.e("推送设置失败");
-                    new Handler().postDelayed(new Runnable() {
-                        public void run() {
-                            setPush();
-                        }
-                    }, 30000);
-                    break;
-                default:
-            }
-        }
-    };
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (null != bleService) {
-            bleService.disconnect();
-        }
     }
-
 }

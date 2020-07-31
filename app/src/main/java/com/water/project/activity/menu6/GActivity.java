@@ -27,7 +27,9 @@ import com.water.project.utils.BleUtils;
 import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.SPUtil;
+import com.water.project.utils.ToastUtil;
 import com.water.project.utils.ble.BleContant;
+import com.water.project.utils.ble.BleObject;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
 
@@ -108,27 +110,30 @@ public class GActivity extends BaseActivity {
     }
 
 
+
     /**
      * 发送蓝牙命令
      */
-    public void sendData(int status) {
-        SEND_STATUS = status;
-        //判断蓝牙是否打开
-        if (!BleUtils.isEnabled(GActivity.this, MainActivity.mBtAdapter)) {
+    private BleService bleService;
+    private void sendData(int SEND_STATUS) {
+        this.SEND_STATUS=SEND_STATUS;
+        bleService= BleObject.getInstance().getBleService(this);
+        if(bleService==null){
+            ToastUtil.showLong("蓝牙服务刚启动，请再试一次");
             return;
         }
         //如果蓝牙连接断开，就扫描重连
-        if (MainActivity.bleService.connectionState == MainActivity.bleService.STATE_DISCONNECTED) {
+        if (bleService.connectionState == bleService.STATE_DISCONNECTED) {
             //扫描并重连蓝牙
             final Ble ble = (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE, Ble.class);
             if (null != ble) {
                 DialogUtils.showProgress(GActivity.this, "扫描并连接蓝牙设备...");
-                MainActivity.bleService.scanDevice(ble.getBleName());
+                bleService.scanDevice(ble.getBleName());
             }
             return;
         }
         DialogUtils.showProgress(GActivity.this, "正在发送数据...");
-        SendBleStr.sendBleData(status);
+        SendBleStr.sendBleData(this,SEND_STATUS);
     }
 
 
@@ -158,7 +163,7 @@ public class GActivity extends BaseActivity {
                 //蓝牙断开连接
                 case BleService.ACTION_GATT_DISCONNECTED:
                     isSend = false;
-                    sendDataPersenter.bleDisConnect();
+                    sendDataPersenter.bleDisConnect(bleService);
                     break;
                 //初始化通道成功
                 case BleService.ACTION_ENABLE_NOTIFICATION_SUCCES:

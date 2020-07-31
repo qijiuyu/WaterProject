@@ -12,15 +12,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import com.water.project.R;
 import com.water.project.activity.BaseActivity;
-import com.water.project.activity.MainActivity;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
 import com.water.project.service.BleService;
-import com.water.project.utils.BleUtils;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ToastUtil;
 import com.water.project.utils.ble.BleContant;
+import com.water.project.utils.ble.BleObject;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
 import butterknife.BindView;
@@ -84,10 +83,12 @@ public class SetSIMActivity extends BaseActivity {
     /**
      * 发送蓝牙命令
      */
+    private BleService bleService;
     private void sendData(int SEND_STATUS) {
         this.SEND_STATUS=SEND_STATUS;
-        //判断蓝牙是否打开
-        if (!BleUtils.isEnabled(SetSIMActivity.this, MainActivity.mBtAdapter)) {
+        bleService= BleObject.getInstance().getBleService(this);
+        if(bleService==null){
+            ToastUtil.showLong("蓝牙服务刚启动，请再试一次");
             return;
         }
         if(SEND_STATUS==BleContant.SET_CENTER_MOBILE){
@@ -96,16 +97,16 @@ public class SetSIMActivity extends BaseActivity {
             DialogUtils.showProgress(SetSIMActivity.this, "正在读取中心号码...");
         }
         //如果蓝牙连接断开，就扫描重连
-        if (MainActivity.bleService.connectionState == MainActivity.bleService.STATE_DISCONNECTED) {
+        if (bleService.connectionState == bleService.STATE_DISCONNECTED) {
             //扫描并重连蓝牙
             final Ble ble = (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE, Ble.class);
             if (null != ble) {
                 DialogUtils.showProgress(SetSIMActivity.this, "扫描并连接蓝牙设备...");
-                MainActivity.bleService.scanDevice(ble.getBleName());
+                bleService.scanDevice(ble.getBleName());
             }
             return;
         }
-        SendBleStr.sendBleData(SEND_STATUS);
+        SendBleStr.sendBleData(this,SEND_STATUS);
     }
 
 
@@ -149,7 +150,7 @@ public class SetSIMActivity extends BaseActivity {
                             mHandler.postDelayed(new Runnable() {
                                 public void run() {
                                     Ble ble = (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE, Ble.class);
-                                    MainActivity.bleService.connect(ble.getBleMac());
+                                    bleService.connect(ble.getBleMac());
                                 }
                             }, 100);
                         }

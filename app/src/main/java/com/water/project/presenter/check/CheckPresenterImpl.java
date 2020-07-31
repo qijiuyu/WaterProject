@@ -16,6 +16,7 @@ import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
 import com.water.project.bean.eventbus.EventStatus;
 import com.water.project.bean.eventbus.EventType;
+import com.water.project.service.BleService;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
@@ -212,19 +213,16 @@ public class CheckPresenterImpl {
     /**
      * 蓝牙连接断开
      */
-    public void bleDisConnect(){
+    public void bleDisConnect(final BleService bleService){
         DialogUtils.closeProgress();
-        if(null!=dialogView){
-            dialogView.dismiss();
-        }
-        dialogView = new DialogView(activity, "蓝牙连接断开，请靠近设备进行连接!","重新连接", "取消", new View.OnClickListener() {
+        dialogView = new DialogView(dialogView,activity, "蓝牙连接断开，请靠近设备进行连接!","重新连接", "取消", new View.OnClickListener() {
             public void onClick(View v) {
                 dialogView.dismiss();
                 DialogUtils.showProgress(activity,"蓝牙连接中...");
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
-                        MainActivity.bleService.connect(ble.getBleMac());
+                        bleService.connect(ble.getBleMac());
                     }
                 },100);
             }

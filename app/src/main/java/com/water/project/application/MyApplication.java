@@ -9,8 +9,6 @@ import com.water.project.utils.SPUtil;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import cn.jpush.android.api.JPushInterface;
-
 /**
  * Created by Administrator on 2018/7/2 0002.
  */
@@ -35,9 +33,6 @@ public class MyApplication extends Application {
 //        }
 
         initBugly();
-
-        JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
-        JPushInterface.init(this);     		// 初始化 JPush
     }
 
 

@@ -21,8 +21,10 @@ import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.SPUtil;
+import com.water.project.utils.ToastUtil;
 import com.water.project.utils.Util;
 import com.water.project.utils.ble.BleContant;
+import com.water.project.utils.ble.BleObject;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
 
@@ -110,23 +112,25 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
     /**
      * 发送蓝牙命令
      */
-    private void sendData(){
-        //判断蓝牙是否打开
-        if(!BleUtils.isEnabled(GetDataActivity.this,MainActivity.mBtAdapter)){
+    private BleService bleService;
+    private void sendData() {
+        bleService= BleObject.getInstance().getBleService(this);
+        if(bleService==null){
+            ToastUtil.showLong("蓝牙服务刚启动，请再试一次");
             return;
         }
         DialogUtils.showProgress(GetDataActivity.this,"正在读取实时数据...");
         //如果蓝牙连接断开，就扫描重连
-        if(MainActivity.bleService.connectionState==MainActivity.bleService.STATE_DISCONNECTED){
+        if(bleService.connectionState==bleService.STATE_DISCONNECTED){
             //扫描并重连蓝牙
             final Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
             if(null!=ble){
                 DialogUtils.showProgress(GetDataActivity.this,"扫描并连接蓝牙设备...");
-                MainActivity.bleService.scanDevice(ble.getBleName());
+                bleService.scanDevice(ble.getBleName());
             }
             return;
         }
-        SendBleStr.sendBleData(BleContant.SEND_REAL_TIME_DATA);
+        SendBleStr.sendBleData(this,BleContant.SEND_REAL_TIME_DATA);
     }
 
 
@@ -169,7 +173,7 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
                             mHandler.postDelayed(new Runnable() {
                                 public void run() {
                                     Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
-                                    MainActivity.bleService.connect(ble.getBleMac());
+                                    bleService.connect(ble.getBleMac());
                                 }
                             },100);
                          }

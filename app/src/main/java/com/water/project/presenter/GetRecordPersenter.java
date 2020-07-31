@@ -155,7 +155,6 @@ public class GetRecordPersenter {
             //设置根据时间段读取设备里面的数据
             SendBleStr.redDeviceByTime2(redStart,redEnd);
 
-//            LogUtils.e(SendBleStr.RED_DEVICE_DATA_BY_TIME2+"+++++++++++++++++++++++++++++++");
             //下发命令
             activity.sendData(BleContant.RED_DEVICE_DATA_BY_TIME2);
 
@@ -234,9 +233,6 @@ public class GetRecordPersenter {
      * 显示读取完成的弹框
      */
     public void showRedComplete(final String red2,final String red3){
-        final String fileName = "读取的命令.txt";
-        String filePath = FileUtils.createFile(fileName, saveSB.toString());
-
         //关闭读取时的进度框
         closeTripDialog();
 

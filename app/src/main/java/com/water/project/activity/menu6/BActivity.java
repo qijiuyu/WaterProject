@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.water.project.R;
 import com.water.project.activity.BaseActivity;
-import com.water.project.activity.MainActivity;
 import com.water.project.adapter.BAdapter;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
@@ -24,11 +23,11 @@ import com.water.project.bean.eventbus.EventStatus;
 import com.water.project.bean.eventbus.EventType;
 import com.water.project.presenter.SendDataPersenter;
 import com.water.project.service.BleService;
-import com.water.project.utils.BleUtils;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ToastUtil;
 import com.water.project.utils.ble.BleContant;
+import com.water.project.utils.ble.BleObject;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
 import com.water.project.view.MeasureListView;
@@ -113,22 +112,25 @@ public class BActivity extends BaseActivity {
     }
 
 
+
     /**
      * 发送蓝牙命令
      */
-    public void sendData(int status) {
-        SEND_STATUS = status;
-        //判断蓝牙是否打开
-        if (!BleUtils.isEnabled(BActivity.this, MainActivity.mBtAdapter)) {
+    private BleService bleService;
+    private void sendData(int SEND_STATUS) {
+        this.SEND_STATUS=SEND_STATUS;
+        bleService= BleObject.getInstance().getBleService(this);
+        if(bleService==null){
+            ToastUtil.showLong("蓝牙服务刚启动，请再试一次");
             return;
         }
         //如果蓝牙连接断开，就扫描重连
-        if (MainActivity.bleService.connectionState == MainActivity.bleService.STATE_DISCONNECTED) {
+        if (bleService.connectionState == bleService.STATE_DISCONNECTED) {
             //扫描并重连蓝牙
             final Ble ble = (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE, Ble.class);
             if (null != ble) {
                 DialogUtils.showProgress(BActivity.this, "扫描并连接蓝牙设备...");
-                MainActivity.bleService.scanDevice(ble.getBleName());
+                bleService.scanDevice(ble.getBleName());
             }
             return;
         }
@@ -137,7 +139,7 @@ public class BActivity extends BaseActivity {
         }else{
             DialogUtils.showProgress(BActivity.this, "正在读取信号强度,请稍候...");
         }
-        SendBleStr.sendBleData(SEND_STATUS);
+        SendBleStr.sendBleData(this,SEND_STATUS);
     }
 
 
@@ -166,7 +168,7 @@ public class BActivity extends BaseActivity {
                     break;
                 //蓝牙断开连接
                 case BleService.ACTION_GATT_DISCONNECTED:
-                    sendDataPersenter.bleDisConnect();
+                    sendDataPersenter.bleDisConnect(bleService);
                     break;
                 //初始化通道成功
                 case BleService.ACTION_ENABLE_NOTIFICATION_SUCCES:

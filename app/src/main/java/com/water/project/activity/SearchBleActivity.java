@@ -21,7 +21,9 @@ import com.water.project.service.BleService;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
+import com.water.project.utils.ToastUtil;
 import com.water.project.utils.ble.BleContant;
+import com.water.project.utils.ble.BleObject;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
 import com.water.project.view.RippleBackground;
@@ -92,12 +94,15 @@ public class SearchBleActivity extends BaseActivity {
     /**
      * 开始扫描蓝牙
      */
+    private BleService bleService;
     private void scanBle(){
-        if(null==MainActivity.bleService){
+        bleService= BleObject.getInstance().getBleService(this);
+        if(bleService==null){
+            ToastUtil.showLong("蓝牙服务刚启动，请再试一次");
             return;
         }
         rippleBackground.startRippleAnimation();
-        MainActivity.bleService.scanDevice(null);
+        bleService.scanDevice(null);
     }
 
 
@@ -162,7 +167,7 @@ public class SearchBleActivity extends BaseActivity {
                              LogUtils.e("重新连接一次蓝牙!");
                              mHandler.postDelayed(new Runnable() {
                                  public void run() {
-                                     MainActivity.bleService.connect(SearchBleActivity.this.ble.getBleMac());
+                                     bleService.connect(SearchBleActivity.this.ble.getBleMac());
                                  }
                              },100);
                              return;
@@ -174,7 +179,7 @@ public class SearchBleActivity extends BaseActivity {
                                      mHandler.postDelayed(new Runnable() {
                                          public void run() {
                                              DialogUtils.showProgress(SearchBleActivity.this,"蓝牙连接中...");
-                                             MainActivity.bleService.connect(SearchBleActivity.this.ble.getBleMac());
+                                             bleService.connect(SearchBleActivity.this.ble.getBleMac());
                                          }
                                      },100);
                                  }
@@ -247,7 +252,7 @@ public class SearchBleActivity extends BaseActivity {
                   }
                   MyApplication.spUtil.addObject(SPUtil.BLE_DEVICE,ble);
                   DialogUtils.showProgress(SearchBleActivity.this,"蓝牙连接中...");
-                  MainActivity.bleService.connect(ble.getBleMac());
+                  bleService.connect(ble.getBleMac());
                   break;
             default:
                 break;
@@ -260,7 +265,7 @@ public class SearchBleActivity extends BaseActivity {
      */
     private void redVersion(){
         DialogUtils.showProgress(SearchBleActivity.this,"正在读取版本号...");
-        SendBleStr.sendBleData(BleContant.RED_DEVICE_VERSION);
+        SendBleStr.sendBleData(this,BleContant.RED_DEVICE_VERSION);
     }
 
 
@@ -268,7 +273,7 @@ public class SearchBleActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        MainActivity.bleService.stopScan();
+        bleService.stopScan();
         unregisterReceiver(mBroadcastReceiver);
     }
 }

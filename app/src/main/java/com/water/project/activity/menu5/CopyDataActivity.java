@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.water.project.R;
 import com.water.project.activity.BaseActivity;
-import com.water.project.activity.MainActivity;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Ble;
 import com.water.project.bean.eventbus.EventStatus;
@@ -24,12 +23,11 @@ import com.water.project.utils.FileUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ToastUtil;
 import com.water.project.utils.ble.BleContant;
+import com.water.project.utils.ble.BleObject;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -49,7 +47,7 @@ public class CopyDataActivity extends BaseActivity {
     private int type=1;
     //需要读取的三类数据
     private String red1,red2;
-    private StringBuffer red3=new StringBuffer();
+    public StringBuffer red3=new StringBuffer();
     private StringBuffer saveSD=new StringBuffer();
     //下发命令的编号
     private int SEND_STATUS;
@@ -99,15 +97,23 @@ public class CopyDataActivity extends BaseActivity {
         }
     }
 
+
     /**
      * 发送蓝牙命令
      */
+    private BleService bleService;
     private void sendData(int SEND_STATUS) {
         this.SEND_STATUS=SEND_STATUS;
+        bleService= BleObject.getInstance().getBleService(this);
+        if(bleService==null){
+            ToastUtil.showLong("蓝牙服务刚启动，请再试一次");
+            return;
+        }
+
         //如果蓝牙连接断开，就扫描重连
-        if (MainActivity.bleService.connectionState == MainActivity.bleService.STATE_DISCONNECTED) {
+        if (bleService.connectionState == bleService.STATE_DISCONNECTED) {
             DialogUtils.showProgress(CopyDataActivity.this, "扫描并连接蓝牙设备...");
-            MainActivity.bleService.scanDevice(bleName);
+            bleService.scanDevice(bleName);
             return;
         }
         //开始发送读取蓝牙命令
@@ -119,14 +125,6 @@ public class CopyDataActivity extends BaseActivity {
                 case BleContant.COPY_DEVICE_ID:
                     DialogUtils.showProgress(CopyDataActivity.this, "读取原始设备的统一编码");
                     break;
-                case BleContant.RED_DEVICE_DATA_BY_TIME:
-                     handler.post(new Runnable() {
-                         public void run() {
-                             DialogUtils.closeProgress();
-                             copyDataPersenter.showTripDialog(red3.toString());
-                         }
-                     });
-                     break;
                 default:
                     break;
             }
@@ -157,7 +155,7 @@ public class CopyDataActivity extends BaseActivity {
             }
         }
 
-        SendBleStr.sendBleData(SEND_STATUS);
+        SendBleStr.sendBleData(this,SEND_STATUS);
     }
 
 
@@ -269,6 +267,8 @@ public class CopyDataActivity extends BaseActivity {
                       break;
                 case BleContant.COPY_DEVICE_ID:
                       red2=data;
+                      DialogUtils.closeProgress();
+                      copyDataPersenter.showTripDialog();
                       //发送设置根据时间段读取设备里面的数据
                       redIsSend=copyDataPersenter.setRed3Cmd(red1);
                       sendData(BleContant.RED_DEVICE_DATA_BY_TIME);
@@ -309,7 +309,7 @@ public class CopyDataActivity extends BaseActivity {
                          sendData(BleContant.RED_DEVICE_DATA_BY_TIME);
                      }else{
                          //断开蓝牙连接
-                         MainActivity.bleService.disconnect();
+                         bleService.disconnect();
                          ToastUtil.showLong("蓝牙连接断开！");
                          copyDataPersenter.showRedComplete(red3.toString());
                      }
@@ -347,7 +347,7 @@ public class CopyDataActivity extends BaseActivity {
                       //拷贝完成
                       if(data.endsWith(">OK")){
                           //断开蓝牙连接
-                          MainActivity.bleService.disconnect();
+                          bleService.disconnect();
                           ToastUtil.showLong("蓝牙连接断开！");
                           copyDataPersenter.showCopyComplete();
                           return;

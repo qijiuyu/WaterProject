@@ -24,6 +24,7 @@ import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ToastUtil;
 import com.water.project.utils.ble.BleContant;
+import com.water.project.utils.ble.BleObject;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
 
@@ -103,10 +104,12 @@ public class GetRecordActivity extends BaseActivity {
     /**
      * 发送蓝牙命令
      */
-    public void sendData(int status) {
-        SEND_STATUS=status;
-        //判断蓝牙是否打开
-        if (!BleUtils.isEnabled(GetRecordActivity.this, MainActivity.mBtAdapter)) {
+    private BleService bleService;
+    public void sendData(int SEND_STATUS) {
+        this.SEND_STATUS=SEND_STATUS;
+        bleService= BleObject.getInstance().getBleService(this);
+        if(bleService==null){
+            ToastUtil.showLong("蓝牙服务刚启动，请再试一次");
             return;
         }
 
@@ -115,16 +118,16 @@ public class GetRecordActivity extends BaseActivity {
         }
 
         //如果蓝牙连接断开，就扫描重连
-        if (MainActivity.bleService.connectionState == MainActivity.bleService.STATE_DISCONNECTED) {
+        if (bleService.connectionState == bleService.STATE_DISCONNECTED) {
             //扫描并重连蓝牙
             final Ble ble = (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE, Ble.class);
             if (null != ble) {
                 DialogUtils.showProgress(GetRecordActivity.this, "扫描并连接蓝牙设备...");
-                MainActivity.bleService.scanDevice(ble.getBleName());
+                bleService.scanDevice(ble.getBleName());
             }
             return;
         }
-        SendBleStr.sendBleData(SEND_STATUS);
+        SendBleStr.sendBleData(this,SEND_STATUS);
     }
 
 
@@ -146,7 +149,6 @@ public class GetRecordActivity extends BaseActivity {
 
     //true：表示可以重发上条读取的命令
     private int repeatNum=0;
-    private int redNum=1;
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             if(!isShowActivity){
@@ -174,7 +176,7 @@ public class GetRecordActivity extends BaseActivity {
                             mHandler.postDelayed(new Runnable() {
                                 public void run() {
                                     Ble ble = (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE, Ble.class);
-                                    MainActivity.bleService.connect(ble.getBleMac());
+                                    bleService.connect(ble.getBleMac());
                                 }
                             }, 100);
                         }
@@ -241,7 +243,6 @@ public class GetRecordActivity extends BaseActivity {
                                 red3.append(data);
 
                                 if(persenter.setRed3Cmd()){
-                                    redNum++;
                                     repeatNum=0;
                                 }else{
                                     repeatNum=0;

@@ -13,6 +13,7 @@ import com.water.project.activity.menu5.CopyDataActivity;
 import com.water.project.bean.eventbus.EventStatus;
 import com.water.project.bean.eventbus.EventType;
 import com.water.project.utils.BleUtils;
+import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ble.ByteUtil;
@@ -46,10 +47,9 @@ public class CopyDataPersenter {
     //总条数
     private int totalNum;
     private SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
-    //读取数据时的弹框
-    public Dialog redDialog;
-
     private Handler handler=new Handler();
+    private boolean isRedEnd=false;
+
     public CopyDataPersenter(CopyDataActivity activity){
         this.activity=activity;
     }
@@ -122,36 +122,58 @@ public class CopyDataPersenter {
     /**
      * 展示读取数据时的提示框
      */
+    public Dialog redDialog;
     private TextView tvContent;
-    private NumberFormat numberFormat = NumberFormat.getInstance();
-    public void showTripDialog(String red3){
-        //已读取了几条
-        int newNum= BleUtils.getSendData(red3,256).size();
+    public void showTripDialog(){
+        try {
+            View view= LayoutInflater.from(activity).inflate(R.layout.dialog_copy,null);
+            redDialog=DialogUtils.dialogPop(view,activity);
+            LinearGradientTextView tvTitle=view.findViewById(R.id.tv_title);
+            tvTitle.setText("正在读取数据记录...");
+            tvContent=view.findViewById(R.id.tv_content);
 
-        //获取百分比
-        numberFormat.setMaximumFractionDigits(2);
-        String status= (numberFormat.format((float) newNum / (float) totalNum * 100))+"%";
-
-        String startTime=strings[1].substring(0, 4)+"年"+strings[1].substring(4,6)+"月"+strings[1].substring(6,8)+"日"+strings[1].substring(8,10)+"时"+strings[1].substring(10,12)+"分";
-        String endTime=strings[2].substring(0, 4)+"年"+strings[2].substring(4,6)+"月"+strings[2].substring(6,8)+"日"+strings[2].substring(8,10)+"时"+strings[2].substring(10,12)+"分";
-
-        if(redDialog!=null && redDialog.isShowing() && tvContent!=null){
-            tvContent.setText("需读取数据记录"+totalNum+"条\n\n已读取数据记录"+newNum+"条\n\n已读取数据记录百分比："+status+"\n\n最早数据记录时间："+startTime+"\n\n最新数据记录时间："+endTime+"\n\n数据记录间隔时间："+minutes+"分钟");
-            return;
+            handler.removeCallbacks(runnable);
+            handler.postDelayed(runnable,100);
+        }catch (Exception e){
+            BuglyUtils.uploadBleMsg("读取数据时的错误："+e.getMessage());
+            e.printStackTrace();
         }
-        View view= LayoutInflater.from(activity).inflate(R.layout.dialog_copy,null);
-        redDialog=DialogUtils.dialogPop(view,activity);
-        LinearGradientTextView tvTitle=view.findViewById(R.id.tv_title);
-        tvTitle.setText("正在读取数据记录...");
-        tvContent=view.findViewById(R.id.tv_content);
-        tvContent.setText("需读取数据记录"+totalNum+"条\n\n已读取数据记录"+newNum+"条\n\n已读取数据记录百分比："+status+"\n\n最早数据记录时间："+startTime+"\n\n最新数据记录时间："+endTime+"\n\n数据记录间隔时间："+minutes+"分钟");
     }
+
+
+    Runnable runnable=new Runnable() {
+        public void run() {
+            try {
+                if((redDialog==null || !redDialog.isShowing()) && !isRedEnd){
+                    showTripDialog();
+                    return;
+                }
+                //已读取了几条
+                int newNum= BleUtils.getSendData(activity.red3.toString(),123).size();
+                //获取百分比
+                NumberFormat numberFormat = NumberFormat.getInstance();
+                numberFormat.setMaximumFractionDigits(2);
+                String status= (numberFormat.format((float) newNum / (float) totalNum * 100))+"%";
+
+                String startTime=strings[1].substring(0, 4)+"年"+strings[1].substring(4,6)+"月"+strings[1].substring(6,8)+"日"+strings[1].substring(8,10)+"时"+strings[1].substring(10,12)+"分";
+                String endTime=strings[2].substring(0, 4)+"年"+strings[2].substring(4,6)+"月"+strings[2].substring(6,8)+"日"+strings[2].substring(8,10)+"时"+strings[2].substring(10,12)+"分";
+
+                tvContent.setText("需读取数据记录"+totalNum+"条\n\n已读取数据记录"+newNum+"条\n\n已读取数据记录百分比："+status+"\n\n最早数据记录时间："+startTime+"\n\n最新数据记录时间："+endTime+"\n\n数据记录间隔时间："+minutes+"分钟");
+
+                handler.postDelayed(runnable,2000);
+            }catch (Exception e){
+                BuglyUtils.uploadBleMsg("读取数据时的错误："+e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    };
 
 
     /**
      * 关闭读取时的进度框
      */
     public void closeTripDialog(){
+        isRedEnd=true;
         if(redDialog!=null && redDialog.isShowing()){
             redDialog.dismiss();
             redDialog=null;
@@ -242,6 +264,7 @@ public class CopyDataPersenter {
      */
     public void showCopyDialog(){
         //获取百分比
+        NumberFormat numberFormat = NumberFormat.getInstance();
         numberFormat.setMaximumFractionDigits(2);
         String status= (numberFormat.format((float) writeNum / (float) totalNum * 100))+"%";
 
