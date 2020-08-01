@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import com.google.gson.Gson;
 import com.tencent.bugly.crashreport.CrashReport;
+import com.water.project.utils.ActivitysLifecycle;
 import com.water.project.utils.SPUtil;
 
 import java.text.SimpleDateFormat;
@@ -24,15 +25,10 @@ public class MyApplication extends Application {
         spUtil = SPUtil.getInstance(this);
         gson=new Gson();
 
-        SimpleDateFormat mFormatter1 = new SimpleDateFormat("MM");
-        SimpleDateFormat mFormatter = new SimpleDateFormat("dd");
-        String month=mFormatter1.format(new Date());
-        String time=mFormatter.format(new Date());
-//        if(Integer.parseInt(month)>9 && Integer.parseInt(time)>28){
-//            System.exit(0);
-//        }
-
         initBugly();
+
+        //管理Activity
+        registerActivityLifecycleCallbacks(ActivitysLifecycle.getInstance());
     }
 
 

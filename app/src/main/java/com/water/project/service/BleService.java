@@ -444,14 +444,39 @@ public class BleService extends Service implements Serializable{
                     ToastUtil.showLong("byte数组是空的");
                     return;
                 }
-                sb.append(ByteStringHexUtil.bytesToHexString(txValue));
-                handler.postDelayed(runnable,80);
+                final String hexString=ByteStringHexUtil.bytesToHexString(txValue);
+                if(hexString.startsWith("4744")){
+                    sb.append(hexString);
+                    return;
+                }
+                if(sb.length()>0){
+                    sb.append(hexString);
+                    if(sb.toString().endsWith("3E4F4B")){
+                        broadCastData();
+                    }
+                }
                 return;
             }
 
 
 
             String data=characteristic.getStringValue(0);
+            if(SendBleStr.bleCmdStatus==BleContant.RED_DEVICE_DATA_BY_TIME2){
+                if(data.startsWith("GD")){
+                    sb.append(data);
+                    return;
+                }
+                if(sb.length()>0){
+                    sb.append(data);
+                    if(sb.toString().endsWith(">OK")){
+                        broadCastData();
+                    }
+                }
+                return;
+            }
+
+
+
             if(data.startsWith("GD")){
                 sb.append(data);
                 handler.postDelayed(runnable,80);

@@ -15,6 +15,7 @@ import com.water.project.bean.eventbus.EventType;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.DialogUtils;
+import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ble.ByteUtil;
 import com.water.project.utils.ble.SendBleStr;
@@ -108,6 +109,7 @@ public class CopyDataPersenter {
             }else{
                 redEnd=strings[2];
                 isSend=false;
+                LogUtils.e("++++++++++++++++++++++++结束了");
             }
 
             //设置根据时间段读取设备里面的数据
@@ -149,7 +151,7 @@ public class CopyDataPersenter {
                     return;
                 }
                 //已读取了几条
-                int newNum= BleUtils.getSendData(activity.red3.toString(),123).size();
+                int newNum= BleUtils.getSendData(activity.red3.toString(),256).size();
                 //获取百分比
                 NumberFormat numberFormat = NumberFormat.getInstance();
                 numberFormat.setMaximumFractionDigits(2);
@@ -174,6 +176,7 @@ public class CopyDataPersenter {
      */
     public void closeTripDialog(){
         isRedEnd=true;
+        handler.removeCallbacks(runnable);
         if(redDialog!=null && redDialog.isShowing()){
             redDialog.dismiss();
             redDialog=null;
@@ -272,7 +275,7 @@ public class CopyDataPersenter {
         String endTime=strings[2].substring(0, 4)+"年"+strings[2].substring(4,6)+"月"+strings[2].substring(6,8)+"日"+strings[2].substring(8,10)+"时"+strings[2].substring(10,12)+"分";
 
         if(redDialog!=null && redDialog.isShowing() && tvContent!=null){
-            tvContent.setText("需拷贝数据记录"+totalNum+"条\n\n已拷贝数据记录"+writeNum+"条\n\n已读取数据记录百分比："+status+"\n\n最早数据记录时间："+startTime+"\n\n最新数据记录时间："+endTime+"\n\n数据记录间隔时间："+minutes+"分钟");
+            tvContent.setText("需拷贝数据记录"+totalNum+"条\n\n已拷贝数据记录"+writeNum+"条\n\n已拷贝数据记录百分比："+status+"\n\n最早数据记录时间："+startTime+"\n\n最新数据记录时间："+endTime+"\n\n数据记录间隔时间："+minutes+"分钟");
             return;
         }
         View view= LayoutInflater.from(activity).inflate(R.layout.dialog_copy,null);
@@ -280,7 +283,7 @@ public class CopyDataPersenter {
         LinearGradientTextView tvTitle=view.findViewById(R.id.tv_title);
         tvTitle.setText("正在拷贝数据记录...");
         tvContent=view.findViewById(R.id.tv_content);
-        tvContent.setText("需拷贝数据记录"+totalNum+"条\n\n已拷贝数据记录"+writeNum+"条\n\n已读取数据记录百分比："+status+"\n\n最早数据记录时间："+startTime+"\n\n最新数据记录时间："+endTime+"\n\n数据记录间隔时间："+minutes+"分钟");
+        tvContent.setText("需拷贝数据记录"+totalNum+"条\n\n已拷贝数据记录"+writeNum+"条\n\n已拷贝数据记录百分比："+status+"\n\n最早数据记录时间："+startTime+"\n\n最新数据记录时间："+endTime+"\n\n数据记录间隔时间："+minutes+"分钟");
     }
 
 

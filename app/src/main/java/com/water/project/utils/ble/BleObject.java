@@ -34,6 +34,7 @@ public class BleObject {
         this.activity=activity;
         this.bindService=bindService;
         if(bleService==null){
+            LogUtils.e("++++++++++++++++++++++++++服务连接中");
             DialogUtils.showProgress(activity,"服务连接中");
             Intent bindIntent = new Intent(activity, BleService.class);
             activity.bindService(bindIntent, mServiceConnection, Context.BIND_AUTO_CREATE);

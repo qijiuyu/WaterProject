@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.GridLayoutManager;
@@ -19,8 +20,10 @@ import com.water.project.activity.new_version.New_SettingActivity;
 import com.water.project.adapter.MainMenuAdapter;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Menu;
+import com.water.project.utils.ActivitysLifecycle;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.DataCleanManager;
+import com.water.project.utils.LogUtils;
 import com.water.project.utils.ble.BleObject;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +58,6 @@ public class MainActivity extends BaseActivity{
         //注册蓝牙服务
         BleObject.getInstance().getBleService(this,null);
     }
-
 
     /**
      * 初始化控件
@@ -183,7 +185,6 @@ public class MainActivity extends BaseActivity{
                 showToastView("再按一次退出程序！");
                 exitTime = System.currentTimeMillis();
             } else {
-                BleObject.getInstance().disconnect();
                 finish();
             }
             return true;
@@ -195,5 +196,6 @@ public class MainActivity extends BaseActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        BleObject.getInstance().disconnect();
     }
 }

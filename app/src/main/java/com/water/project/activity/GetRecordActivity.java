@@ -225,11 +225,12 @@ public class GetRecordActivity extends BaseActivity {
                             case BleContant.RED_DEVICE_DATA_BY_TIME2:
                                 data=data.replace("GDRECORDC","").replace(">OK","");
 
+                                LogUtils.e(data.length()+"+++++++++++++++++++++++++++++长度++++++++"+repeatNum);
                                 //如果长度不够就重新发送
                                 if(data.length()!=615 && !persenter.redEnd.equals(persenter.endTime)){
                                     if(repeatNum<3){
-                                        sendData(BleContant.RED_DEVICE_DATA_BY_TIME2);
                                         repeatNum++;
+                                        sendData(BleContant.RED_DEVICE_DATA_BY_TIME2);
                                     }else{
                                         //关闭读取时的进度框
                                         persenter.closeTripDialog();
@@ -266,10 +267,9 @@ public class GetRecordActivity extends BaseActivity {
                         //关闭读取时的进度框
                         persenter.closeTripDialog();
                     }
-                    dialogView = new DialogView(dialogView,mContext, "接收数据超时！", "重试", "取消", new View.OnClickListener() {
+                    dialogView = new DialogView(dialogView,mContext, "接收数据超时！", "知道了", null, new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
-                            sendData(SEND_STATUS);
                         }
                     }, null);
                     dialogView.show();

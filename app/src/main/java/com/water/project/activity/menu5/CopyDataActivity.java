@@ -21,6 +21,7 @@ import com.water.project.presenter.CopyDataPersenter;
 import com.water.project.service.BleService;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.FileUtils;
+import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ToastUtil;
 import com.water.project.utils.ble.BleContant;
@@ -208,6 +209,7 @@ public class CopyDataActivity extends BaseActivity {
                 //读取数据超时
                 case BleService.ACTION_INTERACTION_TIMEOUT:
                     DialogUtils.closeProgress();
+                    copyDataPersenter.closeTripDialog();
                     if(type==1){
                         dialogView = new DialogView(dialogView,mContext, "读取数据超时", "好的", null, new View.OnClickListener() {
                             public void onClick(View v) {
@@ -226,6 +228,7 @@ public class CopyDataActivity extends BaseActivity {
                     break;
                 case BleService.ACTION_SEND_DATA_FAIL:
                     DialogUtils.closeProgress();
+                    copyDataPersenter.closeTripDialog();
                     if(type==1){
                         dialogView = new DialogView(dialogView,mContext, "读取数据记录出现故障", "好的", null, new View.OnClickListener() {
                             public void onClick(View v) {
@@ -288,8 +291,8 @@ public class CopyDataActivity extends BaseActivity {
                      //如果长度不够就重新发送
                      if(data.length()!=1280 && redIsSend){
                          if(repeatNum<3){
-                             sendData(BleContant.RED_DEVICE_DATA_BY_TIME);
                              repeatNum++;
+                             sendData(BleContant.RED_DEVICE_DATA_BY_TIME);
                          }else{
                              //关闭读取时的进度框
                              copyDataPersenter.closeTripDialog();
@@ -301,10 +304,8 @@ public class CopyDataActivity extends BaseActivity {
                              }, null);
                              dialogView.show();
                          }
-
                          return;
                      }
-
 
                      red3.append(data);
 
@@ -313,6 +314,7 @@ public class CopyDataActivity extends BaseActivity {
                          redIsSend=copyDataPersenter.setRed3Cmd(red1);
                          sendData(BleContant.RED_DEVICE_DATA_BY_TIME);
                      }else{
+                         repeatNum=0;
                          //断开蓝牙连接
                          bleService.disconnect();
                          ToastUtil.showLong("蓝牙连接断开！");
