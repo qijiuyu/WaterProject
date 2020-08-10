@@ -5,9 +5,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
@@ -21,6 +24,8 @@ import com.water.project.service.BleService;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.FileUtils;
+import com.water.project.utils.LogUtils;
+import com.water.project.utils.PathUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ToastUtil;
 import com.water.project.utils.ble.BleContant;
@@ -186,6 +191,7 @@ public class AboutActivity extends BaseActivity {
     };
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(data==null){
@@ -193,7 +199,16 @@ public class AboutActivity extends BaseActivity {
         }
         File file = null;
         if (requestCode == 100 && resultCode == Activity.RESULT_OK ) {
-            file= FileUtils.uriToFile(mContext,data.getData());
+            try {
+                String path= PathUtils.getPath(mContext,data.getData());
+                if(TextUtils.isEmpty(path)){
+                    ToastUtil.showLong("找不到该文档的路径");
+                    return;
+                }
+                file=new File(path);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         if(resultCode==200){
             String path=data.getStringExtra("path");
