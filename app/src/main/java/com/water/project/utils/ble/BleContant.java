@@ -118,4 +118,10 @@ public class BleContant {
 
     //根据路数读取实时数据
     public static final int RED_TIME_DATA_BY_ROAD=1035;
+
+    //读取多路参数设置里面的统一编码
+    public static final int RED_MORE_SETTING_CODE=1036;
+
+    //读取多路参数设置里面的探头埋深
+    public static final int RED_MORE_SETTING_TANTOU=1037;
 }

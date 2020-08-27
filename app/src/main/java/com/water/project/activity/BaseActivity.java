@@ -1,5 +1,6 @@
 package com.water.project.activity;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -44,8 +45,10 @@ public class BaseActivity extends FragmentActivity {
     public Dialog baseDialog;
     public DialogView dialogView;
     protected Context mContext = this;
+    public Activity activity;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity=this;
     }
 
     protected void setTranslucentStatus(boolean on) {

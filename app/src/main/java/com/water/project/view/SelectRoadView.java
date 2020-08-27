@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.water.project.R;
+import com.water.project.bean.SelectObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +19,8 @@ import java.util.List;
 public class SelectRoadView extends Dialog implements View.OnClickListener {
 
     private Activity context;
-    private TextView textView;
     private CycleWheelView wheel;
+    private SelectObject selectObject;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wheel_select);
@@ -31,10 +32,10 @@ public class SelectRoadView extends Dialog implements View.OnClickListener {
         initListener();
     }
 
-    public SelectRoadView(Activity context, TextView textView) {
+    public SelectRoadView(Activity context, SelectObject selectObject) {
         super(context, R.style.ActionSheetDialogStyle);
         this.context = context;
-        this.textView=textView;
+        this.selectObject=selectObject;
     }
 
     private void initView() {
@@ -71,7 +72,7 @@ public class SelectRoadView extends Dialog implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_confirm:
-                 textView.setText(wheel.getSelectLabel());
+                selectObject.onSuccess(wheel.getSelectLabel());
                  break;
             case R.id.tv_cancle:
                  break;

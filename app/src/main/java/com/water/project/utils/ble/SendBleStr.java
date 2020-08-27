@@ -127,6 +127,12 @@ public class SendBleStr {
     //根据路数读取实时数据
     public static String RED_TIME_DATA_BY_ROAD;
 
+    //读取多路参数设置里面的统一编码
+    public static String RED_MORE_SETTING_CODE;
+
+    //读取多路参数设置里面的探头埋深
+    public static String RED_MORE_SETTING_TANTOU;
+
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
         StringBuffer stringBuffer=new StringBuffer();
@@ -529,6 +535,34 @@ public class SendBleStr {
     }
 
 
+    /**
+     * 读取多路参数设置里面的统一编码
+     */
+    public static void setRedMoreSettingCode(int road){
+        StringBuilder sb=new StringBuilder("GDNIDR");
+        if(road<10){
+            sb.append("0"+road);
+        }else{
+            sb.append(road);
+        }
+        RED_MORE_SETTING_CODE=sb.toString();
+    }
+
+
+    /**
+     * 读取多路参数设置里面的探头埋深
+     */
+    public static void setRedMoreSettingTanTou(int road){
+        StringBuilder sb=new StringBuilder("GDNLINER");
+        if(road<10){
+            sb.append("0"+road);
+        }else{
+            sb.append(road);
+        }
+        RED_MORE_SETTING_TANTOU=sb.toString();
+    }
+
+
 
     /**
      * 数据不够，用0补齐
@@ -693,6 +727,14 @@ public class SendBleStr {
             case BleContant.RED_TIME_DATA_BY_ROAD:
                  SendBleDataManager.getInstance().sendData(activity,RED_TIME_DATA_BY_ROAD);
                  break;
+            //读取多路参数设置里面的统一编码
+            case BleContant.RED_MORE_SETTING_CODE:
+                 SendBleDataManager.getInstance().sendData(activity,RED_MORE_SETTING_CODE);
+                 break;
+            //读取多路参数设置里面的探头埋深
+            case BleContant.RED_MORE_SETTING_TANTOU:
+                SendBleDataManager.getInstance().sendData(activity,RED_MORE_SETTING_TANTOU);
+                break;
              default:
                  break;
 

@@ -16,10 +16,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.water.project.R;
 import com.water.project.activity.BaseActivity;
+import com.water.project.adapter.MoreSettingCodeAdapter;
 import com.water.project.adapter.NewSettingTimeAdapter;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.BindService;
 import com.water.project.bean.Ble;
+import com.water.project.bean.SelectObject;
 import com.water.project.bean.SelectTime;
 import com.water.project.bean.eventbus.EventStatus;
 import com.water.project.bean.eventbus.EventType;
@@ -91,6 +93,13 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
     //补发间隔时间集合
     private List<String> list;
 
+    private int m;//0(默认)表示采集探头, 1表示采集北斗设备数据
+    private int nn; //总回路数
+    private int redCodeNum=1;//读取统一编码的次数
+    private int redTanTouNum=1;//读取探头埋深的次数
+
+    private List<String> codeList=new ArrayList<>();//存储读取的统一编码数据
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +110,7 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
         EventBus.getDefault().register(this);
         initView();
         register();//注册广播
-        sendData(BleContant.RED_CAIJI_ROAD,1); //发送蓝牙命令
+//        sendData(BleContant.RED_CAIJI_ROAD,1); //发送蓝牙命令
     }
 
     /**
@@ -180,7 +189,15 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                 break;
             //选择采集路数
             case R.id.tv_road_num:
-                 new SelectRoadView(this,tvRoadNum).show();
+                 new SelectRoadView(this, new SelectObject() {
+                     @Override
+                     public void onSuccess(Object object) {
+                         tvRoadNum.setText((String)object);
+
+                         //根据路数变更‘统一编码’和‘探头’的列数
+                         listCode.setAdapter(new MoreSettingCodeAdapter(activity,null,Integer.parseInt(object.toString()),m));
+                     }
+                 }).show();
                 break;
             //设置采集路数
             case R.id.tv_setting_road:
@@ -396,14 +413,29 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                         showData(data);
                         //继续发送命令
                         switch (SEND_STATUS){
-                            case BleContant.RED_NEW_GET_CODE:
-                                sendData(BleContant.SEND_GET_CODE_PHONE,1);
+                            case BleContant.RED_CAIJI_ROAD:
+                                 SendBleStr.setRedMoreSettingCode(redCodeNum);
+                                 sendData(BleContant.RED_MORE_SETTING_CODE,1);
+                                 break;
+                            case BleContant.RED_MORE_SETTING_CODE:
+                                 if(redCodeNum<nn){
+                                     SendBleStr.setRedMoreSettingCode(++redCodeNum);
+                                     sendData(BleContant.RED_MORE_SETTING_CODE,1);
+                                 }else{
+                                     sendData(BleContant.SEND_GET_CODE_PHONE,1);
+                                 }
                                 break;
                             case BleContant.SEND_GET_CODE_PHONE:
-                                sendData(BleContant.SEND_GET_TANTOU,1);
+                                SendBleStr.setRedMoreSettingTanTou(redTanTouNum);
+                                sendData(BleContant.RED_MORE_SETTING_TANTOU,1);
                                 break;
-                            case BleContant.SEND_GET_TANTOU:
-                                sendData(BleContant.SEND_CAI_JI_PIN_LU,1);
+                            case BleContant.RED_MORE_SETTING_TANTOU:
+                                if(redTanTouNum<nn){
+                                    SendBleStr.setRedMoreSettingTanTou(++redTanTouNum);
+                                    sendData(BleContant.RED_MORE_SETTING_TANTOU,1);
+                                }else{
+                                    sendData(BleContant.SEND_CAI_JI_PIN_LU,1);
+                                }
                                 break;
                             case BleContant.SEND_CAI_JI_PIN_LU:
                                 sendData(BleContant.SEND_FA_SONG_PIN_LU,1);
@@ -467,11 +499,17 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
             switch (SEND_STATUS){
                 //显示采集路数
                 case BleContant.RED_CAIJI_ROAD:
+                     data=data.replace("GDMETERNUMW","");
                      String[] msg=data.split(",");
+                     m=Integer.parseInt(msg[0]);
+                     nn=Integer.parseInt(msg[1]);
                      tvRoadNum.setText(msg[1]);
                      break;
                 //显示统一编码
-                case BleContant.RED_NEW_GET_CODE:
+                case BleContant.RED_MORE_SETTING_CODE:
+                     String[] msg2=data.split(",");
+                     codeList.add(msg2[1]+","+msg2[2]);
+                     listCode.setAdapter(new MoreSettingCodeAdapter(this,codeList,codeList.size(),m));
                     break;
                 //SIM卡号
                 case BleContant.SEND_GET_CODE_PHONE:
