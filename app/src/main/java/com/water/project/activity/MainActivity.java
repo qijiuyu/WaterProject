@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.water.project.R;
 import com.water.project.activity.menu6.SendDataActivity;
+import com.water.project.activity.new_version.MoreSettingActivity;
 import com.water.project.activity.new_version.New_SettingActivity;
 import com.water.project.adapter.MainMenuAdapter;
 import com.water.project.application.MyApplication;
@@ -91,6 +92,12 @@ public class MainActivity extends BaseActivity{
                     case "发送数据":
                         setClass(SendDataActivity.class);
                         break;
+                    case "多路实时数据":
+                        setClass(GetMoreDataActivity.class);
+                         break;
+                    case "多路参数设置":
+                        setClass(MoreSettingActivity.class);
+                         break;
                     default:
                         break;
                 }
@@ -109,7 +116,7 @@ public class MainActivity extends BaseActivity{
                 break;
             //关于我们
             case R.id.tv_about:
-                setClass(AboutActivity.class);
+                setClass(MoreSettingActivity.class);
                 break;
             default:
                 break;
