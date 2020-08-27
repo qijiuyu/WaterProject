@@ -28,6 +28,7 @@ import com.water.project.R;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SystemBarTintManager;
 import com.water.project.view.CycleWheelView;
+import com.water.project.view.DialogView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,6 +42,7 @@ public class BaseActivity extends FragmentActivity {
 
     public PopupWindow mPopuwindow;
     public Dialog baseDialog;
+    public DialogView dialogView;
     protected Context mContext = this;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

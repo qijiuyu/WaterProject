@@ -121,6 +121,12 @@ public class SendBleStr {
     //根据时间段读取设备里面的数据
     public static String RED_DEVICE_DATA_BY_TIME2;
 
+    //读取采集路数
+    public static String RED_CAIJI_ROAD="GDMETERNUMR";
+
+    //根据路数读取实时数据
+    public static String RED_TIME_DATA_BY_ROAD;
+
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
         StringBuffer stringBuffer=new StringBuffer();
@@ -508,6 +514,22 @@ public class SendBleStr {
     }
 
 
+
+    /**
+     * 根据路数读取实时数据
+     */
+    public static void redTimeDataByRoad(int road){
+        StringBuilder sb=new StringBuilder("GDNCURRENT");
+        if(road<10){
+            sb.append("0"+road);
+        }else{
+            sb.append(road);
+        }
+        RED_TIME_DATA_BY_ROAD=sb.toString();
+    }
+
+
+
     /**
      * 数据不够，用0补齐
      */
@@ -662,6 +684,14 @@ public class SendBleStr {
                 break;
             case BleContant.RED_DEVICE_DATA_BY_TIME2:
                  SendBleDataManager.getInstance().sendData(activity,RED_DEVICE_DATA_BY_TIME2);
+                 break;
+            //读取采集路数
+            case BleContant.RED_CAIJI_ROAD:
+                 SendBleDataManager.getInstance().sendData(activity,RED_CAIJI_ROAD);
+                 break;
+            //根据路数读取实时数据
+            case BleContant.RED_TIME_DATA_BY_ROAD:
+                 SendBleDataManager.getInstance().sendData(activity,RED_TIME_DATA_BY_ROAD);
                  break;
              default:
                  break;

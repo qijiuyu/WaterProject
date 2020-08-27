@@ -20,10 +20,8 @@ import com.water.project.activity.new_version.New_SettingActivity;
 import com.water.project.adapter.MainMenuAdapter;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Menu;
-import com.water.project.utils.ActivitysLifecycle;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.DataCleanManager;
-import com.water.project.utils.LogUtils;
 import com.water.project.utils.ble.BleObject;
 import java.util.ArrayList;
 import java.util.List;
@@ -165,6 +163,10 @@ public class MainActivity extends BaseActivity{
         menuList.add(menu5);
         Menu menu6=new Menu(R.mipmap.status_icon,"发送数据");
         menuList.add(menu6);
+        Menu menu7=new Menu(R.mipmap.data_icon,"多路实时数据");
+        menuList.add(menu7);
+        Menu menu8=new Menu(R.mipmap.setting_icon,"多路参数设置");
+        menuList.add(menu8);
     }
 
 

@@ -112,4 +112,10 @@ public class BleContant {
 
     //发送根据时间段读取设备里面的数据
     public static final int RED_DEVICE_DATA_BY_TIME2=1033;
+
+    //读取采集路数
+    public static final int RED_CAIJI_ROAD=1034;
+
+    //根据路数读取实时数据
+    public static final int RED_TIME_DATA_BY_ROAD=1035;
 }
