@@ -3,6 +3,8 @@ package com.water.project.utils.ble;
 import android.app.Activity;
 import android.text.TextUtils;
 
+import com.water.project.bean.MoreCode;
+import com.water.project.bean.MoreTanTou;
 import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.ToastUtil;
@@ -135,6 +137,12 @@ public class SendBleStr {
 
     //设置采集路数
     public static String SET_CAIJI_ROAD;
+
+    //设置多路参数的统一编码
+    public static String SET_MORE_SETTING_CODE;
+
+    //设置多路参数的探头埋深
+    public static String SET_MORE_SETTING_TANTOU;
 
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
@@ -576,6 +584,62 @@ public class SendBleStr {
     }
 
 
+    /**
+     * 设置多路参数的统一编码
+     */
+    public static void setSetMoreSettingCode(int road,MoreCode moreCode){
+        StringBuilder sb=new StringBuilder("GDNIDW");
+        if((road+1)<10){
+            sb.append("0"+(road+1)+",");
+        }else{
+            sb.append((road+1)+",");
+        }
+        sb.append(append(15,moreCode.getCode()));
+
+        sb.append(","+append(7,moreCode.getOther()));
+        SET_MORE_SETTING_CODE=sb.toString();
+    }
+
+
+    /**
+     * 设置多路参数的统一编码
+     */
+    public static void setSetMoreSettingTanTou(int road, MoreTanTou moreTanTou){
+        StringBuilder sb=new StringBuilder("GDNLINEW");
+        if((road+1)<10){
+            sb.append("0"+(road+1)+",");
+        }else{
+            sb.append((road+1)+",");
+        }
+
+        String maishe=moreTanTou.getMaishen();
+        sb.append(maishe.substring(0,1));
+
+        maishe=maishe.replace("+","").replace("-","");
+        int position=maishe.indexOf(".");
+        if(position==-1) {
+            for (int i=0;i<4-maishe.length();i++){
+                sb.append("0");
+            }
+            sb.append(maishe+".0000");
+        }else{
+            final int hou=maishe.length() - position - 1;
+            final int qian=maishe.length()-hou-1;
+            for (int i=0;i<4-qian;i++){
+                sb.append("0");
+            }
+            sb.append(maishe);
+            for (int i=0;i<4-hou;i++){
+                sb.append("0");
+            }
+        }
+
+        sb.append(","+moreTanTou.getMidu()+","+moreTanTou.getPianyi());
+        SET_MORE_SETTING_TANTOU=sb.toString();
+    }
+
+
+
 
     /**
      * 数据不够，用0补齐
@@ -751,6 +815,14 @@ public class SendBleStr {
             //设置采集路数
             case BleContant.SET_CAIJI_ROAD:
                 SendBleDataManager.getInstance().sendData(activity,SET_CAIJI_ROAD);
+                break;
+            //设置多路参数的统一编码
+            case BleContant.SET_MORE_SETTING_CODE:
+                SendBleDataManager.getInstance().sendData(activity,SET_MORE_SETTING_CODE);
+                break;
+            //设置多路参数的探头埋深
+            case BleContant.SET_MORE_SETTING_TANTOU:
+                SendBleDataManager.getInstance().sendData(activity,SET_MORE_SETTING_TANTOU);
                 break;
              default:
                  break;

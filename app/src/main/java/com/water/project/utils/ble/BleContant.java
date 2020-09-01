@@ -127,4 +127,10 @@ public class BleContant {
 
     //设置采集路数
     public static final int SET_CAIJI_ROAD=1038;
+
+    //设置多路参数的统一编码
+    public static final int SET_MORE_SETTING_CODE=1039;
+
+    //设置多路参数的探头埋深
+    public static final int SET_MORE_SETTING_TANTOU=1040;
 }

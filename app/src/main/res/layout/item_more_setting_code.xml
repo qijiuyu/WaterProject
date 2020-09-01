@@ -36,7 +36,7 @@
                 android:digits="0123456789qwertyuioplkjhgfdsazxcvbnm"
                 android:gravity="right|center"
                 android:hint="请输入统一编码"
-                android:maxLength="12"
+                android:maxLength="15"
                 android:textColor="@color/color_1fc37f"
                 android:textSize="15sp" />
 

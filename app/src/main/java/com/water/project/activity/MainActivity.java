@@ -21,9 +21,13 @@ import com.water.project.activity.new_version.New_SettingActivity;
 import com.water.project.adapter.MainMenuAdapter;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Menu;
+import com.water.project.bean.MoreCode;
+import com.water.project.bean.MoreTanTou;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.DataCleanManager;
 import com.water.project.utils.ble.BleObject;
+import com.water.project.utils.ble.SendBleStr;
+
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;

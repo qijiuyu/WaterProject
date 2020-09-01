@@ -1,81 +1,97 @@
 package com.water.project.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.water.project.R;
+import com.water.project.bean.MoreTanTou;
 import com.water.project.view.MyWatcher;
-
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
-public class MoreSettingTanTouAdapter extends BaseAdapter {
+public class MoreSettingTanTouAdapter extends RecyclerView.Adapter<MoreSettingTanTouAdapter.MyHolder> {
 
     private Context context;
-    private List<String[]> list;
-    private int conut;
+    private List<MoreTanTou> list;
+    private MoreTanTou playObject;
 
-    public MoreSettingTanTouAdapter(Context context, List<String[]> list, int conut) {
+    public MoreSettingTanTouAdapter(Context context, List<MoreTanTou> list, int conut) {
         super();
         this.context = context;
         this.list = list;
-        this.conut = conut;
-    }
-
-    @Override
-    public int getCount() {
-        return conut+list.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return position;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    ViewHolder holder = null;
-    public View getView(int position, View view, ViewGroup parent) {
-        if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.item_more_setting_tantou, null);
-            holder = new ViewHolder(view);
-            view.setTag(holder);
-        } else {
-            holder = (ViewHolder) view.getTag();
+        while (conut>list.size()){
+            list.add(new MoreTanTou());
         }
-        holder.tvName.setText("探头埋深"+(position+1));
+    }
+
+    public MyHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View inflate = LayoutInflater.from(context).inflate(R.layout.item_more_setting_tantou, viewGroup,false);
+        MyHolder holder = new MyHolder(inflate);
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull final MyHolder holder, int i) {
+        final MoreTanTou moreTanTou=list.get(i);
+        holder.tvName.setText("探头埋深"+(i+1));
 
         //限制小数点前后
-        holder.etTantou.addTextChangedListener(new MyWatcher(5,4));
-        if(list.size()>position){
-            final String[] arrys=list.get(position);
-            holder.etTantou.setText(arrys[1]);
-        }else{
-            holder.etTantou.setText(null);
-        }
-        return view;
+        holder.etTanTou.addTextChangedListener(new MyWatcher(5,4));
+        holder.etTanTou.setText(moreTanTou.getMaishen());
+
+
+        /**
+         * 监听输入框
+         */
+        holder.etTanTou.setTag(moreTanTou);
+        holder.etTanTou.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    playObject= (MoreTanTou) v.getTag();
+                    holder.etTanTou.addTextChangedListener(textWatcher);
+                }else{
+                    holder.etTanTou.removeTextChangedListener(textWatcher);
+                }
+            }
+        });
+
     }
 
 
-    static
-    class ViewHolder {
-        @BindView(R.id.tv_name)
-        TextView tvName;
-        @BindView(R.id.et_tantou)
-        EditText etTantou;
+    /**
+     * 监听输入框
+     */
+    TextWatcher textWatcher=new TextWatcher() {
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+        public void afterTextChanged(Editable s) {
+            String content=s.toString().trim();
+            playObject.setMaishen(content);
+        }
+    };
 
-        ViewHolder(View view) {
-            ButterKnife.bind(this, view);
+
+    @Override
+    public int getItemCount() {
+        return list==null ? 0 : list.size();
+    }
+
+    public class MyHolder extends RecyclerView.ViewHolder {
+        TextView tvName;
+        EditText etTanTou;
+        public MyHolder(@NonNull View itemView) {
+            super(itemView);
+            tvName=itemView.findViewById(R.id.tv_name);
+            etTanTou=itemView.findViewById(R.id.et_tantou);
         }
     }
 }
+

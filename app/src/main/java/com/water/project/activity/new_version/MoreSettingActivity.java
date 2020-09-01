@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -22,6 +24,8 @@ import com.water.project.adapter.NewSettingTimeAdapter;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.BindService;
 import com.water.project.bean.Ble;
+import com.water.project.bean.MoreCode;
+import com.water.project.bean.MoreTanTou;
 import com.water.project.bean.SelectObject;
 import com.water.project.bean.SelectTime;
 import com.water.project.bean.eventbus.EventStatus;
@@ -30,12 +34,12 @@ import com.water.project.presenter.new_device.New_SettingPresenter;
 import com.water.project.service.BleService;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.SPUtil;
+import com.water.project.utils.ToastUtil;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.BleObject;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.CustomListView;
 import com.water.project.view.DialogView;
-import com.water.project.view.MeasureListView;
 import com.water.project.view.SelectRoadView;
 import com.water.project.view.SelectTimeDialog;
 import org.greenrobot.eventbus.EventBus;
@@ -56,13 +60,13 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
     @BindView(R.id.tv_road_num)
     TextView tvRoadNum;
     @BindView(R.id.list_code)
-    MeasureListView listCode;
+    RecyclerView listCode;
     @BindView(R.id.et_phone)
     EditText etPhone;
     @BindView(R.id.img_clear2)
     ImageView imgClear2;
     @BindView(R.id.list_tantou)
-    MeasureListView listTantou;
+    RecyclerView listTantou;
     @BindView(R.id.et_as_cstime)
     TextView etAsCstime;
     @BindView(R.id.tv_as_cetime)
@@ -98,9 +102,11 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
     private int nn; //总回路数
     private int redCodeNum=1;//读取统一编码的次数
     private int redTanTouNum=1;//读取探头埋深的次数
+    private int setCodeNum=0; //设置统一编码的次数
+    private int setTanTouNum=0;//设置探头埋深的次数
 
-    private List<String> codeList=new ArrayList<>();//存储读取的统一编码数据
-    private List<String[]> tantouList=new ArrayList<>();//存储读取的探头埋深数据
+    private List<MoreCode> codeList=new ArrayList<>();//存储读取的统一编码数据
+    private List<MoreTanTou> tantouList=new ArrayList<>();//存储读取的探头埋深数据
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,7 +118,7 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
         EventBus.getDefault().register(this);
         initView();
         register();//注册广播
-//        sendData(BleContant.RED_CAIJI_ROAD,1); //发送蓝牙命令
+        sendData(BleContant.RED_CAIJI_ROAD,1); //发送蓝牙命令
     }
 
     /**
@@ -199,8 +205,10 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                          tvRoadNum.setText((String)object);
 
                          //根据路数变更‘统一编码’和‘探头’的列数
+                         listCode.setLayoutManager(new LinearLayoutManager(activity));
                          listCode.setAdapter(new MoreSettingCodeAdapter(activity,codeList,Integer.parseInt(object.toString()),m));
 
+                         listTantou.setLayoutManager(new LinearLayoutManager(activity));
                          listTantou.setAdapter(new MoreSettingTanTouAdapter(activity,tantouList,Integer.parseInt(object.toString())));
                      }
                  }).show();
@@ -216,6 +224,20 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                 break;
             //设置统一编码
             case R.id.tv_setting_code:
+                 boolean isTrue=true;
+                 for (int i=0;i<codeList.size();i++){
+                      if(TextUtils.isEmpty(codeList.get(i).getCode()) || TextUtils.isEmpty(codeList.get(i).getOther())){
+                          isTrue=false;
+                          ToastUtil.showLong("请完善统一编码"+(i+1)+"数据");
+                          break;
+                      }
+                 }
+                 if(!isTrue){
+                     return;
+                 }
+                 setCodeNum=0;
+                 SendBleStr.setSetMoreSettingCode(setCodeNum,codeList.get(setCodeNum));
+                 sendData(BleContant.SET_MORE_SETTING_CODE,2);
                 break;
             //读取统一编码
             case R.id.tv_get_code:
@@ -248,6 +270,25 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                 break;
             //设置探头埋深
             case R.id.tv_setting_tantou:
+                boolean isTrue1=true;
+                for (int i=0;i<tantouList.size();i++){
+                     if(TextUtils.isEmpty(tantouList.get(i).getMaishen())){
+                         isTrue1=false;
+                         ToastUtil.showLong("请完善探头埋深"+(i+1)+"数据");
+                         break;
+                     }
+                    if(!tantouList.get(i).getMaishen().startsWith("+") && !tantouList.get(i).getMaishen().startsWith("-")){
+                        isTrue1=false;
+                        ToastUtil.showLong("探头埋深开头输入+或-符号");
+                        break;
+                    }
+                }
+                if(!isTrue1){
+                    return;
+                }
+                setTanTouNum=0;
+                SendBleStr.setSetMoreSettingTanTou(setTanTouNum,tantouList.get(setTanTouNum));
+                sendData(BleContant.SET_MORE_SETTING_TANTOU,2);
                 break;
             //读取探头埋深
             case R.id.tv_get_tantou:
@@ -491,7 +532,7 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                                     SendBleStr.setRedMoreSettingCode(++redCodeNum);
                                     sendData(BleContant.RED_MORE_SETTING_CODE,2);
                                  }else{
-                                    DialogUtils.closeProgress();
+                                     DialogUtils.closeProgress();
                                      SEND_STATUS=BleContant.NOT_SEND_DATA;
                                  }
                                  break;
@@ -507,13 +548,26 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                                  }
                                  break;
                              default:
-                                 dialogView = new DialogView(mContext, "参数设置成功！", "确定",null, new View.OnClickListener() {
-                                     public void onClick(View v) {
-                                         dialogView.dismiss();
-                                     }
-                                 }, null);
-                                 dialogView.show();
-                                 SEND_STATUS=BleContant.NOT_SEND_DATA;
+                                 if(SEND_STATUS==BleContant.SET_MORE_SETTING_CODE && setCodeNum<codeList.size()){
+                                     setCodeNum++;
+                                     SendBleStr.setSetMoreSettingCode(setCodeNum,codeList.get(setCodeNum));
+                                     sendData(BleContant.SET_MORE_SETTING_CODE,2);
+
+                                 }else if(SEND_STATUS==BleContant.SET_MORE_SETTING_TANTOU && setTanTouNum<tantouList.size()){
+                                     setTanTouNum++;
+                                     SendBleStr.setSetMoreSettingTanTou(setTanTouNum,tantouList.get(setTanTouNum));
+                                     sendData(BleContant.SET_MORE_SETTING_TANTOU,2);
+
+                                 }else{
+                                     DialogUtils.closeProgress();
+                                     dialogView = new DialogView(dialogView,mContext, "参数设置成功！", "确定",null, new View.OnClickListener() {
+                                         public void onClick(View v) {
+                                             dialogView.dismiss();
+                                         }
+                                     }, null);
+                                     dialogView.show();
+                                     SEND_STATUS=BleContant.NOT_SEND_DATA;
+                                 }
                                  break;
                         }
                     }
@@ -556,7 +610,11 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                 //显示统一编码
                 case BleContant.RED_MORE_SETTING_CODE:
                      String[] msg2=data.split(",");
-                     codeList.add(msg2[1]+","+msg2[2]);
+                     MoreCode moreCode=new MoreCode();
+                     moreCode.setCode(msg2[1]);
+                     moreCode.setOther(msg2[2]);
+                     codeList.add(moreCode);
+                     listCode.setLayoutManager(new LinearLayoutManager(activity));
                      listCode.setAdapter(new MoreSettingCodeAdapter(this,codeList,codeList.size(),m));
                     break;
                 //SIM卡号
@@ -567,7 +625,13 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                     break;
                 //显示探头埋深
                 case BleContant.SEND_GET_TANTOU:
-                    tantouList.add(data.split(","));
+                    final String[] msg3=data.split(",");
+                    MoreTanTou moreTanTou=new MoreTanTou();
+                    moreTanTou.setMaishen(msg3[1]);
+                    moreTanTou.setMidu(msg3[2]);
+                    moreTanTou.setPianyi(msg3[3]);
+                    tantouList.add(moreTanTou);
+                    listTantou.setLayoutManager(new LinearLayoutManager(activity));
                     listTantou.setAdapter(new MoreSettingTanTouAdapter(this,tantouList,tantouList.size()));
                     break;
                 //显示采集频率
