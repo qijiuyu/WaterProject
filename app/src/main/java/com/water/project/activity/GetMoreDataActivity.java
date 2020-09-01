@@ -16,6 +16,7 @@ import com.water.project.application.MyApplication;
 import com.water.project.bean.BindService;
 import com.water.project.bean.Ble;
 import com.water.project.service.BleService;
+import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ble.BleContant;
@@ -127,6 +128,7 @@ public class GetMoreDataActivity extends BaseActivity {
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
                     final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA).replace(">OK","");
+
                     if(SEND_STATUS==BleContant.RED_CAIJI_ROAD){
                         String[] msg=data.split(",");
                         road=Integer.parseInt(msg[1]);
@@ -137,12 +139,13 @@ public class GetMoreDataActivity extends BaseActivity {
 
                     }else{
                         list.add(data);
+                        listView.setAdapter(new GetMoreDataAdapter(GetMoreDataActivity.this,list));
                         if(redRoad<road){
                             //根据路数读取实时数据
                             SendBleStr.redTimeDataByRoad(++redRoad);
+                            sendData(BleContant.RED_TIME_DATA_BY_ROAD);
                         }else{
                             DialogUtils.closeProgress();
-                            listView.setAdapter(new GetMoreDataAdapter(GetMoreDataActivity.this,list));
                         }
                     }
                     break;

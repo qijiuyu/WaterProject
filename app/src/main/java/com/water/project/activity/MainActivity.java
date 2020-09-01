@@ -22,6 +22,7 @@ import com.water.project.application.MyApplication;
 import com.water.project.bean.Menu;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.DataCleanManager;
+import com.water.project.utils.LogUtils;
 import com.water.project.utils.ble.BleObject;
 import java.util.ArrayList;
 import java.util.List;
