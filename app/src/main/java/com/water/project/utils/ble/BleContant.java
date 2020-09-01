@@ -124,4 +124,7 @@ public class BleContant {
 
     //读取多路参数设置里面的探头埋深
     public static final int RED_MORE_SETTING_TANTOU=1037;
+
+    //设置采集路数
+    public static final int SET_CAIJI_ROAD=1038;
 }

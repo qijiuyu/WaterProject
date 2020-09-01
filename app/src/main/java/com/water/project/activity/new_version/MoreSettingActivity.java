@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.water.project.R;
 import com.water.project.activity.BaseActivity;
 import com.water.project.adapter.MoreSettingCodeAdapter;
+import com.water.project.adapter.MoreSettingTanTouAdapter;
 import com.water.project.adapter.NewSettingTimeAdapter;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.BindService;
@@ -99,6 +100,7 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
     private int redTanTouNum=1;//读取探头埋深的次数
 
     private List<String> codeList=new ArrayList<>();//存储读取的统一编码数据
+    private List<String[]> tantouList=new ArrayList<>();//存储读取的探头埋深数据
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -157,6 +159,8 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
         }
         switch (SEND_STATUS){
             case BleContant.RED_CAIJI_ROAD:
+            case BleContant.RED_MORE_SETTING_CODE:
+            case BleContant.RED_MORE_SETTING_TANTOU:
             case BleContant.SEND_GET_CODE_PHONE:
             case BleContant.SEND_CAI_JI_PIN_LU:
             case BleContant.SEND_FA_SONG_PIN_LU:
@@ -195,21 +199,30 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                          tvRoadNum.setText((String)object);
 
                          //根据路数变更‘统一编码’和‘探头’的列数
-                         listCode.setAdapter(new MoreSettingCodeAdapter(activity,null,Integer.parseInt(object.toString()),m));
+                         listCode.setAdapter(new MoreSettingCodeAdapter(activity,codeList,Integer.parseInt(object.toString()),m));
+
+                         listTantou.setAdapter(new MoreSettingTanTouAdapter(activity,tantouList,Integer.parseInt(object.toString())));
                      }
                  }).show();
                 break;
             //设置采集路数
             case R.id.tv_setting_road:
+                SendBleStr.setSetCaiJiRoad(m,tvRoadNum.getText().toString().trim());
+                sendData(BleContant.SET_CAIJI_ROAD,2);
                 break;
             //读取采集路数
             case R.id.tv_get_road:
+                sendData(BleContant.RED_CAIJI_ROAD,2);
                 break;
             //设置统一编码
             case R.id.tv_setting_code:
                 break;
             //读取统一编码
             case R.id.tv_get_code:
+                redCodeNum=1;
+                codeList.clear();
+                SendBleStr.setRedMoreSettingCode(redCodeNum);
+                sendData(BleContant.RED_MORE_SETTING_CODE,2);
                 break;
             case R.id.img_clear2:
                  etPhone.setText(null);
@@ -238,6 +251,10 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                 break;
             //读取探头埋深
             case R.id.tv_get_tantou:
+                redTanTouNum=1;
+                tantouList.clear();
+                SendBleStr.setRedMoreSettingTanTou(redTanTouNum);
+                sendData(BleContant.RED_MORE_SETTING_TANTOU,2);
                 break;
             //选择采集时间
             case R.id.et_as_cstime:
@@ -455,19 +472,50 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
 
                     //单独读取与设置等操作
                     if(SEND_TYPE==2){
-                        DialogUtils.closeProgress();
-                        if(SEND_STATUS==BleContant.RED_NEW_GET_CODE || SEND_STATUS==BleContant.SEND_GET_CODE_PHONE || SEND_STATUS==BleContant.SEND_GET_TANTOU || SEND_STATUS==BleContant.SEND_CAI_JI_PIN_LU || SEND_STATUS==BleContant.SEND_FA_SONG_PIN_LU || SEND_STATUS==BleContant.RED_DEVICE_TIME){
-                            //解析并显示回执的数据
-                            showData(data);
-                        }else{
-                            dialogView = new DialogView(mContext, "参数设置成功！", "确定",null, new View.OnClickListener() {
-                                public void onClick(View v) {
-                                    dialogView.dismiss();
-                                }
-                            }, null);
-                            dialogView.show();
+
+                        switch (SEND_STATUS){
+                            case BleContant.RED_CAIJI_ROAD:
+                            case BleContant.SEND_GET_CODE_PHONE:
+                            case BleContant.SEND_CAI_JI_PIN_LU:
+                            case BleContant.SEND_FA_SONG_PIN_LU:
+                            case BleContant.RED_DEVICE_TIME:
+                                 DialogUtils.closeProgress();
+                                //解析并显示回执的数据
+                                showData(data);
+                                SEND_STATUS=BleContant.NOT_SEND_DATA;
+                                 break;
+                            case BleContant.RED_MORE_SETTING_CODE://读取多路编码
+                                 //解析并显示回执的数据
+                                 showData(data);
+                                 if(redCodeNum<nn){
+                                    SendBleStr.setRedMoreSettingCode(++redCodeNum);
+                                    sendData(BleContant.RED_MORE_SETTING_CODE,2);
+                                 }else{
+                                    DialogUtils.closeProgress();
+                                     SEND_STATUS=BleContant.NOT_SEND_DATA;
+                                 }
+                                 break;
+                            case BleContant.RED_MORE_SETTING_TANTOU://读取多路探头埋深
+                                 //解析并显示回执的数据
+                                 showData(data);
+                                 if(redTanTouNum<nn){
+                                     SendBleStr.setRedMoreSettingTanTou(++redTanTouNum);
+                                     sendData(BleContant.RED_MORE_SETTING_TANTOU,1);
+                                 }else{
+                                     DialogUtils.closeProgress();
+                                     SEND_STATUS=BleContant.NOT_SEND_DATA;
+                                 }
+                                 break;
+                             default:
+                                 dialogView = new DialogView(mContext, "参数设置成功！", "确定",null, new View.OnClickListener() {
+                                     public void onClick(View v) {
+                                         dialogView.dismiss();
+                                     }
+                                 }, null);
+                                 dialogView.show();
+                                 SEND_STATUS=BleContant.NOT_SEND_DATA;
+                                 break;
                         }
-                        SEND_STATUS=BleContant.NOT_SEND_DATA;
                     }
                     break;
                 //接收数据超时
@@ -519,6 +567,8 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                     break;
                 //显示探头埋深
                 case BleContant.SEND_GET_TANTOU:
+                    tantouList.add(data.split(","));
+                    listTantou.setAdapter(new MoreSettingTanTouAdapter(this,tantouList,tantouList.size()));
                     break;
                 //显示采集频率
                 case BleContant.SEND_CAI_JI_PIN_LU:

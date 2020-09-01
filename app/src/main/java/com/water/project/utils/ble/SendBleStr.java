@@ -133,6 +133,9 @@ public class SendBleStr {
     //读取多路参数设置里面的探头埋深
     public static String RED_MORE_SETTING_TANTOU;
 
+    //设置采集路数
+    public static String SET_CAIJI_ROAD;
+
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
         StringBuffer stringBuffer=new StringBuffer();
@@ -563,6 +566,16 @@ public class SendBleStr {
     }
 
 
+    /**
+     * 设置采集路数
+     */
+    public static void setSetCaiJiRoad(int m,String nn){
+        StringBuilder sb=new StringBuilder("GDMETERNUMW");
+        sb.append(m+","+nn);
+        SET_CAIJI_ROAD=sb.toString();
+    }
+
+
 
     /**
      * 数据不够，用0补齐
@@ -734,6 +747,10 @@ public class SendBleStr {
             //读取多路参数设置里面的探头埋深
             case BleContant.RED_MORE_SETTING_TANTOU:
                 SendBleDataManager.getInstance().sendData(activity,RED_MORE_SETTING_TANTOU);
+                break;
+            //设置采集路数
+            case BleContant.SET_CAIJI_ROAD:
+                SendBleDataManager.getInstance().sendData(activity,SET_CAIJI_ROAD);
                 break;
              default:
                  break;

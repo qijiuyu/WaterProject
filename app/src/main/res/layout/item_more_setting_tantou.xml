@@ -32,6 +32,7 @@
             android:gravity="right|center"
             android:hint="请输入探头埋深"
             android:textColor="@color/color_1fc37f"
+            android:maxLength="10"
             android:textSize="15sp" />
 
         <TextView
