@@ -166,8 +166,8 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
         switch (SEND_STATUS){
             case BleContant.RED_CAIJI_ROAD:
             case BleContant.RED_MORE_SETTING_CODE:
-            case BleContant.RED_MORE_SETTING_TANTOU:
             case BleContant.SEND_GET_CODE_PHONE:
+            case BleContant.RED_MORE_SETTING_TANTOU:
             case BleContant.SEND_CAI_JI_PIN_LU:
             case BleContant.SEND_FA_SONG_PIN_LU:
             case BleContant.RED_DEVICE_TIME:
@@ -548,7 +548,7 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                                  }
                                  break;
                              default:
-                                 if(SEND_STATUS==BleContant.SET_MORE_SETTING_CODE && setCodeNum<codeList.size()){
+                                  if(SEND_STATUS==BleContant.SET_MORE_SETTING_CODE && setCodeNum<codeList.size()){
                                      setCodeNum++;
                                      SendBleStr.setSetMoreSettingCode(setCodeNum,codeList.get(setCodeNum));
                                      sendData(BleContant.SET_MORE_SETTING_CODE,2);
@@ -560,6 +560,10 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
 
                                  }else{
                                      DialogUtils.closeProgress();
+                                     if(SEND_STATUS==BleContant.SET_CAIJI_ROAD){
+                                         //采集路数设置成功后，要把全局的路数设置为最新的
+                                         nn=Integer.parseInt(tvRoadNum.getText().toString());
+                                     }
                                      dialogView = new DialogView(dialogView,mContext, "参数设置成功！", "确定",null, new View.OnClickListener() {
                                          public void onClick(View v) {
                                              dialogView.dismiss();
@@ -601,7 +605,7 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
             switch (SEND_STATUS){
                 //显示采集路数
                 case BleContant.RED_CAIJI_ROAD:
-                     data=data.replace("GDMETERNUMW","");
+                     data=data.replace("GDMETERNUMR","");
                      String[] msg=data.split(",");
                      m=Integer.parseInt(msg[0]);
                      nn=Integer.parseInt(msg[1]);

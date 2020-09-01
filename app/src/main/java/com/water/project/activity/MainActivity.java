@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.GridLayoutManager;
@@ -21,13 +20,9 @@ import com.water.project.activity.new_version.New_SettingActivity;
 import com.water.project.adapter.MainMenuAdapter;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.Menu;
-import com.water.project.bean.MoreCode;
-import com.water.project.bean.MoreTanTou;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.DataCleanManager;
 import com.water.project.utils.ble.BleObject;
-import com.water.project.utils.ble.SendBleStr;
-
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -120,7 +115,7 @@ public class MainActivity extends BaseActivity{
                 break;
             //关于我们
             case R.id.tv_about:
-                setClass(MoreSettingActivity.class);
+                setClass(AboutActivity.class);
                 break;
             default:
                 break;
