@@ -118,7 +118,7 @@ public class MainActivity extends BaseActivity{
                 break;
             //关于我们
             case R.id.tv_about:
-                setClass(AboutActivity.class);
+                setClass(GetMoreDataActivity.class);
                 break;
             default:
                 break;

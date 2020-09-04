@@ -31,6 +31,11 @@ public class MoreSettingCodeAdapter extends RecyclerView.Adapter<MoreSettingCode
         while (conut>list.size()){
             list.add(new MoreCode());
         }
+        for (int i=0;i<list.size();i++){
+             if(list.size()>conut){
+                 list.remove((list.size()-(i+1)));
+             }
+        }
     }
 
     public MyHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
