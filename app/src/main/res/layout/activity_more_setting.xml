@@ -78,24 +78,42 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:background="@drawable/bg_kuang"
                 android:layout_marginTop="10dp"
                 android:padding="10dp">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/list_code"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                </android.support.v7.widget.RecyclerView>
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:padding="0.5dp"
+                    android:background="@drawable/bg_black_border">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="统一编码\n探头ID号\n(北斗SIM卡号)"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/black"
+                        android:layout_marginLeft="10dp"/>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/list_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dp">
+                    </android.support.v7.widget.RecyclerView>
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:layout_below="@id/list_code"
-                    android:layout_centerInParent="true"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
@@ -115,98 +133,45 @@
 
                 </LinearLayout>
 
-            </RelativeLayout>
+            </LinearLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/bg_kuang"
                 android:padding="10dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:text="SIM卡号"
-                    android:textColor="@android:color/black"
-                    android:textSize="15sp" />
-
-                <EditText
-                    android:id="@+id/et_phone"
-                    android:layout_width="200dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@null"
-                    android:digits="0123456789"
-                    android:gravity="right|center"
-                    android:hint="请输入SIM卡号"
-                    android:maxLength="13"
-                    android:textColor="@color/color_1fc37f"
-                    android:textSize="15sp" />
-
-                <ImageView
-                    android:id="@+id/img_clear2"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="20dp"
-                    android:src="@mipmap/clear"
-                    android:visibility="gone" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_below="@id/et_phone"
-                    android:background="@color/color_888888" />
-
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_below="@id/et_phone"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:padding="0.5dp"
+                    android:background="@drawable/bg_black_border">
 
-                    <com.water.project.view.ClickTextView
-                        android:id="@+id/tv_setting_mobile"
+                    <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="20dp"
-                        android:background="@mipmap/setting_btn" />
+                        android:layout_height="wrap_content"
+                        android:text="探头埋深"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/black"
+                        android:layout_marginLeft="10dp"
+                        android:layout_centerVertical="true"/>
 
-                    <com.water.project.view.ClickTextView
-                        android:id="@+id/tv_get_mobile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="20dp"
-                        android:background="@mipmap/red_icon" />
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/list_tantou"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dp">
+                    </android.support.v7.widget.RecyclerView>
 
                 </LinearLayout>
 
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/bg_kuang"
-                android:padding="10dp">
-
-               <android.support.v7.widget.RecyclerView
-                   android:id="@+id/list_tantou"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content">
-               </android.support.v7.widget.RecyclerView>
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:layout_below="@id/list_tantou"
-                    android:layout_centerInParent="true"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
@@ -228,7 +193,7 @@
                 </LinearLayout>
 
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"

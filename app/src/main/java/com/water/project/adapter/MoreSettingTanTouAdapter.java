@@ -39,7 +39,7 @@ public class MoreSettingTanTouAdapter extends RecyclerView.Adapter<MoreSettingTa
     @Override
     public void onBindViewHolder(@NonNull final MyHolder holder, int i) {
         final MoreTanTou moreTanTou=list.get(i);
-        holder.tvName.setText("探头埋深"+(i+1));
+        holder.tvName.setText("第"+(i+1)+"路");
 
         //限制小数点前后
         holder.etTanTou.addTextChangedListener(new MyWatcher(5,4));

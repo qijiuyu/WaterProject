@@ -598,6 +598,8 @@ public class SendBleStr {
 
         sb.append(","+append(7,moreCode.getOther()));
         SET_MORE_SETTING_CODE=sb.toString();
+
+        BuglyUtils.uploadBleMsg("设置的统一编码数据："+SET_MORE_SETTING_CODE);
     }
 
 
@@ -616,28 +618,26 @@ public class SendBleStr {
         sb.append(maishe.substring(0,1));
 
         maishe=maishe.replace("+","").replace("-","");
-        int position=maishe.indexOf(".");
-        if(position==-1) {
-            for (int i=0;i<4-maishe.length();i++){
-                sb.append("0");
-            }
-            sb.append(maishe+".0000");
-        }else{
-            final int hou=maishe.length() - position - 1;
-            final int qian=maishe.length()-hou-1;
-            for (int i=0;i<4-qian;i++){
-                sb.append("0");
-            }
-            sb.append(maishe);
-            for (int i=0;i<4-hou;i++){
-                sb.append("0");
-            }
-        }
+
+        //小数点前后都是4位，否则用0补齐
+        sb.append(strAppend(maishe,4,4));
 
         sb.append(","+moreTanTou.getMidu()+","+moreTanTou.getPianyi());
         SET_MORE_SETTING_TANTOU=sb.toString();
+
+        BuglyUtils.uploadBleMsg("设置的探头埋深数据："+SET_MORE_SETTING_TANTOU);
     }
 
+
+
+    public static String strAppend(String data,int before,int after){
+        StringBuilder sb=new StringBuilder("");
+        final String[] strs=data.split("\\.");
+        sb.append(append(before,strs.length==1 ? strs[0] : ""));
+        sb.append(".");
+        sb.append(appendAfter(after,strs.length==2 ? strs[1] : ""));
+        return sb.toString();
+    }
 
 
 
@@ -648,6 +648,18 @@ public class SendBleStr {
         String str=data;
         for (int i=0;i<num-data.length();i++){
             str="0"+str;
+        }
+        return str;
+    }
+
+
+    /**
+     * 数据后面不够，用0补齐
+     */
+    public static String appendAfter(int num,String data){
+        String str=data;
+        for (int i=0;i<num-data.length();i++){
+            str=str+"0";
         }
         return str;
     }

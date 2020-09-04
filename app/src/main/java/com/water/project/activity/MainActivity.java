@@ -24,6 +24,8 @@ import com.water.project.utils.BleUtils;
 import com.water.project.utils.DataCleanManager;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.ble.BleObject;
+import com.water.project.utils.ble.SendBleStr;
+
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -172,8 +174,8 @@ public class MainActivity extends BaseActivity{
         menuList.add(menu6);
         Menu menu7=new Menu(R.mipmap.data_icon,"多路实时数据");
         menuList.add(menu7);
-//        Menu menu8=new Menu(R.mipmap.setting_icon,"多路参数设置");
-//        menuList.add(menu8);
+        Menu menu8=new Menu(R.mipmap.setting_icon,"多路参数设置");
+        menuList.add(menu8);
     }
 
 

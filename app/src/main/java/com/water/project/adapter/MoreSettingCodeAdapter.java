@@ -40,7 +40,7 @@ public class MoreSettingCodeAdapter extends RecyclerView.Adapter<MoreSettingCode
     @Override
     public void onBindViewHolder(@NonNull final MyHolder holder, int i) {
         final MoreCode moreCode=list.get(i);
-        holder.tvName.setText("统一编码"+(i+1));
+        holder.tvName.setText("第"+(i+1)+"路");
         holder.etCode.setText(moreCode.getCode());
         holder.etOther.setText(moreCode.getOther());
 

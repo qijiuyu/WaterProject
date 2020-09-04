@@ -8,13 +8,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import com.water.project.R;
 import com.water.project.activity.BaseActivity;
@@ -32,6 +28,7 @@ import com.water.project.bean.eventbus.EventStatus;
 import com.water.project.bean.eventbus.EventType;
 import com.water.project.presenter.new_device.New_SettingPresenter;
 import com.water.project.service.BleService;
+import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ToastUtil;
@@ -61,10 +58,6 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
     TextView tvRoadNum;
     @BindView(R.id.list_code)
     RecyclerView listCode;
-    @BindView(R.id.et_phone)
-    EditText etPhone;
-    @BindView(R.id.img_clear2)
-    ImageView imgClear2;
     @BindView(R.id.list_tantou)
     RecyclerView listTantou;
     @BindView(R.id.et_as_cstime)
@@ -128,21 +121,6 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
         tvHead.setText("多路参数设置");
         //实例化MVP
         new_settingPresenter=new New_SettingPresenter(this);
-
-        etPhone.addTextChangedListener(new TextWatcher() {
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-            public void afterTextChanged(Editable s) {
-                if (s.toString().length() > 0) {
-                    imgClear2.setVisibility(View.VISIBLE);
-                } else {
-                    imgClear2.setVisibility(View.GONE);
-                    etPhone.setTextColor(getResources().getColor(R.color.color_1fc37f));
-                }
-            }
-        });
     }
 
 
@@ -191,7 +169,7 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
     }
 
 
-    @OnClick({R.id.lin_back, R.id.tv_road_num, R.id.tv_setting_road, R.id.tv_get_road, R.id.tv_setting_code, R.id.tv_get_code, R.id.img_clear2, R.id.tv_setting_mobile, R.id.tv_get_mobile, R.id.tv_setting_tantou, R.id.tv_get_tantou, R.id.et_as_cstime, R.id.tv_as_cetime, R.id.tv_setting_cj, R.id.tv_get_cj, R.id.et_as_fstime, R.id.et_as_fetime, R.id.tv_as_grps, R.id.tv_send_num, R.id.tv_setting_fs, R.id.tv_get_fs, R.id.tv_new_time, R.id.tv_setting_time, R.id.tv_get_time})
+    @OnClick({R.id.lin_back, R.id.tv_road_num, R.id.tv_setting_road, R.id.tv_get_road, R.id.tv_setting_code, R.id.tv_get_code, R.id.tv_setting_tantou, R.id.tv_get_tantou, R.id.et_as_cstime, R.id.tv_as_cetime, R.id.tv_setting_cj, R.id.tv_get_cj, R.id.et_as_fstime, R.id.et_as_fetime, R.id.tv_as_grps, R.id.tv_send_num, R.id.tv_setting_fs, R.id.tv_get_fs, R.id.tv_new_time, R.id.tv_setting_time, R.id.tv_get_time})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.lin_back:
@@ -228,7 +206,7 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                  for (int i=0;i<codeList.size();i++){
                       if(TextUtils.isEmpty(codeList.get(i).getCode()) || TextUtils.isEmpty(codeList.get(i).getOther())){
                           isTrue=false;
-                          ToastUtil.showLong("请完善统一编码"+(i+1)+"数据");
+                          ToastUtil.showLong("请完善统一编码第"+(i+1)+"路数据");
                           break;
                       }
                  }
@@ -246,35 +224,13 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                 SendBleStr.setRedMoreSettingCode(redCodeNum);
                 sendData(BleContant.RED_MORE_SETTING_CODE,2);
                 break;
-            case R.id.img_clear2:
-                 etPhone.setText(null);
-                 imgClear2.setVisibility(View.GONE);
-                break;
-            //设置SIM卡号
-            case R.id.tv_setting_mobile:
-                final String sim=etPhone.getText().toString().trim();
-                if(TextUtils.isEmpty(sim)){
-                    showToastView("请输入SIM卡号！");
-                }else if(sim.length()<11 || sim.length()==12){
-                    etPhone.setTextColor(getResources().getColor(R.color.color_EC191B));
-                    showToastView("SIM卡号位数错误！");
-                }else{
-                    etPhone.setTextColor(getResources().getColor(R.color.color_1fc37f));
-                    SendBleStr.set_new_Sim(sim,CODE_SIM_DATA);
-                    sendData(BleContant.SET_CODE_PHONE,2);
-                }
-                break;
-            //读取SIM卡号
-            case R.id.tv_get_mobile:
-                sendData(BleContant.SEND_GET_CODE_PHONE,2);
-                break;
             //设置探头埋深
             case R.id.tv_setting_tantou:
                 boolean isTrue1=true;
                 for (int i=0;i<tantouList.size();i++){
                      if(TextUtils.isEmpty(tantouList.get(i).getMaishen())){
                          isTrue1=false;
-                         ToastUtil.showLong("请完善探头埋深"+(i+1)+"数据");
+                         ToastUtil.showLong("请完善探头埋深第"+(i+1)+"路数据");
                          break;
                      }
                     if(!tantouList.get(i).getMaishen().startsWith("+") && !tantouList.get(i).getMaishen().startsWith("-")){
@@ -480,12 +436,9 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                                      SendBleStr.setRedMoreSettingCode(++redCodeNum);
                                      sendData(BleContant.RED_MORE_SETTING_CODE,1);
                                  }else{
-                                     sendData(BleContant.SEND_GET_CODE_PHONE,1);
+                                     SendBleStr.setRedMoreSettingTanTou(redTanTouNum);
+                                     sendData(BleContant.RED_MORE_SETTING_TANTOU,1);
                                  }
-                                break;
-                            case BleContant.SEND_GET_CODE_PHONE:
-                                SendBleStr.setRedMoreSettingTanTou(redTanTouNum);
-                                sendData(BleContant.RED_MORE_SETTING_TANTOU,1);
                                 break;
                             case BleContant.RED_MORE_SETTING_TANTOU:
                                 if(redTanTouNum<nn){
@@ -516,7 +469,6 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
 
                         switch (SEND_STATUS){
                             case BleContant.RED_CAIJI_ROAD:
-                            case BleContant.SEND_GET_CODE_PHONE:
                             case BleContant.SEND_CAI_JI_PIN_LU:
                             case BleContant.SEND_FA_SONG_PIN_LU:
                             case BleContant.RED_DEVICE_TIME:
@@ -613,6 +565,7 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                      break;
                 //显示统一编码
                 case BleContant.RED_MORE_SETTING_CODE:
+                    BuglyUtils.uploadBleMsg("统一编码数据："+data);
                      String[] msg2=data.split(",");
                      MoreCode moreCode=new MoreCode();
                      moreCode.setCode(msg2[1]);
@@ -621,14 +574,9 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                      listCode.setLayoutManager(new LinearLayoutManager(activity));
                      listCode.setAdapter(new MoreSettingCodeAdapter(this,codeList,codeList.size(),m));
                     break;
-                //SIM卡号
-                case BleContant.SEND_GET_CODE_PHONE:
-                    CODE_SIM_DATA=data;
-                    strings=data.split(";");
-                    etPhone.setText(strings[6]);
-                    break;
                 //显示探头埋深
-                case BleContant.SEND_GET_TANTOU:
+                case BleContant.RED_MORE_SETTING_TANTOU:
+                    BuglyUtils.uploadBleMsg("探头埋深数据："+data);
                     final String[] msg3=data.split(",");
                     MoreTanTou moreTanTou=new MoreTanTou();
                     moreTanTou.setMaishen(msg3[1]);
