@@ -8,8 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="@drawable/bg_black_border_bottom"
-        android:layout_marginRight="15dp">
+        android:background="@drawable/bg_black_border_bottom">
 
         <TextView
             android:id="@+id/tv_name"
@@ -22,28 +21,36 @@
             android:textSize="14sp" />
 
 
-        <EditText
-            android:id="@+id/et_tantou"
-            android:layout_width="150dp"
-            android:layout_height="45dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/bg_black_border_left"
-            android:digits="0123456789.+-"
-            android:gravity="right|center"
-            android:hint="请输入探头埋深"
-            android:textColor="@color/color_1fc37f"
-            android:maxLength="10"
-            android:textSize="14sp" />
-
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:gravity="center"
-            android:text="m"
-            android:textColor="@android:color/black"
-            android:textSize="15sp" />
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_black_border_left"
+            android:layout_alignParentRight="true">
+
+            <EditText
+                android:id="@+id/et_tantou"
+                android:layout_width="150dp"
+                android:layout_height="44.5dp"
+                android:background="@null"
+                android:digits="0123456789.+-"
+                android:gravity="right|center"
+                android:hint="请输入探头埋深"
+                android:textColor="@color/color_1fc37f"
+                android:maxLength="10"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:text="m"
+                android:textColor="@android:color/black"
+                android:textSize="15sp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="15dp"/>
+
+        </LinearLayout>
 
     </RelativeLayout>
 

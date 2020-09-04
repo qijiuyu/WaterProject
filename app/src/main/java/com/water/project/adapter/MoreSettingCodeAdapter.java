@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,11 +44,16 @@ public class MoreSettingCodeAdapter extends RecyclerView.Adapter<MoreSettingCode
         final MoreCode moreCode=list.get(i);
         holder.tvName.setText("第"+(i+1)+"路");
         holder.etCode.setText(moreCode.getCode());
-        holder.etOther.setText(moreCode.getOther());
 
         if(m==0){
+            if(!TextUtils.isEmpty(moreCode.getOther())){
+                holder.etOther.setText(moreCode.getOther().substring(moreCode.getOther().length()-3));
+            }
+            holder.etOther.setFilters(new InputFilter[]{new InputFilter.LengthFilter(3)});
             holder.etOther.setHint("请输入探头ID号");
         }else{
+            holder.etOther.setText(moreCode.getOther());
+            holder.etOther.setFilters(new InputFilter[]{new InputFilter.LengthFilter(7)});
             holder.etOther.setHint("请输入北斗SIM卡号");
         }
 

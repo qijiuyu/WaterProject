@@ -56,6 +56,8 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
     TextView tvHead;
     @BindView(R.id.tv_road_num)
     TextView tvRoadNum;
+    @BindView(R.id.tv_code_title)
+    TextView tvCodeTitle;
     @BindView(R.id.list_code)
     RecyclerView listCode;
     @BindView(R.id.list_tantou)
@@ -562,6 +564,11 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                      m=Integer.parseInt(msg[0]);
                      nn=Integer.parseInt(msg[1]);
                      tvRoadNum.setText(msg[1]);
+                     if(m==0){
+                         tvCodeTitle.setText("统一编码\n探头ID号");
+                     }else{
+                         tvCodeTitle.setText("统一编码\n北斗SIM卡号");
+                     }
                      break;
                 //显示统一编码
                 case BleContant.RED_MORE_SETTING_CODE:
