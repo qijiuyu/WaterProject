@@ -502,12 +502,12 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                                  }
                                  break;
                              default:
-                                  if(SEND_STATUS==BleContant.SET_MORE_SETTING_CODE && setCodeNum<codeList.size()){
+                                  if(SEND_STATUS==BleContant.SET_MORE_SETTING_CODE && setCodeNum<(codeList.size()-1)){
                                      setCodeNum++;
                                      SendBleStr.setSetMoreSettingCode(setCodeNum,codeList.get(setCodeNum));
                                      sendData(BleContant.SET_MORE_SETTING_CODE,2);
 
-                                 }else if(SEND_STATUS==BleContant.SET_MORE_SETTING_TANTOU && setTanTouNum<tantouList.size()){
+                                 }else if(SEND_STATUS==BleContant.SET_MORE_SETTING_TANTOU && setTanTouNum<(tantouList.size()-1)){
                                      setTanTouNum++;
                                      SendBleStr.setSetMoreSettingTanTou(setTanTouNum,tantouList.get(setTanTouNum));
                                      sendData(BleContant.SET_MORE_SETTING_TANTOU,2);

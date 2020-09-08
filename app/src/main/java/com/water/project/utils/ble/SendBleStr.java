@@ -625,9 +625,9 @@ public class SendBleStr {
     public static String strAppend(String data,int before,int after){
         StringBuilder sb=new StringBuilder("");
         final String[] strs=data.split("\\.");
-        sb.append(append(before,strs.length==1 ? strs[0] : ""));
+        sb.append(append(before,strs.length>0 ? strs[0] : ""));
         sb.append(".");
-        sb.append(appendAfter(after,strs.length==2 ? strs[1] : ""));
+        sb.append(appendAfter(after,strs.length>1 ? strs[1] : ""));
         return sb.toString();
     }
 
