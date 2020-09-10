@@ -63,7 +63,7 @@ public class RedBDSignalActivity extends BaseActivity {
     private void initView(){
         //实例化MVP
         sendDataPersenter = new SendDataPersenter(this);
-        tvHead.setText("读取北斗卫星通讯信号强度");
+        tvHead.setText("读取北斗卫星信号强度");
     }
 
     @OnClick({R.id.lin_back, R.id.tv_send})

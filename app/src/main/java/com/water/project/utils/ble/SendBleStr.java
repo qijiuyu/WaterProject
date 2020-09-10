@@ -144,6 +144,12 @@ public class SendBleStr {
     //设置多路参数的探头埋深
     public static String SET_MORE_SETTING_TANTOU;
 
+    //读取多路参数的探头ID号
+    public static String RED_TANTOU_ID="GD&#IDR";
+
+    //设置多路参数的探头ID号
+    public static String SET_TANTOU_ID;
+
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
         StringBuffer stringBuffer=new StringBuffer();
@@ -617,7 +623,19 @@ public class SendBleStr {
         sb.append(","+moreTanTou.getMidu()+","+moreTanTou.getPianyi());
         SET_MORE_SETTING_TANTOU=sb.toString();
 
-        BuglyUtils.uploadBleMsg("设置的探头埋深数据："+SET_MORE_SETTING_TANTOU);
+    }
+
+
+    /**
+     * 设置探头id号
+     * @param old
+     * @param news
+     */
+    public static void setTanTouID(String old,String news){
+        StringBuilder sb=new StringBuilder("GD&>#IDW"+old+"T");
+        sb.append(append(3,news));
+        SET_TANTOU_ID=sb.toString();
+        BuglyUtils.uploadBleMsg("设置探头id号："+SET_TANTOU_ID);
     }
 
 
@@ -827,6 +845,14 @@ public class SendBleStr {
             //设置多路参数的探头埋深
             case BleContant.SET_MORE_SETTING_TANTOU:
                 SendBleDataManager.getInstance().sendData(activity,SET_MORE_SETTING_TANTOU);
+                break;
+            //读取多路参数的探头ID号
+            case BleContant.RED_TANTOU_ID:
+                SendBleDataManager.getInstance().sendData(activity,RED_TANTOU_ID);
+                break;
+            //设置多路参数的探头ID号
+            case BleContant.SET_TANTOU_ID:
+                SendBleDataManager.getInstance().sendData(activity,SET_TANTOU_ID);
                 break;
              default:
                  break;

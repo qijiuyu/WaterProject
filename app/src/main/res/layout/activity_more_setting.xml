@@ -193,8 +193,68 @@
 
                 </LinearLayout>
 
-
             </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rel_tantou_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_kuang"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="探头ID号\n只支持接单路探头操作"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/et_tantou_id"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@null"
+                    android:digits="0123456789"
+                    android:gravity="right|center"
+                    android:hint="请输入探头ID"
+                    android:maxLength="3"
+                    android:inputType="number"
+                    android:textColor="@color/color_1fc37f"
+                    android:textSize="15sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_below="@id/et_tantou_id"
+                    android:background="@color/color_888888" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_below="@id/et_tantou_id"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <com.water.project.view.ClickTextView
+                        android:id="@+id/tv_setting_ttID"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="20dp"
+                        android:background="@mipmap/setting_btn" />
+
+                    <com.water.project.view.ClickTextView
+                        android:id="@+id/tv_get_ttID"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:background="@mipmap/red_icon" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"

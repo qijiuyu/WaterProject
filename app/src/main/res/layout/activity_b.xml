@@ -38,7 +38,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:text="读取北斗卫星通讯信号强度"
+                android:text="读取北斗卫星信号强度"
                 android:textColor="@android:color/white"
                 android:textSize="15sp"
                 android:background="@drawable/bg_setting_select"

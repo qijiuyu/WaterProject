@@ -11,6 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.water.project.R;
 import com.water.project.activity.BaseActivity;
@@ -78,10 +80,12 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
     CustomListView listView;
     @BindView(R.id.tv_new_time)
     TextView tvNewTime;
+    @BindView(R.id.rel_tantou_id)
+    RelativeLayout relTanTouID;
+    @BindView(R.id.et_tantou_id)
+    EditText etTanTouID;
     //下发命令的编号
     private int SEND_STATUS;
-    //设置SIM的数据
-    private String CODE_SIM_DATA;
     /**
      * 1：刚进入读取命令
      * 2： 单独读取，设置命令
@@ -102,6 +106,8 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
 
     private List<MoreCode> codeList=new ArrayList<>();//存储读取的统一编码数据
     private List<MoreTanTou> tantouList=new ArrayList<>();//存储读取的探头埋深数据
+
+    private String oldTanTouID; //旧的探头id号，必须先读取旧探头id号后才可以进行修改。
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -146,8 +152,8 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
         switch (SEND_STATUS){
             case BleContant.RED_CAIJI_ROAD:
             case BleContant.RED_MORE_SETTING_CODE:
-            case BleContant.SEND_GET_CODE_PHONE:
             case BleContant.RED_MORE_SETTING_TANTOU:
+            case BleContant.RED_TANTOU_ID:
             case BleContant.SEND_CAI_JI_PIN_LU:
             case BleContant.SEND_FA_SONG_PIN_LU:
             case BleContant.RED_DEVICE_TIME:
@@ -171,7 +177,7 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
     }
 
 
-    @OnClick({R.id.lin_back, R.id.tv_road_num, R.id.tv_setting_road, R.id.tv_get_road, R.id.tv_setting_code, R.id.tv_get_code, R.id.tv_setting_tantou, R.id.tv_get_tantou, R.id.et_as_cstime, R.id.tv_as_cetime, R.id.tv_setting_cj, R.id.tv_get_cj, R.id.et_as_fstime, R.id.et_as_fetime, R.id.tv_as_grps, R.id.tv_send_num, R.id.tv_setting_fs, R.id.tv_get_fs, R.id.tv_new_time, R.id.tv_setting_time, R.id.tv_get_time})
+    @OnClick({R.id.lin_back, R.id.tv_road_num, R.id.tv_setting_road, R.id.tv_get_road, R.id.tv_setting_code, R.id.tv_get_code, R.id.tv_setting_tantou, R.id.tv_get_tantou,R.id.tv_setting_ttID,R.id.tv_get_ttID, R.id.et_as_cstime, R.id.tv_as_cetime, R.id.tv_setting_cj, R.id.tv_get_cj, R.id.et_as_fstime, R.id.et_as_fetime, R.id.tv_as_grps, R.id.tv_send_num, R.id.tv_setting_fs, R.id.tv_get_fs, R.id.tv_new_time, R.id.tv_setting_time, R.id.tv_get_time})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.lin_back:
@@ -255,6 +261,24 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                 SendBleStr.setRedMoreSettingTanTou(redTanTouNum);
                 sendData(BleContant.RED_MORE_SETTING_TANTOU,2);
                 break;
+            //设置探头ID号
+            case R.id.tv_setting_ttID:
+                 if(TextUtils.isEmpty(oldTanTouID)){
+                     ToastUtil.showLong("必须先读取一次探头ID号");
+                     return;
+                 }
+                 final String ID=etTanTouID.getText().toString().trim();
+                 if(TextUtils.isEmpty(ID)){
+                     ToastUtil.showLong("请输入探头ID号");
+                     return;
+                 }
+                SendBleStr.setTanTouID(oldTanTouID,ID);
+                sendData(BleContant.SET_TANTOU_ID,2);
+                 break;
+            //读取探头ID号
+            case R.id.tv_get_ttID:
+                 sendData(BleContant.RED_TANTOU_ID,2);
+                 break;
             //选择采集时间
             case R.id.et_as_cstime:
                 SelectTimeDialog selectTimeDialog = new SelectTimeDialog(this, this, 3);
@@ -471,6 +495,7 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
 
                         switch (SEND_STATUS){
                             case BleContant.RED_CAIJI_ROAD:
+                            case BleContant.RED_TANTOU_ID:
                             case BleContant.SEND_CAI_JI_PIN_LU:
                             case BleContant.SEND_FA_SONG_PIN_LU:
                             case BleContant.RED_DEVICE_TIME:
@@ -514,9 +539,14 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
 
                                  }else{
                                      DialogUtils.closeProgress();
-                                     if(SEND_STATUS==BleContant.SET_CAIJI_ROAD){
-                                         //采集路数设置成功后，要把全局的路数设置为最新的
+                                     if(SEND_STATUS==BleContant.SET_CAIJI_ROAD){//采集路数设置成功后，要把全局的路数设置为最新的
                                          nn=Integer.parseInt(tvRoadNum.getText().toString());
+                                     }
+
+                                     if(SEND_STATUS==BleContant.SET_TANTOU_ID){//探头ID号设置成功后，要把最新的id赋值给oldTanTouID
+                                         final String tantouID=etTanTouID.getText().toString().trim();
+                                         oldTanTouID=SendBleStr.append(3,tantouID);
+
                                      }
                                      dialogView = new DialogView(dialogView,mContext, "参数设置成功！", "确定",null, new View.OnClickListener() {
                                          public void onClick(View v) {
@@ -566,13 +596,14 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                      tvRoadNum.setText(msg[1]);
                      if(m==0){
                          tvCodeTitle.setText("统一编码\n探头ID号");
+                         relTanTouID.setVisibility(View.VISIBLE);
                      }else{
                          tvCodeTitle.setText("统一编码\n北斗SIM卡号");
+                         relTanTouID.setVisibility(View.GONE);
                      }
                      break;
                 //显示统一编码
                 case BleContant.RED_MORE_SETTING_CODE:
-                    BuglyUtils.uploadBleMsg("统一编码数据："+data);
                      String[] msg2=data.split(",");
                      MoreCode moreCode=new MoreCode();
                      moreCode.setCode(msg2[1]);
@@ -583,7 +614,6 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                     break;
                 //显示探头埋深
                 case BleContant.RED_MORE_SETTING_TANTOU:
-                    BuglyUtils.uploadBleMsg("探头埋深数据："+data);
                     final String[] msg3=data.split(",");
                     MoreTanTou moreTanTou=new MoreTanTou();
                     moreTanTou.setMaishen(msg3[1]);
@@ -593,6 +623,11 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                     listTantou.setLayoutManager(new LinearLayoutManager(activity));
                     listTantou.setAdapter(new MoreSettingTanTouAdapter(this,tantouList,tantouList.size()));
                     break;
+                //显示探头ID号
+                case BleContant.RED_TANTOU_ID:
+                     oldTanTouID=data.replace("GD&>#IDR","");
+                     etTanTouID.setText(oldTanTouID);
+                     break;
                 //显示采集频率
                 case BleContant.SEND_CAI_JI_PIN_LU:
                     strings=data.split(",");

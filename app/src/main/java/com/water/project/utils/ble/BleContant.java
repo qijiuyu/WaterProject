@@ -133,4 +133,10 @@ public class BleContant {
 
     //设置多路参数的探头埋深
     public static final int SET_MORE_SETTING_TANTOU=1040;
+
+    //读取多路参数的探头ID号
+    public static final int RED_TANTOU_ID=1041;
+
+    //设置多路参数的探头ID号
+    public static final int SET_TANTOU_ID=1042;
 }
