@@ -136,64 +136,128 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/bg_kuang"
-                android:padding="10dp">
+                android:layout_marginTop="10dp">
 
+
+                <!-- m等于0时，显示探头埋深-->
                 <LinearLayout
+                    android:id="@+id/lin_tantou"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:padding="0.5dp"
-                    android:background="@drawable/bg_black_border">
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_kuang"
+                    android:padding="10dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="探头埋深"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/black"
-                        android:layout_marginLeft="10dp"
-                        android:layout_centerVertical="true"/>
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/list_tantou"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="6dp">
+                        android:gravity="center_vertical"
+                        android:padding="0.5dp"
+                        android:background="@drawable/bg_black_border">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="探头埋深"
+                            android:textSize="14sp"
+                            android:textColor="@android:color/black"
+                            android:layout_marginLeft="10dp"
+                            android:layout_centerVertical="true"/>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/list_tantou"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="6dp">
+                        </android.support.v7.widget.RecyclerView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <com.water.project.view.ClickTextView
+                            android:id="@+id/tv_setting_tantou"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="20dp"
+                            android:background="@mipmap/setting_btn"
+                            android:gravity="center" />
+
+                        <com.water.project.view.ClickTextView
+                            android:id="@+id/tv_get_tantou"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:background="@mipmap/red_icon" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <!--m等于1时，显示北斗SIM列表 -->
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/lin_beidou"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.5"
+                            android:background="@drawable/bg_black_border"
+                            android:text="分钟"
+                            android:textStyle="bold"
+                            android:textSize="15sp"
+                            android:textColor="@android:color/black"
+                            android:gravity="center"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.1"
+                            android:background="@drawable/bg_black_border"
+                            android:text="北斗SIM卡号"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black"
+                            android:gravity="center"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_black_border"
+                            android:textSize="15sp"
+                            android:textColor="@android:color/black"
+                            android:gravity="center"/>
+
+                    </LinearLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/list_beidou"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
                     </android.support.v7.widget.RecyclerView>
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-
-                    <com.water.project.view.ClickTextView
-                        android:id="@+id/tv_setting_tantou"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="20dp"
-                        android:background="@mipmap/setting_btn"
-                        android:gravity="center" />
-
-                    <com.water.project.view.ClickTextView
-                        android:id="@+id/tv_get_tantou"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="20dp"
-                        android:background="@mipmap/red_icon" />
-
-                </LinearLayout>
-
-            </LinearLayout>
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/rel_tantou_id"
@@ -207,7 +271,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:gravity="center"
-                    android:text="探头ID号\n只支持接单路探头操作"
+                    android:text="修改探头ID号\n只支持接单路探头操作"
                     android:textColor="@android:color/black"
                     android:textSize="15sp" />
 
@@ -219,7 +283,7 @@
                     android:background="@null"
                     android:digits="0123456789"
                     android:gravity="right|center"
-                    android:hint="请输入探头ID"
+                    android:hint="请输入探头ID号"
                     android:maxLength="3"
                     android:inputType="number"
                     android:textColor="@color/color_1fc37f"

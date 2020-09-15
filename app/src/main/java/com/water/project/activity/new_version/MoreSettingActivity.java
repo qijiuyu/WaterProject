@@ -12,11 +12,13 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.water.project.R;
 import com.water.project.activity.BaseActivity;
 import com.water.project.adapter.MoreSettingCodeAdapter;
+import com.water.project.adapter.MoreSettingSimAdapter;
 import com.water.project.adapter.MoreSettingTanTouAdapter;
 import com.water.project.adapter.NewSettingTimeAdapter;
 import com.water.project.application.MyApplication;
@@ -39,6 +41,7 @@ import com.water.project.utils.ble.BleObject;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.CustomListView;
 import com.water.project.view.DialogView;
+import com.water.project.view.MeasureListView;
 import com.water.project.view.SelectRoadView;
 import com.water.project.view.SelectTimeDialog;
 import org.greenrobot.eventbus.EventBus;
@@ -84,6 +87,12 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
     RelativeLayout relTanTouID;
     @BindView(R.id.et_tantou_id)
     EditText etTanTouID;
+    @BindView(R.id.lin_tantou)
+    LinearLayout linTanTou;
+    @BindView(R.id.lin_beidou)
+    LinearLayout linBeiDou;
+    @BindView(R.id.list_beidou)
+    RecyclerView listBeiDou;
     //下发命令的编号
     private int SEND_STATUS;
     /**
@@ -119,7 +128,12 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
         EventBus.getDefault().register(this);
         initView();
         register();//注册广播
-        sendData(BleContant.RED_CAIJI_ROAD,1); //发送蓝牙命令
+//        sendData(BleContant.RED_CAIJI_ROAD,1); //发送蓝牙命令
+
+        linTanTou.setVisibility(View.GONE);
+        linBeiDou.setVisibility(View.VISIBLE);
+        listBeiDou.setLayoutManager(new LinearLayoutManager(activity));
+        listBeiDou.setAdapter(new MoreSettingSimAdapter(this));
     }
 
     /**
@@ -596,10 +610,11 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                      tvRoadNum.setText(msg[1]);
                      if(m==0){
                          tvCodeTitle.setText("统一编码\n探头ID号");
-                         relTanTouID.setVisibility(View.VISIBLE);
                      }else{
                          tvCodeTitle.setText("统一编码\n北斗SIM卡号");
                          relTanTouID.setVisibility(View.GONE);
+                         linTanTou.setVisibility(View.GONE);
+                         linBeiDou.setVisibility(View.VISIBLE);
                      }
                      break;
                 //显示统一编码
