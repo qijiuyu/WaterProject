@@ -139,4 +139,13 @@ public class BleContant {
 
     //设置多路参数的探头ID号
     public static final int SET_TANTOU_ID=1042;
+
+    //多路参数界面，读取SIM北斗数据
+    public static final int RED_MORE_SETTING_SIM=1043;
+
+    //多路参数中设置SIM北斗数据
+    public static final int SET_MORE_SETTING_SIM=1044;
+
+    //多路参数界面，单独读取SIM北斗数据
+    public static final int RED_MORE_SETTING_SIM2=1045;
 }

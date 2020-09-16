@@ -112,9 +112,13 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
     private int redTanTouNum=1;//读取探头埋深的次数
     private int setCodeNum=0; //设置统一编码的次数
     private int setTanTouNum=0;//设置探头埋深的次数
+    private int redSimNum=0;//读取SIM卡号次数
 
     private List<MoreCode> codeList=new ArrayList<>();//存储读取的统一编码数据
     private List<MoreTanTou> tantouList=new ArrayList<>();//存储读取的探头埋深数据
+    private List<String> simList=new ArrayList<>();//存储读取后的SIM北斗卡号
+
+    private MoreSettingSimAdapter simAdapter;
 
     private String oldTanTouID; //旧的探头id号，必须先读取旧探头id号后才可以进行修改。
 
@@ -128,12 +132,7 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
         EventBus.getDefault().register(this);
         initView();
         register();//注册广播
-//        sendData(BleContant.RED_CAIJI_ROAD,1); //发送蓝牙命令
-
-        linTanTou.setVisibility(View.GONE);
-        linBeiDou.setVisibility(View.VISIBLE);
-        listBeiDou.setLayoutManager(new LinearLayoutManager(activity));
-        listBeiDou.setAdapter(new MoreSettingSimAdapter(this));
+        sendData(BleContant.RED_CAIJI_ROAD,1); //发送蓝牙命令
     }
 
     /**
@@ -167,6 +166,8 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
             case BleContant.RED_CAIJI_ROAD:
             case BleContant.RED_MORE_SETTING_CODE:
             case BleContant.RED_MORE_SETTING_TANTOU:
+            case BleContant.RED_MORE_SETTING_SIM:
+            case BleContant.RED_MORE_SETTING_SIM2:
             case BleContant.RED_TANTOU_ID:
             case BleContant.SEND_CAI_JI_PIN_LU:
             case BleContant.SEND_FA_SONG_PIN_LU:
@@ -467,20 +468,25 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                         showData(data);
                         //继续发送命令
                         switch (SEND_STATUS){
-                            case BleContant.RED_CAIJI_ROAD:
+                            case BleContant.RED_CAIJI_ROAD://读取多路参数
                                  SendBleStr.setRedMoreSettingCode(redCodeNum);
                                  sendData(BleContant.RED_MORE_SETTING_CODE,1);
                                  break;
-                            case BleContant.RED_MORE_SETTING_CODE:
+                            case BleContant.RED_MORE_SETTING_CODE:  //读取统一编码
                                  if(redCodeNum<nn){
                                      SendBleStr.setRedMoreSettingCode(++redCodeNum);
                                      sendData(BleContant.RED_MORE_SETTING_CODE,1);
                                  }else{
-                                     SendBleStr.setRedMoreSettingTanTou(redTanTouNum);
-                                     sendData(BleContant.RED_MORE_SETTING_TANTOU,1);
+                                     if(m==0){
+                                         SendBleStr.setRedMoreSettingTanTou(redTanTouNum);
+                                         sendData(BleContant.RED_MORE_SETTING_TANTOU,1);//读取探头埋深
+                                     }else{
+                                         SendBleStr.setRedMoreSettingSim(redSimNum);
+                                         sendData(BleContant.RED_MORE_SETTING_SIM,1);//读取SIM北斗卡号
+                                     }
                                  }
                                 break;
-                            case BleContant.RED_MORE_SETTING_TANTOU:
+                            case BleContant.RED_MORE_SETTING_TANTOU://读取探头埋深
                                 if(redTanTouNum<nn){
                                     SendBleStr.setRedMoreSettingTanTou(++redTanTouNum);
                                     sendData(BleContant.RED_MORE_SETTING_TANTOU,1);
@@ -488,6 +494,14 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                                     sendData(BleContant.SEND_CAI_JI_PIN_LU,1);
                                 }
                                 break;
+                            case BleContant.RED_MORE_SETTING_SIM://读取SIM北斗卡号
+                                 if(redSimNum<59){
+                                     SendBleStr.setRedMoreSettingSim(++redSimNum);
+                                     sendData(BleContant.RED_MORE_SETTING_SIM,1);//读取SIM北斗卡号
+                                 }else{
+                                     sendData(BleContant.SEND_CAI_JI_PIN_LU,1);
+                                 }
+                                 break;
                             case BleContant.SEND_CAI_JI_PIN_LU:
                                 sendData(BleContant.SEND_FA_SONG_PIN_LU,1);
                                 break;
@@ -509,6 +523,7 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
 
                         switch (SEND_STATUS){
                             case BleContant.RED_CAIJI_ROAD:
+                            case BleContant.RED_MORE_SETTING_SIM2:
                             case BleContant.RED_TANTOU_ID:
                             case BleContant.SEND_CAI_JI_PIN_LU:
                             case BleContant.SEND_FA_SONG_PIN_LU:
@@ -638,6 +653,43 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                     listTantou.setLayoutManager(new LinearLayoutManager(activity));
                     listTantou.setAdapter(new MoreSettingTanTouAdapter(this,tantouList,tantouList.size()));
                     break;
+                //显示SIM北斗卡号
+                case BleContant.RED_MORE_SETTING_SIM:
+                     simList.add(data.replace("GDNTIMESIMR",""));
+                     listBeiDou.setLayoutManager(new LinearLayoutManager(activity));
+                     if(simAdapter==null){
+                         simAdapter=new MoreSettingSimAdapter(this, simList, new MoreSettingSimAdapter.Face() {
+                             //修改SIM
+                             @Override
+                             public void update(String num, String sim) {
+                                 SendBleStr.setSetMoreSettingSim(num,sim);
+                                 sendData(BleContant.SET_MORE_SETTING_SIM,2);
+                             }
+
+                             //读取SIM
+                             @Override
+                             public void red(String num) {
+                                 SendBleStr.setRedMoreSettingSim2(num);
+                                 sendData(BleContant.RED_MORE_SETTING_SIM2,2);
+                             }
+                         });
+                         listBeiDou.setAdapter(simAdapter);
+                     }else{
+                         simAdapter.notifyDataSetChanged();
+                     }
+                     break;
+                //单独读取，显示SIM北斗卡号
+                case BleContant.RED_MORE_SETTING_SIM2:
+                     data=data.replace("GDNTIMESIMR","");
+                     final String[] arrays=data.split(",");
+                     for (int i=0;i<simList.size();i++){
+                          if(simList.get(i).contains(arrays[0]+",")){
+                              simList.set(i,data);
+                              break;
+                          }
+                     }
+                     simAdapter.notifyDataSetChanged();
+                     break;
                 //显示探头ID号
                 case BleContant.RED_TANTOU_ID:
                      oldTanTouID=data.replace("GD&>#IDR","");

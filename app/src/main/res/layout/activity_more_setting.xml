@@ -229,7 +229,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="1.1"
+                            android:layout_weight="1.2"
                             android:background="@drawable/bg_black_border"
                             android:text="北斗SIM卡号"
                             android:textSize="15sp"

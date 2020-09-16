@@ -61,7 +61,7 @@
                     android:layout_height="25dp"
                     android:layout_marginLeft="15dp"
                     android:background="@drawable/bg_color"
-                    android:text="修改"
+                    android:text="读取"
                     android:textSize="13sp"
                     android:textColor="@android:color/white"
                     android:gravity="center"/>

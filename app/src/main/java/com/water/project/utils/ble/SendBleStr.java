@@ -150,6 +150,15 @@ public class SendBleStr {
     //设置多路参数的探头ID号
     public static String SET_TANTOU_ID;
 
+    //多路参数界面，读取SIM北斗数据
+    public static String RED_MORE_SETTING_SIM;
+
+    //多路参数中设置SIM北斗数据
+    public static String SET_MORE_SETTING_SIM;
+
+    //多路参数界面，单独读取SIM北斗数据
+    public static String RED_MORE_SETTING_SIM2;
+
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
         StringBuffer stringBuffer=new StringBuffer();
@@ -639,6 +648,44 @@ public class SendBleStr {
     }
 
 
+    /**
+     * 多路参数界面，读取SIM北斗数据
+     * @param data
+     */
+    public static void setRedMoreSettingSim(int data){
+        StringBuilder sb=new StringBuilder("GDNTIMESIMR");
+        if(data<10){
+            sb.append("0"+data);
+        }else{
+            sb.append(data);
+        }
+        RED_MORE_SETTING_SIM=sb.toString();
+    }
+
+
+    /**
+     * 多路参数中设置SIM北斗数据
+     * @param num
+     * @param sim
+     */
+    public static void setSetMoreSettingSim(String num,String sim){
+        StringBuilder sb=new StringBuilder("GDNTIMESIMW"+num+",");
+        sb.append(append(7,sim));
+        SET_MORE_SETTING_SIM=sb.toString();
+    }
+
+
+    /**
+     * 多路参数界面，单独读取SIM北斗数据
+     * @param num
+     */
+    public static void setRedMoreSettingSim2(String num){
+        StringBuilder sb=new StringBuilder("GDNTIMESIMR"+num);
+        RED_MORE_SETTING_SIM2=sb.toString();
+    }
+
+
+
 
     public static String strAppend(String data,int before,int after){
         StringBuilder sb=new StringBuilder("");
@@ -853,6 +900,14 @@ public class SendBleStr {
             //设置多路参数的探头ID号
             case BleContant.SET_TANTOU_ID:
                 SendBleDataManager.getInstance().sendData(activity,SET_TANTOU_ID);
+                break;
+            //多路参数界面，读取SIM北斗数据
+            case BleContant.RED_MORE_SETTING_SIM:
+                SendBleDataManager.getInstance().sendData(activity,RED_MORE_SETTING_SIM);
+                break;
+            //多路参数界面，单独读取SIM北斗数据
+            case BleContant.RED_MORE_SETTING_SIM2:
+                SendBleDataManager.getInstance().sendData(activity,RED_MORE_SETTING_SIM2);
                 break;
              default:
                  break;
