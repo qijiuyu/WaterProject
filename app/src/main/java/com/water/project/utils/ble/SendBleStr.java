@@ -629,7 +629,8 @@ public class SendBleStr {
         //小数点前后都是4位，否则用0补齐
         sb.append(strAppend(maishe,4,4));
 
-        sb.append(","+moreTanTou.getMidu()+","+moreTanTou.getPianyi());
+//        sb.append(","+moreTanTou.getMidu()+","+moreTanTou.getPianyi());
+        sb.append(",01.00000,+0000.0000");
         SET_MORE_SETTING_TANTOU=sb.toString();
 
     }
@@ -672,6 +673,9 @@ public class SendBleStr {
         StringBuilder sb=new StringBuilder("GDNTIMESIMW"+num+",");
         sb.append(append(7,sim));
         SET_MORE_SETTING_SIM=sb.toString();
+
+        BuglyUtils.uploadBleMsg("多路参数中设置SIM北斗数据："+SET_MORE_SETTING_SIM);
+
     }
 
 
@@ -904,6 +908,10 @@ public class SendBleStr {
             //多路参数界面，读取SIM北斗数据
             case BleContant.RED_MORE_SETTING_SIM:
                 SendBleDataManager.getInstance().sendData(activity,RED_MORE_SETTING_SIM);
+                break;
+            //多路参数中设置SIM北斗数据
+            case BleContant.SET_MORE_SETTING_SIM:
+                SendBleDataManager.getInstance().sendData(activity,SET_MORE_SETTING_SIM);
                 break;
             //多路参数界面，单独读取SIM北斗数据
             case BleContant.RED_MORE_SETTING_SIM2:

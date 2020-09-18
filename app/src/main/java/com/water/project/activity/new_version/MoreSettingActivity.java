@@ -41,7 +41,6 @@ import com.water.project.utils.ble.BleObject;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.CustomListView;
 import com.water.project.view.DialogView;
-import com.water.project.view.MeasureListView;
 import com.water.project.view.SelectRoadView;
 import com.water.project.view.SelectTimeDialog;
 import org.greenrobot.eventbus.EventBus;
