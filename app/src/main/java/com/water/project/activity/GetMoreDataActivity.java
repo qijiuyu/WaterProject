@@ -38,6 +38,8 @@ public class GetMoreDataActivity extends BaseActivity {
     TextView tvHead;
     @BindView(R.id.listView)
     ListView listView;
+    @BindView(R.id.tv_no)
+    TextView tvNo;
     //下发命令的编号
     private int SEND_STATUS;
 
@@ -131,12 +133,16 @@ public class GetMoreDataActivity extends BaseActivity {
 
                     if(SEND_STATUS==BleContant.RED_CAIJI_ROAD){
                         String[] msg=data.split(",");
+                        final int m=Integer.parseInt(msg[0]);
                         road=Integer.parseInt(msg[1]);
-
-                        //根据路数读取实时数据
-                        SendBleStr.redTimeDataByRoad(redRoad);
-                        sendData(BleContant.RED_TIME_DATA_BY_ROAD);
-
+                        if(m==0){
+                            //根据路数读取实时数据
+                            SendBleStr.redTimeDataByRoad(redRoad);
+                            sendData(BleContant.RED_TIME_DATA_BY_ROAD);
+                        }else{
+                            DialogUtils.closeProgress();
+                            tvNo.setVisibility(View.VISIBLE);
+                        }
                     }else{
                         list.add(data);
                         listView.setAdapter(new GetMoreDataAdapter(GetMoreDataActivity.this,list));

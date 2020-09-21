@@ -459,7 +459,7 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                     break;
                 //接收到了读取回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
-                    final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA).replace(">OK","");
+                    String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA).replace(">OK","");
 
                     //刚进入界面读取的操作
                     if(SEND_TYPE==1){
@@ -576,6 +576,18 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                                          oldTanTouID=SendBleStr.append(3,tantouID);
 
                                      }
+                                     if(SEND_STATUS==BleContant.SET_MORE_SETTING_SIM){//多路参数中设置SIM北斗数据
+                                         data=data.replace("GDNTIMESIMW","");
+                                         final String[] arrays=data.split(",");
+                                         for (int i=0;i<simList.size();i++){
+                                             if(simList.get(i).contains(arrays[0]+",")){
+                                                 simList.set(i,data);
+                                                 break;
+                                             }
+                                         }
+                                         simAdapter.notifyDataSetChanged();
+                                     }
+
                                      dialogView = new DialogView(dialogView,mContext, "参数设置成功！", "确定",null, new View.OnClickListener() {
                                          public void onClick(View v) {
                                              dialogView.dismiss();
