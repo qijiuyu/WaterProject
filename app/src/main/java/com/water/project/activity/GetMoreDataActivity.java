@@ -129,9 +129,10 @@ public class GetMoreDataActivity extends BaseActivity {
                     break;
                 //接收到了回执的数据
                 case BleService.ACTION_DATA_AVAILABLE:
-                    final String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA).replace(">OK","");
+                    String data=intent.getStringExtra(BleService.ACTION_EXTRA_DATA).replace(">OK","");
 
                     if(SEND_STATUS==BleContant.RED_CAIJI_ROAD){
+                        data=data.replace("GDMETERNUMR","");
                         String[] msg=data.split(",");
                         final int m=Integer.parseInt(msg[0]);
                         road=Integer.parseInt(msg[1]);

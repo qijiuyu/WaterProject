@@ -397,6 +397,7 @@ public class MoreSettingActivity extends BaseActivity implements SelectTime {
                 }
                 //设置并发送命令
                 SendBleStr.new_setFaSong(startTime,minute,grps,number,newSettingTimeAdapter==null ? null : newSettingTimeAdapter.map);
+//                SendBleStr.new_setFaSong(startTime,minute,"03","00",newSettingTimeAdapter==null ? null : newSettingTimeAdapter.map);
                 sendData(BleContant.SET_FA_SONG,2);
                 break;
             //读取发送频率
