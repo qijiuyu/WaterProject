@@ -495,6 +495,7 @@
                     android:background="@color/color_888888" />
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_below="@id/et_as_fetime"
@@ -505,6 +506,7 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/tv_as_grps"
                     android:layout_width="200dp"
                     android:layout_height="40dp"
@@ -516,12 +518,14 @@
                     android:textSize="15sp" />
 
                 <View
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:layout_below="@id/tv_as_grps"
                     android:background="@color/color_888888" />
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_below="@id/tv_as_grps"
@@ -532,6 +536,7 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/tv_send_num"
                     android:layout_width="200dp"
                     android:layout_height="40dp"
@@ -543,12 +548,14 @@
                     android:textSize="15sp" />
 
                 <View
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:layout_below="@id/tv_send_num"
                     android:background="@color/color_888888" />
 
                 <com.water.project.view.CustomListView
+                    android:visibility="gone"
                     android:id="@+id/listView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

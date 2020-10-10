@@ -90,7 +90,11 @@ public class GetMoreDataActivity extends BaseActivity {
         if(bleService==null){
             return;
         }
-        DialogUtils.showProgress(this,"正在读取实时数据...");
+        if(SEND_STATUS==BleContant.RED_CAIJI_ROAD){
+            DialogUtils.showProgress2(this,"正在读取路数数据");
+        }else{
+            DialogUtils.showProgress2(this,"正在读取第"+redRoad+"路实时数据...");
+        }
         //如果蓝牙连接断开，就扫描重连
         if(bleService.connectionState==bleService.STATE_DISCONNECTED){
             //扫描并重连蓝牙
@@ -123,6 +127,17 @@ public class GetMoreDataActivity extends BaseActivity {
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()){
+                //蓝牙断开连接
+                case BleService.ACTION_GATT_DISCONNECTED:
+                    DialogUtils.closeProgress();
+                    dialogView = new DialogView(mContext, "蓝牙连接断开！", "重试","取消", new View.OnClickListener() {
+                        public void onClick(View v) {
+                            dialogView.dismiss();
+                            sendData(SEND_STATUS);
+                        }
+                    }, null);
+                    dialogView.show();
+                    break;
                 //初始化通道成功
                 case BleService.ACTION_ENABLE_NOTIFICATION_SUCCES:
                     sendData(SEND_STATUS);
