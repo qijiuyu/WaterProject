@@ -13,18 +13,19 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
 import com.water.project.R;
 import com.water.project.activity.BaseActivity;
 import com.water.project.adapter.BAdapter;
 import com.water.project.application.MyApplication;
 import com.water.project.bean.BindService;
 import com.water.project.bean.Ble;
+import com.water.project.bean.SelectObject;
 import com.water.project.bean.eventbus.EventStatus;
 import com.water.project.bean.eventbus.EventType;
 import com.water.project.presenter.SendDataPersenter;
 import com.water.project.service.BleService;
 import com.water.project.utils.DialogUtils;
+import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ToastUtil;
 import com.water.project.utils.ble.BleContant;
@@ -32,13 +33,11 @@ import com.water.project.utils.ble.BleObject;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
 import com.water.project.view.MeasureListView;
-
+import com.water.project.view.SelectIntervalTimeVIew;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
 import java.util.Timer;
 import java.util.TimerTask;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -60,6 +59,8 @@ public class BActivity extends BaseActivity {
     TextView tvDianYa;
     @BindView(R.id.tv_list)
     TextView tvList;
+    @BindView(R.id.tv_select_time)
+    TextView tvSelectTime;
     @BindView(R.id.scrollView)
     ScrollView scrollView;
     //MVP对象
@@ -93,18 +94,30 @@ public class BActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.lin_back, R.id.tv_send, R.id.tv_send2})
+    @OnClick({R.id.lin_back, R.id.tv_select_time,R.id.tv_send, R.id.tv_send2})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.lin_back:
                 finish();
                 break;
+            //选择分钟间隔
+            case R.id.tv_select_time:
+                 new SelectIntervalTimeVIew(this, new SelectObject() {
+                     @Override
+                     public void onSuccess(Object object) {
+                         final String minutes= (String) object;
+                         tvSelectTime.setText(minutes);
+                     }
+                 }).show();
+                 break;
             //让设备通过北斗方式发送实时数据
             case R.id.tv_send:
                 if(time>0){
-                    ToastUtil.showLong("请等待60秒后再进行操作");
+                    ToastUtil.showLong("请等待"+time+"秒后再进行操作");
                     return;
                 }
+                final String selectTime=tvSelectTime.getText().toString().trim();
+                time=Integer.parseInt(selectTime.replace("分钟",""))*60;
                 sendData(BleContant.BEI_DOU_FANG_SHI_SEND_DATA);
                 break;
             case R.id.tv_send2:
@@ -256,7 +269,7 @@ public class BActivity extends BaseActivity {
             case EventStatus.SEND_CHECK_MCD:
                 final int cmd = (int) eventType.getObject();
                 if(SEND_STATUS==BleContant.BEI_DOU_FANG_SHI_SEND_DATA && time>0){
-                    ToastUtil.showLong("请等待60秒后再进行操作");
+                    ToastUtil.showLong("请等待"+time+"秒后再进行操作");
                     return;
                 }
                 sendData(cmd);
@@ -271,7 +284,6 @@ public class BActivity extends BaseActivity {
      * 动态改变验证码秒数
      */
     private void startTime() {
-        time=60;
         //保存计时时间
         SPUtil.getInstance(this).addString("new_time", String.valueOf((System.currentTimeMillis() + 60000)));
         mTimer = new Timer();

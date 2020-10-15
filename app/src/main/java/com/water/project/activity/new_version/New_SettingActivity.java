@@ -364,48 +364,48 @@ public class New_SettingActivity extends BaseActivity implements View.OnClickLis
                      showToastView("请选择发送间隔时间！");
                      return;
                  }
-//                if(TextUtils.isEmpty(grps)){
-//                    showToastView("请选择连接服务器次数！");
-//                    return;
-//                }
-//                if(TextUtils.isEmpty(number)){
-//                    showToastView("请选择补发数据次数！");
-//                    return;
-//                }
-//                 if(Integer.parseInt(number)>0){
-//                     if(Integer.parseInt(number)>newSettingTimeAdapter.map.size()){
-//                         showToastView("请将"+Integer.parseInt(number)+"个补发间隔时间数据完善");
-//                         return;
-//                     }
-//                     boolean b=true;
-//                    for (int i=0;i<newSettingTimeAdapter.map.size();i++){
-//                            if(i==0 && newSettingTimeAdapter.map.get(i)>=Integer.parseInt(minute)){
-//                                b=false;
-//                                new_settingPresenter.trip("补发间隔时间1的分钟必须小于发送间隔时间的分钟");
-//                                break;
-//                            }
-//                            if(i>0 && newSettingTimeAdapter.map.get(i)<=newSettingTimeAdapter.map.get(i-1)){
-//                                b=false;
-//                                new_settingPresenter.trip("补发间隔时间"+(i+1)+"的分钟必须大于补发间隔时间"+(i)+"的分钟");
-//                                break;
-//                            }
-//                            //最后一个数据不能大于发送间隔时间
-//                            if(i==newSettingTimeAdapter.map.size()-1){
-//                                if(newSettingTimeAdapter.map.get(i)>=Integer.parseInt(minute)){
-//                                    b=false;
-//                                    new_settingPresenter.trip("最后一个补发间隔时间的分钟必须小于发送间隔时间的分钟");
-//                                    break;
-//                                }
-//                            }
-//
-//                    }
-//                    if(!b){
-//                        return;
-//                    }
-//                 }
+                if(TextUtils.isEmpty(grps)){
+                    showToastView("请选择连接服务器次数！");
+                    return;
+                }
+                if(TextUtils.isEmpty(number)){
+                    showToastView("请选择补发数据次数！");
+                    return;
+                }
+                 if(Integer.parseInt(number)>0){
+                     if(Integer.parseInt(number)>newSettingTimeAdapter.map.size()){
+                         showToastView("请将"+Integer.parseInt(number)+"个补发间隔时间数据完善");
+                         return;
+                     }
+                     boolean b=true;
+                    for (int i=0;i<newSettingTimeAdapter.map.size();i++){
+                            if(i==0 && newSettingTimeAdapter.map.get(i)>=Integer.parseInt(minute)){
+                                b=false;
+                                new_settingPresenter.trip("补发间隔时间1的分钟必须小于发送间隔时间的分钟");
+                                break;
+                            }
+                            if(i>0 && newSettingTimeAdapter.map.get(i)<=newSettingTimeAdapter.map.get(i-1)){
+                                b=false;
+                                new_settingPresenter.trip("补发间隔时间"+(i+1)+"的分钟必须大于补发间隔时间"+(i)+"的分钟");
+                                break;
+                            }
+                            //最后一个数据不能大于发送间隔时间
+                            if(i==newSettingTimeAdapter.map.size()-1){
+                                if(newSettingTimeAdapter.map.get(i)>=Integer.parseInt(minute)){
+                                    b=false;
+                                    new_settingPresenter.trip("最后一个补发间隔时间的分钟必须小于发送间隔时间的分钟");
+                                    break;
+                                }
+                            }
+
+                    }
+                    if(!b){
+                        return;
+                    }
+                 }
                  //设置并发送命令
-//                SendBleStr.new_setFaSong(startTime,minute,grps,number,newSettingTimeAdapter==null ? null : newSettingTimeAdapter.map);
-                   SendBleStr.new_setFaSong(startTime,minute,"03","00",newSettingTimeAdapter==null ? null : newSettingTimeAdapter.map);
+                SendBleStr.new_setFaSong(startTime,minute,grps,number,newSettingTimeAdapter==null ? null : newSettingTimeAdapter.map);
+//                   SendBleStr.new_setFaSong(startTime,minute,"03","00",newSettingTimeAdapter==null ? null : newSettingTimeAdapter.map);
                 sendData(BleContant.SET_FA_SONG,2);
                 break;
             //选择时间---设置设备时间用
