@@ -14,6 +14,7 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.water.project.R;
+import com.water.project.activity.menu6.BActivity;
 import com.water.project.activity.menu6.SendDataActivity;
 import com.water.project.activity.new_version.MoreSettingActivity;
 import com.water.project.activity.new_version.New_SettingActivity;

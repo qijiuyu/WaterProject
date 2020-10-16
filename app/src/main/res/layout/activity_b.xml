@@ -24,45 +24,53 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:gravity="center_vertical">
+                android:background="@drawable/bg_kuang"
+                android:orientation="vertical"
+                android:padding="15dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="请设置间隔分钟"
-                    android:textSize="15sp"
-                    android:textColor="@android:color/black"/>
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="请设置间隔分钟"
+                        android:textSize="15sp"
+                        android:textColor="@android:color/black"/>
+
+                    <TextView
+                        android:id="@+id/tv_select_time"
+                        android:layout_width="100dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/bg_addshop_des"
+                        android:text="1分钟"
+                        android:textColor="@color/color_EC191B"
+                        android:gravity="center"/>
+
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/tv_select_time"
-                    android:layout_width="100dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/bg_addshop_des"
-                    android:text="1分钟"
-                    android:textColor="@color/color_EC191B"
+                    android:id="@+id/tv_send"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="20dp"
+                    android:text="让设备通过北斗方式发送实时数据"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    android:background="@color/color_1fc37f"
                     android:gravity="center"/>
 
-            </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_send"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
-                android:text="让设备通过北斗方式发送实时数据"
-                android:textColor="@android:color/white"
-                android:textSize="15sp"
-                android:background="@color/color_1fc37f"
-                android:gravity="center"/>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_send2"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:text="读取北斗卫星信号强度"
