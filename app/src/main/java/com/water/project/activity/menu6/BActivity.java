@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import com.water.project.R;
@@ -68,6 +69,14 @@ public class BActivity extends BaseActivity {
     TextView tvSelectAntenna;
     @BindView(R.id.tv_wait_time)
     TextView tvWaitTime;
+    @BindView(R.id.lin_location)
+    LinearLayout linLocation;
+    @BindView(R.id.tv_latitude)
+    TextView tvLatitude;
+    @BindView(R.id.tv_longitude)
+    TextView tvLongigude;
+    @BindView(R.id.tv_hb)
+    TextView tvHb;
     @BindView(R.id.scrollView)
     ScrollView scrollView;
     //MVP对象
@@ -101,7 +110,7 @@ public class BActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.lin_back,R.id.tv_select_antenna,R.id.tv_confirm, R.id.tv_select_time,R.id.tv_send, R.id.tv_send2,R.id.tv_wait_time,R.id.tv_confirm2})
+    @OnClick({R.id.lin_back,R.id.tv_select_antenna,R.id.tv_confirm, R.id.tv_select_time,R.id.tv_send, R.id.tv_send2,R.id.tv_wait_time,R.id.tv_confirm2,R.id.tv_bd_position})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.lin_back:
@@ -158,6 +167,10 @@ public class BActivity extends BaseActivity {
                  SendBleStr.setWaitTime(Integer.parseInt(waitTime.replace("秒","")));
                  sendData(BleContant.SET_BEI_DOU_WAIT_TIME);
                  break;
+            //读取北斗定位信息
+            case R.id.tv_bd_position:
+                 sendData(BleContant.RED_BEI_DOU_LOCATION);
+                 break;
             default:
                 break;
         }
@@ -196,6 +209,8 @@ public class BActivity extends BaseActivity {
             DialogUtils.showProgress(BActivity.this, "正在发送北斗卫星天线型号...");
         }else if(SEND_STATUS==BleContant.SET_BEI_DOU_WAIT_TIME){
             DialogUtils.showProgress(BActivity.this, "正在设置北斗接收数据等待时间...");
+        }else if(SEND_STATUS==BleContant.RED_BEI_DOU_LOCATION){
+            DialogUtils.showProgress(BActivity.this, "正在读取北斗定位信息...");
         }
         SendBleStr.sendBleData(this,SEND_STATUS);
     }
@@ -291,6 +306,20 @@ public class BActivity extends BaseActivity {
                                     }
                                 }, null);
                                 dialogView.show();
+                                 break;
+
+                            //回执北斗定位信息
+                            case BleContant.RED_BEI_DOU_LOCATION:
+                                 linLocation.setVisibility(View.VISIBLE);
+                                 data=data.replace("GDLOCATIONR","").replace(">OK", "");
+                                 if(data.startsWith("N")) {
+                                    String Latitude = data.substring(0, 10).replace(".", "");
+                                    String longitude = data.substring(10, 21).replace(".", "");
+                                    String hb = data.substring(21);
+                                    tvLatitude.setText("设备维度："+Latitude.substring(1,3)+"."+Latitude.substring(3)+"N");
+                                    tvLongigude.setText("设备经度："+longitude.substring(1,4)+"."+longitude.substring(4)+"E");
+                                    tvHb.setText("设备海拔："+hb.substring(1)+"m");
+                                 }
                                  break;
                              default:
                                  break;

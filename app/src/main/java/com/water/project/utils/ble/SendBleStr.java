@@ -165,6 +165,9 @@ public class SendBleStr {
     //设置北斗接收数据等待时间
     public static String SET_BEI_DOU_WAIT_TIME;
 
+    //读取北斗定位信息
+    public static String RED_BEI_DOU_LOCATION="GDLOCATIONR";
+
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
         StringBuffer stringBuffer=new StringBuffer();
@@ -962,6 +965,10 @@ public class SendBleStr {
             //设置北斗接收数据等待时间
             case BleContant.SET_BEI_DOU_WAIT_TIME:
                 SendBleDataManager.getInstance().sendData(activity,SET_BEI_DOU_WAIT_TIME);
+                break;
+            //读取北斗定位信息
+            case BleContant.RED_BEI_DOU_LOCATION:
+                SendBleDataManager.getInstance().sendData(activity,RED_BEI_DOU_LOCATION);
                 break;
              default:
                  break;

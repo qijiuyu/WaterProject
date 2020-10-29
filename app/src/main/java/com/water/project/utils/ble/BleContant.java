@@ -154,4 +154,7 @@ public class BleContant {
 
     //设置北斗接收数据等待时间
     public static final int SET_BEI_DOU_WAIT_TIME=1047;
+
+    //读取北斗定位信息
+    public static final int RED_BEI_DOU_LOCATION=1048;
 }
