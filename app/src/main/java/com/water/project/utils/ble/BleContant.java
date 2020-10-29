@@ -148,4 +148,10 @@ public class BleContant {
 
     //多路参数界面，单独读取SIM北斗数据
     public static final int RED_MORE_SETTING_SIM2=1045;
+
+    //发送北斗数据天线型号
+    public static final int SEND_ANTENNA_MODEL=1046;
+
+    //设置北斗接收数据等待时间
+    public static final int SET_BEI_DOU_WAIT_TIME=1047;
 }

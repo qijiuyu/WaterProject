@@ -22,11 +22,14 @@ import com.water.project.bean.Ble;
 import com.water.project.bean.SelectObject;
 import com.water.project.bean.eventbus.EventStatus;
 import com.water.project.bean.eventbus.EventType;
+import com.water.project.callback.SelectCallBack;
 import com.water.project.presenter.SendDataPersenter;
 import com.water.project.service.BleService;
+import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.DialogUtils;
 import com.water.project.utils.LogUtils;
 import com.water.project.utils.SPUtil;
+import com.water.project.utils.SelectWheel;
 import com.water.project.utils.ToastUtil;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.BleObject;
@@ -61,6 +64,10 @@ public class BActivity extends BaseActivity {
     TextView tvList;
     @BindView(R.id.tv_select_time)
     TextView tvSelectTime;
+    @BindView(R.id.tv_select_antenna)
+    TextView tvSelectAntenna;
+    @BindView(R.id.tv_wait_time)
+    TextView tvWaitTime;
     @BindView(R.id.scrollView)
     ScrollView scrollView;
     //MVP对象
@@ -94,12 +101,26 @@ public class BActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.lin_back, R.id.tv_select_time,R.id.tv_send, R.id.tv_send2})
+    @OnClick({R.id.lin_back,R.id.tv_select_antenna,R.id.tv_confirm, R.id.tv_select_time,R.id.tv_send, R.id.tv_send2,R.id.tv_wait_time,R.id.tv_confirm2})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.lin_back:
                 finish();
                 break;
+            //选择天线型号
+            case R.id.tv_select_antenna:
+                SelectWheel.selectAntenna(this, new SelectCallBack() {
+                    @Override
+                    public void getSelect(Object object, Object object1) {
+                        tvSelectAntenna.setText((String)object);
+                    }
+                });
+                 break;
+            //发送北斗数据天线型号
+            case R.id.tv_confirm:
+                 SendBleStr.setAntennaModel(tvSelectAntenna.getText().toString().trim());
+                 sendData(BleContant.SEND_ANTENNA_MODEL);
+                 break;
             //选择分钟间隔
             case R.id.tv_select_time:
                  new SelectIntervalTimeVIew(this, new SelectObject() {
@@ -122,6 +143,20 @@ public class BActivity extends BaseActivity {
                 break;
             case R.id.tv_send2:
                  setClass(RedBDSignalActivity.class);
+                 break;
+            //设置北斗接收数据等待时间
+            case R.id.tv_wait_time:
+                SelectWheel.selectWaitTime(this, new SelectCallBack() {
+                    @Override
+                    public void getSelect(Object object, Object object1) {
+                        tvWaitTime.setText((String)object);
+                    }
+                });
+                 break;
+            case R.id.tv_confirm2:
+                 final String waitTime=tvWaitTime.getText().toString().trim();
+                 SendBleStr.setWaitTime(Integer.parseInt(waitTime.replace("秒","")));
+                 sendData(BleContant.SET_BEI_DOU_WAIT_TIME);
                  break;
             default:
                 break;
@@ -157,8 +192,10 @@ public class BActivity extends BaseActivity {
         }
         if(SEND_STATUS==BleContant.BEI_DOU_FANG_SHI_SEND_DATA){
             DialogUtils.showProgress(BActivity.this, "正在发送数据,请稍候...");
-        }else{
-            DialogUtils.showProgress(BActivity.this, "正在读取信号强度,请稍候...");
+        }else if(SEND_STATUS==BleContant.SEND_ANTENNA_MODEL){
+            DialogUtils.showProgress(BActivity.this, "正在发送北斗卫星天线型号...");
+        }else if(SEND_STATUS==BleContant.SET_BEI_DOU_WAIT_TIME){
+            DialogUtils.showProgress(BActivity.this, "正在设置北斗接收数据等待时间...");
         }
         SendBleStr.sendBleData(this,SEND_STATUS);
     }
@@ -205,34 +242,60 @@ public class BActivity extends BaseActivity {
                     String data = intent.getStringExtra(BleService.ACTION_EXTRA_DATA);
 
                     try {
-                        //延时60秒后
-                        if(SEND_STATUS==BleContant.BEI_DOU_FANG_SHI_SEND_DATA){
-                            startTime();
-                        }
+                        switch (SEND_STATUS){
+                            case BleContant.BEI_DOU_FANG_SHI_SEND_DATA:
+                                //延时60秒后
+                                startTime();
 
-                        if(data.endsWith(">ERR")){
-                            dialogView = new DialogView(dialogView,BActivity.this, "北斗通讯部分出现故障，请联系维护人员!","好的", null, null, null);
-                            dialogView.show();
-                        }else{
-                            data=data.replace("GDBDSQ","").replace(">OK", "");
-                            //显示信号列表
-                            tvList.setVisibility(View.VISIBLE);
-                            String[] strs=data.split(",");
-                            BAdapter bAdapter=new BAdapter(BActivity.this,strs);
-                            listView.setAdapter(bAdapter);
-                            //显示电压值
+                                if(data.endsWith(">ERR")){
+                                    dialogView = new DialogView(dialogView,BActivity.this, "北斗通讯部分出现故障，请联系维护人员!","好的", null, null, null);
+                                    dialogView.show();
+                                }else{
+                                    BuglyUtils.uploadBleMsg("北斗信号："+data);
+                                    data=data.replace("GDBDSQ","").replace(">OK", "");
+                                    //显示信号列表
+                                    tvList.setVisibility(View.VISIBLE);
+                                    String[] strs=data.split(",");
+                                    BAdapter bAdapter=new BAdapter(BActivity.this,strs);
+                                    listView.setAdapter(bAdapter);
+                                    //显示电压值
 
-                            String strDy=strs[strs.length-1];
-                            if(strDy.indexOf("V")!=-1){
-                                String[] dianya=strDy.split("V");
-                                tvDianYa.setText("发送数据成功，北斗通讯部分电压值："+dianya[1]+"V\n请联系接收中心查看数据");
-                            }
-                            handler.postDelayed(new Runnable() {
-                                public void run() {
-                                    scrollView.scrollTo(0,0);
+                                    String strDy=strs[strs.length-1];
+                                    if(strDy.indexOf("V")!=-1){
+                                        String[] dianya=strDy.split("V");
+                                        tvDianYa.setText("发送数据成功，北斗通讯部分电压值："+dianya[1]+"V\n请联系接收中心查看数据");
+                                    }
+                                    handler.postDelayed(new Runnable() {
+                                        public void run() {
+                                            scrollView.scrollTo(0,0);
+                                        }
+                                    },500);
                                 }
-                            },500);
+                                 break;
+
+                           //回执北斗卫星天线型号
+                            case BleContant.SEND_ANTENNA_MODEL:
+                                dialogView = new DialogView(dialogView,activity, "选择型号成功", "好的",null, new View.OnClickListener() {
+                                    public void onClick(View v) {
+                                        dialogView.dismiss();
+                                    }
+                                }, null);
+                                dialogView.show();
+                                 break;
+
+                             //回执设置北斗接收数据等待时间
+                            case BleContant.SET_BEI_DOU_WAIT_TIME:
+                                dialogView = new DialogView(dialogView,activity, "时间设置成功", "好的",null, new View.OnClickListener() {
+                                    public void onClick(View v) {
+                                        dialogView.dismiss();
+                                    }
+                                }, null);
+                                dialogView.show();
+                                 break;
+                             default:
+                                 break;
                         }
+
                     }catch (Exception e){
                         e.printStackTrace();
                     }
@@ -249,7 +312,29 @@ public class BActivity extends BaseActivity {
                     break;
                 case BleService.ACTION_GET_DATA_ERROR:
                     DialogUtils.closeProgress();
-                    showToastView("设备回执数据异常！");
+                    switch (SEND_STATUS){
+                        case BleContant.BEI_DOU_FANG_SHI_SEND_DATA:
+                             showToastView("设备回执数据异常！");
+                             break;
+                        case BleContant.SEND_ANTENNA_MODEL:
+                             dialogView = new DialogView(dialogView,activity, "选择失败，请重试", "好的",null, new View.OnClickListener() {
+                                public void onClick(View v) {
+                                    dialogView.dismiss();
+                                 }
+                             }, null);
+                             dialogView.show();
+                             break;
+                        case BleContant.SET_BEI_DOU_WAIT_TIME:
+                            dialogView = new DialogView(dialogView,activity, "时间设置失败，请重试", "好的",null, new View.OnClickListener() {
+                                public void onClick(View v) {
+                                    dialogView.dismiss();
+                                }
+                            }, null);
+                            dialogView.show();
+                            break;
+                        default:
+                            break;
+                    }
                     break;
                 default:
                     break;
@@ -284,8 +369,6 @@ public class BActivity extends BaseActivity {
      * 动态改变验证码秒数
      */
     private void startTime() {
-        //保存计时时间
-        SPUtil.getInstance(this).addString("new_time", String.valueOf((System.currentTimeMillis() + 60000)));
         mTimer = new Timer();
         mTimer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
@@ -294,7 +377,6 @@ public class BActivity extends BaseActivity {
                         public void run() {
                             mTimer.cancel();
                             tvSend.setText("让设备通过北斗方式发送实时数据");
-                            SPUtil.getInstance(BActivity.this).removeMessage("new_time");
                             tvSend.setBackgroundColor(getResources().getColor(R.color.color_1fc37f));
                         }
                     });

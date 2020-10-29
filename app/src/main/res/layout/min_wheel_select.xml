@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
     android:id="@+id/rel"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/half_transparent">
@@ -8,7 +9,7 @@
     <LinearLayout
         android:clickable="true"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="200dp"
         android:orientation="vertical"
         android:layout_alignParentBottom="true"
         android:background="@android:color/white">
@@ -22,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="取消"
-                android:textColor="@color/color_666666"
+                android:textColor="@color/color_333333"
                 android:textSize="15sp"
                 android:layout_marginLeft="15dp"
                 android:layout_centerVertical="true"/>
@@ -33,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:text="确定"
                 android:textSize="15sp"
-                android:textColor="#007AFF"
+                android:textColor="@color/colorPrimary"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="15dp"/>
@@ -43,12 +44,13 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="#D8D8D8"/>
+            android:visibility="gone"
+            android:background="#d8d8d8"/>
 
         <com.water.project.view.CycleWheelView
             android:id="@+id/wheel"
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
+            android:layout_height="150dp" />
 
     </LinearLayout>
 

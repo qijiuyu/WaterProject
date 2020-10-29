@@ -159,6 +159,12 @@ public class SendBleStr {
     //多路参数界面，单独读取SIM北斗数据
     public static String RED_MORE_SETTING_SIM2;
 
+    //发送北斗数据天线型号
+    public static String SEND_ANTENNA_MODEL;
+
+    //设置北斗接收数据等待时间
+    public static String SET_BEI_DOU_WAIT_TIME;
+
     //设置统一编码，SIM卡号
     public static void sendSetCodeSim(String code,String sim,String data){
         StringBuffer stringBuffer=new StringBuffer();
@@ -689,6 +695,38 @@ public class SendBleStr {
     }
 
 
+    /**
+     * 设置北斗数据天线型号
+     * @param type
+     */
+    public static void setAntennaModel(String type){
+        StringBuilder sb=new StringBuilder("GDBDSELECTW");
+        if(type.equals("PD")){
+            sb.append("0");
+        }else if(type.equals("BDRGB")){
+            sb.append("1");
+        }else{
+            sb.append("2");
+        }
+        SEND_ANTENNA_MODEL=sb.toString();
+    }
+
+
+    /**
+     * 设置北斗接收数据等待时间
+     * @param time
+     */
+    public static void setWaitTime(int time){
+        StringBuilder sb=new StringBuilder("GDRXDELAYTIMEW");
+        if(time<10){
+            sb.append("0"+time);
+        }else{
+            sb.append(time);
+        }
+        SET_BEI_DOU_WAIT_TIME=sb.toString();
+    }
+
+
 
 
     public static String strAppend(String data,int before,int after){
@@ -916,6 +954,14 @@ public class SendBleStr {
             //多路参数界面，单独读取SIM北斗数据
             case BleContant.RED_MORE_SETTING_SIM2:
                 SendBleDataManager.getInstance().sendData(activity,RED_MORE_SETTING_SIM2);
+                break;
+            //发送北斗数据天线型号
+            case BleContant.SEND_ANTENNA_MODEL:
+                SendBleDataManager.getInstance().sendData(activity,SEND_ANTENNA_MODEL);
+                break;
+            //设置北斗接收数据等待时间
+            case BleContant.SET_BEI_DOU_WAIT_TIME:
+                SendBleDataManager.getInstance().sendData(activity,SET_BEI_DOU_WAIT_TIME);
                 break;
              default:
                  break;
