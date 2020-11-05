@@ -20,6 +20,7 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -154,7 +155,7 @@
                         android:layout_height="30dp"
                         android:layout_marginLeft="10dp"
                         android:background="@drawable/bg_addshop_des"
-                        android:text="5"
+                        android:text="5秒"
                         android:textColor="@color/color_EC191B"
                         android:gravity="center"/>
 
@@ -199,7 +200,7 @@
                     android:id="@+id/tv_latitude"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="设备维度："
+                    android:text="设备纬度："
                     android:textColor="@android:color/black"
                     android:textSize="14sp"/>
 

@@ -311,12 +311,13 @@ public class BActivity extends BaseActivity {
                             //回执北斗定位信息
                             case BleContant.RED_BEI_DOU_LOCATION:
                                  linLocation.setVisibility(View.VISIBLE);
+                                 BuglyUtils.uploadBleMsg("北斗定位信息是："+data);
                                  data=data.replace("GDLOCATIONR","").replace(">OK", "");
                                  if(data.startsWith("N")) {
                                     String Latitude = data.substring(0, 10).replace(".", "");
                                     String longitude = data.substring(10, 21).replace(".", "");
                                     String hb = data.substring(21);
-                                    tvLatitude.setText("设备维度："+Latitude.substring(1,3)+"."+Latitude.substring(3)+"N");
+                                    tvLatitude.setText("设备纬度："+Latitude.substring(1,3)+"."+Latitude.substring(3)+"N");
                                     tvLongigude.setText("设备经度："+longitude.substring(1,4)+"."+longitude.substring(4)+"E");
                                     tvHb.setText("设备海拔："+hb.substring(1)+"m");
                                  }

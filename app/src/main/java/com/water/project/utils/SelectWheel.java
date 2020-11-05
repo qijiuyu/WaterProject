@@ -79,7 +79,7 @@ public class SelectWheel {
         final CycleWheelView wheel=view.findViewById(R.id.wheel);
 
         List<String> list=new ArrayList<>();
-        list.add("2秒");list.add("3秒");list.add("4秒");list.add("5秒");list.add("6秒");list.add("7秒");list.add("8秒");list.add("9秒");list.add("10秒");
+        list.add("4秒");list.add("5秒");list.add("6秒");list.add("7秒");list.add("8秒");list.add("9秒");list.add("10秒");
 
         wheel.setLabels(list);
         initWheel(wheel,5);
