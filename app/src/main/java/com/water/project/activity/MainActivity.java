@@ -57,7 +57,6 @@ public class MainActivity extends BaseActivity{
         deleteCache();
         //注册蓝牙服务
         BleObject.getInstance().getBleService(this,null);
-
     }
 
     /**

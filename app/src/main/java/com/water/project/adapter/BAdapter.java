@@ -50,13 +50,18 @@ public class BAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        holder.tvName.setText("通道"+(position+1)+"：");
-        //设置信号强度
-        String data=str[position];
-        if(data.indexOf("V")!=-1){
-            data=data.substring(0,1);
+
+        try {
+            holder.tvName.setText("通道"+(position+1)+"：");
+            //设置信号强度
+            String data=str[position];
+            if(data.indexOf("V")!=-1){
+                data=data.substring(0,1);
+            }
+            setSignal(Integer.parseInt(data));
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        setSignal(Integer.parseInt(data));
         return view;
     }
 
@@ -65,21 +70,25 @@ public class BAdapter extends BaseAdapter {
      * @param index
      */
     private void setSignal(int index){
-        if(index>4){
-            index=0;
-        }
-        list.clear();
-        list.add(holder.tv1);
-        list.add(holder.tv2);
-        list.add(holder.tv3);
-        list.add(holder.tv4);
-        for (int i=0;i<list.size();i++){
-             if(index>i){
-                 list.get(i).setBackgroundResource(R.drawable.bg_signal_yes);
-             }else{
-                 list.get(i).setBackgroundResource(R.drawable.bg_signal_no);
-             }
-        }
+       try {
+           if(index>4){
+               index=0;
+           }
+           list.clear();
+           list.add(holder.tv1);
+           list.add(holder.tv2);
+           list.add(holder.tv3);
+           list.add(holder.tv4);
+           for (int i=0;i<list.size();i++){
+               if(index>i){
+                   list.get(i).setBackgroundResource(R.drawable.bg_signal_yes);
+               }else{
+                   list.get(i).setBackgroundResource(R.drawable.bg_signal_no);
+               }
+           }
+       }catch (Exception e){
+           e.printStackTrace();
+       }
     }
 
     static class ViewHolder {

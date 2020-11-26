@@ -19,7 +19,9 @@ import com.water.project.bean.BindService;
 import com.water.project.bean.Ble;
 import com.water.project.presenter.SendDataPersenter;
 import com.water.project.service.BleService;
+import com.water.project.utils.BuglyUtils;
 import com.water.project.utils.DialogUtils;
+import com.water.project.utils.FileUtils;
 import com.water.project.utils.SPUtil;
 import com.water.project.utils.ble.BleContant;
 import com.water.project.utils.ble.BleObject;
@@ -157,6 +159,10 @@ public class RedBDSignalActivity extends BaseActivity {
                             dialogView = new DialogView(dialogView,activity, "北斗通讯部分出现故障，请联系维护人员!","好的", null, null, null);
                             dialogView.show();
                         }else{
+
+                            BuglyUtils.uploadBleMsg("北斗信号："+data);
+                            String filePath = FileUtils.createFile("北斗信号数据.txt", data);
+
                             data=data.replace("GDBDSQ","").replace(">OK", "");
                             //显示信号列表
                             String[] strs=data.split(",");

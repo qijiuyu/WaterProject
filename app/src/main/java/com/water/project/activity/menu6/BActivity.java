@@ -269,7 +269,9 @@ public class BActivity extends BaseActivity {
                                     BuglyUtils.uploadBleMsg("北斗信号："+data);
                                     data=data.replace("GDBDSQ","").replace(">OK", "");
                                     //显示信号列表
+                                    tvDianYa.setVisibility(View.VISIBLE);
                                     tvList.setVisibility(View.VISIBLE);
+                                    listView.setVisibility(View.VISIBLE);
                                     String[] strs=data.split(",");
                                     BAdapter bAdapter=new BAdapter(BActivity.this,strs);
                                     listView.setAdapter(bAdapter);
@@ -314,12 +316,12 @@ public class BActivity extends BaseActivity {
                                  BuglyUtils.uploadBleMsg("北斗定位信息是："+data);
                                  data=data.replace("GDLOCATIONR","").replace(">OK", "");
                                  if(data.startsWith("N")) {
-                                    String Latitude = data.substring(0, 10).replace(".", "");
-                                    String longitude = data.substring(10, 21).replace(".", "");
-                                    String hb = data.substring(21);
-                                    tvLatitude.setText("设备纬度："+Latitude.substring(1,3)+"."+Latitude.substring(3)+"N");
-                                    tvLongigude.setText("设备经度："+longitude.substring(1,4)+"."+longitude.substring(4)+"E");
-                                    tvHb.setText("设备海拔："+hb.substring(1)+"m");
+                                     String Latitude = data.substring(0, 11).replace(".", "");
+                                     String longitude = data.substring(11, 23).replace(".", "");
+                                     String hb = data.substring(23);
+                                     tvLongigude.setText("经度："+longitude.substring(1,4)+"."+longitude.substring(4)+"E");
+                                     tvLatitude.setText("纬度："+Latitude.substring(1,3)+"."+Latitude.substring(3)+"N");
+                                     tvHb.setText("海拔："+hb.substring(1)+"m");
                                  }
                                  break;
                              default:
@@ -399,6 +401,11 @@ public class BActivity extends BaseActivity {
      * 动态改变验证码秒数
      */
     private void startTime() {
+        if(mTimer!=null){
+            mTimer.cancel();
+            mTimer.purge();
+            mTimer=null;
+        }
         mTimer = new Timer();
         mTimer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
@@ -406,6 +413,8 @@ public class BActivity extends BaseActivity {
                     handler.post(new Runnable() {
                         public void run() {
                             mTimer.cancel();
+                            mTimer.purge();
+                            mTimer=null;
                             tvSend.setText("让设备通过北斗方式发送实时数据");
                             tvSend.setBackgroundColor(getResources().getColor(R.color.color_1fc37f));
                         }

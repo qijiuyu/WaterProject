@@ -63,8 +63,8 @@ public class BleObject {
 
 
     public void disconnect(){
-        activity.unbindService(mServiceConnection);
         if(bleService!=null){
+            activity.unbindService(mServiceConnection);
             bleService.disconnect();
         }
     }

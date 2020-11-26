@@ -94,7 +94,7 @@
                         android:layout_height="30dp"
                         android:layout_marginLeft="10dp"
                         android:background="@drawable/bg_addshop_des"
-                        android:text="1分钟"
+                        android:text="5分钟"
                         android:textColor="@color/color_EC191B"
                         android:gravity="center"/>
 
@@ -110,6 +110,43 @@
                     android:textSize="15sp"
                     android:background="@color/color_1fc37f"
                     android:gravity="center"/>
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/tv_dian_ya"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"/>
+
+                <TextView
+                    android:id="@+id/tv_list"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="35dp"
+                    android:layout_marginLeft="15dp"
+                    android:text="北斗通讯信号值"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/black"/>
+
+                <com.water.project.view.MeasureListView
+                    android:visibility="gone"
+                    android:id="@+id/listView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:divider="@null">
+                </com.water.project.view.MeasureListView>
 
 
             </LinearLayout>
@@ -155,7 +192,7 @@
                         android:layout_height="30dp"
                         android:layout_marginLeft="10dp"
                         android:background="@drawable/bg_addshop_des"
-                        android:text="5秒"
+                        android:text="8秒"
                         android:textColor="@color/color_EC191B"
                         android:gravity="center"/>
 
@@ -197,18 +234,19 @@
                 android:layout_marginLeft="20dp">
 
                 <TextView
-                    android:id="@+id/tv_latitude"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="设备纬度："
-                    android:textColor="@android:color/black"
-                    android:textSize="14sp"/>
-
-                <TextView
                     android:id="@+id/tv_longitude"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="设备经度："
+                    android:text="经度："
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:id="@+id/tv_latitude"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="纬度："
                     android:textColor="@android:color/black"
                     android:textSize="14sp"
                     android:layout_marginTop="10dp"/>
@@ -217,47 +255,12 @@
                     android:id="@+id/tv_hb"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="设备海拔："
+                    android:text="海拔："
                     android:textColor="@android:color/black"
                     android:textSize="14sp"
                     android:layout_marginTop="10dp"/>
 
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/tv_dian_ya"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
-                android:gravity="center"
-                android:layout_gravity="center_horizontal"/>
-
-            <TextView
-                android:id="@+id/tv_list"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="35dp"
-                android:layout_marginLeft="15dp"
-                android:text="北斗通讯信号值"
-                android:textSize="15sp"
-                android:textColor="@android:color/black"/>
-
-            <com.water.project.view.MeasureListView
-                android:id="@+id/listView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="15dp"
-                android:divider="@null">
-            </com.water.project.view.MeasureListView>
 
         </LinearLayout>
 
