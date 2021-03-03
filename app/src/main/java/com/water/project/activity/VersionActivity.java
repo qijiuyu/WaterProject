@@ -2,10 +2,11 @@ package com.water.project.activity;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.water.project.R;
 import com.water.project.utils.StatusBarUtils;

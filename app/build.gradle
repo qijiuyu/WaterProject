@@ -1,31 +1,35 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-    compileSdkVersion Integer.parseInt(COMPLIE_SDK_VERSION)
-    buildToolsVersion BUILDTOLLS_VERSION
+    compileSdkVersion 29
 
-    useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.water.project"
-        minSdkVersion Integer.parseInt(MIN_SDK_VERSION)
-        targetSdkVersion Integer.parseInt(TARGET_SDK_VERSION)
+        minSdkVersion 18
+        targetSdkVersion 29
         versionCode 2
         versionName "2.1"
-
+        multiDexEnabled true
         ndk {
-            // 设置支持的SO库架构
-            abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+            abiFilters "armeabi"
         }
     }
-
 
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
         }
-
     }
+
+    allprojects {
+        repositories {
+            jcenter()
+            mavenCentral()
+            maven { url "https://jitpack.io" }
+            maven { url 'https://dl.bintray.com/hpdx/maven/' }
+        }
+    }
+
 
     signingConfigs {
         keyConfig {
@@ -38,7 +42,6 @@ android {
 
 
     buildTypes {
-
         //开发环境
         debug {
             //实现自动签名
@@ -51,6 +54,20 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+
+    /**
+     * 解决错误：More than one file was found with OS independent path 'META-INF/proguard/androidx-annotations.pro'
+     */
+    packagingOptions {
+        exclude 'META-INF/proguard/androidx-annotations.pro'
+    }
+
+    //打包Release版本的时候不进行检测
     lintOptions {
         checkReleaseBuilds false
         abortOnError false
@@ -58,19 +75,35 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile "com.android.support:appcompat-v7:" + BUILDTOLLS_VERSION
-    compile "com.android.support:support-v4:" + BUILDTOLLS_VERSION
-    compile 'com.squareup.retrofit2:retrofit:2.2.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.youth.banner:banner:1.4.10'
-    //最新版本
-    compile 'org.greenrobot:eventbus:3.1.1'
-    compile 'com.tencent.bugly:crashreport:latest.release'
-    compile 'com.tencent.bugly:nativecrashreport:latest.release'
-    compile "com.android.support:recyclerview-v7:" + BUILDTOLLS_VERSION
-    compile 'com.jakewharton:butterknife:8.2.1'
-    apt 'com.jakewharton:butterknife-compiler:8.2.1'
-    compile files('libs/poi-3.15.jar')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'com.android.support:multidex:1.0.3'
+
+    //okhttp网络方面
+    implementation 'com.squareup.retrofit2:retrofit:2.2.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.2.0'
+
+    //加载网络图片
+    implementation 'com.github.bumptech.glide:glide:4.4.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
+
+    implementation 'com.youth.banner:banner:1.4.10'
+
+    //eventbus
+    implementation 'org.greenrobot:eventbus:3.1.1'
+
+    implementation 'com.tencent.bugly:crashreport:latest.release'
+    implementation 'com.tencent.bugly:nativecrashreport:latest.release'
+
+    //butterknife注解
+    implementation 'com.jakewharton:butterknife:10.0.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
+
+    implementation files('libs/poi-3.15.jar')
+
+    //权限
+    implementation 'com.hjq:xxpermissions:5.5'
 }

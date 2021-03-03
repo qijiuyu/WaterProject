@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+
 import com.water.project.R;
 import com.water.project.activity.BaseActivity;
 import com.water.project.adapter.BAdapter;
@@ -161,7 +163,6 @@ public class RedBDSignalActivity extends BaseActivity {
                         }else{
 
                             BuglyUtils.uploadBleMsg("北斗信号："+data);
-                            String filePath = FileUtils.createFile("北斗信号数据.txt", data);
 
                             data=data.replace("GDBDSQ","").replace(">OK", "");
                             //显示信号列表

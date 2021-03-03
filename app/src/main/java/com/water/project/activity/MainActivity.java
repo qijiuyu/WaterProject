@@ -4,17 +4,16 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.water.project.R;
-import com.water.project.activity.menu6.BActivity;
 import com.water.project.activity.menu6.SendDataActivity;
 import com.water.project.activity.new_version.MoreSettingActivity;
 import com.water.project.activity.new_version.New_SettingActivity;
@@ -24,6 +23,8 @@ import com.water.project.bean.Menu;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.DataCleanManager;
 import com.water.project.utils.LogUtils;
+import com.water.project.utils.PermissionCallBack;
+import com.water.project.utils.PermissionUtil;
 import com.water.project.utils.ble.BleObject;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +39,6 @@ public class MainActivity extends BaseActivity{
     RecyclerView listView;
     @BindView(R.id.tv_about)
     TextView tvAbout;
-    @BindView(R.id.lin)
-    LinearLayout lin;
     // 按两次退出
     protected long exitTime = 0;
     //存储菜单
@@ -185,6 +184,25 @@ public class MainActivity extends BaseActivity{
         MyApplication.spUtil.removeAll();
         //清理缓存
         DataCleanManager.clearAllCache(MainActivity.this);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        /**
+         * 开启权限
+         */
+        PermissionUtil.getPermission(this, new PermissionCallBack() {
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onFail() {
+
+            }
+        });
     }
 
     // 按两次退出

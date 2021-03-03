@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/JavaLibarary/JavaLibarary.iml" filepath="$PROJECT_DIR$/JavaLibarary/JavaLibarary.iml" />
       <module fileurl="file://$PROJECT_DIR$/WaterProject.iml" filepath="$PROJECT_DIR$/WaterProject.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JavaLibarary/WaterProject.JavaLibarary.iml" filepath="$PROJECT_DIR$/.idea/modules/JavaLibarary/WaterProject.JavaLibarary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/WaterProject.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/WaterProject.app.iml" />
     </modules>
   </component>
 </project>
