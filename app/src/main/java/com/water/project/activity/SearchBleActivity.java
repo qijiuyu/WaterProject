@@ -185,7 +185,7 @@ public class SearchBleActivity extends BaseActivity {
                                      dialogView.dismiss();
                                      mHandler.postDelayed(new Runnable() {
                                          public void run() {
-                                             DialogUtils.showProgress(SearchBleActivity.this,"蓝牙连接中...");
+                                             DialogUtils.showProgress(SearchBleActivity.this,"GPRS连接中...");
                                              bleService.connect(SearchBleActivity.this.ble.getBleMac());
                                          }
                                      },100);
@@ -258,7 +258,7 @@ public class SearchBleActivity extends BaseActivity {
                       return;
                   }
                   MyApplication.spUtil.addObject(SPUtil.BLE_DEVICE,ble);
-                  DialogUtils.showProgress(SearchBleActivity.this,"蓝牙连接中...");
+                  DialogUtils.showProgress(SearchBleActivity.this,"GPRS连接中...");
                   bleService.connect(ble.getBleMac());
                   break;
             default:

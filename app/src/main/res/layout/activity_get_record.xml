@@ -15,7 +15,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:text="读取设备数据记录"
+        android:text="读取设备历史记录"
         android:textColor="@android:color/white"
         android:textSize="15sp"
         android:background="@drawable/bg_setting_select"

@@ -53,7 +53,7 @@ public class New_SettingPresenter {
         dialogView = new DialogView(activity, "蓝牙连接断开，请靠近设备进行连接!","重新连接", "取消", new View.OnClickListener() {
             public void onClick(View v) {
                 dialogView.dismiss();
-                DialogUtils.showProgress(activity,"蓝牙连接中...");
+                DialogUtils.showProgress(activity,"GPRS连接中...");
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);

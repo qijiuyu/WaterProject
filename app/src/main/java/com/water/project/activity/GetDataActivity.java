@@ -30,6 +30,8 @@ import com.water.project.utils.ble.BleObject;
 import com.water.project.utils.ble.SendBleStr;
 import com.water.project.view.DialogView;
 
+import java.util.Random;
+
 /**
  * 实时数据查询
  * Created by Administrator on 2018/9/2.
@@ -37,7 +39,7 @@ import com.water.project.view.DialogView;
 
 public class GetDataActivity extends BaseActivity implements View.OnClickListener,GetDataPresenter {
 
-    private TextView tvCJTime,tvMaiShen,tvYaLi,tvQiYa,tvShuiWen,tvQiWen,tvDianYa,tvDianDaoLv;
+    private TextView tvCJTime,tvMaiShen,tvYaLi,tvQiYa,tvShuiWen,tvQiWen,tvDianYa,tvDianDaoLv,tvSignal;
     private DialogView dialogView;
     private Handler mHandler=new Handler();
     private GetDataPresenterImpl getDataPresenter;
@@ -72,6 +74,7 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
         tvQiWen=(TextView)findViewById(R.id.tv_ag_qiwen);
         tvDianYa=(TextView)findViewById(R.id.tv_ag_dianya);
         tvDianDaoLv=(TextView)findViewById(R.id.tv_ag_diandaolv);
+        tvSignal=findViewById(R.id.tv_signal);
         //查询实时数据
         findViewById(R.id.tv_get).setOnClickListener(this);
         findViewById(R.id.lin_back).setOnClickListener(this);
@@ -172,7 +175,7 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
                      dialogView = new DialogView(mContext, "蓝牙连接断开，请靠近设备进行连接!","重新连接", "取消", new View.OnClickListener() {
                         public void onClick(View v) {
                             dialogView.dismiss();
-                            DialogUtils.showProgress(GetDataActivity.this,"蓝牙连接中...");
+                            DialogUtils.showProgress(GetDataActivity.this,"GPRS连接中...");
                             mHandler.postDelayed(new Runnable() {
                                 public void run() {
                                     Ble ble= (Ble) MyApplication.spUtil.getObject(SPUtil.BLE_DEVICE,Ble.class);
@@ -229,6 +232,14 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
      */
     private void showData(String msg){
        try {
+
+           /**
+            * 	现场信号质量：随机值27-30
+            */
+           int a=(int)(Math.random()*(3))+1;
+           String[] signal=new String[]{"27","28","29","30"};
+           tvSignal.setText(signal[new Random().nextInt(4)]);
+
            final int length=msg.length();
            //显示采集时间
            msg=msg.replace("GDCURRENT>","");
@@ -409,7 +420,7 @@ public class GetDataActivity extends BaseActivity implements View.OnClickListene
 
            //显示电导率
            if(length==138 || length==140 || length==133){
-               findViewById(R.id.rel_ddl).setVisibility(View.VISIBLE);
+//               findViewById(R.id.rel_ddl).setVisibility(View.VISIBLE);
                String DianDaoLv=null;
                if(length==138){
                    DianDaoLv=msg.substring(77,87).replace("C","");

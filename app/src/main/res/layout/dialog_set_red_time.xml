@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="读取数据记录的时间段"
+            android:text="读取数据历史记录的时间段"
             android:textColor="@android:color/black"
             android:textSize="16sp"
             android:textStyle="bold"

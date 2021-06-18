@@ -33,12 +33,14 @@
             app:rb_duration="3000"
             app:rb_scale="6">
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:id="@+id/centerImage"
-                android:src="@mipmap/bluetooth_icon"/>
+                android:text="GPRS"
+                android:textSize="14sp"
+                android:textColor="#ffffff"/>
 
         </com.water.project.view.RippleBackground>
 

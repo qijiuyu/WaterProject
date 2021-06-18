@@ -8,7 +8,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
-
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -22,7 +21,6 @@ import com.water.project.application.MyApplication;
 import com.water.project.bean.Menu;
 import com.water.project.utils.BleUtils;
 import com.water.project.utils.DataCleanManager;
-import com.water.project.utils.LogUtils;
 import com.water.project.utils.PermissionCallBack;
 import com.water.project.utils.PermissionUtil;
 import com.water.project.utils.ble.BleObject;

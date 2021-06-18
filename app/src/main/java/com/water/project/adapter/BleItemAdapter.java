@@ -52,7 +52,7 @@ public class BleItemAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		final Ble ble=list.get(position);
-		holder.tvBleName.setText("蓝牙名称："+ble.getBleName());
+		holder.tvBleName.setText("设备名称：ZKGD");
 		holder.tvMac.setText(ble.getBleMac());
 		holder.tvConnect.setTag(list.get(position));
 		if(ble.getBleName().contains("ZKGD")){

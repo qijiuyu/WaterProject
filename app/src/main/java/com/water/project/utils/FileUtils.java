@@ -327,6 +327,9 @@ public class FileUtils {
     public static void copyXlsToSd(Context context){
         final String templateXLS=FileUtils.getSdcardPath()+"zkgd_temp.xls";
         final File file=new File(templateXLS);
+        if(file.isFile()){
+            file.delete();
+        }
         if(!file.isFile()){
             //将项目assets下的xls模块拷贝到SD卡中
             CopyToSDUtils.doCopy(context,"zkgd_temp.xls",FileUtils.getSdcardPath()+"zkgd_temp.xls");

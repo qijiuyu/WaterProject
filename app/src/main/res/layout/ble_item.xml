@@ -26,6 +26,7 @@
                 android:id="@+id/tv_mac"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginTop="5dp"
                 android:textSize="14sp"
                 android:textColor="@color/color_1fc37f"/>
@@ -37,7 +38,7 @@
             android:id="@+id/tv_bi_connect"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:text="连接蓝牙"
+            android:text="连接GPRS"
             android:textColor="@android:color/white"
             android:textSize="15sp"
             android:gravity="center"
